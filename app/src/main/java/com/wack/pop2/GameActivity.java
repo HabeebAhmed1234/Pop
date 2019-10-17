@@ -62,7 +62,7 @@ import org.jbox2d.dynamics.FixtureDef;
 import java.io.IOException;
 import java.util.LinkedList;
 
-public class GameHabeebActivity_Arcade extends SimpleBaseGameActivity implements IAccelerationListener, IOnSceneTouchListener, IOnAreaTouchListener, IOnMenuItemClickListener {
+public class GameActivity extends SimpleBaseGameActivity implements IAccelerationListener, IOnSceneTouchListener, IOnAreaTouchListener, IOnMenuItemClickListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -307,7 +307,7 @@ public class GameHabeebActivity_Arcade extends SimpleBaseGameActivity implements
 			return true;
 		}
 		if(pKeyCode == KeyEvent.KEYCODE_BACK && pEvent.getAction() == KeyEvent.ACTION_DOWN) {
-			Intent intent = new Intent(GameHabeebActivity_Arcade.this, MainMenu.class);
+			Intent intent = new Intent(GameActivity.this, MainMenuActivity.class);
 			startActivity(intent);
 			finish();
 			return true;
@@ -318,7 +318,7 @@ public class GameHabeebActivity_Arcade extends SimpleBaseGameActivity implements
 	public boolean onMenuItemClicked(final MenuScene pMenuScene, final IMenuItem pMenuItem, final float pMenuItemLocalX, final float pMenuItemLocalY) {
 		switch(pMenuItem.getID()) {
 			case MENU_QUIT:
-				Intent intent = new Intent(GameHabeebActivity_Arcade.this, MainMenu.class);
+				Intent intent = new Intent(GameActivity.this, MainMenuActivity.class);
 				startActivity(intent);
 				finish();
 				return true;
@@ -652,7 +652,7 @@ public class GameHabeebActivity_Arcade extends SimpleBaseGameActivity implements
 	}
 	private void gameover()
 	{
-		Intent intent = new Intent(GameHabeebActivity_Arcade.this, GameOverScreen.class);
+		Intent intent = new Intent(GameActivity.this, GameOverScreen.class);
 		Bundle b = new Bundle();
 		b.putInt("Score", score);
 		intent.putExtras(b);

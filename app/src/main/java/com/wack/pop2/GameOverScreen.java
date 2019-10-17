@@ -190,7 +190,7 @@ public class GameOverScreen extends SimpleBaseGameActivity implements IOnSceneTo
 
 	@Override
 	public boolean onAreaTouched(TouchEvent pSceneTouchEvent,ITouchArea pTouchArea, float pTouchAreaLocalX,float pTouchAreaLocalY) {
-		Intent intent = new Intent(GameOverScreen.this, MainMenu.class);
+		Intent intent = new Intent(GameOverScreen.this, MainMenuActivity.class);
 		startActivity(intent);
 		finish();
 		return true;

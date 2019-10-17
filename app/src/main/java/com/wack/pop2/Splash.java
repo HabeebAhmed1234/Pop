@@ -18,11 +18,7 @@ import org.andengine.ui.activity.SimpleBaseGameActivity;
 
 import android.content.Intent;
 import android.graphics.Point;
-import android.os.Bundle;
 import android.view.Display;
-
-
-import com.google.ads.*;
 
 public class Splash extends SimpleBaseGameActivity   {
 	// ===========================================================
@@ -107,7 +103,7 @@ public class Splash extends SimpleBaseGameActivity   {
 		        	secondspassed+=1;
 		        	if(secondspassed>3)
 		        	{
-		        		Intent intent = new Intent(Splash.this, MainMenu.class);
+		        		Intent intent = new Intent(Splash.this, MainMenuActivity.class);
 						startActivity(intent);
 		        	}
 		        	

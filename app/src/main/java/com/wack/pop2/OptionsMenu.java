@@ -189,7 +189,7 @@ public class OptionsMenu extends SimpleBaseGameActivity implements IOnSceneTouch
 		if(pSceneTouchEvent.isActionDown()) {
 			if(pTouchArea==Back)
 			{
-				Intent intent = new Intent(OptionsMenu.this, MainMenu.class);
+				Intent intent = new Intent(OptionsMenu.this, MainMenuActivity.class);
 				startActivity(intent);
 				finish();
 			}
@@ -218,7 +218,7 @@ public class OptionsMenu extends SimpleBaseGameActivity implements IOnSceneTouch
 
 	public void returntomainmenu()
 	{
-		Intent intent = new Intent(OptionsMenu.this, MainMenu.class);
+		Intent intent = new Intent(OptionsMenu.this, MainMenuActivity.class);
 		Bundle b = new Bundle();
 		intent.putExtras(b);
 		startActivity(intent);

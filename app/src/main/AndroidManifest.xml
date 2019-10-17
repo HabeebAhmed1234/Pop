@@ -7,11 +7,17 @@
     <application
         android:name=".GlobalVariables"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name">
+        android:label="@string/app_name"
+        android:theme="@style/BaseAppTheme">
 
         <activity
             android:name=".Splash"
             android:label="@string/app_name"
+            android:noHistory="true">
+        </activity>
+
+        <activity
+            android:name="com.wack.pop2.MainMenuActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,11 +25,7 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.wack.pop2.MainMenu"
-            android:noHistory="true"></activity>
-
-        <activity android:name=".GameHabeebActivity_Arcade"></activity>
+        <activity android:name=".GameActivity"></activity>
 
         <activity android:name=".DifficultyMenu"></activity>
 
