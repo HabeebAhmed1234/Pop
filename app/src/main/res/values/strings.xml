@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="hello">Hello World, GameHabeebActivity!</string>
     <string name="app_name">Pop!</string>
     <string name="new_game_text">New Game</string>
     <string name="options_text">Options</string>

@@ -27,13 +27,6 @@ public class MainMenuActivity extends Activity {
             }
         });
 
-        findViewById(R.id.options_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startOptionsMenu();
-            }
-        });
-
         findViewById(R.id.quit_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,11 +45,6 @@ public class MainMenuActivity extends Activity {
         startActivity(intent);
         this.finish();
     }
-
-    private void startOptionsMenu() {
-	    MainMenuActivity.this.startActivity(new Intent(MainMenuActivity.this, OptionsMenu.class));
-    }
-
     private void  quitGame() {
         this.finish();
     }

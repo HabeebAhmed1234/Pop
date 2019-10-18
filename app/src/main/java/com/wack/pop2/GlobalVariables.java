@@ -10,9 +10,6 @@ public class GlobalVariables extends Application {
 	  public int getDifficulty(){
 	    return Difficulty;
 	  }
-	  public void setDifficulty(int s){
-		  Difficulty = s;
-	  }
 	  
 	  
 	  public String getMode(){

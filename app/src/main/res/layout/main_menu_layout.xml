@@ -27,12 +27,13 @@
             android:layout_marginBottom="@dimen/between_btn_padding"
             android:text="@string/new_game_text"/>
 
-        <Button
+        <!-- <Button
             android:id="@+id/options_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/between_btn_padding"
             android:text="@string/options_text"/>
+            -->
 
         <Button
             android:id="@+id/quit_btn"
