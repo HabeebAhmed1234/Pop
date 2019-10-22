@@ -19,15 +19,22 @@ public class GameTexturesManager extends BaseEntity {
     private static final int EXPLOSION_TEXTURE_ATLAS_W_PX = 850;
     private static final int EXPLOSION_TEXTURE_ATLAS_H_PX = 950;
 
-    private Context context;
-    private TextureManager textureManager;
+    private final Context context;
+    private final TextureManager textureManager;
 
-    private Map<TextureIds, ITextureRegion> mTextureRegions = new HashMap();
+    private final Map<TextureId, ITextureRegion> mTextureRegions = new HashMap();
 
     public GameTexturesManager(Context context, TextureManager textureManager, GameResources gameResources) {
         super(gameResources);
         this.context = context;
         this.textureManager = textureManager;
+    }
+
+    public ITextureRegion getTextureRegion(TextureId textureId) {
+        if (!mTextureRegions.containsKey(textureId)) {
+            throw new IllegalArgumentException("Texture " + textureId + " does not exist in GameTexturesManager");
+        }
+        return mTextureRegions.get(textureId);
     }
 
     @Override
@@ -36,7 +43,7 @@ public class GameTexturesManager extends BaseEntity {
         BitmapTextureAtlas explosionBitmapTextureAtlas = new BitmapTextureAtlas(textureManager, EXPLOSION_TEXTURE_ATLAS_W_PX, EXPLOSION_TEXTURE_ATLAS_H_PX, TextureOptions.BILINEAR);
 
         mTextureRegions.put(
-                TextureIds.EXPLOSION,
+                TextureId.EXPLOSION,
                 BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
                         explosionBitmapTextureAtlas,
                         context,
@@ -46,18 +53,18 @@ public class GameTexturesManager extends BaseEntity {
         BitmapTextureAtlas mainBitmapTextureAtlas = new BitmapTextureAtlas(textureManager, 1000, 700, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
         mTextureRegions.put(
-                TextureIds.BALL_1,
+                TextureId.BALL_1,
                 BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "red_ball.png", 0, 0));
-        mTextureRegions.put(TextureIds.BALL_2,
-                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "blue_ball.png", 100, 0);
-        mTextureRegions.put(TextureIds.BALL_3,
-                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "green_ball.png", 200, 0);
+        mTextureRegions.put(TextureId.BALL_2,
+                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "blue_ball.png", 100, 0));
+        mTextureRegions.put(TextureId.BALL_3,
+                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "green_ball.png", 200, 0));
 
-        mTextureRegions.put(TextureIds.SKULL_BALL,
+        mTextureRegions.put(TextureId.SKULL_BALL,
                 BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "skull_ball.png", 300, 0));
-        mTextureRegions.put(TextureIds.SCORE_BACKGROUND,
+        mTextureRegions.put(TextureId.SCORE_BACKGROUND,
                 BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "ScoreBack.png", 407, 0));
-        mTextureRegions.put(TextureIds.GAME_OVER,
+        mTextureRegions.put(TextureId.GAME_OVER,
                 BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "gameover_fade.png", 607, 0));
 
         explosionBitmapTextureAtlas.load();

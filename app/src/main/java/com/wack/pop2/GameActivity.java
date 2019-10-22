@@ -104,7 +104,7 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 	public EngineOptions onCreateEngineOptions() {
 		Toast.makeText(this, "! POP THE BUBBLES !", Toast.LENGTH_SHORT).show();
 
-		if (  Integer.valueOf(android.os.Build.VERSION.SDK_INT) < 13 ) {
+		if (Integer.valueOf(android.os.Build.VERSION.SDK_INT) < 13 ) {
 			Display display = getWindowManager().getDefaultDisplay();
 			CAMERA_WIDTH = display.getWidth();
 			CAMERA_HEIGHT = display.getHeight();
@@ -271,13 +271,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 			sound=mPop5Sound;
 		}
 		return sound;
-	}
-
-	@Override
-	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
-		//SpriteParticleSystem particles=createParticles(pSceneTouchEvent.getX(),pSceneTouchEvent.getY());
-		//mScene.attachChild(particles);
-		return false;
 	}
 
 	private void setGravity()
