@@ -1,7 +1,7 @@
 package org.andengine.opengl.font;
 
 import org.andengine.opengl.texture.ITexture;
-import org.andengine.util.color.Color;
+import org.andengine.util.color.AndengineColor;
 
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
@@ -34,16 +34,16 @@ public class StrokeFont extends Font {
 	// Constructors
 	// ===========================================================
 	
-	public StrokeFont(final FontManager pFontManager, final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final Color pColor, final float pStrokeWidth, final Color pStrokeColor) {
-		this(pFontManager, pTexture, pTypeface, pSize, pAntiAlias, pColor.getARGBPackedInt(), pStrokeWidth, pStrokeColor.getARGBPackedInt());
+	public StrokeFont(final FontManager pFontManager, final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final AndengineColor pAndengineColor, final float pStrokeWidth, final AndengineColor pStrokeAndengineColor) {
+		this(pFontManager, pTexture, pTypeface, pSize, pAntiAlias, pAndengineColor.getARGBPackedInt(), pStrokeWidth, pStrokeAndengineColor.getARGBPackedInt());
 	}
 
 	public StrokeFont(final FontManager pFontManager, final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColorARGBPackedInt, final float pStrokeWidth, final int pStrokeColorARGBPackedInt) {
 		this(pFontManager, pTexture, pTypeface, pSize, pAntiAlias, pColorARGBPackedInt, pStrokeWidth, pStrokeColorARGBPackedInt, false);
 	}
 
-	public StrokeFont(final FontManager pFontManager, final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final Color pColor, final float pStrokeWidth, final Color pStrokeColor, final boolean pStrokeOnly) {
-		this(pFontManager, pTexture, pTypeface, pSize, pAntiAlias, pColor.getARGBPackedInt(), pStrokeWidth, pStrokeColor.getARGBPackedInt(), pStrokeOnly);
+	public StrokeFont(final FontManager pFontManager, final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final AndengineColor pAndengineColor, final float pStrokeWidth, final AndengineColor pStrokeAndengineColor, final boolean pStrokeOnly) {
+		this(pFontManager, pTexture, pTypeface, pSize, pAntiAlias, pAndengineColor.getARGBPackedInt(), pStrokeWidth, pStrokeAndengineColor.getARGBPackedInt(), pStrokeOnly);
 	}
 
 	public StrokeFont(final FontManager pFontManager, final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColorARGBPackedInt, final float pStrokeWidth, final int pStrokeColorARGBPackedInt, final boolean pStrokeOnly) {

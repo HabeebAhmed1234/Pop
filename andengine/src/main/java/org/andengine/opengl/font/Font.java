@@ -7,7 +7,7 @@ import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.PixelFormat;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.adt.map.SparseArrayUtils;
-import org.andengine.util.color.Color;
+import org.andengine.util.color.AndengineColor;
 import org.andengine.util.math.MathUtils;
 
 import android.graphics.Bitmap;
@@ -65,8 +65,8 @@ public class Font implements IFont {
 	// Constructors
 	// ===========================================================
 
-	public Font(final FontManager pFontManager, final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final Color pColor) {
-		this(pFontManager, pTexture, pTypeface, pSize, pAntiAlias, pColor.getARGBPackedInt());
+	public Font(final FontManager pFontManager, final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final AndengineColor pAndengineColor) {
+		this(pFontManager, pTexture, pTypeface, pSize, pAntiAlias, pAndengineColor.getARGBPackedInt());
 	}
 
 	public Font(final FontManager pFontManager, final ITexture pTexture, final Typeface pTypeface, final float pSize, final boolean pAntiAlias, final int pColorARGBPackedInt) {
@@ -76,7 +76,7 @@ public class Font implements IFont {
 		this.mTextureHeight = pTexture.getHeight();
 
 		this.mBackgroundPaint = new Paint();
-		this.mBackgroundPaint.setColor(Color.TRANSPARENT_ARGB_PACKED_INT);
+		this.mBackgroundPaint.setColor(AndengineColor.TRANSPARENT_ARGB_PACKED_INT);
 		this.mBackgroundPaint.setStyle(Style.FILL);
 
 		this.mPaint = new Paint();

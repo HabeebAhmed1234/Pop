@@ -1,7 +1,7 @@
 package org.andengine.entity.scene.menu.item.decorator;
 
 import org.andengine.entity.scene.menu.item.IMenuItem;
-import org.andengine.util.color.Color;
+import org.andengine.util.color.AndengineColor;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -19,20 +19,20 @@ public class ColorMenuItemDecorator extends BaseMenuItemDecorator {
 	// Fields
 	// ===========================================================
 
-	private final Color mSelectedColor;
-	private final Color mUnselectedColor;
+	private final AndengineColor mSelectedAndengineColor;
+	private final AndengineColor mUnselectedAndengineColor;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
 
-	public ColorMenuItemDecorator(final IMenuItem pMenuItem, final Color pSelectedColor, final Color pUnselectedColor) {
+	public ColorMenuItemDecorator(final IMenuItem pMenuItem, final AndengineColor pSelectedAndengineColor, final AndengineColor pUnselectedAndengineColor) {
 		super(pMenuItem);
 
-		this.mSelectedColor = pSelectedColor;
-		this.mUnselectedColor = pUnselectedColor;
+		this.mSelectedAndengineColor = pSelectedAndengineColor;
+		this.mUnselectedAndengineColor = pUnselectedAndengineColor;
 
-		pMenuItem.setColor(pUnselectedColor);
+		pMenuItem.setColor(pUnselectedAndengineColor);
 	}
 
 	// ===========================================================
@@ -49,17 +49,17 @@ public class ColorMenuItemDecorator extends BaseMenuItemDecorator {
 
 	@Override
 	public void onMenuItemSelected(final IMenuItem pMenuItem) {
-		pMenuItem.setColor(this.mSelectedColor);
+		pMenuItem.setColor(this.mSelectedAndengineColor);
 	}
 
 	@Override
 	public void onMenuItemUnselected(final IMenuItem pMenuItem) {
-		pMenuItem.setColor(this.mUnselectedColor);
+		pMenuItem.setColor(this.mUnselectedAndengineColor);
 	}
 
 	@Override
 	public void onMenuItemReset(final IMenuItem pMenuItem) {
-		pMenuItem.setColor(this.mUnselectedColor);
+		pMenuItem.setColor(this.mUnselectedAndengineColor);
 	}
 
 	// ===========================================================

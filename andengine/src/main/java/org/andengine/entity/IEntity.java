@@ -14,7 +14,7 @@ import org.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.andengine.entity.scene.Scene;
 import org.andengine.util.IDisposable;
 import org.andengine.util.adt.transformation.Transformation;
-import org.andengine.util.color.Color;
+import org.andengine.util.color.AndengineColor;
 
 
 /**
@@ -109,13 +109,13 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 	public float getGreen();
 	public float getBlue();
 	public float getAlpha();
-	public Color getColor();
+	public AndengineColor getColor();
 
 	public void setRed(final float pRed);
 	public void setGreen(final float pGreen);
 	public void setBlue(final float pBlue);
 	public void setAlpha(final float pAlpha);
-	public void setColor(final Color pColor);
+	public void setColor(final AndengineColor pAndengineColor);
 	public void setColor(final float pRed, final float pGreen, final float pBlue);
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha);
 

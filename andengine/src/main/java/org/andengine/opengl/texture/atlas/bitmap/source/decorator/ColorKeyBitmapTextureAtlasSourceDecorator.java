@@ -2,7 +2,7 @@ package org.andengine.opengl.texture.atlas.bitmap.source.decorator;
 
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.IBitmapTextureAtlasSourceDecoratorShape;
-import org.andengine.util.color.Color;
+import org.andengine.util.color.AndengineColor;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -24,36 +24,36 @@ public class ColorKeyBitmapTextureAtlasSourceDecorator extends ColorSwapBitmapTe
 	// Constructors
 	// ===========================================================
 
-	public ColorKeyBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final Color pColorKeyColor) {
-		super(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColor, Color.TRANSPARENT);
+	public ColorKeyBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final AndengineColor pColorKeyAndengineColor) {
+		super(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyAndengineColor, AndengineColor.TRANSPARENT);
 	}
 
 	public ColorKeyBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final int pColorKeyColorARGBPackedInt) {
-		super(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColorARGBPackedInt, Color.TRANSPARENT_ARGB_PACKED_INT);
+		super(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColorARGBPackedInt, AndengineColor.TRANSPARENT_ARGB_PACKED_INT);
 	}
 
-	public ColorKeyBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final Color pColorKeyColor, final TextureAtlasSourceDecoratorOptions pTextureAtlasSourceDecoratorOptions) {
-		super(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColor, Color.TRANSPARENT, pTextureAtlasSourceDecoratorOptions);
+	public ColorKeyBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final AndengineColor pColorKeyAndengineColor, final TextureAtlasSourceDecoratorOptions pTextureAtlasSourceDecoratorOptions) {
+		super(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyAndengineColor, AndengineColor.TRANSPARENT, pTextureAtlasSourceDecoratorOptions);
 	}
 	
 	public ColorKeyBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final int pColorKeyColorARGBPackedInt, final TextureAtlasSourceDecoratorOptions pTextureAtlasSourceDecoratorOptions) {
-		super(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColorARGBPackedInt, Color.TRANSPARENT_ARGB_PACKED_INT, pTextureAtlasSourceDecoratorOptions);
+		super(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColorARGBPackedInt, AndengineColor.TRANSPARENT_ARGB_PACKED_INT, pTextureAtlasSourceDecoratorOptions);
 	}
 
-	public ColorKeyBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final Color pColorKeyColor, final int pTolerance) {
-		super(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColor, pTolerance, Color.TRANSPARENT);
+	public ColorKeyBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final AndengineColor pColorKeyAndengineColor, final int pTolerance) {
+		super(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyAndengineColor, pTolerance, AndengineColor.TRANSPARENT);
 	}
 	
 	public ColorKeyBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final int pColorKeyColorARGBPackedInt, final int pTolerance) {
-		super(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColorARGBPackedInt, pTolerance, Color.TRANSPARENT_ARGB_PACKED_INT);
+		super(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColorARGBPackedInt, pTolerance, AndengineColor.TRANSPARENT_ARGB_PACKED_INT);
 	}
 
-	public ColorKeyBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final Color pColorKeyColor, final int pTolerance, final TextureAtlasSourceDecoratorOptions pTextureAtlasSourceDecoratorOptions) {
-		super(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColor, pTolerance, Color.TRANSPARENT, pTextureAtlasSourceDecoratorOptions);
+	public ColorKeyBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final AndengineColor pColorKeyAndengineColor, final int pTolerance, final TextureAtlasSourceDecoratorOptions pTextureAtlasSourceDecoratorOptions) {
+		super(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyAndengineColor, pTolerance, AndengineColor.TRANSPARENT, pTextureAtlasSourceDecoratorOptions);
 	}
 	
 	public ColorKeyBitmapTextureAtlasSourceDecorator(final IBitmapTextureAtlasSource pBitmapTextureAtlasSource, final IBitmapTextureAtlasSourceDecoratorShape pBitmapTextureAtlasSourceDecoratorShape, final int pColorKeyColorARGBPackedInt, final int pTolerance, final TextureAtlasSourceDecoratorOptions pTextureAtlasSourceDecoratorOptions) {
-		super(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColorARGBPackedInt, pTolerance, Color.TRANSPARENT_ARGB_PACKED_INT, pTextureAtlasSourceDecoratorOptions);
+		super(pBitmapTextureAtlasSource, pBitmapTextureAtlasSourceDecoratorShape, pColorKeyColorARGBPackedInt, pTolerance, AndengineColor.TRANSPARENT_ARGB_PACKED_INT, pTextureAtlasSourceDecoratorOptions);
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package org.andengine.entity.particle.initializer;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
-import org.andengine.util.color.Color;
+import org.andengine.util.color.AndengineColor;
 
 
 /**
@@ -25,16 +25,16 @@ public class ColorParticleInitializer<T extends IEntity> extends BaseTripleValue
 	// Constructors
 	// ===========================================================
 
-	public ColorParticleInitializer(final Color pColor) {
-		super(pColor.getRed(), pColor.getRed(), pColor.getGreen(), pColor.getGreen(), pColor.getBlue(), pColor.getBlue());
+	public ColorParticleInitializer(final AndengineColor pAndengineColor) {
+		super(pAndengineColor.getRed(), pAndengineColor.getRed(), pAndengineColor.getGreen(), pAndengineColor.getGreen(), pAndengineColor.getBlue(), pAndengineColor.getBlue());
 	}
 	
 	public ColorParticleInitializer(final float pRed, final float pGreen, final float pBlue) {
 		super(pRed, pRed, pGreen, pGreen, pBlue, pBlue);
 	}
 
-	public ColorParticleInitializer(final Color pMinColor, final Color pMaxColor) {
-		super(pMinColor.getRed(), pMaxColor.getRed(), pMinColor.getGreen(), pMaxColor.getGreen(), pMinColor.getBlue(), pMaxColor.getBlue());
+	public ColorParticleInitializer(final AndengineColor pMinAndengineColor, final AndengineColor pMaxAndengineColor) {
+		super(pMinAndengineColor.getRed(), pMaxAndengineColor.getRed(), pMinAndengineColor.getGreen(), pMaxAndengineColor.getGreen(), pMinAndengineColor.getBlue(), pMaxAndengineColor.getBlue());
 	}
 	
 	public ColorParticleInitializer(final float pMinRed, final float pMaxRed, final float pMinGreen, final float pMaxGreen, final float pMinBlue, final float pMaxBlue) {

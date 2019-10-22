@@ -2,7 +2,7 @@ package org.andengine.entity.scene.background;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.opengl.util.GLState;
-import org.andengine.util.color.Color;
+import org.andengine.util.color.AndengineColor;
 import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ModifierList;
 
@@ -29,7 +29,7 @@ public class Background implements IBackground {
 
 	private ModifierList<IBackground> mBackgroundModifiers = null;
 
-	private final Color mColor = new Color(0, 0, 0, 1);
+	private final AndengineColor mAndengineColor = new AndengineColor(0, 0, 0, 1);
 	private boolean mColorEnabled = true;
 
 	// ===========================================================
@@ -41,15 +41,15 @@ public class Background implements IBackground {
 	}
 
 	public Background(final float pRed, final float pGreen, final float pBlue) {
-		this.mColor.set(pRed, pGreen, pBlue);
+		this.mAndengineColor.set(pRed, pGreen, pBlue);
 	}
 
 	public Background(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.mColor.set(pRed, pGreen, pBlue, pAlpha);
+		this.mAndengineColor.set(pRed, pGreen, pBlue, pAlpha);
 	}
 
-	public Background(final Color pColor) {
-		this.mColor.set(pColor);
+	public Background(final AndengineColor pAndengineColor) {
+		this.mAndengineColor.set(pAndengineColor);
 	}
 
 	// ===========================================================
@@ -64,7 +64,7 @@ public class Background implements IBackground {
 	 */
 	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue) {
-		this.mColor.set(pRed, pGreen, pBlue);
+		this.mAndengineColor.set(pRed, pGreen, pBlue);
 	}
 
 	/**
@@ -76,12 +76,12 @@ public class Background implements IBackground {
 	 */
 	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		this.mColor.set(pRed, pGreen, pBlue, pAlpha);
+		this.mAndengineColor.set(pRed, pGreen, pBlue, pAlpha);
 	}
 
 	@Override
-	public void setColor(final Color pColor) {
-		this.mColor.set(pColor);
+	public void setColor(final AndengineColor pAndengineColor) {
+		this.mAndengineColor.set(pAndengineColor);
 	}
 
 	@Override
@@ -132,7 +132,7 @@ public class Background implements IBackground {
 	@Override
 	public void onDraw(final GLState pGLState, final Camera pCamera) {
 		if(this.mColorEnabled) {
-			GLES20.glClearColor(this.mColor.getRed(), this.mColor.getGreen(), this.mColor.getBlue(), this.mColor.getAlpha());
+			GLES20.glClearColor(this.mAndengineColor.getRed(), this.mAndengineColor.getGreen(), this.mAndengineColor.getBlue(), this.mAndengineColor.getAlpha());
 			GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT); // TODO Does this cause problems when multisampling?
 		}
 	}

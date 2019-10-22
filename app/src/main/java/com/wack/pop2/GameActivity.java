@@ -1,23 +1,20 @@
 package com.wack.pop2;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.Typeface;
-import android.hardware.SensorManager;
 import android.opengl.GLES20;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import com.wack.pop2.gamesingletons.SceneSingleton;
+import com.wack.pop2.gamesingletons.VertBuffSingleton;
 import com.wack.pop2.physics.PhysicsConnector;
 import com.wack.pop2.physics.PhysicsFactory;
-import com.wack.pop2.physics.PhysicsWorld;
 import com.wack.pop2.physics.util.Vec2Pool;
 
 import org.andengine.audio.sound.Sound;
-import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -27,16 +24,10 @@ import org.andengine.entity.modifier.AlphaModifier;
 import org.andengine.entity.modifier.ParallelEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
-import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.scene.menu.MenuScene;
-import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
-import org.andengine.entity.scene.menu.item.IMenuItem;
-import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
@@ -45,33 +36,18 @@ import org.andengine.input.sensor.acceleration.AccelerationData;
 import org.andengine.input.sensor.acceleration.IAccelerationListener;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
-import org.andengine.opengl.font.FontFactory;
-import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
-import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
-import org.andengine.util.debug.Debug;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
-import java.io.IOException;
 import java.util.LinkedList;
 
-public class GameActivity extends SimpleBaseGameActivity implements IAccelerationListener, IOnSceneTouchListener, IOnAreaTouchListener, IOnMenuItemClickListener {
-	// ===========================================================
-	// Constants
-	// ===========================================================
-
-
-
-	// ===========================================================
-	// Fields
-	// ===========================================================
+public class GameActivity extends SimpleBaseGameActivity implements IAccelerationListener, IOnSceneTouchListener, IOnAreaTouchListener {
 
 	private BitmapTextureAtlas mBitmapTextureAtlas;
 
@@ -81,7 +57,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 	private ITextureRegion mBlueBallTextureRegion;
 	private ITextureRegion mGreenBallTextureRegion;
 	private ITextureRegion mSkullBallTextureRegion;
-	private ITextureRegion mBackground;
 	private ITextureRegion mScorebackground;
 
 	private TiledTextureRegion mExplosionTextureRegion;
@@ -90,7 +65,7 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 
 	private boolean isgameover=false;
 
-	private PhysicsWorld mPhysicsWorld;
+	private LevelEntity mLevelEntity;
 
 	private float mGravityX;
 	private float mGravityY;
@@ -98,12 +73,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 	private int CAMERA_WIDTH;
 	private int CAMERA_HEIGHT;
 	private ShakeCamera camera;
-	private Scene mScene;
-
-	protected MenuScene mMenuScene;
-	private BitmapTextureAtlas mMenuTexture;
-	protected ITextureRegion mMenuQuitTextureRegion;
-	protected static final int MENU_QUIT = 0;
 
 	private int whichface=0;
 
@@ -131,18 +100,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 
 	private Sound mExplosionSound;
 
-	// ===========================================================
-	// Constructors
-	// ===========================================================
-
-	// ===========================================================
-	// Getter & Setter
-	// ===========================================================
-
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
-	// ===========================================================
-
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 		Toast.makeText(this, "! POP THE BUBBLES !", Toast.LENGTH_SHORT).show();
@@ -158,6 +115,7 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 			CAMERA_WIDTH = size.x;
 			CAMERA_HEIGHT = size.y;
 		}
+		mLevelEntity = new LevelEntity(CAMERA_WIDTH, CAMERA_HEIGHT)
 		camera = new ShakeCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
 
 		final EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.camera);
@@ -169,106 +127,29 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 
 	@Override
 	public void onCreateResources() {
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-
-		this.mExplosionBitmapTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 850, 950, TextureOptions.BILINEAR);
-
-		this.mExplosionTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mExplosionBitmapTextureAtlas, this, "explosion.png", 0, 0, 3, 4);
-		this.mExplosionBitmapTextureAtlas.load();
-
-
-
-		this.mBitmapTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 1000, 700, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-		this.mRedBallTextureRegion =   BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "red_ball.png", 0, 0);
-		this.mBlueBallTextureRegion =   BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "blue_ball.png", 100, 0);
-		this.mGreenBallTextureRegion=  BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "green_ball.png", 200, 0);
-		this.mSkullBallTextureRegion=  BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "skull_ball.png", 300, 0);
-		this.mScorebackground=BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "ScoreBack.png", 407, 0);
-		this.mGameOverFadeTextureRegion=BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "gameover_fade.png", 607, 0);
-
-		this.mBackground=BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "back_Arcade.png", 0, 100);
-
-
-		this.mBitmapTextureAtlas.load();
-
-		this.mFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 48,true, Color.WHITE);
-		this.mFont.load();
-
-		this.mScoreTickerFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 50,true, Color.WHITE);
-		this.mScoreTickerFont.load();
-
-		this.mCountdownFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 100,true, Color.WHITE);
-		this.mCountdownFont.load();
-
-		this.mMenuTexture = new BitmapTextureAtlas(this.getTextureManager(), 300, 100, TextureOptions.BILINEAR);
-		this.mMenuQuitTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mMenuTexture, this, "Quit.png", 0, 0);
-		this.mMenuTexture.load();
-
-		SoundFactory.setAssetBasePath("mfx/");
-		try {
-			this.mPop1Sound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "pop1.wav");
-			this.mPop2Sound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "pop2.wav");
-			this.mPop3Sound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "pop3.wav");
-			this.mPop4Sound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "pop4.wav");
-			this.mPop5Sound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "pop5.wav");
-			this.mExplosionSound=SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager(), this, "explosion.ogg");
-		} catch (final IOException e) {
-			Debug.e(e);
-		}
+		GameLifeCycleCalllbackManager.init();
+		GameLifeCycleCalllbackManager.getInstance().onCreateResources();
 	}
 
 	@Override
 	public Scene onCreateScene() {
 		this.mEngine.registerUpdateHandler(new FPSLogger());
 
-		this.createMenuScene();
+		VertBuffSingleton.init(this);
+		Scene scene = SceneSingleton.instanceOf();
+		scene.setOnSceneTouchListener(this);
 
-		this.mPhysicsWorld = new PhysicsWorld(new Vec2(0, SensorManager.GRAVITY_EARTH), false);
+		mLevelEntity.createLevel();
 
-		this.mScene = new Scene();
-		this.mScene.setBackground(new Background(1, 1, 1));
-		//create background
-		Sprite Background = new Sprite(-2, -2, mBackground, this.getVertexBufferObjectManager());
-		Background.setHeight(CAMERA_HEIGHT+4);
-		Background.setWidth(CAMERA_WIDTH+4);
-		this.mScene.attachChild(Background);
-
-		this.mScene.setOnSceneTouchListener(this);
-
-		final VertexBufferObjectManager vertexBufferObjectManager = this.getVertexBufferObjectManager();
-		//final Rectangle roof = new Rectangle(0, 0, CAMERA_WIDTH, 2, vertexBufferObjectManager);
-		final Rectangle left = new Rectangle(0, 0, 2, CAMERA_HEIGHT, vertexBufferObjectManager);
-		final Rectangle right = new Rectangle(CAMERA_WIDTH - 2, 0, 2, CAMERA_HEIGHT, vertexBufferObjectManager);
-		left.setAlpha(0);
-		right.setAlpha(0);
-		final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0, 0.5f, 0.5f);
-
-		//PhysicsFactory.createBoxBody(this.mPhysicsWorld, roof, BodyType.StaticBody, wallFixtureDef);
-		PhysicsFactory.createBoxBody(this.mPhysicsWorld, left, BodyType.STATIC, wallFixtureDef);
-		PhysicsFactory.createBoxBody(this.mPhysicsWorld, right, BodyType.STATIC, wallFixtureDef);
-
-		//this.mScene.attachChild(roof);
-		this.mScene.attachChild(left);
-		this.mScene.attachChild(right);
 		//update handlers
-		this.mScene.registerUpdateHandler(this.mPhysicsWorld);
-		this.mScene.setOnAreaTouchListener(this);
+		scene.setOnAreaTouchListener(this);
+
 		createitemstimehandler();
 		checkforlossandtimertimehandler();
 		//set gravity
 		setGravity();
 		//////////text
 
-		ScoreText = new Text(20, 20, this.mFont, "Score: - - - - -", "Score: XXXXX".length(), this.getVertexBufferObjectManager());
-		//set score background
-		Sprite Scorebackground = new Sprite(0, 0, mScorebackground, this.getVertexBufferObjectManager());
-		Scorebackground.setHeight((float) (ScoreText.getHeight()+40));
-		Scorebackground.setWidth((float) (ScoreText.getWidth()+40));
-		Scorebackground.setY(CAMERA_HEIGHT-Scorebackground.getHeight());
-		ScoreText.setY(Scorebackground.getY()+20);
-		this.mScene.attachChild(Scorebackground);
-		mScene.attachChild(ScoreText);
-		ScoreText.setColor(1,0,0);
 
 		//timertex
 		TimerText= new Text(20,20, this.mFont, "Time: 120", "Time: 000".length(), this.getVertexBufferObjectManager());
@@ -292,20 +173,12 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 		gameoverfadered = new Sprite(0, 0, mGameOverFadeTextureRegion, this.getVertexBufferObjectManager());
 		gameoverfadered.setAlpha(0);
 		//return
+
+		GameLifeCycleCalllbackManager.getInstance().onCreateScene();
 		return this.mScene;
 	}
 
 	public boolean onKeyDown(final int pKeyCode, final KeyEvent pEvent) {
-		if(pKeyCode == KeyEvent.KEYCODE_MENU && pEvent.getAction() == KeyEvent.ACTION_DOWN) {
-			if(this.mScene.hasChildScene()) {
-				/* Remove the menu and reset it. */
-				this.mMenuScene.back();
-			} else {
-				/* Attach the menu. */
-				this.mScene.setChildScene(this.mMenuScene, false, true, true);
-			}
-			return true;
-		}
 		if(pKeyCode == KeyEvent.KEYCODE_BACK && pEvent.getAction() == KeyEvent.ACTION_DOWN) {
 			Intent intent = new Intent(GameActivity.this, MainMenuActivity.class);
 			startActivity(intent);
@@ -313,32 +186,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 			return true;
 		}
 		return super.onKeyDown(pKeyCode, pEvent);
-	}
-
-	public boolean onMenuItemClicked(final MenuScene pMenuScene, final IMenuItem pMenuItem, final float pMenuItemLocalX, final float pMenuItemLocalY) {
-		switch(pMenuItem.getID()) {
-			case MENU_QUIT:
-				Intent intent = new Intent(GameActivity.this, MainMenuActivity.class);
-				startActivity(intent);
-				finish();
-				return true;
-			default:
-				return false;
-		}
-	}
-
-	protected void createMenuScene() {
-		this.mMenuScene = new MenuScene(this.camera);
-
-		final SpriteMenuItem quitMenuItem = new SpriteMenuItem(MENU_QUIT, this.mMenuQuitTextureRegion, this.getVertexBufferObjectManager());
-		quitMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
-		this.mMenuScene.addMenuItem(quitMenuItem);
-
-		this.mMenuScene.buildAnimations();
-
-		this.mMenuScene.setBackgroundEnabled(false);
-
-		this.mMenuScene.setOnMenuItemClickListener(this);
 	}
 
 	@Override
@@ -723,7 +570,4 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 
 		return Countdown;
 	}
-	// ===========================================================
-	// Inner and Anonymous Classes
-	// ===========================================================
 }

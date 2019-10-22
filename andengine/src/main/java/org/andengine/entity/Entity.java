@@ -14,7 +14,7 @@ import org.andengine.util.Constants;
 import org.andengine.util.adt.list.SmartList;
 import org.andengine.util.adt.transformation.Transformation;
 import org.andengine.util.call.ParameterCallable;
-import org.andengine.util.color.Color;
+import org.andengine.util.color.AndengineColor;
 
 
 /**
@@ -66,7 +66,7 @@ public class Entity implements IEntity {
 	private EntityModifierList mEntityModifiers;
 	private UpdateHandlerList mUpdateHandlers;
 
-	protected Color mColor = new Color(1, 1, 1, 1);
+	protected AndengineColor mAndengineColor = new AndengineColor(1, 1, 1, 1);
 
 	protected float mX;
 	protected float mY;
@@ -487,32 +487,32 @@ public class Entity implements IEntity {
 
 	@Override
 	public float getRed() {
-		return this.mColor.getRed();
+		return this.mAndengineColor.getRed();
 	}
 
 	@Override
 	public float getGreen() {
-		return this.mColor.getGreen();
+		return this.mAndengineColor.getGreen();
 	}
 
 	@Override
 	public float getBlue() {
-		return this.mColor.getBlue();
+		return this.mAndengineColor.getBlue();
 	}
 
 	@Override
 	public float getAlpha() {
-		return this.mColor.getAlpha();
+		return this.mAndengineColor.getAlpha();
 	}
 
 	@Override
-	public Color getColor() {
-		return this.mColor;
+	public AndengineColor getColor() {
+		return this.mAndengineColor;
 	}
 
 	@Override
-	public void setColor(final Color pColor) {
-		this.mColor.set(pColor);
+	public void setColor(final AndengineColor pAndengineColor) {
+		this.mAndengineColor.set(pAndengineColor);
 
 		this.onUpdateColor();
 	}
@@ -522,7 +522,7 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public void setRed(final float pRed) {
-		if(this.mColor.setRedChecking(pRed)) {
+		if(this.mAndengineColor.setRedChecking(pRed)) {
 			this.onUpdateColor();
 		}
 	}
@@ -532,7 +532,7 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public void setGreen(final float pGreen) {
-		if(this.mColor.setGreenChecking(pGreen)) {
+		if(this.mAndengineColor.setGreenChecking(pGreen)) {
 			this.onUpdateColor();
 		}
 	}
@@ -542,7 +542,7 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public void setBlue(final float pBlue) {
-		if(this.mColor.setBlueChecking(pBlue)) {
+		if(this.mAndengineColor.setBlueChecking(pBlue)) {
 			this.onUpdateColor();
 		}
 	}
@@ -552,7 +552,7 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public void setAlpha(final float pAlpha) {
-		if(this.mColor.setAlphaChecking(pAlpha)) {
+		if(this.mAndengineColor.setAlphaChecking(pAlpha)) {
 			this.onUpdateColor();
 		}
 	}
@@ -564,7 +564,7 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue) {
-		if(this.mColor.setChecking(pRed, pGreen, pBlue)) { // TODO Is this check worth it?
+		if(this.mAndengineColor.setChecking(pRed, pGreen, pBlue)) { // TODO Is this check worth it?
 			this.onUpdateColor();
 		}
 	}
@@ -577,7 +577,7 @@ public class Entity implements IEntity {
 	 */
 	@Override
 	public void setColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		if(this.mColor.setChecking(pRed, pGreen, pBlue, pAlpha)) { // TODO Is this check worth it?
+		if(this.mAndengineColor.setChecking(pRed, pGreen, pBlue, pAlpha)) { // TODO Is this check worth it?
 			this.onUpdateColor();
 		}
 	}
@@ -1182,7 +1182,7 @@ public class Entity implements IEntity {
 		this.mSkewX = 0;
 		this.mSkewY = 0;
 
-		this.mColor.reset();
+		this.mAndengineColor.reset();
 
 		if(this.mEntityModifiers != null) {
 			this.mEntityModifiers.reset();

@@ -58,32 +58,32 @@ public class ColorUtils {
 	 * @param pSaturation [0...1]
 	 * @param pValue [0...1]
 	 */
-	public static final Color convertHSVToColor(final float pHue, final float pSaturation, final float pValue) {
+	public static final AndengineColor convertHSVToColor(final float pHue, final float pSaturation, final float pValue) {
 		return ColorUtils.convertARGBPackedIntToColor(ColorUtils.convertHSVToARGBPackedInt(pHue, pSaturation, pValue));
 	}
 
 
-	public static Color convertARGBPackedIntToColor(final int pARGBPackedInt) {
+	public static AndengineColor convertARGBPackedIntToColor(final int pARGBPackedInt) {
 		final float alpha = ColorUtils.extractAlphaFromARGBPackedInt(pARGBPackedInt);
 		final float red = ColorUtils.extractRedFromARGBPackedInt(pARGBPackedInt);
 		final float green = ColorUtils.extractGreenFromARGBPackedInt(pARGBPackedInt);
 		final float blue = ColorUtils.extractBlueFromARGBPackedInt(pARGBPackedInt);
 
-		return new Color(red, green, blue, alpha);
+		return new AndengineColor(red, green, blue, alpha);
 	}
 
-	public static Color convertABGRPackedIntToColor(final int pABGRPackedInt) {
+	public static AndengineColor convertABGRPackedIntToColor(final int pABGRPackedInt) {
 		final float alpha = ColorUtils.extractAlphaFromABGRPackedInt(pABGRPackedInt);
 		final float blue = ColorUtils.extractBlueFromABGRPackedInt(pABGRPackedInt);
 		final float green = ColorUtils.extractGreenFromABGRPackedInt(pABGRPackedInt);
 		final float red = ColorUtils.extractRedFromABGRPackedInt(pABGRPackedInt);
 
-		return new Color(red, green, blue, alpha);
+		return new AndengineColor(red, green, blue, alpha);
 	}
 
 
 	public static final int convertRGBAToARGBPackedInt(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		return ((int)(255 * pAlpha) << Color.ARGB_PACKED_ALPHA_SHIFT) | ((int)(255 * pRed) << Color.ARGB_PACKED_RED_SHIFT) | ((int)(255 * pGreen) << Color.ARGB_PACKED_GREEN_SHIFT) | ((int)(255 * pBlue) << Color.ARGB_PACKED_BLUE_SHIFT);
+		return ((int)(255 * pAlpha) << AndengineColor.ARGB_PACKED_ALPHA_SHIFT) | ((int)(255 * pRed) << AndengineColor.ARGB_PACKED_RED_SHIFT) | ((int)(255 * pGreen) << AndengineColor.ARGB_PACKED_GREEN_SHIFT) | ((int)(255 * pBlue) << AndengineColor.ARGB_PACKED_BLUE_SHIFT);
 	}
 
 	public static final float convertRGBAToARGBPackedFloat(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
@@ -91,7 +91,7 @@ public class ColorUtils {
 	}
 
 	public static final int convertRGBAToABGRPackedInt(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
-		return ((int)(255 * pAlpha) << Color.ABGR_PACKED_ALPHA_SHIFT) | ((int)(255 * pBlue) << Color.ABGR_PACKED_BLUE_SHIFT) | ((int)(255 * pGreen) << Color.ABGR_PACKED_GREEN_SHIFT) | ((int)(255 * pRed) << Color.ABGR_PACKED_RED_SHIFT);
+		return ((int)(255 * pAlpha) << AndengineColor.ABGR_PACKED_ALPHA_SHIFT) | ((int)(255 * pBlue) << AndengineColor.ABGR_PACKED_BLUE_SHIFT) | ((int)(255 * pGreen) << AndengineColor.ABGR_PACKED_GREEN_SHIFT) | ((int)(255 * pRed) << AndengineColor.ABGR_PACKED_RED_SHIFT);
 	}
 
 	public static final float convertRGBAToABGRPackedFloat(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
@@ -105,36 +105,36 @@ public class ColorUtils {
 
 
 	public static float extractRedFromABGRPackedInt(final int pABGRPackedInt) {
-		return ((pABGRPackedInt >> Color.ABGR_PACKED_RED_SHIFT) & 0xFF) / 255.0f;
+		return ((pABGRPackedInt >> AndengineColor.ABGR_PACKED_RED_SHIFT) & 0xFF) / 255.0f;
 	}
 
 	public static float extractGreenFromABGRPackedInt(final int pABGRPackedInt) {
-		return ((pABGRPackedInt >> Color.ABGR_PACKED_GREEN_SHIFT) & 0xFF) / 255.0f;
+		return ((pABGRPackedInt >> AndengineColor.ABGR_PACKED_GREEN_SHIFT) & 0xFF) / 255.0f;
 	}
 
 	public static float extractBlueFromABGRPackedInt(final int pABGRPackedInt) {
-		return ((pABGRPackedInt >> Color.ABGR_PACKED_BLUE_SHIFT) & 0xFF) / 255.0f;
+		return ((pABGRPackedInt >> AndengineColor.ABGR_PACKED_BLUE_SHIFT) & 0xFF) / 255.0f;
 	}
 
 	public static float extractAlphaFromABGRPackedInt(final int pABGRPackedInt) {
-		return ((pABGRPackedInt >> Color.ABGR_PACKED_ALPHA_SHIFT) & 0xFF) / 255.0f;
+		return ((pABGRPackedInt >> AndengineColor.ABGR_PACKED_ALPHA_SHIFT) & 0xFF) / 255.0f;
 	}
 
 
 	public static float extractBlueFromARGBPackedInt(final int pARGBPackedInt) {
-		return ((pARGBPackedInt >> Color.ARGB_PACKED_BLUE_SHIFT) & 0xFF) / 255.0f;
+		return ((pARGBPackedInt >> AndengineColor.ARGB_PACKED_BLUE_SHIFT) & 0xFF) / 255.0f;
 	}
 
 	public static float extractGreenFromARGBPackedInt(final int pARGBPackedInt) {
-		return ((pARGBPackedInt >> Color.ARGB_PACKED_GREEN_SHIFT) & 0xFF) / 255.0f;
+		return ((pARGBPackedInt >> AndengineColor.ARGB_PACKED_GREEN_SHIFT) & 0xFF) / 255.0f;
 	}
 
 	public static float extractRedFromARGBPackedInt(final int pARGBPackedInt) {
-		return ((pARGBPackedInt >> Color.ARGB_PACKED_RED_SHIFT) & 0xFF) / 255.0f;
+		return ((pARGBPackedInt >> AndengineColor.ARGB_PACKED_RED_SHIFT) & 0xFF) / 255.0f;
 	}
 
 	public static float extractAlphaFromARGBPackedInt(final int pARGBPackedInt) {
-		return ((pARGBPackedInt >> Color.ARGB_PACKED_ALPHA_SHIFT) & 0xFF) / 255.0f;
+		return ((pARGBPackedInt >> AndengineColor.ARGB_PACKED_ALPHA_SHIFT) & 0xFF) / 255.0f;
 	}
 
 	// ===========================================================

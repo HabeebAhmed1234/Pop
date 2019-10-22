@@ -6,7 +6,7 @@ package org.andengine.util.color;
  * @author Nicolas Gramlich <ngramlich@zynga.com>
  * @since 02:23:08 - 12.08.2011
  */
-public class Color {
+public class AndengineColor {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -31,45 +31,45 @@ public class Color {
 	public static final int ARGB_PACKED_RED_CLEAR = 0XFF00FFFF;
 	public static final int ARGB_PACKED_ALPHA_CLEAR = 0X00FFFFFF;
 
-	public static final Color WHITE = new Color(1, 1, 1, 1);
-	public static final Color BLACK = new Color(0, 0, 0, 1);
-	public static final Color RED = new Color(1, 0, 0, 1);
-	public static final Color YELLOW = new Color(1, 1, 0, 1);
-	public static final Color GREEN = new Color(0, 1, 0, 1);
-	public static final Color CYAN = new Color(0, 1, 1, 1);
-	public static final Color BLUE = new Color(0, 0, 1, 1);
-	public static final Color PINK = new Color(1, 0, 1, 1);
-	public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
+	public static final AndengineColor WHITE = new AndengineColor(1, 1, 1, 1);
+	public static final AndengineColor BLACK = new AndengineColor(0, 0, 0, 1);
+	public static final AndengineColor RED = new AndengineColor(1, 0, 0, 1);
+	public static final AndengineColor YELLOW = new AndengineColor(1, 1, 0, 1);
+	public static final AndengineColor GREEN = new AndengineColor(0, 1, 0, 1);
+	public static final AndengineColor CYAN = new AndengineColor(0, 1, 1, 1);
+	public static final AndengineColor BLUE = new AndengineColor(0, 0, 1, 1);
+	public static final AndengineColor PINK = new AndengineColor(1, 0, 1, 1);
+	public static final AndengineColor TRANSPARENT = new AndengineColor(0, 0, 0, 0);
 
-	public static final int WHITE_ABGR_PACKED_INT = Color.WHITE.getABGRPackedInt();
-	public static final int BLACK_ABGR_PACKED_INT = Color.BLACK.getABGRPackedInt();
-	public static final int RED_ABGR_PACKED_INT = Color.RED.getABGRPackedInt();
-	public static final int YELLOW_ABGR_PACKED_INT = Color.YELLOW.getABGRPackedInt();
-	public static final int GREEN_ABGR_PACKED_INT = Color.GREEN.getABGRPackedInt();
-	public static final int CYAN_ABGR_PACKED_INT = Color.CYAN.getABGRPackedInt();
-	public static final int BLUE_ABGR_PACKED_INT = Color.BLUE.getABGRPackedInt();
-	public static final int PINK_ABGR_PACKED_INT = Color.PINK.getABGRPackedInt();
-	public static final int TRANSPARENT_ABGR_PACKED_INT = Color.TRANSPARENT.getABGRPackedInt();
+	public static final int WHITE_ABGR_PACKED_INT = AndengineColor.WHITE.getABGRPackedInt();
+	public static final int BLACK_ABGR_PACKED_INT = AndengineColor.BLACK.getABGRPackedInt();
+	public static final int RED_ABGR_PACKED_INT = AndengineColor.RED.getABGRPackedInt();
+	public static final int YELLOW_ABGR_PACKED_INT = AndengineColor.YELLOW.getABGRPackedInt();
+	public static final int GREEN_ABGR_PACKED_INT = AndengineColor.GREEN.getABGRPackedInt();
+	public static final int CYAN_ABGR_PACKED_INT = AndengineColor.CYAN.getABGRPackedInt();
+	public static final int BLUE_ABGR_PACKED_INT = AndengineColor.BLUE.getABGRPackedInt();
+	public static final int PINK_ABGR_PACKED_INT = AndengineColor.PINK.getABGRPackedInt();
+	public static final int TRANSPARENT_ABGR_PACKED_INT = AndengineColor.TRANSPARENT.getABGRPackedInt();
 
-	public static final float WHITE_ABGR_PACKED_FLOAT = Color.WHITE.getABGRPackedFloat();
-	public static final float BLACK_ABGR_PACKED_FLOAT = Color.BLACK.getABGRPackedFloat();
-	public static final float RED_ABGR_PACKED_FLOAT = Color.RED.getABGRPackedFloat();
-	public static final float YELLOW_ABGR_PACKED_FLOAT = Color.YELLOW.getABGRPackedFloat();
-	public static final float GREEN_ABGR_PACKED_FLOAT = Color.GREEN.getABGRPackedFloat();
-	public static final float CYAN_ABGR_PACKED_FLOAT = Color.CYAN.getABGRPackedFloat();
-	public static final float BLUE_ABGR_PACKED_FLOAT = Color.BLUE.getABGRPackedFloat();
-	public static final float PINK_ABGR_PACKED_FLOAT = Color.PINK.getABGRPackedFloat();
-	public static final float TRANSPARENT_ABGR_PACKED_FLOAT = Color.TRANSPARENT.getABGRPackedFloat();
+	public static final float WHITE_ABGR_PACKED_FLOAT = AndengineColor.WHITE.getABGRPackedFloat();
+	public static final float BLACK_ABGR_PACKED_FLOAT = AndengineColor.BLACK.getABGRPackedFloat();
+	public static final float RED_ABGR_PACKED_FLOAT = AndengineColor.RED.getABGRPackedFloat();
+	public static final float YELLOW_ABGR_PACKED_FLOAT = AndengineColor.YELLOW.getABGRPackedFloat();
+	public static final float GREEN_ABGR_PACKED_FLOAT = AndengineColor.GREEN.getABGRPackedFloat();
+	public static final float CYAN_ABGR_PACKED_FLOAT = AndengineColor.CYAN.getABGRPackedFloat();
+	public static final float BLUE_ABGR_PACKED_FLOAT = AndengineColor.BLUE.getABGRPackedFloat();
+	public static final float PINK_ABGR_PACKED_FLOAT = AndengineColor.PINK.getABGRPackedFloat();
+	public static final float TRANSPARENT_ABGR_PACKED_FLOAT = AndengineColor.TRANSPARENT.getABGRPackedFloat();
 	
-	public static final int WHITE_ARGB_PACKED_INT = Color.WHITE.getARGBPackedInt();
-	public static final int BLACK_ARGB_PACKED_INT = Color.BLACK.getARGBPackedInt();
-	public static final int RED_ARGB_PACKED_INT = Color.RED.getARGBPackedInt();
-	public static final int YELLOW_ARGB_PACKED_INT = Color.YELLOW.getARGBPackedInt();
-	public static final int GREEN_ARGB_PACKED_INT = Color.GREEN.getARGBPackedInt();
-	public static final int CYAN_ARGB_PACKED_INT = Color.CYAN.getARGBPackedInt();
-	public static final int BLUE_ARGB_PACKED_INT = Color.BLUE.getARGBPackedInt();
-	public static final int PINK_ARGB_PACKED_INT = Color.PINK.getARGBPackedInt();
-	public static final int TRANSPARENT_ARGB_PACKED_INT = Color.TRANSPARENT.getARGBPackedInt();
+	public static final int WHITE_ARGB_PACKED_INT = AndengineColor.WHITE.getARGBPackedInt();
+	public static final int BLACK_ARGB_PACKED_INT = AndengineColor.BLACK.getARGBPackedInt();
+	public static final int RED_ARGB_PACKED_INT = AndengineColor.RED.getARGBPackedInt();
+	public static final int YELLOW_ARGB_PACKED_INT = AndengineColor.YELLOW.getARGBPackedInt();
+	public static final int GREEN_ARGB_PACKED_INT = AndengineColor.GREEN.getARGBPackedInt();
+	public static final int CYAN_ARGB_PACKED_INT = AndengineColor.CYAN.getARGBPackedInt();
+	public static final int BLUE_ARGB_PACKED_INT = AndengineColor.BLUE.getARGBPackedInt();
+	public static final int PINK_ARGB_PACKED_INT = AndengineColor.PINK.getARGBPackedInt();
+	public static final int TRANSPARENT_ARGB_PACKED_INT = AndengineColor.TRANSPARENT.getARGBPackedInt();
 
 	// ===========================================================
 	// Fields
@@ -87,15 +87,15 @@ public class Color {
 	// Constructors
 	// ===========================================================
 
-	public Color(final Color pColor) {
-		this.set(pColor);
+	public AndengineColor(final AndengineColor pAndengineColor) {
+		this.set(pAndengineColor);
 	}
 
-	public Color(final float pRed, final float pGreen, final float pBlue) {
+	public AndengineColor(final float pRed, final float pGreen, final float pBlue) {
 		this(pRed, pGreen, pBlue, 1);
 	}
 
-	public Color(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
+	public AndengineColor(final float pRed, final float pGreen, final float pBlue, final float pAlpha) {
 		this.set(pRed, pGreen, pBlue, pAlpha);
 	}
 
@@ -225,25 +225,25 @@ public class Color {
 		return false;
 	}
 
-	public final void set(final Color pColor) {
-		this.mRed = pColor.mRed;
-		this.mGreen = pColor.mGreen;
-		this.mBlue = pColor.mBlue;
-		this.mAlpha = pColor.mAlpha;
+	public final void set(final AndengineColor pAndengineColor) {
+		this.mRed = pAndengineColor.mRed;
+		this.mGreen = pAndengineColor.mGreen;
+		this.mBlue = pAndengineColor.mBlue;
+		this.mAlpha = pAndengineColor.mAlpha;
 
-		this.mABGRPackedInt = pColor.mABGRPackedInt;
-		this.mABGRPackedFloat = pColor.mABGRPackedFloat;
+		this.mABGRPackedInt = pAndengineColor.mABGRPackedInt;
+		this.mABGRPackedFloat = pAndengineColor.mABGRPackedFloat;
 	}
 
-	public final boolean setChecking(final Color pColor) {
-		if(this.mABGRPackedInt != pColor.mABGRPackedInt) {
-			this.mRed = pColor.mRed;
-			this.mGreen = pColor.mGreen;
-			this.mBlue = pColor.mBlue;
-			this.mAlpha = pColor.mAlpha;
+	public final boolean setChecking(final AndengineColor pAndengineColor) {
+		if(this.mABGRPackedInt != pAndengineColor.mABGRPackedInt) {
+			this.mRed = pAndengineColor.mRed;
+			this.mGreen = pAndengineColor.mGreen;
+			this.mBlue = pAndengineColor.mBlue;
+			this.mAlpha = pAndengineColor.mAlpha;
 
-			this.mABGRPackedInt = pColor.mABGRPackedInt;
-			this.mABGRPackedFloat = pColor.mABGRPackedFloat;
+			this.mABGRPackedInt = pAndengineColor.mABGRPackedInt;
+			this.mABGRPackedFloat = pAndengineColor.mABGRPackedFloat;
 			return true;
 		}
 		return false;
@@ -265,7 +265,7 @@ public class Color {
 	}
 
 	public final void reset() {
-		this.set(Color.WHITE);
+		this.set(AndengineColor.WHITE);
 	}
 
 	// ===========================================================
@@ -287,7 +287,7 @@ public class Color {
 			return false;
 		}
 
-		return this.equals((Color) pObject);
+		return this.equals((AndengineColor) pObject);
 	}
 
 	@Override
@@ -309,27 +309,27 @@ public class Color {
 	// Methods
 	// ===========================================================
 
-	public boolean equals(final Color pColor) {
-		return this.mABGRPackedInt == pColor.mABGRPackedInt;
+	public boolean equals(final AndengineColor pAndengineColor) {
+		return this.mABGRPackedInt == pAndengineColor.mABGRPackedInt;
 	}
 
 	private final void packABGRRed() {
-		this.mABGRPackedInt = (this.mABGRPackedInt & Color.ABGR_PACKED_RED_CLEAR) | ((int)(255 * this.mRed) << Color.ABGR_PACKED_RED_CLEAR);
+		this.mABGRPackedInt = (this.mABGRPackedInt & AndengineColor.ABGR_PACKED_RED_CLEAR) | ((int)(255 * this.mRed) << AndengineColor.ABGR_PACKED_RED_CLEAR);
 		this.mABGRPackedFloat = ColorUtils.convertPackedIntToPackedFloat(this.mABGRPackedInt);
 	}
 
 	private final void packABGRGreen() {
-		this.mABGRPackedInt = (this.mABGRPackedInt & Color.ABGR_PACKED_GREEN_CLEAR) | ((int)(255 * this.mGreen) << Color.ABGR_PACKED_GREEN_CLEAR);
+		this.mABGRPackedInt = (this.mABGRPackedInt & AndengineColor.ABGR_PACKED_GREEN_CLEAR) | ((int)(255 * this.mGreen) << AndengineColor.ABGR_PACKED_GREEN_CLEAR);
 		this.mABGRPackedFloat = ColorUtils.convertPackedIntToPackedFloat(this.mABGRPackedInt);
 	}
 
 	private final void packABGRBlue() {
-		this.mABGRPackedInt = (this.mABGRPackedInt & Color.ABGR_PACKED_BLUE_CLEAR) | ((int)(255 * this.mBlue) << Color.ABGR_PACKED_BLUE_CLEAR);
+		this.mABGRPackedInt = (this.mABGRPackedInt & AndengineColor.ABGR_PACKED_BLUE_CLEAR) | ((int)(255 * this.mBlue) << AndengineColor.ABGR_PACKED_BLUE_CLEAR);
 		this.mABGRPackedFloat = ColorUtils.convertPackedIntToPackedFloat(this.mABGRPackedInt);
 	}
 
 	private final void packABGRAlpha() {
-		this.mABGRPackedInt = (this.mABGRPackedInt & Color.ABGR_PACKED_ALPHA_CLEAR) | ((int)(255 * this.mAlpha) << Color.ABGR_PACKED_ALPHA_SHIFT);
+		this.mABGRPackedInt = (this.mABGRPackedInt & AndengineColor.ABGR_PACKED_ALPHA_CLEAR) | ((int)(255 * this.mAlpha) << AndengineColor.ABGR_PACKED_ALPHA_SHIFT);
 		this.mABGRPackedFloat = ColorUtils.convertPackedIntToPackedFloat(this.mABGRPackedInt);
 	}
 
@@ -338,11 +338,11 @@ public class Color {
 		this.mABGRPackedFloat = ColorUtils.convertPackedIntToPackedFloat(this.mABGRPackedInt);
 	}
 
-	public final void mix(final Color pColorA, final float pPercentageA, final Color pColorB, final float pPercentageB) {
-		final float red = (pColorA.mRed * pPercentageA) + (pColorB.mRed * pPercentageB);
-		final float green = (pColorA.mGreen * pPercentageA) + (pColorB.mGreen * pPercentageB);
-		final float blue = (pColorA.mBlue * pPercentageA) + (pColorB.mBlue * pPercentageB);
-		final float alpha = (pColorA.mAlpha * pPercentageA) + (pColorB.mAlpha * pPercentageB);
+	public final void mix(final AndengineColor pAndengineColorA, final float pPercentageA, final AndengineColor pAndengineColorB, final float pPercentageB) {
+		final float red = (pAndengineColorA.mRed * pPercentageA) + (pAndengineColorB.mRed * pPercentageB);
+		final float green = (pAndengineColorA.mGreen * pPercentageA) + (pAndengineColorB.mGreen * pPercentageB);
+		final float blue = (pAndengineColorA.mBlue * pPercentageA) + (pAndengineColorB.mBlue * pPercentageB);
+		final float alpha = (pAndengineColorA.mAlpha * pPercentageA) + (pAndengineColorB.mAlpha * pPercentageB);
 
 		this.set(red, green, blue, alpha);
 	}

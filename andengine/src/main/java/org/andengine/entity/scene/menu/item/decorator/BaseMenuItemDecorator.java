@@ -19,7 +19,7 @@ import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.adt.transformation.Transformation;
-import org.andengine.util.color.Color;
+import org.andengine.util.color.AndengineColor;
 
 /**
  * I HATE THIS CLASS!
@@ -194,13 +194,13 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
-	public Color getColor() {
+	public AndengineColor getColor() {
 		return this.mMenuItem.getColor();
 	}
 
 	@Override
-	public void setColor(final Color pColor) {
-		this.mMenuItem.setColor(pColor);
+	public void setColor(final AndengineColor pAndengineColor) {
+		this.mMenuItem.setColor(pAndengineColor);
 	}
 
 	@Override
