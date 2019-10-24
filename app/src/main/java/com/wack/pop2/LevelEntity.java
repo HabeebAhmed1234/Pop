@@ -1,8 +1,5 @@
 package com.wack.pop2;
 
-import com.wack.pop2.gamesingletons.PhysicsWorldSingleton;
-import com.wack.pop2.gamesingletons.SceneSingleton;
-import com.wack.pop2.gamesingletons.VertBuffSingleton;
 import com.wack.pop2.physics.PhysicsFactory;
 
 import org.andengine.entity.primitive.Rectangle;
@@ -20,10 +17,11 @@ public class LevelEntity extends BaseEntity {
     private final int levelWidthPx;
     private final int levelHeightPx;
 
-    public LevelEntity(int levelWidthPx, int levelHeightPx, GameResources gameResources) {
+    public LevelEntity(GameResources gameResources) {
         super(gameResources);
-        this.levelWidthPx = levelWidthPx;
-        this.levelHeightPx = levelHeightPx;
+        ScreenUtils.ScreenSize size = ScreenUtils.getSreenSize();
+        this.levelWidthPx = size.width;
+        this.levelHeightPx = size.height;
     }
 
     @Override
@@ -32,19 +30,19 @@ public class LevelEntity extends BaseEntity {
     }
 
     private void createLevel() {
-        final Rectangle left = new Rectangle(0, 0, 2, levelHeightPx, VertBuffSingleton.get());
-        final Rectangle right = new Rectangle(levelWidthPx - 2, 0, 2, levelHeightPx, VertBuffSingleton.get());
+        final Rectangle left = new Rectangle(0, 0, 2, levelHeightPx, vertexBufferObjectManager);
+        final Rectangle right = new Rectangle(levelWidthPx - 2, 0, 2, levelHeightPx, vertexBufferObjectManager);
         left.setAlpha(0);
         right.setAlpha(0);
         final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0, 0.5f, 0.5f);
 
-        PhysicsFactory.createBoxBody(PhysicsWorldSingleton.instanceOf(), left, BodyType.STATIC, wallFixtureDef);
-        PhysicsFactory.createBoxBody(PhysicsWorldSingleton.instanceOf(), right, BodyType.STATIC, wallFixtureDef);
+        PhysicsFactory.createBoxBody(physicsWorld, left, BodyType.STATIC, wallFixtureDef);
+        PhysicsFactory.createBoxBody(physicsWorld, right, BodyType.STATIC, wallFixtureDef);
 
-        SceneSingleton.instanceOf().attachChild(left);
-        SceneSingleton.instanceOf().attachChild(right);
+        scene.attachChild(left);
+        scene.attachChild(right);
 
         // set background color
-        SceneSingleton.instanceOf().setBackground(new Background(AndengineColor.WHITE));
+        scene.setBackground(new Background(AndengineColor.WHITE));
     }
 }

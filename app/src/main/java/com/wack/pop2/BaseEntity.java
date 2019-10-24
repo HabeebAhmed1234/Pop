@@ -1,9 +1,9 @@
 package com.wack.pop2;
 
 import com.wack.pop2.physics.PhysicsWorld;
-import com.wack.pop2.resources.textures.GameTexturesManager;
 
 import org.andengine.entity.scene.Scene;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 /**
  * This class represents the base functionality of all entities within the game.
@@ -17,12 +17,12 @@ public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCa
 
     protected Scene scene;
     protected PhysicsWorld physicsWorld;
-    protected GameTexturesManager gameTexturesManager;
+    protected VertexBufferObjectManager vertexBufferObjectManager;
 
     public BaseEntity(GameResources gameResources) {
         this.scene = gameResources.scene;
         this.physicsWorld = gameResources.physicsWorld;
-        this.gameTexturesManager = gameResources.gameTexturesManager
+        this.vertexBufferObjectManager = gameResources.vertexBufferObjectManager;
         GameLifeCycleCalllbackManager.getInstance().registerGameEntity(this);
     }
 

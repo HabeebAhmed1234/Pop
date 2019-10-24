@@ -31,6 +31,13 @@ public class GameFontsManager extends BaseEntity {
         this.textureManager = textureManager;
     }
 
+    public Font getFont(FontId fontId) {
+        if (!mFonts.containsKey(fontId)) {
+            throw new IllegalArgumentException("Font " + fontId + " was never initialized");
+        }
+        return mFonts.get(fontId);
+    }
+
     @Override
     public void onCreateResources() {
         mFonts.put(

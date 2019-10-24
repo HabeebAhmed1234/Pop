@@ -53,4 +53,8 @@ public class GameSoundsManager extends BaseEntity {
             Debug.e(e);
         }
     }
+
+    public Sound getSound(SoundId soundId) {
+        return mSounds.get(soundId);
+    }
 }

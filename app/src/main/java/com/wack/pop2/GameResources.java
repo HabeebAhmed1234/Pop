@@ -1,9 +1,13 @@
 package com.wack.pop2;
 
+import android.hardware.SensorManager;
+
 import com.wack.pop2.physics.PhysicsWorld;
-import com.wack.pop2.resources.textures.GameTexturesManager;
 
 import org.andengine.entity.scene.Scene;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.andengine.ui.activity.BaseGameActivity;
+import org.jbox2d.common.Vec2;
 
 /**
  * Contains all of the resources required to interface with the andengine and physics api.
@@ -13,11 +17,22 @@ public class GameResources {
 
     public final Scene scene;
     public final PhysicsWorld physicsWorld;
-    public final GameTexturesManager gameTexturesManager;
+    public final VertexBufferObjectManager vertexBufferObjectManager;
 
-    public GameResources(Scene scene, PhysicsWorld physicsWorld, GameTexturesManager gameTexturesManager) {
+    public GameResources(Scene scene, PhysicsWorld physicsWorld, VertexBufferObjectManager vertexBufferObjectManager) {
         this.scene = scene;
         this.physicsWorld = physicsWorld;
-        this.gameTexturesManager = gameTexturesManager;
+        this.vertexBufferObjectManager = vertexBufferObjectManager;
+    }
+
+    /**
+     * Initializes the game resources given their dependencies and returns a new instance.
+     * @return
+     */
+    public static GameResources createNew(BaseGameActivity baseGameActivity) {
+        Scene scene = new Scene();
+        PhysicsWorld physicsWorld = new PhysicsWorld(new Vec2(0, SensorManager.GRAVITY_EARTH), false);
+        scene.registerUpdateHandler(physicsWorld);
+        return new GameResources(scene, physicsWorld, baseGameActivity.getVertexBufferObjectManager());
     }
 }

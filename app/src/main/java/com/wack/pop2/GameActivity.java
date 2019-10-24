@@ -1,18 +1,16 @@
 package com.wack.pop2;
 
 import android.content.Intent;
-import android.graphics.Point;
 import android.opengl.GLES20;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.KeyEvent;
-import android.widget.Toast;
 
-import com.wack.pop2.gamesingletons.SceneSingleton;
-import com.wack.pop2.gamesingletons.VertBuffSingleton;
 import com.wack.pop2.physics.PhysicsConnector;
 import com.wack.pop2.physics.PhysicsFactory;
 import com.wack.pop2.physics.util.Vec2Pool;
+import com.wack.pop2.resources.fonts.GameFontsManager;
+import com.wack.pop2.resources.sounds.GameSoundsManager;
+import com.wack.pop2.resources.textures.GameTexturesManager;
 
 import org.andengine.audio.sound.Sound;
 import org.andengine.engine.handler.timer.ITimerCallback;
@@ -35,10 +33,7 @@ import org.andengine.entity.util.FPSLogger;
 import org.andengine.input.sensor.acceleration.AccelerationData;
 import org.andengine.input.sensor.acceleration.IAccelerationListener;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.font.Font;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -47,81 +42,38 @@ import org.jbox2d.dynamics.FixtureDef;
 
 import java.util.LinkedList;
 
-public class GameActivity extends SimpleBaseGameActivity implements IAccelerationListener, IOnSceneTouchListener, IOnAreaTouchListener {
+public class GameActivity extends SimpleBaseGameActivity implements IAccelerationListener, IOnAreaTouchListener {
 
-	private BitmapTextureAtlas mBitmapTextureAtlas;
-
-	private BitmapTextureAtlas mExplosionBitmapTextureAtlas;
-
-	private ITextureRegion mRedBallTextureRegion;
-	private ITextureRegion mBlueBallTextureRegion;
-	private ITextureRegion mGreenBallTextureRegion;
-	private ITextureRegion mSkullBallTextureRegion;
-	private ITextureRegion mScorebackground;
-
-	private TiledTextureRegion mExplosionTextureRegion;
-	private ITextureRegion mGameOverFadeTextureRegion;
-	private Sprite gameoverfadered;
-
-	private boolean isgameover=false;
-
-	private LevelEntity mLevelEntity;
-
-	private float mGravityX;
-	private float mGravityY;
-
-	private int CAMERA_WIDTH;
-	private int CAMERA_HEIGHT;
 	private ShakeCamera camera;
 
-	private int whichface=0;
+	private LevelEntity mLevelEntity;
+	private HudEntity mHudEntity;
 
+
+	private Sprite gameoverfadered;
+	private boolean isgameover=false;
+	private int whichface=0;
 	private float difficulty=1f;
 	private float maxdifficulty=5;
-
-	private Font mFont;
-	private Font mScoreTickerFont;
-	private Font mCountdownFont;
-
 	private int score=0;
-	private Text ScoreText;
-
 	private int Timer=120;
 	private Text TimerText;
-
 	private LinkedList<Sprite> faces=new LinkedList<Sprite>();
 
 
-	private Sound mPop1Sound;
-	private Sound mPop2Sound;
-	private Sound mPop3Sound;
-	private Sound mPop4Sound;
-	private Sound mPop5Sound;
-
-	private Sound mExplosionSound;
-
 	@Override
 	public EngineOptions onCreateEngineOptions() {
-		Toast.makeText(this, "! POP THE BUBBLES !", Toast.LENGTH_SHORT).show();
+		ScreenUtils.init(this);
 
-		if (Integer.valueOf(android.os.Build.VERSION.SDK_INT) < 13 ) {
-			Display display = getWindowManager().getDefaultDisplay();
-			CAMERA_WIDTH = display.getWidth();
-			CAMERA_HEIGHT = display.getHeight();
-		} else {
-			Display display = getWindowManager().getDefaultDisplay();
-			Point size = new Point();
-			display.getSize(size);
-			CAMERA_WIDTH = size.x;
-			CAMERA_HEIGHT = size.y;
-		}
-		mLevelEntity = new LevelEntity(CAMERA_WIDTH, CAMERA_HEIGHT)
-		camera = new ShakeCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-
-		final EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.camera);
+		ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
+		camera = new ShakeCamera(0, 0, screenSize.width, screenSize.height);
+		final EngineOptions engineOptions = new EngineOptions(
+				true,
+				ScreenOrientation.PORTRAIT_FIXED,
+				new RatioResolutionPolicy(screenSize.width, screenSize.height),
+				this.camera);
 		engineOptions.getTouchOptions().setNeedsMultiTouch(true);
 		engineOptions.getAudioOptions().setNeedsSound(true);
-
 		return engineOptions;
 	}
 
@@ -133,51 +85,32 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 
 	@Override
 	public Scene onCreateScene() {
+		// Andengine setup code
 		this.mEngine.registerUpdateHandler(new FPSLogger());
 
-		VertBuffSingleton.init(this);
-		Scene scene = SceneSingleton.instanceOf();
-		scene.setOnSceneTouchListener(this);
+		// Initialize game resources
+		GameResources gameResources = GameResources.createNew(this);
 
-		mLevelEntity.createLevel();
+		// Initialize game resource managers
+		GameFontsManager gameFontsManager = new GameFontsManager(getFontManager(), getTextureManager(), gameResources);
+		GameTexturesManager gameTexturesManager = new GameTexturesManager(this, getTextureManager(), gameResources);
+		GameSoundsManager gameSoundsManager = new GameSoundsManager(this, getSoundManager(), gameResources);
+
+		// Create game entities
+		mLevelEntity = new LevelEntity(gameResources);
+		mHudEntity = new HudEntity(gameFontsManager, gameTexturesManager, gameResources);
+
 
 		//update handlers
 		scene.setOnAreaTouchListener(this);
-
 		createitemstimehandler();
 		checkforlossandtimertimehandler();
-		//set gravity
-		setGravity();
-		//////////text
-
-
-		//timertex
-		TimerText= new Text(20,20, this.mFont, "Time: 120", "Time: 000".length(), this.getVertexBufferObjectManager());
-		//set score background
-		Sprite TimerTextBackground = new Sprite(0, 0, mScorebackground, this.getVertexBufferObjectManager());
-		TimerTextBackground.setHeight((float) (TimerText.getHeight()+40));
-		TimerTextBackground.setWidth((float) (TimerText.getWidth()+40));
-		TimerTextBackground.setY(0);
-		TimerText.setY(TimerTextBackground.getY()+20);
-		this.mScene.attachChild(TimerTextBackground);
-		mScene.attachChild(TimerText);
-		TimerText.setColor(1,0,0);
-		//get difficulty
-		Bundle b = getIntent().getExtras();
-		if(b!=null)
-		{
-			difficulty = b.getInt("Difficulty", 1);
-		}
-		/////////
-		//gameoverstuff
-		gameoverfadered = new Sprite(0, 0, mGameOverFadeTextureRegion, this.getVertexBufferObjectManager());
-		gameoverfadered.setAlpha(0);
-		//return
 
 		GameLifeCycleCalllbackManager.getInstance().onCreateScene();
-		return this.mScene;
+		return gameResources.scene;
 	}
 
+	@Override
 	public boolean onKeyDown(final int pKeyCode, final KeyEvent pEvent) {
 		if(pKeyCode == KeyEvent.KEYCODE_BACK && pEvent.getAction() == KeyEvent.ACTION_DOWN) {
 			Intent intent = new Intent(GameActivity.this, MainMenuActivity.class);
@@ -222,29 +155,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 		return false;
 	}
 
-	public void gameoversequence(float x, float y, float facewidth, float faceheight, float scale)
-	{
-
-		final AnimatedSprite explosion = new AnimatedSprite(x, y, this.mExplosionTextureRegion, this.getVertexBufferObjectManager());
-		explosion.setX(x+(facewidth/2-explosion.getWidth()/2));
-		explosion.setY(y+(faceheight/2-explosion.getHeight()/2));
-		explosion.setScale((float) (scale*0.6));
-		explosion.animate(80,0);
-		mScene.attachChild(explosion);
-		mExplosionSound.play();
-		gameoverfadered.setWidth(CAMERA_WIDTH);
-		gameoverfadered.setHeight(CAMERA_HEIGHT);
-		gameoverfadered.registerEntityModifier(
-				new SequenceEntityModifier(
-						new ParallelEntityModifier(
-								new AlphaModifier(3, 0, 1)
-						)
-				)
-		);
-		gameoverfadered.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
-		mScene.attachChild(gameoverfadered);
-		this.camera.shake(3, 4);
-	}
 
 	public Sound whichsound()
 	{
@@ -271,15 +181,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 			sound=mPop5Sound;
 		}
 		return sound;
-	}
-
-	private void setGravity()
-	{
-		this.mGravityX = 0;
-		this.mGravityY = 8;
-		final Vec2 gravity = Vec2Pool.obtain(this.mGravityX, this.mGravityY);
-		this.mPhysicsWorld.setGravity(gravity);
-		Vec2Pool.recycle(gravity);
 	}
 
 	@Override
