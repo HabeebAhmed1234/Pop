@@ -2,9 +2,9 @@ package com.wack.pop2;
 
 import android.content.Intent;
 import android.opengl.GLES20;
-import android.os.Bundle;
 import android.view.KeyEvent;
 
+import com.wack.pop2.hudentities.ScoreHudEntity;
 import com.wack.pop2.physics.PhysicsConnector;
 import com.wack.pop2.physics.PhysicsFactory;
 import com.wack.pop2.physics.util.Vec2Pool;
@@ -23,10 +23,8 @@ import org.andengine.entity.modifier.ParallelEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.scene.IOnAreaTouchListener;
-import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.util.FPSLogger;
@@ -42,12 +40,12 @@ import org.jbox2d.dynamics.FixtureDef;
 
 import java.util.LinkedList;
 
-public class GameActivity extends SimpleBaseGameActivity implements IAccelerationListener, IOnAreaTouchListener {
+public class GameActivity extends SimpleBaseGameActivity implements IAccelerationListener, IOnAreaTouchListener, HostActivityInterface {
 
 	private ShakeCamera camera;
 
 	private LevelEntity mLevelEntity;
-	private HudEntity mHudEntity;
+	private ScoreHudEntity mScoreHudEntity;
 
 
 	private Sprite gameoverfadered;
@@ -89,7 +87,7 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 		this.mEngine.registerUpdateHandler(new FPSLogger());
 
 		// Initialize game resources
-		GameResources gameResources = GameResources.createNew(this);
+		GameResources gameResources = GameResources.createNew(this, this);
 
 		// Initialize game resource managers
 		GameFontsManager gameFontsManager = new GameFontsManager(getFontManager(), getTextureManager(), gameResources);
@@ -98,7 +96,7 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 
 		// Create game entities
 		mLevelEntity = new LevelEntity(gameResources);
-		mHudEntity = new HudEntity(gameFontsManager, gameTexturesManager, gameResources);
+		mScoreHudEntity = new ScoreHudEntity(gameFontsManager, gameTexturesManager, gameResources);
 
 
 		//update handlers
@@ -357,10 +355,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 
 					@Override
 					public void onTimePassed(TimerHandler pTimerHandler) {
-						if(gameoverfadered.getAlpha()==1)
-						{
-							gameover();
-						}
 						for(int x=0;x<faces.size();x++)
 						{
 							Sprite tempface=faces.get(x);
@@ -391,15 +385,7 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 
 		getEngine().registerUpdateHandler(itemTimerHandler);
 	}
-	private void gameover()
-	{
-		Intent intent = new Intent(GameActivity.this, GameOverScreen.class);
-		Bundle b = new Bundle();
-		b.putInt("Score", score);
-		intent.putExtras(b);
-		startActivity(intent);
-		finish();
-	}
+
 	private void removeFace(Sprite face) {
 
 		final PhysicsConnector facePhysicsConnector = this.mPhysicsWorld.getPhysicsConnectorManager().findPhysicsConnectorByShape(face);

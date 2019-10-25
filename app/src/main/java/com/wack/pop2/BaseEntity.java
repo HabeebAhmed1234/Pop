@@ -2,6 +2,7 @@ package com.wack.pop2;
 
 import com.wack.pop2.physics.PhysicsWorld;
 
+import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
@@ -18,11 +19,15 @@ public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCa
     protected Scene scene;
     protected PhysicsWorld physicsWorld;
     protected VertexBufferObjectManager vertexBufferObjectManager;
+    protected Engine engine;
+    protected HostActivityInterface hostActivity;
 
     public BaseEntity(GameResources gameResources) {
         this.scene = gameResources.scene;
         this.physicsWorld = gameResources.physicsWorld;
         this.vertexBufferObjectManager = gameResources.vertexBufferObjectManager;
+        this.engine = gameResources.engine;
+        this.hostActivity = gameResources.hostActivity;
         GameLifeCycleCalllbackManager.getInstance().registerGameEntity(this);
     }
 

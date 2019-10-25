@@ -4,6 +4,7 @@ import android.hardware.SensorManager;
 
 import com.wack.pop2.physics.PhysicsWorld;
 
+import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.BaseGameActivity;
@@ -18,21 +19,30 @@ public class GameResources {
     public final Scene scene;
     public final PhysicsWorld physicsWorld;
     public final VertexBufferObjectManager vertexBufferObjectManager;
+    public final Engine engine;
+    public final HostActivityInterface hostActivity;
 
-    public GameResources(Scene scene, PhysicsWorld physicsWorld, VertexBufferObjectManager vertexBufferObjectManager) {
+    public GameResources(
+            Scene scene,
+            PhysicsWorld physicsWorld,
+            VertexBufferObjectManager vertexBufferObjectManager,
+            Engine engine,
+            HostActivityInterface hostActivity) {
         this.scene = scene;
         this.physicsWorld = physicsWorld;
         this.vertexBufferObjectManager = vertexBufferObjectManager;
+        this.engine = engine;
+        this.hostActivity = hostActivity;
     }
 
     /**
      * Initializes the game resources given their dependencies and returns a new instance.
      * @return
      */
-    public static GameResources createNew(BaseGameActivity baseGameActivity) {
+    public static GameResources createNew(BaseGameActivity baseGameActivity, HostActivityInterface hostActivity) {
         Scene scene = new Scene();
         PhysicsWorld physicsWorld = new PhysicsWorld(new Vec2(0, SensorManager.GRAVITY_EARTH), false);
         scene.registerUpdateHandler(physicsWorld);
-        return new GameResources(scene, physicsWorld, baseGameActivity.getVertexBufferObjectManager());
+        return new GameResources(scene, physicsWorld, baseGameActivity.getVertexBufferObjectManager(), baseGameActivity.getEngine(), hostActivity);
     }
 }
