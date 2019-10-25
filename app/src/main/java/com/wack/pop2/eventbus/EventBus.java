@@ -1,7 +1,8 @@
 package com.wack.pop2.eventbus;
 
-import android.os.Bundle;
 import android.util.Log;
+
+import com.wack.pop2.EventPayload;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,7 +13,7 @@ import java.util.Set;
 public class EventBus {
 
     public interface Subscriber {
-        void onEvent(GameEvent event, Bundle payload);
+        void onEvent(GameEvent event, EventPayload payload);
     }
 
     private static EventBus sEventBus;
@@ -20,7 +21,7 @@ public class EventBus {
 
     private Map<GameEvent, Set<Subscriber>> mEventSubscribers = new HashMap<>();
 
-    public void init() {
+    public static void init() {
         if (sEventBus != null) {
             throw new IllegalStateException(
                     "Cannot initialize a new event bus when on already exists. You must destroy the existing event bus first");
@@ -60,10 +61,10 @@ public class EventBus {
     }
 
     public void sendEvent(GameEvent event) {
-        sendEvent(event, new Bundle());
+        sendEvent(event, new EmptyEventPayload());
     }
 
-    public void sendEvent(GameEvent event, Bundle payload) {
+    public void sendEvent(GameEvent event, EventPayload payload) {
         Set<Subscriber> subscribers = getSubscribers(event);
         if (subscribers.isEmpty()) {
             Log.e(TAG, "There are no subscribers for event " + event);

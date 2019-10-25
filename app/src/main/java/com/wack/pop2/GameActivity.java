@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.opengl.GLES20;
 import android.view.KeyEvent;
 
+import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.hudentities.ScoreHudEntity;
+import com.wack.pop2.hudentities.TimerHudEntity;
 import com.wack.pop2.physics.PhysicsConnector;
 import com.wack.pop2.physics.PhysicsFactory;
 import com.wack.pop2.physics.util.Vec2Pool;
@@ -46,10 +48,10 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 
 	private LevelEntity mLevelEntity;
 	private ScoreHudEntity mScoreHudEntity;
+	private TimerHudEntity mTimerHudEntity;
+	private GameOverSequenceEntity mGameOverSequenceEntity;
+	private BubbleSpawnerEntity mBubbleSpawnerEntity;
 
-
-	private Sprite gameoverfadered;
-	private boolean isgameover=false;
 	private int whichface=0;
 	private float difficulty=1f;
 	private float maxdifficulty=5;
@@ -62,7 +64,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 		ScreenUtils.init(this);
-
 		ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
 		camera = new ShakeCamera(0, 0, screenSize.width, screenSize.height);
 		final EngineOptions engineOptions = new EngineOptions(
@@ -85,6 +86,7 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 	public Scene onCreateScene() {
 		// Andengine setup code
 		this.mEngine.registerUpdateHandler(new FPSLogger());
+		EventBus.init();
 
 		// Initialize game resources
 		GameResources gameResources = GameResources.createNew(this, this);
@@ -97,11 +99,18 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 		// Create game entities
 		mLevelEntity = new LevelEntity(gameResources);
 		mScoreHudEntity = new ScoreHudEntity(gameFontsManager, gameTexturesManager, gameResources);
-
+		mTimerHudEntity = new TimerHudEntity(gameFontsManager, gameTexturesManager, gameResources);
+		mGameOverSequenceEntity = new GameOverSequenceEntity(
+				this,
+				mScoreHudEntity,
+				gameTexturesManager,
+				gameSoundsManager,
+				camera,
+				gameResources);
+		mBubbleSpawnerEntity = new BubbleSpawnerEntity(gameResources);
 
 		//update handlers
 		scene.setOnAreaTouchListener(this);
-		createitemstimehandler();
 		checkforlossandtimertimehandler();
 
 		GameLifeCycleCalllbackManager.getInstance().onCreateScene();
@@ -242,23 +251,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 		}
 	}
 
-	private void addFace(final float pX, final float pY) {
-		final Sprite face;
-
-		final Body body;
-		final FixtureDef objectFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
-
-		//add object
-		face = new Sprite(pX, pY, whichface(), this.getVertexBufferObjectManager());
-		face.setScale((float) (Math.random()*2+1));
-		body = PhysicsFactory.createCircleBody(this.mPhysicsWorld, face, BodyType.DYNAMIC, objectFixtureDef);
-		this.mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(face, body, true, true));
-		face.setUserData(body);
-		this.mScene.registerTouchArea(face);
-		faces.addLast(face);
-		this.mScene.attachChild(face);
-	}
-
 	private void increaseScore(int increment)
 	{
 		score+=increment;
@@ -314,36 +306,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 		final Vec2 velocity = Vec2Pool.obtain(this.mGravityX+xspeed, (float) (this.mGravityY *-1*yspeed));
 		faceBody.setLinearVelocity(velocity);
 		Vec2Pool.recycle(velocity);
-	}
-
-	private void spawnFaceInitialDirection(final Sprite face,float speed) {
-		final Body faceBody = (Body)face.getUserData();
-		final Vec2 velocity = Vec2Pool.obtain((float) (this.mGravityX*(Math.random()*2-1)), (float) (this.mGravityY *0.3*speed));
-		faceBody.setLinearVelocity(velocity);
-		Vec2Pool.recycle(velocity);
-	}
-
-	private void createitemstimehandler() {
-		TimerHandler itemTimerHandler;
-		float mEffectSpawnDelay = 5f;
-
-		itemTimerHandler = new TimerHandler(mEffectSpawnDelay, true,
-				new ITimerCallback() {
-
-					@Override
-					public void onTimePassed(TimerHandler pTimerHandler) {
-						if(isgameover==false)
-						{
-							for (int x=0;x<difficulty;x++)
-							{
-								addFace((int)(Math.random()*CAMERA_WIDTH),-200*(x+1));
-								spawnFaceInitialDirection ((Sprite)mScene.getLastChild(), 2f);
-							}
-						}
-					}
-				});
-
-		getEngine().registerUpdateHandler(itemTimerHandler);
 	}
 
 	private void checkforlossandtimertimehandler() {

@@ -30,7 +30,7 @@ public class TimerHudEntity extends BaseEntity {
     private Text timerText;
     private int timerValue = TIMER_STARTING_VALUE_SECONDS;
 
-    TimerHudEntity(GameFontsManager fontsManager, GameTexturesManager texturesManager, GameResources gameResources) {
+    public TimerHudEntity(GameFontsManager fontsManager, GameTexturesManager texturesManager, GameResources gameResources) {
         super(gameResources);
         this.fontsManager = fontsManager;
         this.texturesManager = texturesManager;
@@ -69,7 +69,7 @@ public class TimerHudEntity extends BaseEntity {
         }));
     }
 
-    private void maybeFireEventForGameTimedOut() {
+    private boolean maybeFireEventForGameTimedOut() {
         if (timerValue <= 0) {
             EventBus.get().sendEvent(GameEvent.GAME_TIMEOUT_EVENT);
         }

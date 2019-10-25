@@ -5,4 +5,5 @@ package com.wack.pop2.eventbus;
  */
 public enum GameEvent {
     GAME_TIMEOUT_EVENT, // fired when the game has officially timed out
+    GAME_OVER_ON_EXPLOSION_EVENT, // fired when the game has ended due to the user tapping on a bomb
 }

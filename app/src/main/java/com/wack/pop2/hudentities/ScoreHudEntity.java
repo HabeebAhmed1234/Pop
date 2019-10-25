@@ -21,7 +21,7 @@ public class ScoreHudEntity extends BaseEntity {
 
     private Text scoreText;
 
-    ScoreHudEntity(GameFontsManager fontsManager, GameTexturesManager texturesManager, GameResources gameResources) {
+    public ScoreHudEntity(GameFontsManager fontsManager, GameTexturesManager texturesManager, GameResources gameResources) {
         super(gameResources);
         this.fontsManager = fontsManager;
         this.texturesManager = texturesManager;
@@ -41,5 +41,9 @@ public class ScoreHudEntity extends BaseEntity {
 
         scene.attachChild(scorebackground);
         scene.attachChild(scoreText);
+    }
+
+    public int getScore() {
+        return 9999;
     }
 }
