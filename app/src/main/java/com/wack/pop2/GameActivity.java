@@ -51,6 +51,7 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 	private TimerHudEntity mTimerHudEntity;
 	private GameOverSequenceEntity mGameOverSequenceEntity;
 	private BubbleSpawnerEntity mBubbleSpawnerEntity;
+	private BubbleLossDetectorEntity mBubbleLossDetectorEntity;
 
 	private int whichface=0;
 	private float difficulty=1f;
@@ -107,7 +108,8 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 				gameSoundsManager,
 				camera,
 				gameResources);
-		mBubbleSpawnerEntity = new BubbleSpawnerEntity(gameResources);
+		mBubbleSpawnerEntity = new BubbleSpawnerEntity(gameTexturesManager, gameResources);
+		mBubbleLossDetectorEntity = new BubbleLossDetectorEntity(gameFontsManager, gameResources);
 
 		//update handlers
 		scene.setOnAreaTouchListener(this);
@@ -272,34 +274,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 		difficulty+=1;
 	}
 
-	private ITextureRegion whichface()
-	{
-		ITextureRegion whichtexture = null;
-
-		if(whichface==0)
-		{
-			whichtexture=mRedBallTextureRegion;
-		}
-		if(whichface==1)
-		{
-			whichtexture=mBlueBallTextureRegion;
-		}
-		if(whichface==2)
-		{
-			whichtexture=mGreenBallTextureRegion;
-		}
-		if(whichface==3)
-		{
-			whichtexture=mSkullBallTextureRegion;
-		}
-		whichface++;
-		if(whichface>3)
-		{
-			whichface=0;
-		}
-		return whichtexture;
-	}
-
 
 	private void jumpFace(final Sprite face,float yspeed, float xspeed) {
 		final Body faceBody = (Body)face.getUserData();
@@ -317,17 +291,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 
 					@Override
 					public void onTimePassed(TimerHandler pTimerHandler) {
-						for(int x=0;x<faces.size();x++)
-						{
-							Sprite tempface=faces.get(x);
-							if(tempface.getY()>CAMERA_HEIGHT)
-							{
-								mScene.attachChild(createScoreLossText(tempface.getX(),CAMERA_HEIGHT-50));
-
-								decreaseScore(5);
-								faces.remove(x);
-							}
-						}
 
 						Timer-=1;
 						TimerText.setText("Time: "+Timer);
@@ -348,19 +311,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 		getEngine().registerUpdateHandler(itemTimerHandler);
 	}
 
-	private void removeFace(Sprite face) {
-
-		final PhysicsConnector facePhysicsConnector = this.mPhysicsWorld.getPhysicsConnectorManager().findPhysicsConnectorByShape(face);
-
-		this.mPhysicsWorld.unregisterPhysicsConnector(facePhysicsConnector);
-		this.mPhysicsWorld.destroyBody(facePhysicsConnector.getBody());
-
-		this.mScene.unregisterTouchArea(face);
-		this.mScene.detachChild(face);
-		System.gc();
-
-	}
-
 	private Text createScoretickerText(float x, float y)
 	{
 		final Text scorePlus10 = new Text(x, y, this.mScoreTickerFont, "+10!", this.getVertexBufferObjectManager());
@@ -375,22 +325,6 @@ public class GameActivity extends SimpleBaseGameActivity implements IAcceleratio
 		scorePlus10.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		scorePlus10.setColor(0, 1, 0);
 		return scorePlus10;
-	}
-
-	private Text createScoreLossText(float x, float y)
-	{
-		final Text scoreminus5 = new Text(x, y, this.mScoreTickerFont, "-5", this.getVertexBufferObjectManager());
-		scoreminus5.registerEntityModifier(
-				new SequenceEntityModifier(
-						new ParallelEntityModifier(
-								new ScaleModifier(1.2f, 0.1f, 1.5f),
-								new AlphaModifier(1.5f, 1f, 0f)
-						)
-				)
-		);
-		scoreminus5.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
-		scoreminus5.setColor(1, 0, 0);
-		return scoreminus5;
 	}
 
 	private Text createCountDownText(int time)

@@ -1,10 +1,12 @@
 package com.wack.pop2;
 
+import com.wack.pop2.physics.PhysicsConnector;
 import com.wack.pop2.physics.PhysicsWorld;
 
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.jbox2d.dynamics.Body;
 
 /**
  * This class represents the base functionality of all entities within the game.
@@ -40,4 +42,12 @@ public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCa
 
     @Override
     public void onCreateScene() { }
+
+    protected void removeFromScene(Body body) {
+        PhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager().findPhysicsConnectorByBody(body);
+        physicsWorld.unregisterPhysicsConnector(physicsConnector);
+        physicsWorld.destroyBody(body);
+        scene.unregisterTouchArea(physicsConnector.getShape());
+        scene.detachChild(physicsConnector.getShape());
+    }
 }

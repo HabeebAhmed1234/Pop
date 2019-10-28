@@ -26,10 +26,6 @@ public class LevelEntity extends BaseEntity {
 
     @Override
     public void onCreateScene() {
-        createLevel();
-    }
-
-    private void createLevel() {
         final Rectangle left = new Rectangle(0, 0, 2, levelHeightPx, vertexBufferObjectManager);
         final Rectangle right = new Rectangle(levelWidthPx - 2, 0, 2, levelHeightPx, vertexBufferObjectManager);
         left.setAlpha(0);
