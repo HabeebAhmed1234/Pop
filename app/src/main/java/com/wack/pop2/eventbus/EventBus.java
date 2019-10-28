@@ -44,20 +44,22 @@ public class EventBus {
         return mEventSubscribers.get(event);
     }
 
-    public void subscribe(GameEvent event, Subscriber subscriber) {
+    public EventBus subscribe(GameEvent event, Subscriber subscriber) {
         Set<Subscriber> subscribers = getSubscribers(event);
         if (subscribers.contains(subscriber)) {
             throw new IllegalStateException("Event " + event + " is already subscribed to by subscriber " + subscriber);
         }
         subscribers.add(subscriber);
+        return this;
     }
 
-    public void unSubscribe(GameEvent event, Subscriber subscriber) {
+    public EventBus unSubscribe(GameEvent event, Subscriber subscriber) {
         Set<Subscriber> subscribers = getSubscribers(event);
         if (!subscribers.contains(subscriber)) {
             throw new IllegalStateException("Subscriber " + subscriber + " was never subscribed to event " + event);
         }
         subscribers.remove(subscriber);
+        return this;
     }
 
     public void sendEvent(GameEvent event) {
@@ -70,7 +72,7 @@ public class EventBus {
             Log.e(TAG, "There are no subscribers for event " + event);
         }
         Iterator<Subscriber> it = subscribers.iterator();
-        while (it.hasNext())
+        while (it.hasNext()) {
             it.next().onEvent(event, payload);
         }
     }

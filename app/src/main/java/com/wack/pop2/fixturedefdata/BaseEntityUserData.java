@@ -2,15 +2,15 @@ package com.wack.pop2.fixturedefdata;
 
 import com.wack.pop2.identifiers.UniqueIdGenerator;
 
-public abstract class BaseFixtureDefData {
+public abstract class BaseEntityUserData {
 
     protected int id;
 
-    public BaseFixtureDefData() {
+    public BaseEntityUserData() {
         this(UniqueIdGenerator.getUniqueId());
     }
 
-    public BaseFixtureDefData(int id) {
+    public BaseEntityUserData(int id) {
         this.id = id;
     }
 

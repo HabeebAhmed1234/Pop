@@ -4,7 +4,10 @@ import com.wack.pop2.physics.PhysicsConnector;
 import com.wack.pop2.physics.PhysicsWorld;
 
 import org.andengine.engine.Engine;
+import org.andengine.entity.IEntity;
+import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.jbox2d.dynamics.Body;
 
@@ -43,11 +46,28 @@ public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCa
     @Override
     public void onCreateScene() { }
 
-    protected void removeFromScene(Body body) {
+    protected void addToScene(IEntity entity) {
+        scene.attachChild(entity);
+    }
+
+    protected void removeFromSceneAndCleanupPhysics(Body body) {
         PhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager().findPhysicsConnectorByBody(body);
         physicsWorld.unregisterPhysicsConnector(physicsConnector);
         physicsWorld.destroyBody(body);
-        scene.unregisterTouchArea(physicsConnector.getShape());
-        scene.detachChild(physicsConnector.getShape());
+        removeFromScene(physicsConnector.getShape());
+    }
+
+    protected void removeFromSceneAndCleanupPhysics(Sprite sprite) {
+        PhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager().findPhysicsConnectorByShape(sprite);
+        physicsWorld.unregisterPhysicsConnector(physicsConnector);
+        physicsWorld.destroyBody(physicsConnector.getBody());
+        removeFromScene(physicsConnector.getShape());
+    }
+
+    protected void removeFromScene(IEntity entity) {
+        if (entity instanceof ITouchArea) {
+            scene.unregisterTouchArea((ITouchArea) entity);
+        }
+        scene.detachChild(entity);
     }
 }

@@ -2,7 +2,11 @@ package com.wack.pop2;
 
 import android.hardware.SensorManager;
 
-import com.wack.pop2.fixturedefdata.BubbleFixtureDefData;
+import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
+import com.wack.pop2.eventbus.EventBus;
+import com.wack.pop2.eventbus.GameEvent;
+import com.wack.pop2.fixturedefdata.BaseEntityUserData;
+import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
 import com.wack.pop2.physics.PhysicsConnector;
 import com.wack.pop2.physics.PhysicsFactory;
 import com.wack.pop2.physics.util.Vec2Pool;
@@ -18,13 +22,13 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
-public class BubbleSpawnerEntity extends BaseEntity {
+public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscriber {
 
     private static final float BUBBLE_SPAWN_INTERVAL = 5f;
 
     private GameTexturesManager texturesManager;
 
-    private int bubbleSpawnDifficultyMultiplier = 1;
+    private int bubbleSpawnMultiplier = 1;
 
     public BubbleSpawnerEntity(GameTexturesManager texturesManager, GameResources gameResources) {
         super(gameResources);
@@ -33,6 +37,7 @@ public class BubbleSpawnerEntity extends BaseEntity {
 
     @Override
     public void onCreateScene() {
+        EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this);
         engine.registerUpdateHandler(
                 new TimerHandler(
                         BUBBLE_SPAWN_INTERVAL,
@@ -40,7 +45,7 @@ public class BubbleSpawnerEntity extends BaseEntity {
                     new ITimerCallback() {
                         @Override
                         public void onTimePassed(TimerHandler pTimerHandler) {
-                            spawnBubbles(bubbleSpawnDifficultyMultiplier);
+                            spawnBubbles(bubbleSpawnMultiplier);
                         }
                     }));
     }
@@ -55,24 +60,23 @@ public class BubbleSpawnerEntity extends BaseEntity {
     }
 
     private void spawnBubble(final int bubbleNumber, final float pX, final float pY) {
-        final Sprite bubbleSprite;
-
-        final Body body;
-        final FixtureDef bubbleFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
-
+        int bubbleIndex = bubbleNumber % 4;
+        final BaseEntityUserData userData = getBubbleUserData(bubbleIndex);
         //add object
-        bubbleSprite = new Sprite(
+        final Sprite bubbleSprite = new Sprite(
                 pX,
                 pY,
-                getNextBubbleTextureAndSetFixtureDefData(bubbleFixtureDef, bubbleNumber),
+                getNextBubbleTextureAndSetFixtureDefData(bubbleIndex),
                 vertexBufferObjectManager);
+        bubbleSprite.setUserData(userData);
         bubbleSprite.setScale((float) (Math.random()*2+1));
-        body = PhysicsFactory.createCircleBody(physicsWorld, bubbleSprite, BodyType.DYNAMIC, bubbleFixtureDef);
+
+        final FixtureDef bubbleFixtureDef = GameFixtureDefs.BASE_BUBBLE_FIXTURE_DEF;
+        bubbleFixtureDef.setUserData(userData);
+        final Body body = PhysicsFactory.createCircleBody(physicsWorld, bubbleSprite, BodyType.DYNAMIC, bubbleFixtureDef);
         physicsWorld.registerPhysicsConnector(new PhysicsConnector(bubbleSprite, body, true, true));
-        bubbleSprite.setUserData(body);
         scene.registerTouchArea(bubbleSprite);
-        //faces.addLast(face);
-        scene.attachChild(bubbleSprite);
+        addToScene(bubbleSprite);
     }
 
 
@@ -83,24 +87,38 @@ public class BubbleSpawnerEntity extends BaseEntity {
         Vec2Pool.recycle(velocity);
     }
 
-    private ITextureRegion getNextBubbleTextureAndSetFixtureDefData(FixtureDef fixtureDef, int bubbleNumber) {
-        int bubbleIndex = bubbleNumber % 4;
-
+    private ITextureRegion getNextBubbleTextureAndSetFixtureDefData(int bubbleIndex) {
         switch(bubbleIndex) {
             case 0:
-                fixtureDef.setUserData(new BubbleFixtureDefData(true));
                 return texturesManager.getTextureRegion(TextureId.BALL_1);
             case 1:
-                fixtureDef.setUserData(new BubbleFixtureDefData(true));
                 return texturesManager.getTextureRegion(TextureId.BALL_2);
             case 2:
-                fixtureDef.setUserData(new BubbleFixtureDefData(true));
                 return texturesManager.getTextureRegion(TextureId.BALL_3);
             case 3:
-                fixtureDef.setUserData(new BubbleFixtureDefData(false));
                 return texturesManager.getTextureRegion(TextureId.SKULL_BALL);
 
         }
         throw new IllegalStateException("there is no bubble texture for bubbleIndex = " + bubbleIndex);
+    }
+
+    private BaseEntityUserData getBubbleUserData(int bubbleIndex) {
+        switch(bubbleIndex) {
+            case 0:
+            case 1:
+            case 2:
+                return new BubbleEntityUserData(true, false);
+            case 3:
+                return new BubbleEntityUserData(false, true);
+        }
+        throw new IllegalStateException("there is no bubble user data for bubbleIndex = " + bubbleIndex);
+    }
+
+    @Override
+    public void onEvent(GameEvent event, EventPayload payload) {
+        if (event == GameEvent.DIFFICULTY_CHANGE) {
+            DifficultyChangedEventPayload difficultyChangedEventPayload = (DifficultyChangedEventPayload) payload;
+            bubbleSpawnMultiplier = difficultyChangedEventPayload.newDifficulty;
+        }
     }
 }

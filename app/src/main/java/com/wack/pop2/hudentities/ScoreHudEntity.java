@@ -1,8 +1,14 @@
 package com.wack.pop2.hudentities;
 
 import com.wack.pop2.BaseEntity;
+import com.wack.pop2.EventPayload;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.ScreenUtils;
+import com.wack.pop2.eventbus.DecrementScoreEventPayload;
+import com.wack.pop2.eventbus.EventBus;
+import com.wack.pop2.eventbus.GameEvent;
+import com.wack.pop2.eventbus.IncrementScoreEventPayload;
+import com.wack.pop2.eventbus.ScoreChangeEventPayload;
 import com.wack.pop2.resources.fonts.FontId;
 import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
@@ -14,10 +20,12 @@ import org.andengine.entity.text.Text;
 /**
  * Entity that contains score hud panel
  */
-public class ScoreHudEntity extends BaseEntity {
+public class ScoreHudEntity extends BaseEntity implements EventBus.Subscriber {
 
     private GameFontsManager fontsManager;
     private GameTexturesManager texturesManager;
+
+    private int scoreValue = 0;
 
     private Text scoreText;
 
@@ -25,6 +33,7 @@ public class ScoreHudEntity extends BaseEntity {
         super(gameResources);
         this.fontsManager = fontsManager;
         this.texturesManager = texturesManager;
+        EventBus.get().subscribe(GameEvent.INCREMENT_SCORE, this).subscribe(GameEvent.DECREMENT_SCORE, this);
     }
 
     @Override
@@ -44,6 +53,34 @@ public class ScoreHudEntity extends BaseEntity {
     }
 
     public int getScore() {
-        return 9999;
+        return scoreValue;
+    }
+
+    @Override
+    public void onEvent(GameEvent event, EventPayload payload) {
+        switch (event) {
+            case DECREMENT_SCORE:
+                decrementScore((DecrementScoreEventPayload) payload);
+                break;
+            case INCREMENT_SCORE:
+                incrementScore((IncrementScoreEventPayload) payload);
+                break;
+        }
+    }
+
+    private void incrementScore(IncrementScoreEventPayload payload) {
+        scoreValue += payload.incrementAmmount;
+        updateScoreText();
+
+        EventBus.get().sendEvent(GameEvent.SCORE_CHANGED, new ScoreChangeEventPayload(scoreValue));
+    }
+
+    private void decrementScore(DecrementScoreEventPayload payload) {
+        scoreValue -= payload.decrementAmmount;
+        updateScoreText();
+    }
+
+    private void updateScoreText() {
+        scoreText.setText("Score: " + scoreValue);
     }
 }

@@ -21,8 +21,9 @@ import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
-import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.contacts.Contact;
+
+import static com.wack.pop2.GameFixtureDefs.FLOOR_SENSOR_FIXTURE_DEF;
 
 /**
  * This entity detects whether or not any bubbles have fallen below the screen. Thus
@@ -49,9 +50,7 @@ public class BubbleLossDetectorEntity extends BaseEntity {
     public void onCreateScene() {
         final Rectangle floorDetector = new Rectangle(0, levelHeightPx, levelWidthPx, 2, vertexBufferObjectManager);
         floorDetector.setAlpha(0);
-        final FixtureDef sensorFixtureDef = PhysicsFactory.createFixtureDef(0, 0, 0, true);
-        PhysicsFactory.createBoxBody(physicsWorld, floorDetector, BodyType.STATIC, sensorFixtureDef);
-
+        PhysicsFactory.createBoxBody(physicsWorld, floorDetector, BodyType.STATIC, FLOOR_SENSOR_FIXTURE_DEF);
         physicsWorld.setContactListener(getContactListener());
 
     }
@@ -94,7 +93,7 @@ public class BubbleLossDetectorEntity extends BaseEntity {
     private void processBubbleFellBelowScreen(Fixture bubbleFixture) {
         scene.attachChild(createScoreLossText(bubbleFixture.getBody().getPosition().x,levelHeightPx-50));
         EventBus.get().sendEvent(GameEvent.DECREMENT_SCORE, new DecrementScoreEventPayload(SCORE_DECREMENT_AMOUNT));
-        removeFromScene(bubbleFixture.getBody());
+        removeFromSceneAndCleanupPhysics(bubbleFixture.getBody());
     }
 
 
