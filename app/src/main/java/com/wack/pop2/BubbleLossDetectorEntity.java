@@ -13,7 +13,6 @@ import com.wack.pop2.resources.fonts.GameFontsManager;
 import org.andengine.entity.modifier.AlphaModifier;
 import org.andengine.entity.modifier.ParallelEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
-import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.text.Text;
 import org.jbox2d.callbacks.ContactImpulse;
@@ -33,22 +32,18 @@ public class BubbleLossDetectorEntity extends BaseEntity {
 
     private static final int SCORE_DECREMENT_AMOUNT = 5;
 
-    private final int levelWidthPx;
-    private final int levelHeightPx;
-
     private final GameFontsManager fontsManager;
+    private final GameAnimationManager animationManager;
 
-    public BubbleLossDetectorEntity(GameFontsManager fontsManager, GameResources gameResources) {
+    public BubbleLossDetectorEntity(GameFontsManager fontsManager, GameAnimationManager animationManager, GameResources gameResources) {
         super(gameResources);
-        ScreenUtils.ScreenSize size = ScreenUtils.getSreenSize();
-        this.levelWidthPx = size.width;
-        this.levelHeightPx = size.height;
         this.fontsManager = fontsManager;
+        this.animationManager = animationManager;
     }
 
     @Override
     public void onCreateScene() {
-        final Rectangle floorDetector = new Rectangle(0, levelHeightPx, levelWidthPx, 2, vertexBufferObjectManager);
+        final Rectangle floorDetector = new Rectangle(0, levelHeight, levelWidth, 2, vertexBufferObjectManager);
         floorDetector.setAlpha(0);
         PhysicsFactory.createBoxBody(physicsWorld, floorDetector, BodyType.STATIC, FLOOR_SENSOR_FIXTURE_DEF);
         physicsWorld.setContactListener(getContactListener());
@@ -83,7 +78,7 @@ public class BubbleLossDetectorEntity extends BaseEntity {
         if (FixtureDefDataUtil.isBubbleFixtureDefData(contact.m_fixtureA)) {
             return contact.m_fixtureA;
         } else if (FixtureDefDataUtil.isBubbleFixtureDefData(contact.m_fixtureB)) {
-            return contact.m_fixtureB
+            return contact.m_fixtureB;
         } else {
             throw new IllegalStateException("neither of the fixtures are bubbles!");
         }
@@ -91,7 +86,7 @@ public class BubbleLossDetectorEntity extends BaseEntity {
 
 
     private void processBubbleFellBelowScreen(Fixture bubbleFixture) {
-        scene.attachChild(createScoreLossText(bubbleFixture.getBody().getPosition().x,levelHeightPx-50));
+        scene.attachChild(createScoreLossText(bubbleFixture.getBody().getPosition().x,levelHeight - 50));
         EventBus.get().sendEvent(GameEvent.DECREMENT_SCORE, new DecrementScoreEventPayload(SCORE_DECREMENT_AMOUNT));
         removeFromSceneAndCleanupPhysics(bubbleFixture.getBody());
     }
@@ -100,14 +95,9 @@ public class BubbleLossDetectorEntity extends BaseEntity {
 
     private Text createScoreLossText(float x, float y) {
         final Text scoreminus5Text = new Text(x, y, fontsManager.getFont(FontId.SCORE_TICKER_FONT), "-5", vertexBufferObjectManager);
-        scoreminus5Text.registerEntityModifier(
-                new SequenceEntityModifier(
-                        new ParallelEntityModifier(
-                                new ScaleModifier(1.2f, 0.1f, 1.5f),
-                                new AlphaModifier(1.5f, 1f, 0f)
-                        )
-                )
-        );
+        animationManager.startModifier(scoreminus5Text, new ParallelEntityModifier(
+                new ScaleModifier(1.2f, 0.1f, 1.5f),
+                new AlphaModifier(1.5f, 1f, 0f)));
         scoreminus5Text.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
         scoreminus5Text.setColor(1, 0, 0);
         return scoreminus5Text;

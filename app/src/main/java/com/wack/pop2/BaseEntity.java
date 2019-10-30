@@ -21,11 +21,13 @@ import org.jbox2d.dynamics.Body;
  */
 public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCallback {
 
-    protected Scene scene;
-    protected PhysicsWorld physicsWorld;
-    protected VertexBufferObjectManager vertexBufferObjectManager;
-    protected Engine engine;
-    protected HostActivityInterface hostActivity;
+    protected final Scene scene;
+    protected final PhysicsWorld physicsWorld;
+    protected final VertexBufferObjectManager vertexBufferObjectManager;
+    protected final Engine engine;
+    protected final HostActivityInterface hostActivity;
+    protected final int levelWidth;
+    protected final int levelHeight;
 
     public BaseEntity(GameResources gameResources) {
         this.scene = gameResources.scene;
@@ -33,6 +35,8 @@ public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCa
         this.vertexBufferObjectManager = gameResources.vertexBufferObjectManager;
         this.engine = gameResources.engine;
         this.hostActivity = gameResources.hostActivity;
+        this.levelWidth = ScreenUtils.getSreenSize().width;
+        this.levelHeight = ScreenUtils.getSreenSize().height;
         GameLifeCycleCalllbackManager.getInstance().registerGameEntity(this);
     }
 

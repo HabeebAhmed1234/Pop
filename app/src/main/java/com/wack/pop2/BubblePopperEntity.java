@@ -15,18 +15,15 @@ import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
 
 import org.andengine.audio.sound.Sound;
-import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.AlphaModifier;
 import org.andengine.entity.modifier.ParallelEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
-import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.util.modifier.IModifier;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
@@ -41,11 +38,17 @@ public class BubblePopperEntity extends BaseEntity implements IOnAreaTouchListen
 
     private GameFontsManager fontManager;
     private GameSoundsManager soundsManager;
+    private GameAnimationManager gameAnimationManager;
 
-    public BubblePopperEntity(GameFontsManager fontManager, GameSoundsManager soundsManager, GameResources gameResources) {
+    public BubblePopperEntity(
+            GameFontsManager fontManager,
+            GameSoundsManager soundsManager,
+            GameAnimationManager gameAnimationManager,
+            GameResources gameResources) {
         super(gameResources);
         this.fontManager = fontManager;
         this.soundsManager = soundsManager;
+        this.gameAnimationManager = gameAnimationManager;
     }
 
     @Override
@@ -162,22 +165,13 @@ public class BubblePopperEntity extends BaseEntity implements IOnAreaTouchListen
 
     private Text createScoretickerText(float x, float y) {
         final Text scorePlus10Text = new Text(x, y, fontManager.getFont(FontId.SCORE_TICKER_FONT), "+10!", vertexBufferObjectManager);
-        SequenceEntityModifier animation = new SequenceEntityModifier(
+
+        gameAnimationManager.startModifier(
+                scorePlus10Text,
                 new ParallelEntityModifier(
-                        new ScaleModifier(0.75f, 0.1f, 1.1f),
-                        new AlphaModifier(0.75f, 1f, 0f)));
-        animation.addModifierListener(new IModifier.IModifierListener<IEntity>() {
-            @Override
-            public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
+                    new ScaleModifier(0.75f, 0.1f, 1.1f),
+                    new AlphaModifier(0.75f, 1f, 0f)));
 
-            }
-
-            @Override
-            public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
-                removeFromScene(pItem);
-            }
-        });
-        scorePlus10Text.registerEntityModifier(animation);
         scorePlus10Text.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
         scorePlus10Text.setColor(0, 1, 0);
         return scorePlus10Text;

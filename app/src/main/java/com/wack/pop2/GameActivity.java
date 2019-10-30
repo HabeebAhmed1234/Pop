@@ -1,7 +1,6 @@
 package com.wack.pop2;
 
 import android.content.Intent;
-import android.opengl.GLES20;
 import android.view.KeyEvent;
 
 import com.wack.pop2.eventbus.EventBus;
@@ -11,17 +10,10 @@ import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 
-import org.andengine.engine.handler.timer.ITimerCallback;
-import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
-import org.andengine.entity.modifier.AlphaModifier;
-import org.andengine.entity.modifier.ParallelEntityModifier;
-import org.andengine.entity.modifier.ScaleModifier;
-import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.text.Text;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.input.sensor.acceleration.AccelerationData;
 import org.andengine.input.sensor.acceleration.IAccelerationListener;
@@ -74,25 +66,24 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		GameFontsManager gameFontsManager = new GameFontsManager(getFontManager(), getTextureManager(), gameResources);
 		GameTexturesManager gameTexturesManager = new GameTexturesManager(this, getTextureManager(), gameResources);
 		GameSoundsManager gameSoundsManager = new GameSoundsManager(this, getSoundManager(), gameResources);
+		GameAnimationManager gameAnimationManager = new GameAnimationManager(gameResources);
 
 		// Create game entities
 		mLevelEntity = new LevelEntity(gameResources);
 		mGameDifficultyEntity = new GameDifficultyEntity(gameResources);
 		mScoreHudEntity = new ScoreHudEntity(gameFontsManager, gameTexturesManager, gameResources);
-		mTimerHudEntity = new TimerHudEntity(gameFontsManager, gameTexturesManager, gameResources);
+		mTimerHudEntity = new TimerHudEntity(gameFontsManager, gameTexturesManager, gameAnimationManager, gameResources);
 		mGameOverSequenceEntity = new GameOverSequenceEntity(
 				this,
 				mScoreHudEntity,
 				gameTexturesManager,
 				gameSoundsManager,
+				gameAnimationManager,
 				camera,
 				gameResources);
 		mBubbleSpawnerEntity = new BubbleSpawnerEntity(gameTexturesManager, gameResources);
-		mBubbleLossDetectorEntity = new BubbleLossDetectorEntity(gameFontsManager, gameResources);
-		mBubblePopperEntity = new BubblePopperEntity(gameFontsManager, gameSoundsManager, gameResources);
-
-		//update handlers
-		checkforlossandtimertimehandler();
+		mBubbleLossDetectorEntity = new BubbleLossDetectorEntity(gameFontsManager, gameAnimationManager, gameResources);
+		mBubblePopperEntity = new BubblePopperEntity(gameFontsManager, gameSoundsManager, gameAnimationManager, gameResources);
 
 		GameLifeCycleCalllbackManager.getInstance().onCreateScene();
 		return gameResources.scene;
@@ -119,55 +110,6 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	public void onPauseGame() {
 		super.onPauseGame();
 		this.disableAccelerationSensor();
-	}
-
-	private void checkforlossandtimertimehandler() {
-		TimerHandler itemTimerHandler;
-		float mEffectSpawnDelay = 1f;
-
-		itemTimerHandler = new TimerHandler(mEffectSpawnDelay, true,
-				new ITimerCallback() {
-
-					@Override
-					public void onTimePassed(TimerHandler pTimerHandler) {
-
-						Timer-=1;
-						TimerText.setText("Time: "+Timer);
-						if(Timer<=10)
-						{
-							mScene.attachChild(createCountDownText((int)Timer));
-						}
-						if(Timer<1&&isgameover==false)
-						{
-							TimerText.setText("TIMES UP!");
-							isgameover=true;
-							gameover();
-						}
-
-					}
-				});
-
-		getEngine().registerUpdateHandler(itemTimerHandler);
-	}
-
-	private Text createCountDownText(int time)
-	{
-
-		final Text Countdown = new Text(0, CAMERA_HEIGHT/3, this.mCountdownFont, ""+time , this.getVertexBufferObjectManager());
-		float newscale=CAMERA_WIDTH/Countdown.getWidth();
-		Countdown.registerEntityModifier(
-				new SequenceEntityModifier(
-						new ParallelEntityModifier(
-								new ScaleModifier(1.0f, newscale, 0f),
-								new AlphaModifier(1.0f, 0.0f, 1f)
-						)
-				)
-		);
-		Countdown.setX(CAMERA_WIDTH/2-Countdown.getWidth()/2);
-		Countdown.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
-		Countdown.setColor(1, 0, 0);
-
-		return Countdown;
 	}
 
 	@Override

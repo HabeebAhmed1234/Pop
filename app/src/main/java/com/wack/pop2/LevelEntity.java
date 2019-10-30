@@ -15,20 +15,14 @@ import static com.wack.pop2.GameFixtureDefs.WALL_FIXTURE_DEF;
  */
 public class LevelEntity extends BaseEntity {
 
-    private final int levelWidthPx;
-    private final int levelHeightPx;
-
     public LevelEntity(GameResources gameResources) {
         super(gameResources);
-        ScreenUtils.ScreenSize size = ScreenUtils.getSreenSize();
-        this.levelWidthPx = size.width;
-        this.levelHeightPx = size.height;
     }
 
     @Override
     public void onCreateScene() {
-        final Rectangle left = new Rectangle(0, 0, 2, levelHeightPx, vertexBufferObjectManager);
-        final Rectangle right = new Rectangle(levelWidthPx - 2, 0, 2, levelHeightPx, vertexBufferObjectManager);
+        final Rectangle left = new Rectangle(0, 0, 2, levelHeight, vertexBufferObjectManager);
+        final Rectangle right = new Rectangle(levelWidth - 2, 0, 2, levelHeight, vertexBufferObjectManager);
         left.setAlpha(0);
         right.setAlpha(0);
 

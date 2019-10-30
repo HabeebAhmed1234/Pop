@@ -14,14 +14,11 @@ import com.wack.pop2.resources.sounds.SoundId;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 
-import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.AlphaModifier;
 import org.andengine.entity.modifier.ParallelEntityModifier;
-import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
-import org.andengine.util.modifier.IModifier;
 
 public class GameOverSequenceEntity extends BaseEntity {
 
@@ -29,6 +26,7 @@ public class GameOverSequenceEntity extends BaseEntity {
     private ScoreHudEntity scoreHudEntity;
     private GameTexturesManager texturesManager;
     private GameSoundsManager soundsManager;
+    private GameAnimationManager animationManager;
     private ShakeCamera camera;
 
     private Sprite gameOverFadeRedEffect;
@@ -52,6 +50,7 @@ public class GameOverSequenceEntity extends BaseEntity {
             ScoreHudEntity scoreHudEntity,
             GameTexturesManager texturesManager,
             GameSoundsManager soundsManager,
+            GameAnimationManager animationManager,
             ShakeCamera camera,
             GameResources gameResources) {
         super(gameResources);
@@ -59,6 +58,7 @@ public class GameOverSequenceEntity extends BaseEntity {
         this.scoreHudEntity = scoreHudEntity;
         this.texturesManager = texturesManager;
         this.soundsManager = soundsManager;
+        this.animationManager = animationManager;
         this.camera = camera;
     }
 
@@ -79,21 +79,15 @@ public class GameOverSequenceEntity extends BaseEntity {
     }
 
     private void startGameOverEffectAnimation() {
-        SequenceEntityModifier animation =
-                new SequenceEntityModifier(
-                    new ParallelEntityModifier(
-                            new AlphaModifier(3, 0, 1)));
-        animation.addModifierListener(
-                new IModifier.IModifierListener<IEntity>() {
+        animationManager.startModifier(
+                gameOverFadeRedEffect,
+                new ParallelEntityModifier(new AlphaModifier(3, 0, 1)),
+                new GameAnimationManager.AnimationListener() {
                     @Override
-                    public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {}
-
-                    @Override
-                    public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+                    public void onFinished() {
                         onGameover();
                     }
                 });
-        gameOverFadeRedEffect.registerEntityModifier(animation);
     }
 
     private void runGameOverSequenceWithExplosion(GameOverExplosionEventPayload payload) {
