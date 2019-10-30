@@ -1,11 +1,14 @@
 package com.wack.pop2;
 
 import android.opengl.GLES20;
+import android.util.Log;
 
 import com.wack.pop2.eventbus.DecrementScoreEventPayload;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;
+import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
 import com.wack.pop2.fixturedefdata.FixtureDefDataUtil;
+import com.wack.pop2.fixturedefdata.FloorEntityUserData;
 import com.wack.pop2.physics.PhysicsFactory;
 import com.wack.pop2.resources.fonts.FontId;
 import com.wack.pop2.resources.fonts.GameFontsManager;
@@ -20,6 +23,7 @@ import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
+import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.contacts.Contact;
 
 import static com.wack.pop2.GameFixtureDefs.FLOOR_SENSOR_FIXTURE_DEF;
@@ -43,9 +47,11 @@ public class BubbleLossDetectorEntity extends BaseEntity {
 
     @Override
     public void onCreateScene() {
-        final Rectangle floorDetector = new Rectangle(0, levelHeight, levelWidth, 2, vertexBufferObjectManager);
+        final Rectangle floorDetector = new Rectangle(0, levelHeight, levelWidth, 10, vertexBufferObjectManager);
         floorDetector.setAlpha(0);
-        PhysicsFactory.createBoxBody(physicsWorld, floorDetector, BodyType.STATIC, FLOOR_SENSOR_FIXTURE_DEF);
+        FixtureDef floorFixtureDef = FLOOR_SENSOR_FIXTURE_DEF;
+        floorFixtureDef.setUserData(new FloorEntityUserData());
+        PhysicsFactory.createBoxBody(physicsWorld, floorDetector, BodyType.STATIC, floorFixtureDef);
         physicsWorld.setContactListener(getContactListener());
 
     }
@@ -85,7 +91,10 @@ public class BubbleLossDetectorEntity extends BaseEntity {
     }
 
     private void processBubbleFellBelowScreen(Fixture bubbleFixture) {
-        createScoreLossText(bubbleFixture.getBody().getPosition().x,levelHeight - 50);
+        Log.d("asdasd", "bubble fell below screen " + ((BubbleEntityUserData) bubbleFixture.m_userData).getId());
+        createScoreLossText(
+                getShapeFromBody(bubbleFixture.getBody()).getX(),
+                levelHeight - 50);
         EventBus.get().sendEvent(GameEvent.DECREMENT_SCORE, new DecrementScoreEventPayload(SCORE_DECREMENT_AMOUNT));
         removeFromSceneAndCleanupPhysics(bubbleFixture.getBody());
     }
