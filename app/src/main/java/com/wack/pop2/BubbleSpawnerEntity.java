@@ -81,7 +81,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
 
 
     private void setBubbleInitialVelocity(final Sprite face, float speed) {
-        final Body faceBody = (Body)face.getUserData();
+        final Body faceBody = physicsWorld.getPhysicsConnectorManager().findPhysicsConnectorByShape(face).getBody();
         final Vec2 velocity = Vec2Pool.obtain(0f, (float) (SensorManager.GRAVITY_EARTH *0.3*speed));
         faceBody.setLinearVelocity(velocity);
         Vec2Pool.recycle(velocity);

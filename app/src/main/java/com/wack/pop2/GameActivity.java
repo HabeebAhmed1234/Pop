@@ -1,6 +1,7 @@
 package com.wack.pop2;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.KeyEvent;
 
 import com.wack.pop2.eventbus.EventBus;
@@ -23,6 +24,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 	private ShakeCamera camera;
 
+	private GameResources mGameResources;
 	private LevelEntity mLevelEntity;
 	private GameDifficultyEntity mGameDifficultyEntity;
 	private ScoreHudEntity mScoreHudEntity;
@@ -31,6 +33,39 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	private BubbleSpawnerEntity mBubbleSpawnerEntity;
 	private BubbleLossDetectorEntity mBubbleLossDetectorEntity;
 	private BubblePopperEntity mBubblePopperEntity;
+
+	@Override
+	protected void onCreate(Bundle pSavedInstanceState) {
+		super.onCreate(pSavedInstanceState);
+		EventBus.init();
+		GameLifeCycleCalllbackManager.init();
+
+		// Initialize game resources
+		mGameResources = GameResources.createNew(this, this);
+
+		// Initialize game resource managers
+		GameFontsManager gameFontsManager = new GameFontsManager(getFontManager(), getTextureManager(), mGameResources);
+		GameTexturesManager gameTexturesManager = new GameTexturesManager(this, getTextureManager(), mGameResources);
+		GameSoundsManager gameSoundsManager = new GameSoundsManager(this, getSoundManager(), mGameResources);
+		GameAnimationManager gameAnimationManager = new GameAnimationManager(mGameResources);
+
+		// Create game entities
+		mLevelEntity = new LevelEntity(mGameResources);
+		mGameDifficultyEntity = new GameDifficultyEntity(mGameResources);
+		mScoreHudEntity = new ScoreHudEntity(gameFontsManager, gameTexturesManager, mGameResources);
+		mTimerHudEntity = new TimerHudEntity(gameFontsManager, gameTexturesManager, gameAnimationManager, mGameResources);
+		mGameOverSequenceEntity = new GameOverSequenceEntity(
+				this,
+				mScoreHudEntity,
+				gameTexturesManager,
+				gameSoundsManager,
+				gameAnimationManager,
+				camera,
+				mGameResources);
+		mBubbleSpawnerEntity = new BubbleSpawnerEntity(gameTexturesManager, mGameResources);
+		mBubbleLossDetectorEntity = new BubbleLossDetectorEntity(gameFontsManager, gameAnimationManager, mGameResources);
+		mBubblePopperEntity = new BubblePopperEntity(gameFontsManager, gameSoundsManager, gameAnimationManager, mGameResources);
+	}
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
@@ -49,44 +84,16 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 	@Override
 	public void onCreateResources() {
-		GameLifeCycleCalllbackManager.init();
 		GameLifeCycleCalllbackManager.getInstance().onCreateResources();
 	}
 
 	@Override
 	public Scene onCreateScene() {
 		// Andengine setup code
-		this.mEngine.registerUpdateHandler(new FPSLogger());
-		EventBus.init();
-
-		// Initialize game resources
-		GameResources gameResources = GameResources.createNew(this, this);
-
-		// Initialize game resource managers
-		GameFontsManager gameFontsManager = new GameFontsManager(getFontManager(), getTextureManager(), gameResources);
-		GameTexturesManager gameTexturesManager = new GameTexturesManager(this, getTextureManager(), gameResources);
-		GameSoundsManager gameSoundsManager = new GameSoundsManager(this, getSoundManager(), gameResources);
-		GameAnimationManager gameAnimationManager = new GameAnimationManager(gameResources);
-
-		// Create game entities
-		mLevelEntity = new LevelEntity(gameResources);
-		mGameDifficultyEntity = new GameDifficultyEntity(gameResources);
-		mScoreHudEntity = new ScoreHudEntity(gameFontsManager, gameTexturesManager, gameResources);
-		mTimerHudEntity = new TimerHudEntity(gameFontsManager, gameTexturesManager, gameAnimationManager, gameResources);
-		mGameOverSequenceEntity = new GameOverSequenceEntity(
-				this,
-				mScoreHudEntity,
-				gameTexturesManager,
-				gameSoundsManager,
-				gameAnimationManager,
-				camera,
-				gameResources);
-		mBubbleSpawnerEntity = new BubbleSpawnerEntity(gameTexturesManager, gameResources);
-		mBubbleLossDetectorEntity = new BubbleLossDetectorEntity(gameFontsManager, gameAnimationManager, gameResources);
-		mBubblePopperEntity = new BubblePopperEntity(gameFontsManager, gameSoundsManager, gameAnimationManager, gameResources);
+		mEngine.registerUpdateHandler(new FPSLogger());
 
 		GameLifeCycleCalllbackManager.getInstance().onCreateScene();
-		return gameResources.scene;
+		return mGameResources.scene;
 	}
 
 	@Override

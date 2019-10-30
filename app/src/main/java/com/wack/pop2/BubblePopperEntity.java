@@ -159,22 +159,21 @@ public class BubblePopperEntity extends BaseEntity implements IOnAreaTouchListen
     }
 
     private void increaseScore(float bubbleX, float bubbleY) {
-        createScoretickerText(bubbleX, bubbleY);
+        showScoretickerText(bubbleX, bubbleY);
         EventBus.get().sendEvent(GameEvent.INCREMENT_SCORE, new IncrementScoreEventPayload(SCORE_INCREMENT_PER_BUBBLE_POP));
     }
 
-    private Text createScoretickerText(float x, float y) {
+    private void showScoretickerText(float x, float y) {
         final Text scorePlus10Text = new Text(x, y, fontManager.getFont(FontId.SCORE_TICKER_FONT), "+10!", vertexBufferObjectManager);
+        scorePlus10Text.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+        scorePlus10Text.setColor(0, 1, 0);
+        addToScene(scorePlus10Text);
 
         gameAnimationManager.startModifier(
                 scorePlus10Text,
                 new ParallelEntityModifier(
                     new ScaleModifier(0.75f, 0.1f, 1.1f),
                     new AlphaModifier(0.75f, 1f, 0f)));
-
-        scorePlus10Text.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
-        scorePlus10Text.setColor(0, 1, 0);
-        return scorePlus10Text;
     }
 
     private Sound getRandomPopSound() {
