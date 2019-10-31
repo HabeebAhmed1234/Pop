@@ -33,6 +33,6 @@ public class LevelEntity extends BaseEntity {
         scene.attachChild(right);
 
         // set background color
-        scene.setBackground(new Background(AndengineColor.WHITE));
+        scene.setBackground(new Background(AndengineColor.BLACK));
     }
 }

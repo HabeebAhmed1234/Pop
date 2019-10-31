@@ -8,7 +8,6 @@ import com.wack.pop2.eventbus.GameOverExplosionEventPayload;
 import com.wack.pop2.eventbus.IncrementScoreEventPayload;
 import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
 import com.wack.pop2.physics.PhysicsConnector;
-import com.wack.pop2.physics.PhysicsFactory;
 import com.wack.pop2.resources.fonts.FontId;
 import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
@@ -23,10 +22,6 @@ import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.texture.region.ITextureRegion;
-import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.FixtureDef;
 
 public class BubblePopperEntity extends BaseEntity implements IOnAreaTouchListener {
 
@@ -34,21 +29,24 @@ public class BubblePopperEntity extends BaseEntity implements IOnAreaTouchListen
     // The smallest size a bubble can be before we don't spawn new ones in its place
     private static final float MINIMUM_BUBBLE_SCALE = 1.2f;
     // The size of the new bubbles when an old bubble is popped
-    private static final float NEW_BUBBLE_SCALE_MULTIPLIER = 0.6f;
+    private static final float NEW_BUBBLE_SCALE_MULTIPLIER = 0.5f;
 
     private GameFontsManager fontManager;
     private GameSoundsManager soundsManager;
     private GameAnimationManager gameAnimationManager;
+    private BubbleSpawnerEntity bubbleSpawnerEntity;
 
     public BubblePopperEntity(
             GameFontsManager fontManager,
             GameSoundsManager soundsManager,
             GameAnimationManager gameAnimationManager,
+            BubbleSpawnerEntity bubbleSpawnerEntity,
             GameResources gameResources) {
         super(gameResources);
         this.fontManager = fontManager;
         this.soundsManager = soundsManager;
         this.gameAnimationManager = gameAnimationManager;
+        this.bubbleSpawnerEntity = bubbleSpawnerEntity;
     }
 
     @Override
@@ -71,7 +69,7 @@ public class BubblePopperEntity extends BaseEntity implements IOnAreaTouchListen
                     triggerGameOverExplosion(entity);
                     return true;
                 } else {
-                    popBubble(entity);
+                    popBubble(entity, bubbleEntityUserData.bubbleType);
                 }
             }
 
@@ -86,13 +84,13 @@ public class BubblePopperEntity extends BaseEntity implements IOnAreaTouchListen
                 new GameOverExplosionEventPayload(entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight(), entity.getScaleX()));
     }
 
-    private void popBubble(Sprite entity) {
+    private void popBubble(Sprite entity, BubbleSpawnerEntity.BubbleType bubbleType) {
         // Play the pop sound
         getRandomPopSound().play();
 
         // Spawn new bubbles if the one we popped is above the min size
         if(entity.getScaleX() > MINIMUM_BUBBLE_SCALE) {
-            spawnPoppedBubbles(entity);
+            spawnPoppedBubbles(entity, bubbleType);
         }
 
         // Increment the score
@@ -105,57 +103,22 @@ public class BubblePopperEntity extends BaseEntity implements IOnAreaTouchListen
     /**
      * Spawns 2 new bubbles in the place where the old bubble was
      */
-    private void spawnPoppedBubbles(Sprite oldBubble) {
-        spawnBubble(
-                oldBubble.getX(),
+    private void spawnPoppedBubbles(Sprite oldBubble, BubbleSpawnerEntity.BubbleType bubbleType) {
+        PhysicsConnector leftBubble = bubbleSpawnerEntity.spawnBubble(
+                bubbleType,
+                oldBubble.getX() - (oldBubble.getWidth() / 2),
                 oldBubble.getY(),
-                oldBubble.getScaleX() * NEW_BUBBLE_SCALE_MULTIPLIER,
-                oldBubble.getTextureRegion(),
-                -1);
-        spawnBubble(
-                oldBubble.getX() + (oldBubble.getWidth()/2),
+                oldBubble.getScaleX() * NEW_BUBBLE_SCALE_MULTIPLIER);
+
+        BubblePhysicsUtil.applyVelocity(leftBubble,-3f, -1.2f);
+
+        PhysicsConnector rightBubble = bubbleSpawnerEntity.spawnBubble(
+                bubbleType,
+                oldBubble.getX() + (oldBubble.getWidth() / 2),
                 oldBubble.getY(),
-                oldBubble.getScaleX() * NEW_BUBBLE_SCALE_MULTIPLIER,
-                oldBubble.getTextureRegion(),
-                1);
+                oldBubble.getScaleX() * NEW_BUBBLE_SCALE_MULTIPLIER);
 
-    }
-
-    // TODO: this should reuse BubbleSpawner.spawnBubble
-    /**
-     * Creates a new bubble with the same appearance, but smaller, scale of the old bubble
-     *
-     * @param x
-     * @param y
-     * @param oldBubbleTexture texture of the old bubble
-     * @param jumpDirection -1 for left +1 for right
-     */
-    private void spawnBubble(
-            float x,
-            float y,
-            float newBubbleScale,
-            ITextureRegion oldBubbleTexture,
-            int jumpDirection) {
-
-        Sprite newBubble = new Sprite(x, y, oldBubbleTexture, vertexBufferObjectManager);
-        newBubble.setScale(newBubbleScale);
-
-        // TODO: This isn't ideal. Data should be set in some standard way (factory of bubbles)
-        BubbleEntityUserData data = new BubbleEntityUserData(true, false);
-        newBubble.setUserData(data);
-        FixtureDef bubbleFixtureDef = GameFixtureDefs.BASE_BUBBLE_FIXTURE_DEF;
-        bubbleFixtureDef.setUserData(data);
-        Body newBubbleBody = PhysicsFactory.createBoxBody(physicsWorld, newBubble, BodyType.DYNAMIC, bubbleFixtureDef);
-
-        physicsWorld.registerPhysicsConnector(new PhysicsConnector(newBubble, newBubbleBody, true, true));
-        scene.registerTouchArea(newBubble);
-
-        addToScene(newBubble);
-        if(jumpDirection < 0) {
-            BubblePhysicsUtil.applyVelocity(newBubbleBody,-3f, -1.2f);
-        } else{
-            BubblePhysicsUtil.applyVelocity(newBubbleBody,3f, -1.2f);
-        }
+        BubblePhysicsUtil.applyVelocity(rightBubble, 3f, -1.2f);
     }
 
     private void increaseScore(float bubbleX, float bubbleY) {
