@@ -1,7 +1,6 @@
 package com.wack.pop2.resources.textures;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameResources;
@@ -62,10 +61,8 @@ public class GameTexturesManager extends BaseEntity {
                 BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "blue_ball.png", 300, 0));
         mTextureRegions.put(TextureId.SKULL_BALL,
                 BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "skull_ball.png", 450, 0));
-        mTextureRegions.put(TextureId.SCORE_BACKGROUND,
-                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "ScoreBack.png", 550, 0));
         mTextureRegions.put(TextureId.GAME_OVER,
-                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "gameover_fade.png", 750, 0));
+                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "gameover_fade.png", 550, 0));
 
         explosionBitmapTextureAtlas.load();
         mainBitmapTextureAtlas.load();

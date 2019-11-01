@@ -48,7 +48,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		mGameResources = GameResources.createNew(this, this);
 
 		// Initialize game resource managers
-		GameFontsManager gameFontsManager = new GameFontsManager(getFontManager(), getTextureManager(), mGameResources);
+		GameFontsManager gameFontsManager = new GameFontsManager(getFontManager(), getTextureManager(), getAssets(), mGameResources);
 		GameTexturesManager gameTexturesManager = new GameTexturesManager(this, getTextureManager(), mGameResources);
 		GameSoundsManager gameSoundsManager = new GameSoundsManager(this, getSoundManager(), mGameResources);
 		GameAnimationManager gameAnimationManager = new GameAnimationManager(mGameResources);
@@ -56,8 +56,8 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		// Create game entities
 		mLevelEntity = new LevelEntity(mGameResources);
 		mGameDifficultyEntity = new GameDifficultyEntity(mGameResources);
-		mScoreHudEntity = new ScoreHudEntity(gameFontsManager, gameTexturesManager, mGameResources);
-		mTimerHudEntity = new TimerHudEntity(gameFontsManager, gameTexturesManager, gameAnimationManager, mGameResources);
+		mScoreHudEntity = new ScoreHudEntity(gameFontsManager, mGameResources);
+		mTimerHudEntity = new TimerHudEntity(gameFontsManager, gameAnimationManager, mGameResources);
 		mGameOverSequenceEntity = new GameOverSequenceEntity(
 				this,
 				mScoreHudEntity,

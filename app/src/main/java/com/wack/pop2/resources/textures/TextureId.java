@@ -10,6 +10,5 @@ public enum TextureId {
     GREEN_BUBBLE,
     BLUE_BUBBLE,
     SKULL_BALL,
-    SCORE_BACKGROUND,
     GAME_OVER,
 }

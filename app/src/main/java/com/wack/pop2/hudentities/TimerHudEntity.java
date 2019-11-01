@@ -9,15 +9,12 @@ import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.resources.fonts.FontId;
 import com.wack.pop2.resources.fonts.GameFontsManager;
-import com.wack.pop2.resources.textures.GameTexturesManager;
-import com.wack.pop2.resources.textures.TextureId;
 
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.modifier.AlphaModifier;
 import org.andengine.entity.modifier.ParallelEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 
 /**
@@ -32,7 +29,6 @@ public class TimerHudEntity extends BaseEntity {
     private static final int MAX_TIMER_TEXT_LENGTH = 20;
 
     private GameFontsManager fontsManager;
-    private GameTexturesManager texturesManager;
     private GameAnimationManager gameAnimationManager;
 
     private TimerHandler timerHandler;
@@ -42,12 +38,10 @@ public class TimerHudEntity extends BaseEntity {
 
     public TimerHudEntity(
             GameFontsManager fontsManager,
-            GameTexturesManager texturesManager,
             GameAnimationManager gameAnimationManager,
             GameResources gameResources) {
         super(gameResources);
         this.fontsManager = fontsManager;
-        this.texturesManager = texturesManager;
         this.gameAnimationManager = gameAnimationManager;
         registerTimerUpdater();
     }
@@ -55,14 +49,7 @@ public class TimerHudEntity extends BaseEntity {
     @Override
     public void onCreateScene() {
         timerText = new Text(20,20, fontsManager.getFont(FontId.SCORE_TICKER_FONT), getFormattedTimerText(), MAX_TIMER_TEXT_LENGTH, vertexBufferObjectManager);
-        Sprite background = new Sprite(0, 0, texturesManager.getTextureRegion(TextureId.SCORE_BACKGROUND), vertexBufferObjectManager);
-        background.setHeight(timerText.getHeight()+40f);
-        background.setWidth(timerText.getWidth()+40f);
-        background.setY(0);
-        timerText.setY(background.getY()+20);
         timerText.setColor(1,0,0);
-
-        scene.attachChild(background);
         scene.attachChild(timerText);
     }
 
