@@ -94,11 +94,13 @@ public class BubbleLossDetectorEntity extends BaseEntity {
     }
 
     private void processBubbleFellBelowScreen(Fixture bubbleFixture) {
-        int lostBubbleiD = ((BubbleEntityUserData) bubbleFixture.m_userData).getId();
-        createScoreLossText(
-                getShapeFromBody(bubbleFixture.getBody()).getX(),
-                levelHeight - 50);
-        EventBus.get().sendEvent(GameEvent.DECREMENT_SCORE, new DecrementScoreEventPayload(lostBubbleiD, SCORE_DECREMENT_AMOUNT));
+        BubbleEntityUserData data = (BubbleEntityUserData)bubbleFixture.getUserData();
+        if (data.isScoreLossBubble) {
+            createScoreLossText(
+                    getShapeFromBody(bubbleFixture.getBody()).getX(),
+                    levelHeight - 50);
+            EventBus.get().sendEvent(GameEvent.DECREMENT_SCORE, new DecrementScoreEventPayload(SCORE_DECREMENT_AMOUNT));
+        }
         removeFromSceneAndCleanupPhysics(bubbleFixture.getBody());
     }
 

@@ -25,7 +25,7 @@ import org.andengine.entity.text.Text;
  */
 public class TimerHudEntity extends BaseEntity {
 
-    private static final int TIMER_STARTING_VALUE_SECONDS = 3;
+    private static final int TIMER_STARTING_VALUE_SECONDS = 120;
     private static final int TIMER_DECREMENT_INTERVAL_SECONDS = 1;
     private static final int COUNT_DOWN_THRESHOLD_SECONDS = 10;
 
