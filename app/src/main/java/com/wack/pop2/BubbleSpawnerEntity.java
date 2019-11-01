@@ -44,10 +44,17 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
     }
 
     private static final float BUBBLE_SPAWN_INTERVAL = 5f;
-
     private GameTexturesManager texturesManager;
-
     private int bubbleSpawnMultiplier = 1;
+    private TimerHandler bubbleSpawnTimerHandler = new TimerHandler(
+            BUBBLE_SPAWN_INTERVAL,
+            true,
+            new ITimerCallback() {
+                @Override
+                public void onTimePassed(TimerHandler pTimerHandler) {
+                    spawnBubbles(bubbleSpawnMultiplier);
+                }
+            });
 
     public BubbleSpawnerEntity(GameTexturesManager texturesManager, GameResources gameResources) {
         super(gameResources);
@@ -57,16 +64,13 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
     @Override
     public void onCreateScene() {
         EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this);
-        engine.registerUpdateHandler(
-                new TimerHandler(
-                        BUBBLE_SPAWN_INTERVAL,
-                    true,
-                    new ITimerCallback() {
-                        @Override
-                        public void onTimePassed(TimerHandler pTimerHandler) {
-                            spawnBubbles(bubbleSpawnMultiplier);
-                        }
-                    }));
+        engine.registerUpdateHandler(bubbleSpawnTimerHandler);
+    }
+
+    @Override
+    public void onDestroy() {
+        engine.unregisterUpdateHandler(bubbleSpawnTimerHandler);
+        EventBus.get().unSubscribe(GameEvent.DIFFICULTY_CHANGE, this);
     }
 
     private void spawnBubbles(int bubbleQuantity) {

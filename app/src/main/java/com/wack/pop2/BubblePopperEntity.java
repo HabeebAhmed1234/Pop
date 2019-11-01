@@ -78,10 +78,11 @@ public class BubblePopperEntity extends BaseEntity implements IOnAreaTouchListen
         return false;
     }
 
-    private void triggerGameOverExplosion(Sprite entity) {
+    private void triggerGameOverExplosion(Sprite skullBubble) {
         EventBus.get().sendEvent(
                 GameEvent.GAME_OVER_ON_EXPLOSION_EVENT,
-                new GameOverExplosionEventPayload(entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight(), entity.getScaleX()));
+                new GameOverExplosionEventPayload(skullBubble.getX(), skullBubble.getY(), skullBubble.getWidth(), skullBubble.getHeight(), skullBubble.getScaleX()));
+        removeFromSceneAndCleanupPhysics(skullBubble);
     }
 
     private void popBubble(Sprite entity, BubbleSpawnerEntity.BubbleType bubbleType) {
@@ -97,7 +98,7 @@ public class BubblePopperEntity extends BaseEntity implements IOnAreaTouchListen
         increaseScore(entity.getX(), entity.getY());
 
         // Remove the popped bubble
-        removeFromScene(entity);
+        removeFromSceneAndCleanupPhysics(entity);
     }
 
     /**

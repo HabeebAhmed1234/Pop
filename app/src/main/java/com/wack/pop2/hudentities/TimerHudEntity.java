@@ -25,7 +25,7 @@ import org.andengine.entity.text.Text;
  */
 public class TimerHudEntity extends BaseEntity {
 
-    private static final int TIMER_STARTING_VALUE_SECONDS = 120;
+    private static final int TIMER_STARTING_VALUE_SECONDS = 3;
     private static final int TIMER_DECREMENT_INTERVAL_SECONDS = 1;
     private static final int COUNT_DOWN_THRESHOLD_SECONDS = 10;
 
@@ -35,6 +35,7 @@ public class TimerHudEntity extends BaseEntity {
     private GameTexturesManager texturesManager;
     private GameAnimationManager gameAnimationManager;
 
+    private TimerHandler timerHandler;
 
     private Text timerText;
     private int timerValue = TIMER_STARTING_VALUE_SECONDS;
@@ -65,12 +66,17 @@ public class TimerHudEntity extends BaseEntity {
         scene.attachChild(timerText);
     }
 
+    @Override
+    public void onDestroy() {
+        engine.unregisterUpdateHandler(timerHandler);
+    }
+
     private String getFormattedTimerText() {
         return "Timer: " + timerValue;
     }
 
     private void registerTimerUpdater() {
-        engine.registerUpdateHandler(new TimerHandler(TIMER_DECREMENT_INTERVAL_SECONDS, true, new ITimerCallback() {
+        timerHandler = new TimerHandler(TIMER_DECREMENT_INTERVAL_SECONDS, true, new ITimerCallback() {
             @Override
             public void onTimePassed(TimerHandler pTimerHandler) {
                 // Update timer text
@@ -82,7 +88,8 @@ public class TimerHudEntity extends BaseEntity {
                 // Decrement the timer
                 timerValue -= TIMER_DECREMENT_INTERVAL_SECONDS;
             }
-        }));
+        });
+        engine.registerUpdateHandler(timerHandler);
     }
 
     private void maybeFireEventForGameTimedOut() {

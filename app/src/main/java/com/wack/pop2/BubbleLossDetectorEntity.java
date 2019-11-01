@@ -39,6 +39,23 @@ public class BubbleLossDetectorEntity extends BaseEntity {
     private final GameFontsManager fontsManager;
     private final GameAnimationManager animationManager;
 
+    private final ContactListener contactListener = new ContactListener() {
+        @Override
+        public void beginContact(Contact contact) {}
+
+        @Override
+        public void endContact(Contact contact) {
+            if (isBubbleAndFloorContact(contact)) {
+                processBubbleFellBelowScreen(getBubbleFixture(contact));
+            }
+        }
+
+        @Override
+        public void preSolve(Contact contact, Manifold oldManifold) {}
+        @Override
+        public void postSolve(Contact contact, ContactImpulse impulse) {}
+    };
+
     public BubbleLossDetectorEntity(GameFontsManager fontsManager, GameAnimationManager animationManager, GameResources gameResources) {
         super(gameResources);
         this.fontsManager = fontsManager;
@@ -52,27 +69,13 @@ public class BubbleLossDetectorEntity extends BaseEntity {
         FixtureDef floorFixtureDef = FLOOR_SENSOR_FIXTURE_DEF;
         floorFixtureDef.setUserData(new FloorEntityUserData());
         PhysicsFactory.createBoxBody(physicsWorld, floorDetector, BodyType.STATIC, floorFixtureDef);
-        physicsWorld.setContactListener(getContactListener());
+        physicsWorld.setContactListener(contactListener);
 
     }
 
-    private ContactListener getContactListener() {
-        return new ContactListener() {
-            @Override
-            public void beginContact(Contact contact) {}
-
-            @Override
-            public void endContact(Contact contact) {
-                if (isBubbleAndFloorContact(contact)) {
-                    processBubbleFellBelowScreen(getBubbleFixture(contact));
-                }
-            }
-
-            @Override
-            public void preSolve(Contact contact, Manifold oldManifold) {}
-            @Override
-            public void postSolve(Contact contact, ContactImpulse impulse) {}
-        };
+    @Override
+    public void onDestroy() {
+        physicsWorld.setContactListener(null);
     }
 
     private boolean isBubbleAndFloorContact(Contact contact) {
@@ -91,11 +94,11 @@ public class BubbleLossDetectorEntity extends BaseEntity {
     }
 
     private void processBubbleFellBelowScreen(Fixture bubbleFixture) {
-        Log.d("asdasd", "bubble fell below screen " + ((BubbleEntityUserData) bubbleFixture.m_userData).getId());
+        int lostBubbleiD = ((BubbleEntityUserData) bubbleFixture.m_userData).getId();
         createScoreLossText(
                 getShapeFromBody(bubbleFixture.getBody()).getX(),
                 levelHeight - 50);
-        EventBus.get().sendEvent(GameEvent.DECREMENT_SCORE, new DecrementScoreEventPayload(SCORE_DECREMENT_AMOUNT));
+        EventBus.get().sendEvent(GameEvent.DECREMENT_SCORE, new DecrementScoreEventPayload(lostBubbleiD, SCORE_DECREMENT_AMOUNT));
         removeFromSceneAndCleanupPhysics(bubbleFixture.getBody());
     }
 

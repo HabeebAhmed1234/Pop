@@ -33,11 +33,12 @@ public class ScoreHudEntity extends BaseEntity implements EventBus.Subscriber {
         super(gameResources);
         this.fontsManager = fontsManager;
         this.texturesManager = texturesManager;
-        EventBus.get().subscribe(GameEvent.INCREMENT_SCORE, this).subscribe(GameEvent.DECREMENT_SCORE, this);
     }
 
     @Override
     public void onCreateScene() {
+        EventBus.get().subscribe(GameEvent.INCREMENT_SCORE, this).subscribe(GameEvent.DECREMENT_SCORE, this);
+
         scoreText = new Text(20, 20, fontsManager.getFont(FontId.SCORE_TICKER_FONT), "Score: - - - - -", "Score: XXXXX".length(), vertexBufferObjectManager);
 
         //set score background
@@ -50,6 +51,11 @@ public class ScoreHudEntity extends BaseEntity implements EventBus.Subscriber {
 
         scene.attachChild(scorebackground);
         scene.attachChild(scoreText);
+    }
+
+    @Override
+    public void onDestroy() {
+        EventBus.get().unSubscribe(GameEvent.INCREMENT_SCORE, this).unSubscribe(GameEvent.DECREMENT_SCORE, this);
     }
 
     public int getScore() {

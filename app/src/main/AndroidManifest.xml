@@ -21,7 +21,7 @@
 
         <activity android:name=".GameActivity"></activity>
 
-        <activity android:name=".GameOverScreen"></activity>
+        <activity android:name=".GameOverActivity"></activity>
 
         <activity android:name=".ShakeCamera"></activity>
 

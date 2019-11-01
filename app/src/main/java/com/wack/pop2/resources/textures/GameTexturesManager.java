@@ -32,7 +32,6 @@ public class GameTexturesManager extends BaseEntity {
     }
 
     public ITextureRegion getTextureRegion(TextureId textureId) {
-        Log.d("asdasd", "getTextureRegion " + textureId);
         if (!mTextureRegions.containsKey(textureId)) {
             throw new IllegalArgumentException("Texture " + textureId + " does not exist in GameTexturesManager");
         }

@@ -1,9 +1,7 @@
 package com.wack.pop2;
 
 import android.content.Context;
-import android.content.Intent;
 import android.opengl.GLES20;
-import android.os.Bundle;
 
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;
@@ -78,6 +76,12 @@ public class GameOverSequenceEntity extends BaseEntity {
         EventBus.get().subscribe(GameEvent.GAME_TIMEOUT_EVENT, gameOverTimeoutSubscriber);
     }
 
+    @Override
+    public void onDestroy() {
+        EventBus.get().unSubscribe(GameEvent.GAME_OVER_ON_EXPLOSION_EVENT, gameOverExplosionSubscriber);
+        EventBus.get().unSubscribe(GameEvent.GAME_TIMEOUT_EVENT, gameOverTimeoutSubscriber);
+    }
+
     private void startGameOverEffectAnimation() {
         animationManager.startModifier(
                 gameOverFadeRedEffect,
@@ -110,11 +114,7 @@ public class GameOverSequenceEntity extends BaseEntity {
     }
 
     private void onGameover() {
-        Intent intent = new Intent(context, GameOverScreen.class);
-        Bundle b = new Bundle();
-        b.putInt("Score", scoreHudEntity.getScore());
-        intent.putExtras(b);
-        context.startActivity(intent);
+        context.startActivity(GameOverActivity.newIntent(context, scoreHudEntity.getScore()));
         hostActivity.finish();
     }
 }

@@ -51,6 +51,9 @@ public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCa
     @Override
     public void onCreateScene() { }
 
+    @Override
+    public void onDestroy() { }
+
     protected void addToScene(IEntity entity) {
         scene.attachChild(entity);
     }

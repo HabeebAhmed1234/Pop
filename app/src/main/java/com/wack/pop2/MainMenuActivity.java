@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainMenuActivity extends AppCompatActivity {
+
+    public static Intent newIntent(Context context) {
+        return new Intent(context, MainMenuActivity.class);
+    }
 
     private ValueAnimator logoAnimator;
 
@@ -38,13 +43,10 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     private void startNewGame() {
-        Intent intent = new Intent(MainMenuActivity.this, GameActivity.class);
-        Bundle b = new Bundle();
-        b.putInt("Difficulty", ((GlobalVariables)getApplicationContext()).getDifficulty());
-        intent.putExtras(b);
-        startActivity(intent);
+        startActivity(GameActivity.newIntent(this));
         this.finish();
     }
+
     private void  quitGame() {
         this.finish();
     }

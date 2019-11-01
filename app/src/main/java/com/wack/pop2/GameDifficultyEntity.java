@@ -27,6 +27,11 @@ public class GameDifficultyEntity extends BaseEntity implements EventBus.Subscri
     }
 
     @Override
+    public void onDestroy() {
+        EventBus.get().unSubscribe(GameEvent.SCORE_CHANGED, this);
+    }
+
+    @Override
     public void onEvent(GameEvent event, EventPayload payload) {
         if (event == GameEvent.SCORE_CHANGED) {
             ScoreChangeEventPayload scoreChangeEventPayload = (ScoreChangeEventPayload) payload;

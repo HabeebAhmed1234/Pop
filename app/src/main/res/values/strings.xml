@@ -4,4 +4,5 @@
     <string name="new_game_text">New Game</string>
     <string name="options_text">Options</string>
     <string name="quit_text">Quit</string>
+    <string name="your_score_title">Your score:</string>
 </resources>

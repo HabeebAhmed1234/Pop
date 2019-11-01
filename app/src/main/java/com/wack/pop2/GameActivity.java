@@ -1,5 +1,6 @@
 package com.wack.pop2;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -15,7 +16,6 @@ import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.util.FPSLogger;
 import org.andengine.input.sensor.acceleration.AccelerationData;
 import org.andengine.input.sensor.acceleration.IAccelerationListener;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
@@ -33,6 +33,10 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	private BubbleSpawnerEntity mBubbleSpawnerEntity;
 	private BubbleLossDetectorEntity mBubbleLossDetectorEntity;
 	private BubblePopperEntity mBubblePopperEntity;
+
+	public static Intent newIntent(Context context) {
+		return new Intent(context, GameActivity.class);
+	}
 
 	@Override
 	protected void onCreate(Bundle pSavedInstanceState) {
@@ -89,9 +93,6 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 	@Override
 	public Scene onCreateScene() {
-		// Andengine setup code
-		mEngine.registerUpdateHandler(new FPSLogger());
-
 		GameLifeCycleCalllbackManager.getInstance().onCreateScene();
 		return mGameResources.scene;
 	}
@@ -99,8 +100,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	@Override
 	public boolean onKeyDown(final int pKeyCode, final KeyEvent pEvent) {
 		if(pKeyCode == KeyEvent.KEYCODE_BACK && pEvent.getAction() == KeyEvent.ACTION_DOWN) {
-			Intent intent = new Intent(GameActivity.this, MainMenuActivity.class);
-			startActivity(intent);
+			startActivity(MainMenuActivity.newIntent(this));
 			finish();
 			return true;
 		}
@@ -117,6 +117,14 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	public void onPauseGame() {
 		super.onPauseGame();
 		this.disableAccelerationSensor();
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		GameLifeCycleCalllbackManager.getInstance().onDestroy();
+		EventBus.destroy();
+		GameLifeCycleCalllbackManager.destroy();
 	}
 
 	@Override

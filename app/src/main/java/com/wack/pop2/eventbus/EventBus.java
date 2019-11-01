@@ -29,6 +29,14 @@ public class EventBus {
         sEventBus = new EventBus();
     }
 
+    public static void destroy() {
+        if (sEventBus == null) {
+            throw new IllegalStateException(
+                    "Cannot destroy event bus when it doesn't exist. Create a new one first");
+        }
+        sEventBus = null;
+    }
+
     public static EventBus get() {
         if (sEventBus == null) {
             throw new IllegalStateException("Cannot get an instance of event bus. No event bus initialized");

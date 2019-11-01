@@ -24,6 +24,11 @@ public class GameLifeCycleCalllbackManager {
          * Do all the init work here like registering listeners and setting up the level
          */
         void onCreateScene();
+
+        /**
+         * Cleanup all resources here
+         */
+        void onDestroy();
     }
 
     private final Set<BaseEntity> gameEntities = new HashSet<>();
@@ -47,6 +52,14 @@ public class GameLifeCycleCalllbackManager {
         return sInstance;
     }
 
+    public static void destroy() {
+        if (sInstance == null) {
+            throw new IllegalStateException("Cannot destroy GameLifeCycleCalllbackManager if it doesn't exist. Make a new one first");
+        }
+        sInstance = null;
+
+    }
+
     public void registerGameEntity(BaseEntity baseEntity) {
         gameEntities.add(baseEntity);
     }
@@ -63,6 +76,13 @@ public class GameLifeCycleCalllbackManager {
         Iterator<BaseEntity> it = gameEntities.iterator();
         while (it.hasNext()) {
             it.next().onCreateScene();
+        }
+    }
+
+    public void onDestroy() {
+        Iterator<BaseEntity> it = gameEntities.iterator();
+        while (it.hasNext()) {
+            it.next().onDestroy();
         }
     }
 }
