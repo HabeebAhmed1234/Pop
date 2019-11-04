@@ -1,7 +1,6 @@
 package com.wack.pop2;
 
 import android.opengl.GLES20;
-import android.util.Log;
 
 import com.wack.pop2.eventbus.DecrementScoreEventPayload;
 import com.wack.pop2.eventbus.EventBus;
@@ -18,13 +17,9 @@ import org.andengine.entity.modifier.ParallelEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.text.Text;
-import org.jbox2d.callbacks.ContactImpulse;
-import org.jbox2d.callbacks.ContactListener;
-import org.jbox2d.collision.Manifold;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
-import org.jbox2d.dynamics.contacts.Contact;
 
 import static com.wack.pop2.GameFixtureDefs.FLOOR_SENSOR_FIXTURE_DEF;
 
@@ -38,28 +33,27 @@ public class BubbleLossDetectorEntity extends BaseEntity {
 
     private final GameFontsManager fontsManager;
     private final GameAnimationManager animationManager;
+    private final GamePhysicsContactsEntity physicsContactsEntity;
 
-    private final ContactListener contactListener = new ContactListener() {
+    private final GamePhysicsContactsEntity.GameContactListener contactListener = new GamePhysicsContactsEntity.GameContactListener() {
         @Override
-        public void beginContact(Contact contact) {}
+        public void onBeginContact(Fixture fixture1, Fixture fixture2) {}
 
         @Override
-        public void endContact(Contact contact) {
-            if (isBubbleAndFloorContact(contact)) {
-                processBubbleFellBelowScreen(getBubbleFixture(contact));
-            }
+        public void onEndContact(Fixture fixture1, Fixture fixture2) {
+            processBubbleFellBelowScreen(getBubbleFixture(fixture1, fixture2));
         }
-
-        @Override
-        public void preSolve(Contact contact, Manifold oldManifold) {}
-        @Override
-        public void postSolve(Contact contact, ContactImpulse impulse) {}
     };
 
-    public BubbleLossDetectorEntity(GameFontsManager fontsManager, GameAnimationManager animationManager, GameResources gameResources) {
+    public BubbleLossDetectorEntity(
+            GameFontsManager fontsManager,
+            GameAnimationManager animationManager,
+            GamePhysicsContactsEntity physicsContactsEntity,
+            GameResources gameResources) {
         super(gameResources);
         this.fontsManager = fontsManager;
         this.animationManager = animationManager;
+        this.physicsContactsEntity = physicsContactsEntity;
     }
 
     @Override
@@ -69,25 +63,19 @@ public class BubbleLossDetectorEntity extends BaseEntity {
         FixtureDef floorFixtureDef = FLOOR_SENSOR_FIXTURE_DEF;
         floorFixtureDef.setUserData(new FloorEntityUserData());
         PhysicsFactory.createBoxBody(physicsWorld, floorDetector, BodyType.STATIC, floorFixtureDef);
-        physicsWorld.setContactListener(contactListener);
-
+        physicsContactsEntity.addContactListener(BubbleEntityUserData.class, FloorEntityUserData.class, contactListener);
     }
 
     @Override
     public void onDestroy() {
-        physicsWorld.setContactListener(null);
+        physicsContactsEntity.removeContactListener(BubbleEntityUserData.class, FloorEntityUserData.class, contactListener);
     }
 
-    private boolean isBubbleAndFloorContact(Contact contact) {
-        return (FixtureDefDataUtil.isBubbleFixtureDefData(contact.m_fixtureA) || FixtureDefDataUtil.isBubbleFixtureDefData(contact.m_fixtureB))
-           &&  (FixtureDefDataUtil.isFloorFixtureDefData(contact.m_fixtureA) || FixtureDefDataUtil.isFloorFixtureDefData(contact.m_fixtureB));
-    }
-
-    private Fixture getBubbleFixture(Contact contact) {
-        if (FixtureDefDataUtil.isBubbleFixtureDefData(contact.m_fixtureA)) {
-            return contact.m_fixtureA;
-        } else if (FixtureDefDataUtil.isBubbleFixtureDefData(contact.m_fixtureB)) {
-            return contact.m_fixtureB;
+    private Fixture getBubbleFixture(Fixture f1, Fixture f2) {
+        if (FixtureDefDataUtil.isBubbleFixtureDefData(f1)) {
+            return f1;
+        } else if (FixtureDefDataUtil.isBubbleFixtureDefData(f2)) {
+            return f2;
         } else {
             throw new IllegalStateException("neither of the fixtures are bubbles!");
         }

@@ -52,6 +52,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		GameTexturesManager gameTexturesManager = new GameTexturesManager(this, getTextureManager(), mGameResources);
 		GameSoundsManager gameSoundsManager = new GameSoundsManager(this, getSoundManager(), mGameResources);
 		GameAnimationManager gameAnimationManager = new GameAnimationManager(mGameResources);
+		GamePhysicsContactsEntity gamePhysicsContactsEntity = new GamePhysicsContactsEntity(mGameResources);
 
 		// Create game entities
 		mLevelEntity = new LevelEntity(mGameResources);
