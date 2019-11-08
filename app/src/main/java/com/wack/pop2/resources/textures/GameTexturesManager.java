@@ -63,6 +63,9 @@ public class GameTexturesManager extends BaseEntity {
                 BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "skull_ball.png", 450, 0));
         mTextureRegions.put(TextureId.GAME_OVER,
                 BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "gameover_fade.png", 550, 0));
+        mTextureRegions.put(TextureId.CHAIN_LINK,
+                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "chain_link.png", 650, 0));
+
 
         explosionBitmapTextureAtlas.load();
         mainBitmapTextureAtlas.load();

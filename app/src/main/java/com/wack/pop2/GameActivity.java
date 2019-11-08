@@ -33,6 +33,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	private BubbleSpawnerEntity mBubbleSpawnerEntity;
 	private BubbleLossDetectorEntity mBubbleLossDetectorEntity;
 	private BubblePopperEntity mBubblePopperEntity;
+	private BallAndChainManagerEntity mBallAndChainManagerEntity;
 
 	public static Intent newIntent(Context context) {
 		return new Intent(context, GameActivity.class);
@@ -68,8 +69,9 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 				camera,
 				mGameResources);
 		mBubbleSpawnerEntity = new BubbleSpawnerEntity(gameTexturesManager, mGameResources);
-		mBubbleLossDetectorEntity = new BubbleLossDetectorEntity(gameFontsManager, gameAnimationManager, mGameResources);
+		mBubbleLossDetectorEntity = new BubbleLossDetectorEntity(gameFontsManager, gameAnimationManager, gamePhysicsContactsEntity, mGameResources);
 		mBubblePopperEntity = new BubblePopperEntity(gameFontsManager, gameSoundsManager, gameAnimationManager, mBubbleSpawnerEntity, mGameResources);
+		mBallAndChainManagerEntity = new BallAndChainManagerEntity(gameTexturesManager, mGameResources);
 	}
 
 	@Override

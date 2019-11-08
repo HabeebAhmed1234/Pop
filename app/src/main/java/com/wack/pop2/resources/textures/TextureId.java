@@ -11,4 +11,5 @@ public enum TextureId {
     BLUE_BUBBLE,
     SKULL_BALL,
     GAME_OVER,
+    CHAIN_LINK,
 }
