@@ -41,7 +41,7 @@ public class GameResources {
      */
     public static GameResources createNew(BaseGameActivity baseGameActivity, HostActivityInterface hostActivity) {
         Scene scene = new Scene();
-        PhysicsWorld physicsWorld = new PhysicsWorld(new Vec2(0, SensorManager.GRAVITY_EARTH), false);
+        PhysicsWorld physicsWorld = new PhysicsWorld(new Vec2(0, SensorManager.GRAVITY_EARTH * 5), false);
         scene.registerUpdateHandler(physicsWorld);
         return new GameResources(scene, physicsWorld, baseGameActivity.getVertexBufferObjectManager(), baseGameActivity.getEngine(), hostActivity);
     }

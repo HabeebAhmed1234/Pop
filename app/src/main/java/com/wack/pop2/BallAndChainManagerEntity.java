@@ -26,6 +26,7 @@ import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import androidx.annotation.Nullable;
 
 import static com.wack.pop2.GameFixtureDefs.BASE_CHAIN_LINK_FIXTURE_DEF;
+import static com.wack.pop2.GameFixtureDefs.BASE_WRECKING_BALL_DEF;
 
 /**
  * Manages the ball and chain tool that can be used to pop bubbles by the user swinging around a
@@ -36,9 +37,8 @@ public class BallAndChainManagerEntity extends BaseEntity implements IOnSceneTou
     private GameTexturesManager texturesManager;
     private ScreenUtils.ScreenSize screenSize;
 
-    private MouseJoint mouseJoint;
-    private Body pointerBody;
     private Pair<Sprite, Body> lastChainLink;
+    private MouseJoint mouseJoint;
 
     public BallAndChainManagerEntity(
             GameTexturesManager texturesManager,
@@ -51,19 +51,39 @@ public class BallAndChainManagerEntity extends BaseEntity implements IOnSceneTou
     @Override
     public void onCreateScene() {
         createBallAndChain();
-
-        pointerBody = physicsWorld.createBody(new BodyDef());
         scene.setOnSceneTouchListener(this);
     }
 
     private void createBallAndChain() {
-        final float anchorPercentFromEdge = 0.25f;
-        final int numChainLinks = 5;
-        Pair<Sprite, Body> previousChainLink = createChainLinkAndJoin(null, null, anchorPercentFromEdge);
+        final float anchorPercentFromEdge = 0.05f;
+        final int numChainLinks = 10;
+        Pair<Sprite, Body> wreckingBall = createBall();
+        Pair<Sprite, Body> previousChainLink = createChainLinkAndJoin(wreckingBall.first, wreckingBall.second, anchorPercentFromEdge, false);
         for (int i = 1 ; i < numChainLinks ; i++) {
-            previousChainLink = createChainLinkAndJoin(previousChainLink.first, previousChainLink.second, anchorPercentFromEdge);
+            previousChainLink = createChainLinkAndJoin(previousChainLink.first, previousChainLink.second, anchorPercentFromEdge, i == numChainLinks - 1);
         }
         lastChainLink = previousChainLink;
+
+        mouseJoint = createMouseJoint(lastChainLink.first, lastChainLink.second);
+    }
+
+    private Pair<Sprite, Body> createBall() {
+        ITextureRegion ballTexture = texturesManager.getTextureRegion(TextureId.GREEN_BUBBLE);
+        float x = 0;
+        float y = screenSize.height / 2;
+        final Sprite ballSprite = new Sprite(
+                x,
+                y,
+                ballTexture,
+                vertexBufferObjectManager);
+        FixtureDef ballFixtureDef = BASE_WRECKING_BALL_DEF;
+        Body ballBody = PhysicsFactory.createBoxBody(physicsWorld, ballSprite, BodyType.DYNAMIC, ballFixtureDef);
+
+        PhysicsConnector chainLinkPhysicsConnector3 = new PhysicsConnector(ballSprite, ballBody, true, true);
+
+        physicsWorld.registerPhysicsConnector(chainLinkPhysicsConnector3);
+        addToScene(ballSprite);
+        return new Pair<>(ballSprite, ballBody);
     }
 
     /**
@@ -74,7 +94,8 @@ public class BallAndChainManagerEntity extends BaseEntity implements IOnSceneTou
     private Pair<Sprite, Body> createChainLinkAndJoin(
             @Nullable Sprite previousChainLinkSprite,
             @Nullable Body previousChainLinkBody,
-            float jointPercentFromEdge) {
+            float jointPercentFromEdge,
+            boolean isLastLink) {
 
         ITextureRegion chainLinkTexture = texturesManager.getTextureRegion(TextureId.CHAIN_LINK);
         float previousChainLinkX = previousChainLinkSprite != null ? previousChainLinkSprite.getX() : screenSize.width / 2 - chainLinkTexture.getWidth() / 2;
@@ -97,8 +118,7 @@ public class BallAndChainManagerEntity extends BaseEntity implements IOnSceneTou
 
         FixtureDef chainLinkFixtureDef3 = BASE_CHAIN_LINK_FIXTURE_DEF;
 
-        Body chainLinkBody = PhysicsFactory.createBoxBody(physicsWorld, chainLinkSprite, BodyType.DYNAMIC, chainLinkFixtureDef3);
-        chainLinkBody.setGravityScale(0.1f);
+        Body chainLinkBody = PhysicsFactory.createBoxBody(physicsWorld, chainLinkSprite, isLastLink ? BodyType.DYNAMIC : BodyType.DYNAMIC, chainLinkFixtureDef3);
         PhysicsConnector chainLinkPhysicsConnector3 = new PhysicsConnector(chainLinkSprite, chainLinkBody, true, true);
 
         physicsWorld.registerPhysicsConnector(chainLinkPhysicsConnector3);
@@ -118,41 +138,40 @@ public class BallAndChainManagerEntity extends BaseEntity implements IOnSceneTou
     }
 
     @Override
-    public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
-        switch(pSceneTouchEvent.getAction()) {
-            case TouchEvent.ACTION_DOWN:
-                mouseJoint = createMouseJoint(lastChainLink.first, lastChainLink.second);
-                break;
+    public boolean onSceneTouchEvent(Scene pScene, TouchEvent touchEvent) {
+        switch(touchEvent.getAction()) {
             case TouchEvent.ACTION_UP:
-                return true;
+                return false;
+            case TouchEvent.ACTION_DOWN:
             case TouchEvent.ACTION_MOVE:
-                if(mouseJoint != null) {
-                    final Vec2 vec = Vec2Pool.obtain(pSceneTouchEvent.getX() / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT, pSceneTouchEvent.getY() / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
-                    mouseJoint.setTarget(vec);
-                    Vec2Pool.recycle(vec);
-                }
+                setTarget(touchEvent);
                 return true;
         }
         return false;
     }
 
-    public MouseJoint createMouseJoint(final Sprite lastChainLink, final Body lastChainLinkBody) {
+    private void setTarget(TouchEvent touchEvent) {
+        if (mouseJoint == null) return;
+        final Vec2 vec = Vec2Pool.obtain(touchEvent.getX() / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT, touchEvent.getY() / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
+        mouseJoint.setTarget(vec);
+    }
+
+
+    public MouseJoint createMouseJoint(final Sprite sprite, final Body body) {
         final MouseJointDef mouseJointDef = new MouseJointDef();
 
-        final Vec2 centerChain = Vec2Pool.obtain(
-                (lastChainLink.getX() + lastChainLink.getWidth() / 2) / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT,
-                (lastChainLink.getY() + lastChainLink.getHeight() / 2) / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
+        final Vec2 localPoint = new Vec2(
+                (sprite.getX() + sprite.getWidth() / 2) / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT,
+                (sprite.getY() + sprite.getHeight() / 2) / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
 
-        pointerBody.setTransform(centerChain, 0);
-
-        mouseJointDef.bodyA = pointerBody;
-        mouseJointDef.bodyB = lastChainLinkBody;
-        mouseJointDef.dampingRatio = 0.1f;
-        mouseJointDef.frequencyHz = 60;
-        mouseJointDef.maxForce = 10000.0f;
+        mouseJointDef.bodyA = physicsWorld.createBody(new BodyDef());
+        mouseJointDef.bodyB = body;
+        mouseJointDef.dampingRatio = 0f;
+        mouseJointDef.frequencyHz = 100;
+        mouseJointDef.maxForce = (8000.0f * body.getMass());
         mouseJointDef.collideConnected = true;
 
-        mouseJointDef.target.set(centerChain);
+        mouseJointDef.target.set(localPoint);
 
         return (MouseJoint) physicsWorld.createJoint(mouseJointDef);
     }
