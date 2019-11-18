@@ -83,12 +83,12 @@ public class BubbleLossDetectorEntity extends BaseEntity {
     }
 
     private void createScoreLossText(float x, float y) {
-        final Text scoreminus5Text = new Text(x, y, fontsManager.getFont(FontId.SCORE_TICKER_FONT), "-5", vertexBufferObjectManager);
+        /*final Text scoreminus5Text = new Text(x, y, fontsManager.getFont(FontId.SCORE_TICKER_FONT), "-5", vertexBufferObjectManager);
         scoreminus5Text.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
         scoreminus5Text.setColor(1, 0, 0);
         addToScene(scoreminus5Text);
         animationManager.startModifier(scoreminus5Text, new ParallelEntityModifier(
                 new ScaleModifier(1.2f, 0.1f, 1.5f),
-                new AlphaModifier(1.5f, 1f, 0f)));
+                new AlphaModifier(1.5f, 1f, 0f)));*/
     }
 }

@@ -64,9 +64,11 @@ public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCa
 
     protected void removeFromScene(Body body) {
         PhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager().findPhysicsConnectorByBody(body);
-        physicsWorld.unregisterPhysicsConnector(physicsConnector);
+        if (physicsConnector != null) {
+            physicsWorld.unregisterPhysicsConnector(physicsConnector);
+            removeFromSceneInternal(physicsConnector.getShape());
+        }
         physicsWorld.destroyBody(body);
-        removeFromSceneInternal(physicsConnector.getShape());
     }
 
     protected void removeFromScene(IShape sprite) {

@@ -64,7 +64,7 @@ public class BubblePopperEntity extends BaseEntity {
         }
 
         // Increment the score
-        increaseScore(oldBubbleScenePosition.x, oldBubbleScenePosition.y);
+        //increaseScore(oldBubbleScenePosition.x, oldBubbleScenePosition.y);
     }
 
     /**

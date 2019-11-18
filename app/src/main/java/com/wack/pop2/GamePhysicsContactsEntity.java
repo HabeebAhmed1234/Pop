@@ -48,6 +48,7 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
                 }
                 notifyEndContact(listeners, contact.m_fixtureA, contact.m_fixtureB);
             }
+            pendingEndContacts.clear();
         }
     }
 
@@ -77,12 +78,16 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
 
     @Override
     public void beginContact(Contact contact) {
-        pendingBeginContacts.add(contact);
+        if (isContactListenedTo(contact)) {
+            pendingBeginContacts.add(contact);
+        }
     }
 
     @Override
     public void endContact(Contact contact) {
-        pendingEndContacts.add(contact);
+        if (isContactListenedTo(contact)) {
+            pendingEndContacts.add(contact);
+        }
     }
 
     @Override
@@ -90,6 +95,7 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
 
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {}
+
 
     public void addContactListener(
             Class<? extends BaseEntityUserData> entityType1,
@@ -114,6 +120,13 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
         } else {
             throw new IllegalStateException("gameContactListenerMap does not contain a listener for these types");
         }
+    }
+
+    /**
+     * Returns true if the given contact is one that we are listening to. If not then discard it.
+     */
+    private boolean isContactListenedTo(Contact contact) {
+        return gameContactListenerMap.containsKey(createKeyFromContact(contact));
     }
 
     private void notifyBeginContact(Set<GameContactListener> listeners, Fixture a, Fixture b) {
@@ -141,15 +154,17 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
      */
     @Nullable
     private Set<GameContactListener> getListenersFromContact(Contact contact) {
+        return gameContactListenerMap.get(createKeyFromContact(contact));
+    }
+
+    private Set<Class<? extends BaseEntityUserData>> createKeyFromContact(Contact contact) {
         if (contact.m_fixtureA.m_userData == null || contact.m_fixtureB.m_userData == null) {
             Log.w("GamePhysicsContacts", "Collision detected between one or more null BaseUserData fixtures");
             return null;
         }
-        Set<Class<? extends BaseEntityUserData>> key = createKeyFromTypes(
+        return createKeyFromTypes(
                 (Class<BaseEntityUserData>) contact.m_fixtureA.m_userData.getClass(),
                 (Class<BaseEntityUserData>) contact.m_fixtureB.m_userData.getClass());
-
-        return gameContactListenerMap.get(key);
     }
 
     private Set<Class<? extends BaseEntityUserData>> createKeyFromTypes(
