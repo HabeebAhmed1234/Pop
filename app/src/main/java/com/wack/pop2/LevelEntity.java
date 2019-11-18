@@ -23,14 +23,17 @@ public class LevelEntity extends BaseEntity {
     public void onCreateScene() {
         final Rectangle left = new Rectangle(0, 0, 2, levelHeight, vertexBufferObjectManager);
         final Rectangle right = new Rectangle(levelWidth - 2, 0, 2, levelHeight, vertexBufferObjectManager);
+        final Rectangle bottom = new Rectangle(0, levelHeight - 2, levelWidth, 2, vertexBufferObjectManager);
         left.setAlpha(0);
         right.setAlpha(0);
 
         PhysicsFactory.createBoxBody(physicsWorld, left, BodyType.STATIC, WALL_FIXTURE_DEF);
         PhysicsFactory.createBoxBody(physicsWorld, right, BodyType.STATIC, WALL_FIXTURE_DEF);
+        PhysicsFactory.createBoxBody(physicsWorld, bottom, BodyType.STATIC, WALL_FIXTURE_DEF);
 
         scene.attachChild(left);
         scene.attachChild(right);
+        scene.attachChild(bottom);
 
         // set background color
         scene.setBackground(new Background(AndengineColor.BLACK));

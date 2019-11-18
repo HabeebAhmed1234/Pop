@@ -7,13 +7,14 @@ import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
-import com.wack.pop2.physics.PhysicsConnector;
 import com.wack.pop2.physics.PhysicsFactory;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
+import org.andengine.entity.IEntity;
+import org.andengine.entity.shape.IShape;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.jbox2d.dynamics.Body;
@@ -43,6 +44,30 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         }
     }
 
+    public enum BubbleSize {
+        LARGE(2f),
+        MEDIUM(1f),
+        SMALL(0.5f);
+
+        public final float scale;
+
+        BubbleSize(final float scale) {
+            this.scale = scale;
+        }
+
+        public BubbleSize nextPoppedSize() {
+            int nextIndex = ordinal() + 1;
+            if (nextIndex >= BubbleSize.values().length) {
+                return values()[BubbleSize.values().length - 1];
+            }
+            return values()[nextIndex];
+        }
+
+        public boolean isSmallestBubble() {
+            return ordinal() >= BubbleSize.values().length - 1;
+        }
+    }
+
     private static final float BUBBLE_SPAWN_INTERVAL = 5f;
     private GameTexturesManager texturesManager;
     private int bubbleSpawnMultiplier = 1;
@@ -52,7 +77,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
             new ITimerCallback() {
                 @Override
                 public void onTimePassed(TimerHandler pTimerHandler) {
-                    spawnBubbles(bubbleSpawnMultiplier);
+                    spawnStartingBubbles(bubbleSpawnMultiplier);
                 }
             });
 
@@ -73,36 +98,36 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         EventBus.get().unSubscribe(GameEvent.DIFFICULTY_CHANGE, this);
     }
 
-    private void spawnBubbles(int bubbleQuantity) {
+    private void spawnStartingBubbles(int bubbleQuantity) {
         int screenWidth = ScreenUtils.getSreenSize().width;
         for (int i = 0; i < bubbleQuantity; i++) {
-            PhysicsConnector physicsConnector = spawnBubble(BubbleType.random(), (int)(Math.random() * screenWidth),-200 * ( i + 1 ), (float) (Math.random()*2+1));
-            BubblePhysicsUtil.applyVelocity(physicsConnector, 0f, (float) (SensorManager.GRAVITY_EARTH * 0.3 * 2));
+            Body body = spawnBubble(BubbleType.random(), (int)(Math.random() * screenWidth),-200 * ( i + 1 ), BubbleSize.LARGE);
+            BubblePhysicsUtil.applyVelocity(body, 0f, (float) (SensorManager.GRAVITY_EARTH * 0.3 * 2));
         }
     }
 
     /**
      * Creates a bubble in the scene and returns the corresponding physics connector.
+     *
+     * returns the Body of the spawned bubble
      */
-    public PhysicsConnector spawnBubble(final BubbleType bubbleType, final float x, final float y, float scale) {
-        final BaseEntityUserData userData = getBubbleUserData(bubbleType);
+    public Body spawnBubble(final BubbleType bubbleType, final float xScene, final float yScene, BubbleSize bubbleSize) {
         //add object
         final Sprite bubbleSprite = new Sprite(
-                x,
-                y,
+                xScene,
+                yScene,
                 getBubbleTexture(bubbleType),
                 vertexBufferObjectManager);
+        final BaseEntityUserData userData = getBubbleUserData(bubbleSprite, bubbleType, bubbleSize);
         bubbleSprite.setUserData(userData);
-        bubbleSprite.setScale(scale);
+        bubbleSprite.setScale(bubbleSize.scale);
 
         final FixtureDef bubbleFixtureDef = GameFixtureDefs.BASE_BUBBLE_FIXTURE_DEF;
         bubbleFixtureDef.setUserData(userData);
         final Body body = PhysicsFactory.createCircleBody(physicsWorld, bubbleSprite, BodyType.DYNAMIC, bubbleFixtureDef);
-        final PhysicsConnector physicsConnector = new PhysicsConnector(bubbleSprite, body, true, true);
-        physicsWorld.registerPhysicsConnector(physicsConnector);
         scene.registerTouchArea(bubbleSprite);
-        addToScene(bubbleSprite);
-        return physicsConnector;
+        addToScene(bubbleSprite, body);
+        return body;
     }
 
     private ITextureRegion getBubbleTexture(BubbleType bubbleType) {
@@ -120,14 +145,14 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         throw new IllegalStateException("there is no bubble texture for bubbleType = " + bubbleType);
     }
 
-    private BaseEntityUserData getBubbleUserData(BubbleType bubbleType) {
+    private BaseEntityUserData getBubbleUserData(IShape bubbleSprite, BubbleType bubbleType, BubbleSize bubbleSize) {
         switch(bubbleType) {
             case RED:
             case GREEN:
             case BLUE:
-                return new BubbleEntityUserData(true, false, bubbleType);
+                return new BubbleEntityUserData(true, false, bubbleSize, bubbleType, bubbleSprite);
             case SKULL:
-                return new BubbleEntityUserData(false, true, bubbleType);
+                return new BubbleEntityUserData(false, true, bubbleSize, bubbleType, bubbleSprite);
         }
         throw new IllegalStateException("there is no bubble user data for bubbleType = " + bubbleType);
     }

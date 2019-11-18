@@ -23,6 +23,8 @@
  ******************************************************************************/
 package org.jbox2d.dynamics;
 
+import android.util.Log;
+
 import org.jbox2d.callbacks.ContactFilter;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.callbacks.DebugDraw;

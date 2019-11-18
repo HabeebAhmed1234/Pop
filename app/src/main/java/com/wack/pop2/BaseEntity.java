@@ -7,8 +7,8 @@ import org.andengine.engine.Engine;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.shape.IAreaShape;
 import org.andengine.entity.shape.IShape;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.jbox2d.dynamics.Body;
 
@@ -41,7 +41,6 @@ public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCa
         GameLifeCycleCalllbackManager.getInstance().registerGameEntity(this);
     }
 
-
     /**
      * NOOP all the GameCallbacks so each entitiy doesn't have to implement every callback
      */
@@ -58,28 +57,31 @@ public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCa
         scene.attachChild(entity);
     }
 
-    protected void removeFromSceneAndCleanupPhysics(Body body) {
+    protected void addToScene(IAreaShape entity, Body body) {
+        physicsWorld.registerPhysicsConnector(new PhysicsConnector(entity, body, true, true));
+        addToScene(entity);
+    }
+
+    protected void removeFromScene(Body body) {
         PhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager().findPhysicsConnectorByBody(body);
         physicsWorld.unregisterPhysicsConnector(physicsConnector);
         physicsWorld.destroyBody(body);
-        removeFromScene(physicsConnector.getShape());
+        removeFromSceneInternal(physicsConnector.getShape());
     }
 
-    protected void removeFromSceneAndCleanupPhysics(Sprite sprite) {
+    protected void removeFromScene(IShape sprite) {
         PhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager().findPhysicsConnectorByShape(sprite);
-        physicsWorld.unregisterPhysicsConnector(physicsConnector);
-        physicsWorld.destroyBody(physicsConnector.getBody());
-        removeFromScene(physicsConnector.getShape());
+        if (physicsConnector != null) {
+            physicsWorld.unregisterPhysicsConnector(physicsConnector);
+            physicsWorld.destroyBody(physicsConnector.getBody());
+        }
+        removeFromSceneInternal(sprite);
     }
 
-    protected void removeFromScene(IEntity entity) {
+    private void removeFromSceneInternal(IEntity entity) {
         if (entity instanceof ITouchArea) {
             scene.unregisterTouchArea((ITouchArea) entity);
         }
         scene.detachChild(entity);
-    }
-
-    protected IShape getShapeFromBody(Body body) {
-        return physicsWorld.getPhysicsConnectorManager().findPhysicsConnectorByBody(body).getShape();
     }
 }

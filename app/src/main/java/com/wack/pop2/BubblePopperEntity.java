@@ -6,30 +6,25 @@ import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.eventbus.GameOverExplosionEventPayload;
 import com.wack.pop2.eventbus.IncrementScoreEventPayload;
-import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
-import com.wack.pop2.physics.PhysicsConnector;
 import com.wack.pop2.resources.fonts.FontId;
 import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
 
 import org.andengine.audio.sound.Sound;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.AlphaModifier;
 import org.andengine.entity.modifier.ParallelEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
-import org.andengine.entity.scene.IOnAreaTouchListener;
-import org.andengine.entity.scene.ITouchArea;
+import org.andengine.entity.shape.IShape;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
-import org.andengine.input.touch.TouchEvent;
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
 
-public class BubblePopperEntity extends BaseEntity implements IOnAreaTouchListener {
+public class BubblePopperEntity extends BaseEntity {
 
     private static final int SCORE_INCREMENT_PER_BUBBLE_POP = 10;
-    // The smallest size a bubble can be before we don't spawn new ones in its place
-    private static final float MINIMUM_BUBBLE_SCALE = 1.2f;
-    // The size of the new bubbles when an old bubble is popped
-    private static final float NEW_BUBBLE_SCALE_MULTIPLIER = 0.5f;
 
     private GameFontsManager fontManager;
     private GameSoundsManager soundsManager;
@@ -49,86 +44,57 @@ public class BubblePopperEntity extends BaseEntity implements IOnAreaTouchListen
         this.bubbleSpawnerEntity = bubbleSpawnerEntity;
     }
 
-    @Override
-    public void onCreateScene() {
-        scene.setOnAreaTouchListener(this);
-    }
-
-    @Override
-    public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-        if(pSceneTouchEvent.isActionDown()) {
-            final Sprite entity =  (Sprite) pTouchArea;
-            if (entity.getUserData() == null) {
-                return false;
-            }
-            final Object userData = entity.getUserData();
-
-            if(userData instanceof BubbleEntityUserData) {
-                BubbleEntityUserData bubbleEntityUserData = (BubbleEntityUserData) userData;
-                if (bubbleEntityUserData.isGameOverWhenPopped) {
-                    triggerGameOverExplosion(entity);
-                    return true;
-                } else {
-                    popBubble(entity, bubbleEntityUserData.bubbleType);
-                }
-            }
-
-            return true;
-        }
-        return false;
-    }
-
-    private void triggerGameOverExplosion(Sprite skullBubble) {
+    public void triggerGameOverExplosion(Sprite skullBubble) {
         EventBus.get().sendEvent(
                 GameEvent.GAME_OVER_ON_EXPLOSION_EVENT,
                 new GameOverExplosionEventPayload(skullBubble.getX(), skullBubble.getY(), skullBubble.getWidth(), skullBubble.getHeight(), skullBubble.getScaleX()));
-        removeFromSceneAndCleanupPhysics(skullBubble);
+        removeFromScene(skullBubble);
     }
 
-    private void popBubble(Sprite entity, BubbleSpawnerEntity.BubbleType bubbleType) {
+    public void popBubble(IShape previousBubble, BubbleSpawnerEntity.BubbleSize oldBubbleSize, Vec2 oldBubbleScenePosition, BubbleSpawnerEntity.BubbleType bubbleType) {
+        // Remove the popped bubble
+        removeFromScene(previousBubble);
+
         // Play the pop sound
         getRandomPopSound().play();
 
-        // Spawn new bubbles if the one we popped is above the min size
-        if(entity.getScaleX() > MINIMUM_BUBBLE_SCALE) {
-            spawnPoppedBubbles(entity, bubbleType);
+        // Spawn new bubbles if the one we popped not the smallest bubble
+        if(!oldBubbleSize.isSmallestBubble()) {
+            spawnPoppedBubbles(oldBubbleSize, oldBubbleScenePosition, bubbleType);
         }
 
         // Increment the score
-        increaseScore(entity.getX(), entity.getY());
-
-        // Remove the popped bubble
-        removeFromSceneAndCleanupPhysics(entity);
+        increaseScore(oldBubbleScenePosition.x, oldBubbleScenePosition.y);
     }
 
     /**
      * Spawns 2 new bubbles in the place where the old bubble was
      */
-    private void spawnPoppedBubbles(Sprite oldBubble, BubbleSpawnerEntity.BubbleType bubbleType) {
-        PhysicsConnector leftBubble = bubbleSpawnerEntity.spawnBubble(
+    private void spawnPoppedBubbles(BubbleSpawnerEntity.BubbleSize oldBubbleSize, Vec2 oldBubbleScenePosition, BubbleSpawnerEntity.BubbleType bubbleType) {
+        Body leftBubble = bubbleSpawnerEntity.spawnBubble(
                 bubbleType,
-                oldBubble.getX() - (oldBubble.getWidth() / 2),
-                oldBubble.getY(),
-                oldBubble.getScaleX() * NEW_BUBBLE_SCALE_MULTIPLIER);
+                oldBubbleScenePosition.x,
+                oldBubbleScenePosition.y,
+                oldBubbleSize.nextPoppedSize());
 
         BubblePhysicsUtil.applyVelocity(leftBubble,-3f, -1.2f);
 
-        PhysicsConnector rightBubble = bubbleSpawnerEntity.spawnBubble(
+        Body rightBubble = bubbleSpawnerEntity.spawnBubble(
                 bubbleType,
-                oldBubble.getX() + (oldBubble.getWidth() / 2),
-                oldBubble.getY(),
-                oldBubble.getScaleX() * NEW_BUBBLE_SCALE_MULTIPLIER);
+                oldBubbleScenePosition.x,
+                oldBubbleScenePosition.y,
+                oldBubbleSize.nextPoppedSize());
 
         BubblePhysicsUtil.applyVelocity(rightBubble, 3f, -1.2f);
     }
 
-    private void increaseScore(float bubbleX, float bubbleY) {
-        showScoretickerText(bubbleX, bubbleY);
+    private void increaseScore(float sceneX, float sceneY) {
+        showScoretickerText(sceneX, sceneY);
         EventBus.get().sendEvent(GameEvent.INCREMENT_SCORE, new IncrementScoreEventPayload(SCORE_INCREMENT_PER_BUBBLE_POP));
     }
 
-    private void showScoretickerText(float x, float y) {
-        final Text scorePlus10Text = new Text(x, y, fontManager.getFont(FontId.SCORE_TICKER_FONT), "+10!", vertexBufferObjectManager);
+    private void showScoretickerText(float sceneX, float sceneY) {
+        final Text scorePlus10Text = new Text(sceneX, sceneY, fontManager.getFont(FontId.SCORE_TICKER_FONT), "+10!", vertexBufferObjectManager);
         scorePlus10Text.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
         scorePlus10Text.setColor(0, 1, 0);
         addToScene(scorePlus10Text);

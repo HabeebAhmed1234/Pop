@@ -3,6 +3,7 @@ package com.wack.pop2;
 import android.util.Log;
 
 import com.wack.pop2.fixturedefdata.BaseEntityUserData;
+import com.wack.pop2.physics.PhysicsWorld;
 
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
@@ -10,8 +11,10 @@ import org.jbox2d.collision.Manifold;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.Contact;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,9 +22,34 @@ import androidx.annotation.Nullable;
 
 /**
  * Enables other entities to listen to contacts that happen in the physics world involving one or two
- * bodies with extensions of {@link BaseEntityUserData}s
+ * bodies with extensions of {@link BaseEntityUserData}s.
+ *
+ * Ensures that callbacks on contact get called after a physics step has been completed
  */
-public class GamePhysicsContactsEntity extends BaseEntity implements ContactListener {
+public class GamePhysicsContactsEntity extends BaseEntity implements ContactListener, PhysicsWorld.OnUpdateListener {
+
+    @Override
+    public void onUpdateCompleted() {
+        if (!pendingBeginContacts.isEmpty()) {
+            for (Contact contact : pendingBeginContacts) {
+                @Nullable Set<GameContactListener> listeners = getListenersFromContact(contact);
+                if (listeners == null) {
+                    return;
+                }
+                notifyBeginContact(listeners, contact.m_fixtureA, contact.m_fixtureB);
+            }
+            pendingBeginContacts.clear();
+        }
+        if (!pendingEndContacts.isEmpty()) {
+            for (Contact contact : pendingEndContacts) {
+                @Nullable Set<GameContactListener> listeners = getListenersFromContact(contact);
+                if (listeners == null) {
+                    return;
+                }
+                notifyEndContact(listeners, contact.m_fixtureA, contact.m_fixtureB);
+            }
+        }
+    }
 
     public interface GameContactListener {
         void onBeginContact(Fixture fixture1, Fixture fixture2);
@@ -29,6 +57,8 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
     }
 
     private Map<Set<Class<? extends BaseEntityUserData>>, Set<GameContactListener>> gameContactListenerMap = new HashMap<>();
+    private List<Contact> pendingBeginContacts = new ArrayList<>();
+    private List<Contact> pendingEndContacts = new ArrayList<>();
 
     public GamePhysicsContactsEntity(GameResources gameResources) {
         super(gameResources);
@@ -36,6 +66,7 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
 
     @Override
     public void onCreateScene() {
+        physicsWorld.setOnUpdateListener(this);
         physicsWorld.setContactListener(this);
     }
 
@@ -46,20 +77,12 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
 
     @Override
     public void beginContact(Contact contact) {
-        @Nullable Set<GameContactListener> listeners = getListenersFromContact(contact);
-        if (listeners == null) {
-            return;
-        }
-        notifyBeginContact(listeners, contact.m_fixtureA, contact.m_fixtureB);
+        pendingBeginContacts.add(contact);
     }
 
     @Override
     public void endContact(Contact contact) {
-        @Nullable Set<GameContactListener> listeners = getListenersFromContact(contact);
-        if (listeners == null) {
-            return;
-        }
-        notifyEndContact(listeners, contact.m_fixtureA, contact.m_fixtureB);
+        pendingEndContacts.add(contact);
     }
 
     @Override
@@ -94,12 +117,18 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
     }
 
     private void notifyBeginContact(Set<GameContactListener> listeners, Fixture a, Fixture b) {
+        if (physicsWorld.isLocked()) {
+            throw new IllegalStateException("Physics world is locked during custom contact callback!");
+        }
         for (GameContactListener listener : listeners) {
             listener.onBeginContact(a, b);
         }
     }
 
     private void notifyEndContact(Set<GameContactListener> listeners, Fixture a, Fixture b) {
+        if (physicsWorld.isLocked()) {
+            throw new IllegalStateException("Physics world is locked during custom contact callback!");
+        }
         for (GameContactListener listener : listeners) {
             listener.onEndContact(a, b);
         }

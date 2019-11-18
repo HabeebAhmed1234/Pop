@@ -12,4 +12,17 @@ public class FixtureDefDataUtil {
     public static boolean isFloorFixtureDefData(Fixture fixture) {
         return fixture.m_userData != null && fixture.m_userData instanceof FloorEntityUserData;
     }
+
+    /**
+     * Returns the first bubble fixture from the given two fixtures
+     */
+    public static Fixture getBubbleFixture(Fixture f1, Fixture f2) {
+        if (FixtureDefDataUtil.isBubbleFixtureDefData(f1)) {
+            return f1;
+        } else if (FixtureDefDataUtil.isBubbleFixtureDefData(f2)) {
+            return f2;
+        } else {
+            throw new IllegalStateException("neither of the fixtures are bubbles!");
+        }
+    }
 }

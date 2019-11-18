@@ -33,6 +33,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	private BubbleSpawnerEntity mBubbleSpawnerEntity;
 	private BubbleLossDetectorEntity mBubbleLossDetectorEntity;
 	private BubblePopperEntity mBubblePopperEntity;
+	private TouchPopperEntity mTouchPopperEntity;
 	private BallAndChainManagerEntity mBallAndChainManagerEntity;
 
 	public static Intent newIntent(Context context) {
@@ -71,7 +72,8 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		mBubbleSpawnerEntity = new BubbleSpawnerEntity(gameTexturesManager, mGameResources);
 		mBubbleLossDetectorEntity = new BubbleLossDetectorEntity(gameFontsManager, gameAnimationManager, gamePhysicsContactsEntity, mGameResources);
 		mBubblePopperEntity = new BubblePopperEntity(gameFontsManager, gameSoundsManager, gameAnimationManager, mBubbleSpawnerEntity, mGameResources);
-		mBallAndChainManagerEntity = new BallAndChainManagerEntity(gameTexturesManager, mGameResources);
+		mTouchPopperEntity = new TouchPopperEntity(mBubblePopperEntity, mGameResources);
+		mBallAndChainManagerEntity = new BallAndChainManagerEntity(gameTexturesManager, gamePhysicsContactsEntity, mBubblePopperEntity, mGameResources);
 	}
 
 	@Override

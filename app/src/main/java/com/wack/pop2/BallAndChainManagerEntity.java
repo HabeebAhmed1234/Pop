@@ -2,7 +2,10 @@ package com.wack.pop2;
 
 import android.util.Pair;
 
-import com.wack.pop2.physics.PhysicsConnector;
+import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
+import com.wack.pop2.fixturedefdata.ChainLinkEntityUserData;
+import com.wack.pop2.fixturedefdata.FixtureDefDataUtil;
+import com.wack.pop2.fixturedefdata.WreckingBallEntityUserData;
 import com.wack.pop2.physics.PhysicsFactory;
 import com.wack.pop2.physics.util.Vec2Pool;
 import com.wack.pop2.physics.util.constants.PhysicsConstants;
@@ -18,6 +21,7 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.joints.MouseJoint;
 import org.jbox2d.dynamics.joints.MouseJointDef;
@@ -32,9 +36,13 @@ import static com.wack.pop2.GameFixtureDefs.BASE_WRECKING_BALL_DEF;
  * Manages the ball and chain tool that can be used to pop bubbles by the user swinging around a
  * spike ball on a chain.
  */
-public class BallAndChainManagerEntity extends BaseEntity implements IOnSceneTouchListener {
+public class BallAndChainManagerEntity extends BaseEntity implements IOnSceneTouchListener, GamePhysicsContactsEntity.GameContactListener {
+
+    private static final int NUM_CHAIN_LINKS = 4;
 
     private GameTexturesManager texturesManager;
+    private GamePhysicsContactsEntity contactsEntity;
+    private BubblePopperEntity bubblePopperEntity;
     private ScreenUtils.ScreenSize screenSize;
 
     private Pair<Sprite, Body> lastChainLink;
@@ -42,9 +50,13 @@ public class BallAndChainManagerEntity extends BaseEntity implements IOnSceneTou
 
     public BallAndChainManagerEntity(
             GameTexturesManager texturesManager,
+            GamePhysicsContactsEntity contactsEntity,
+            BubblePopperEntity bubblePopperEntity,
             GameResources gameResources) {
         super(gameResources);
         this.texturesManager = texturesManager;
+        this.contactsEntity = contactsEntity;
+        this.bubblePopperEntity = bubblePopperEntity;
         this.screenSize = ScreenUtils.getSreenSize();
     }
 
@@ -52,15 +64,18 @@ public class BallAndChainManagerEntity extends BaseEntity implements IOnSceneTou
     public void onCreateScene() {
         createBallAndChain();
         scene.setOnSceneTouchListener(this);
+
+        // Set up collision detection between the ball and chain and the bubbles on the stage
+        contactsEntity.addContactListener(ChainLinkEntityUserData.class, BubbleEntityUserData.class, this);
+        contactsEntity.addContactListener(WreckingBallEntityUserData.class, BubbleEntityUserData.class, this);
     }
 
     private void createBallAndChain() {
         final float anchorPercentFromEdge = 0.05f;
-        final int numChainLinks = 10;
         Pair<Sprite, Body> wreckingBall = createBall();
         Pair<Sprite, Body> previousChainLink = createChainLinkAndJoin(wreckingBall.first, wreckingBall.second, anchorPercentFromEdge, false);
-        for (int i = 1 ; i < numChainLinks ; i++) {
-            previousChainLink = createChainLinkAndJoin(previousChainLink.first, previousChainLink.second, anchorPercentFromEdge, i == numChainLinks - 1);
+        for (int i = 1 ; i < NUM_CHAIN_LINKS ; i++) {
+            previousChainLink = createChainLinkAndJoin(previousChainLink.first, previousChainLink.second, anchorPercentFromEdge, i == NUM_CHAIN_LINKS - 1);
         }
         lastChainLink = previousChainLink;
 
@@ -71,18 +86,22 @@ public class BallAndChainManagerEntity extends BaseEntity implements IOnSceneTou
         ITextureRegion ballTexture = texturesManager.getTextureRegion(TextureId.GREEN_BUBBLE);
         float x = 0;
         float y = screenSize.height / 2;
+        WreckingBallEntityUserData wreckingBallEntityUserData = new WreckingBallEntityUserData();
         final Sprite ballSprite = new Sprite(
                 x,
                 y,
                 ballTexture,
                 vertexBufferObjectManager);
+        ballSprite.setUserData(wreckingBallEntityUserData);
         FixtureDef ballFixtureDef = BASE_WRECKING_BALL_DEF;
-        Body ballBody = PhysicsFactory.createBoxBody(physicsWorld, ballSprite, BodyType.DYNAMIC, ballFixtureDef);
+        ballFixtureDef.setUserData(wreckingBallEntityUserData);
+        Body ballBody = PhysicsFactory.createCircleBody(
+                physicsWorld,
+                ballSprite,
+                BodyType.DYNAMIC,
+                ballFixtureDef);
 
-        PhysicsConnector chainLinkPhysicsConnector3 = new PhysicsConnector(ballSprite, ballBody, true, true);
-
-        physicsWorld.registerPhysicsConnector(chainLinkPhysicsConnector3);
-        addToScene(ballSprite);
+        addToScene(ballSprite, ballBody);
         return new Pair<>(ballSprite, ballBody);
     }
 
@@ -110,29 +129,28 @@ public class BallAndChainManagerEntity extends BaseEntity implements IOnSceneTou
 
         float newChainLinkX = newChainLinkAnchorX - jointPixelsFromEdge;
         float newChainLinkY = previousChainLinkY;
+        ChainLinkEntityUserData chainLinkEntityUserData = new ChainLinkEntityUserData();
         final Sprite chainLinkSprite = new Sprite(
                 newChainLinkX,
                 newChainLinkY,
                 chainLinkTexture,
                 vertexBufferObjectManager);
+        chainLinkSprite.setUserData(chainLinkEntityUserData);
+        FixtureDef chainLinkFixtureDef = BASE_CHAIN_LINK_FIXTURE_DEF;
+        chainLinkFixtureDef.setUserData(chainLinkEntityUserData);
+        Body chainLinkBody = PhysicsFactory.createBoxBody(physicsWorld, chainLinkSprite, isLastLink ? BodyType.DYNAMIC : BodyType.DYNAMIC, chainLinkFixtureDef);
 
-        FixtureDef chainLinkFixtureDef3 = BASE_CHAIN_LINK_FIXTURE_DEF;
-
-        Body chainLinkBody = PhysicsFactory.createBoxBody(physicsWorld, chainLinkSprite, isLastLink ? BodyType.DYNAMIC : BodyType.DYNAMIC, chainLinkFixtureDef3);
-        PhysicsConnector chainLinkPhysicsConnector3 = new PhysicsConnector(chainLinkSprite, chainLinkBody, true, true);
-
-        physicsWorld.registerPhysicsConnector(chainLinkPhysicsConnector3);
-        addToScene(chainLinkSprite);
+        addToScene(chainLinkSprite, chainLinkBody);
 
         // We don't need a joint if this is the first chain link
         boolean shouldCreateJoint = previousChainLinkBody != null;
         if (shouldCreateJoint) {
-            RevoluteJointDef jointDef2 = new RevoluteJointDef();
-            jointDef2.initialize(previousChainLinkBody, chainLinkBody, new Vec2(newChainLinkAnchorX / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT, newChainLinkAnchorY / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT));
-            jointDef2.collideConnected = false;
+            RevoluteJointDef jointDef = new RevoluteJointDef();
+            jointDef.initialize(previousChainLinkBody, chainLinkBody, new Vec2(newChainLinkAnchorX / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT, newChainLinkAnchorY / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT));
+            jointDef.collideConnected = false;
             //jointDef2.lowerAngle = 0;
             //jointDef2.upperAngle = 2 * (float) Math.PI;
-            physicsWorld.createJoint(jointDef2);
+            physicsWorld.createJoint(jointDef);
         }
         return new Pair<>(chainLinkSprite, chainLinkBody);
     }
@@ -174,5 +192,29 @@ public class BallAndChainManagerEntity extends BaseEntity implements IOnSceneTou
         mouseJointDef.target.set(localPoint);
 
         return (MouseJoint) physicsWorld.createJoint(mouseJointDef);
+    }
+
+    @Override
+    public void onBeginContact(Fixture fixture1, Fixture fixture2) {
+        Fixture bubbleFixture = FixtureDefDataUtil.getBubbleFixture(fixture1, fixture2);
+        BubbleEntityUserData bubbleEntityUserData = (BubbleEntityUserData) bubbleFixture.getUserData();
+        if (!bubbleEntityUserData.isPoppable()) {
+            return;
+        }
+        Body bubbleBody  = bubbleFixture.getBody();
+        bubblePopperEntity.popBubble(
+                bubbleEntityUserData.bubbleSprite,
+                bubbleEntityUserData.size,
+                CoordinateConversionUtil.physicsWorldToScene(bubbleBody.getPosition()),
+                bubbleEntityUserData.bubbleType);
+    }
+
+    @Override
+    public void onEndContact(final Fixture fixture1, final Fixture fixture2) {
+        Fixture bubbleFixture = FixtureDefDataUtil.getBubbleFixture(fixture1, fixture2);
+        BubbleEntityUserData bubbleEntityUserData = (BubbleEntityUserData) bubbleFixture.getUserData();
+        if (!bubbleEntityUserData.isPoppable()) {
+            return;
+        }
     }
 }

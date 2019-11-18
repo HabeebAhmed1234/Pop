@@ -43,6 +43,10 @@ public class GameResources {
         Scene scene = new Scene();
         PhysicsWorld physicsWorld = new PhysicsWorld(new Vec2(0, SensorManager.GRAVITY_EARTH * 5), false);
         scene.registerUpdateHandler(physicsWorld);
-        return new GameResources(scene, physicsWorld, baseGameActivity.getVertexBufferObjectManager(), baseGameActivity.getEngine(), hostActivity);
+        return new GameResources(
+                scene,
+                physicsWorld,
+                baseGameActivity.getVertexBufferObjectManager(),
+                baseGameActivity.getEngine(), hostActivity);
     }
 }

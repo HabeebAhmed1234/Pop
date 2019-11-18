@@ -41,7 +41,7 @@ public class BubbleLossDetectorEntity extends BaseEntity {
 
         @Override
         public void onEndContact(Fixture fixture1, Fixture fixture2) {
-            processBubbleFellBelowScreen(getBubbleFixture(fixture1, fixture2));
+            processBubbleFellBelowScreen(FixtureDefDataUtil.getBubbleFixture(fixture1, fixture2));
         }
     };
 
@@ -71,25 +71,15 @@ public class BubbleLossDetectorEntity extends BaseEntity {
         physicsContactsEntity.removeContactListener(BubbleEntityUserData.class, FloorEntityUserData.class, contactListener);
     }
 
-    private Fixture getBubbleFixture(Fixture f1, Fixture f2) {
-        if (FixtureDefDataUtil.isBubbleFixtureDefData(f1)) {
-            return f1;
-        } else if (FixtureDefDataUtil.isBubbleFixtureDefData(f2)) {
-            return f2;
-        } else {
-            throw new IllegalStateException("neither of the fixtures are bubbles!");
-        }
-    }
-
     private void processBubbleFellBelowScreen(Fixture bubbleFixture) {
         BubbleEntityUserData data = (BubbleEntityUserData)bubbleFixture.getUserData();
         if (data.isScoreLossBubble) {
             createScoreLossText(
-                    getShapeFromBody(bubbleFixture.getBody()).getX(),
+                    data.bubbleSprite.getX(),
                     levelHeight - 50);
             EventBus.get().sendEvent(GameEvent.DECREMENT_SCORE, new DecrementScoreEventPayload(SCORE_DECREMENT_AMOUNT));
         }
-        removeFromSceneAndCleanupPhysics(bubbleFixture.getBody());
+        removeFromScene(bubbleFixture.getBody());
     }
 
     private void createScoreLossText(float x, float y) {

@@ -1,5 +1,7 @@
 package com.wack.pop2.physics;
 
+import android.util.Log;
+
 import com.wack.pop2.physics.util.constants.PhysicsConstants;
 
 import org.andengine.entity.shape.IAreaShape;
