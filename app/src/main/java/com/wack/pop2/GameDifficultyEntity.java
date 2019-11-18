@@ -1,5 +1,7 @@
 package com.wack.pop2;
 
+import android.util.Log;
+
 import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;
@@ -43,8 +45,8 @@ public class GameDifficultyEntity extends BaseEntity implements EventBus.Subscri
         if ((newScore - scoreWhenLastDifficultyUpdated) >= DIFFICULTY_SCORE_INCREMENT_INTERVAL) {
             currentDifficulty++;
             fireDifficultyUpdatedEvent();
+            scoreWhenLastDifficultyUpdated = newScore;
         }
-        scoreWhenLastDifficultyUpdated = newScore;
     }
 
     private void fireDifficultyUpdatedEvent() {

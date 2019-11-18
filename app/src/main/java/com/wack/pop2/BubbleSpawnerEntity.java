@@ -1,6 +1,7 @@
 package com.wack.pop2;
 
 import android.hardware.SensorManager;
+import android.util.Log;
 
 import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;

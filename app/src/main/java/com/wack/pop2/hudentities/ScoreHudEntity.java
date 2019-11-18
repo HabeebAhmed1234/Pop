@@ -1,5 +1,7 @@
 package com.wack.pop2.hudentities;
 
+import android.util.Log;
+
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.EventPayload;
 import com.wack.pop2.GameResources;
