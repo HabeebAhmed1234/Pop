@@ -1,11 +1,11 @@
 package com.wack.pop2;
 
 import android.hardware.SensorManager;
-import android.util.Log;
 
 import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;
+import com.wack.pop2.eventbus.StartingBubbleSpawnedEventPayload;
 import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
 import com.wack.pop2.physics.PhysicsFactory;
@@ -14,7 +14,6 @@ import com.wack.pop2.resources.textures.TextureId;
 
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
-import org.andengine.entity.IEntity;
 import org.andengine.entity.shape.IShape;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
@@ -28,6 +27,8 @@ import java.util.List;
 import java.util.Random;
 
 public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscriber {
+
+    private static final float BUBBLE_GRAVITY_SCALE = 0.5f;
 
     public enum BubbleType {
         RED,
@@ -102,8 +103,10 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
     private void spawnStartingBubbles(int bubbleQuantity) {
         int screenWidth = ScreenUtils.getSreenSize().width;
         for (int i = 0; i < bubbleQuantity; i++) {
-            Body body = spawnBubble(BubbleType.random(), (int)(Math.random() * screenWidth),-200 * ( i + 1 ), BubbleSize.LARGE);
+            BubbleType bubbleType = BubbleType.random();
+            Body body = spawnBubble(bubbleType, (int)(Math.random() * screenWidth),-200 * ( i + 1 ), BubbleSize.LARGE);
             BubblePhysicsUtil.applyVelocity(body, 0f, (float) (SensorManager.GRAVITY_EARTH * 0.3 * 2));
+            EventBus.get().sendEvent(GameEvent.STARTING_BUBBLE_SPAWNED, new StartingBubbleSpawnedEventPayload(bubbleType));
         }
     }
 
@@ -126,6 +129,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         final FixtureDef bubbleFixtureDef = GameFixtureDefs.BASE_BUBBLE_FIXTURE_DEF;
         bubbleFixtureDef.setUserData(userData);
         final Body body = PhysicsFactory.createCircleBody(physicsWorld, bubbleSprite, BodyType.DYNAMIC, bubbleFixtureDef);
+        body.setGravityScale(BUBBLE_GRAVITY_SCALE);
         scene.registerTouchArea(bubbleSprite);
         addToScene(bubbleSprite, body);
         return body;

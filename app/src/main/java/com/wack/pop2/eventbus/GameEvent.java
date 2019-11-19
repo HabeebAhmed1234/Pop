@@ -9,5 +9,6 @@ public enum GameEvent {
     DECREMENT_SCORE, // Fired when score is decremented. Accompanied by score decrement amount in payload
     INCREMENT_SCORE, // Fired when score is incrementd. Accompanied by score increment amount in payload
     SCORE_CHANGED, // Fired anytime the score changes. Payload contains score
+    STARTING_BUBBLE_SPAWNED, // Fired anytime a new bubble is spawned, Payload contains the bubble type
     DIFFICULTY_CHANGE, // Fired when the difficulty changes. Payload contains new difficulty
 }

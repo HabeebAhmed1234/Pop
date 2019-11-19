@@ -12,7 +12,6 @@ import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
 
 import org.andengine.audio.sound.Sound;
-import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.AlphaModifier;
 import org.andengine.entity.modifier.ParallelEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
@@ -24,7 +23,8 @@ import org.jbox2d.dynamics.Body;
 
 public class BubblePopperEntity extends BaseEntity {
 
-    private static final int SCORE_INCREMENT_PER_BUBBLE_POP = 10;
+    public static final int SCORE_INCREMENT_PER_BUBBLE_POP = 10;
+    public static final int MAX_SCORE_INCREASE_PER_NEW_SPAWNED_BUBBLE = 70; // Since there are three bubble sizes a total of 7 bubbles can be popped from one spawned bubble
 
     private GameFontsManager fontManager;
     private GameSoundsManager soundsManager;

@@ -14,6 +14,7 @@ import org.jbox2d.dynamics.contacts.Contact;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,25 +29,35 @@ import androidx.annotation.Nullable;
  */
 public class GamePhysicsContactsEntity extends BaseEntity implements ContactListener, PhysicsWorld.OnUpdateListener {
 
+    private static final int MAX_NOTIFICATIONS_PER_PHYSICS_UPDATE = 1;
+
     @Override
     public void onUpdateCompleted() {
         if (!pendingBeginContacts.isEmpty()) {
-            for (Contact contact : pendingBeginContacts) {
+            Iterator<Contact> it = pendingBeginContacts.iterator();
+            int numUpdated = 0;
+            while (numUpdated < MAX_NOTIFICATIONS_PER_PHYSICS_UPDATE && it.hasNext()) {
+                Contact contact = it.next();
                 @Nullable Set<GameContactListener> listeners = getListenersFromContact(contact);
                 if (listeners == null) {
                     return;
                 }
                 notifyBeginContact(listeners, contact.m_fixtureA, contact.m_fixtureB);
+                numUpdated++;
             }
             pendingBeginContacts.clear();
         }
         if (!pendingEndContacts.isEmpty()) {
-            for (Contact contact : pendingEndContacts) {
+            Iterator<Contact> it = pendingEndContacts.iterator();
+            int numUpdated = 0;
+            while (numUpdated < MAX_NOTIFICATIONS_PER_PHYSICS_UPDATE && it.hasNext()){
+                Contact contact = it.next();
                 @Nullable Set<GameContactListener> listeners = getListenersFromContact(contact);
                 if (listeners == null) {
                     return;
                 }
                 notifyEndContact(listeners, contact.m_fixtureA, contact.m_fixtureB);
+                numUpdated++;
             }
             pendingEndContacts.clear();
         }

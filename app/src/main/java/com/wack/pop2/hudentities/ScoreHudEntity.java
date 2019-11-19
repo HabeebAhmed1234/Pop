@@ -1,8 +1,8 @@
 package com.wack.pop2.hudentities;
 
-import android.util.Log;
-
 import com.wack.pop2.BaseEntity;
+import com.wack.pop2.BubblePopperEntity;
+import com.wack.pop2.BubbleSpawnerEntity;
 import com.wack.pop2.EventPayload;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.ScreenUtils;
@@ -11,11 +11,11 @@ import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.eventbus.IncrementScoreEventPayload;
 import com.wack.pop2.eventbus.ScoreChangeEventPayload;
+import com.wack.pop2.eventbus.StartingBubbleSpawnedEventPayload;
 import com.wack.pop2.resources.fonts.FontId;
 import com.wack.pop2.resources.fonts.GameFontsManager;
 
 import org.andengine.entity.text.Text;
-import org.andengine.entity.text.TextOptions;
 
 /**
  * Entity that contains score hud panel
@@ -25,6 +25,7 @@ public class ScoreHudEntity extends BaseEntity implements EventBus.Subscriber {
     private GameFontsManager fontsManager;
 
     private int scoreValue = 0;
+    private int maxScoreValue = 0;
 
     private Text scoreText;
 
@@ -35,7 +36,10 @@ public class ScoreHudEntity extends BaseEntity implements EventBus.Subscriber {
 
     @Override
     public void onCreateScene() {
-        EventBus.get().subscribe(GameEvent.INCREMENT_SCORE, this).subscribe(GameEvent.DECREMENT_SCORE, this);
+        EventBus.get()
+                .subscribe(GameEvent.INCREMENT_SCORE, this)
+                .subscribe(GameEvent.DECREMENT_SCORE, this)
+                .subscribe(GameEvent.STARTING_BUBBLE_SPAWNED, this);
         ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
         scoreText = new Text(50, screenSize.height - 150, fontsManager.getFont(FontId.SCORE_TICKER_FONT), "Score: - - - - -", "Score: X X X X X".length(), vertexBufferObjectManager);
         scoreText.setColor(0,1,0);
@@ -60,6 +64,9 @@ public class ScoreHudEntity extends BaseEntity implements EventBus.Subscriber {
             case INCREMENT_SCORE:
                 incrementScore((IncrementScoreEventPayload) payload);
                 break;
+            case STARTING_BUBBLE_SPAWNED:
+                incrementMaxScore((StartingBubbleSpawnedEventPayload) payload);
+                break;
         }
     }
 
@@ -70,12 +77,18 @@ public class ScoreHudEntity extends BaseEntity implements EventBus.Subscriber {
         EventBus.get().sendEvent(GameEvent.SCORE_CHANGED, new ScoreChangeEventPayload(scoreValue));
     }
 
+    private void incrementMaxScore(StartingBubbleSpawnedEventPayload payload) {
+        if (payload.bubbleType != BubbleSpawnerEntity.BubbleType.SKULL) {
+            maxScoreValue += BubblePopperEntity.MAX_SCORE_INCREASE_PER_NEW_SPAWNED_BUBBLE ;
+        }
+    }
+
     private void decrementScore(DecrementScoreEventPayload payload) {
         scoreValue -= payload.decrementAmmount;
         updateScoreText();
     }
 
     private void updateScoreText() {
-        scoreText.setText("Score: " + scoreValue);
+        scoreText.setText("Score: " + scoreValue + " - " + maxScoreValue);
     }
 }
