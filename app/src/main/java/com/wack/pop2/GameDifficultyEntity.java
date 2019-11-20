@@ -1,9 +1,8 @@
 package com.wack.pop2;
 
-import android.util.Log;
-
 import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
+import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.eventbus.ScoreChangeEventPayload;
 

@@ -1,7 +1,5 @@
 package com.wack.pop2.eventbus;
 
-import com.wack.pop2.EventPayload;
-
 public class GameOverExplosionEventPayload implements EventPayload {
 
     public final float x;

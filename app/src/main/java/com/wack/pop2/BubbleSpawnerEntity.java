@@ -4,6 +4,7 @@ import android.hardware.SensorManager;
 
 import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
+import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.eventbus.StartingBubbleSpawnedEventPayload;
 import com.wack.pop2.fixturedefdata.BaseEntityUserData;
@@ -11,6 +12,8 @@ import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
 import com.wack.pop2.physics.PhysicsFactory;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
+import com.wack.pop2.utils.BubblePhysicsUtil;
+import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;

@@ -1,4 +1,4 @@
-package com.wack.pop2;
+package com.wack.pop2.utils;
 
 import com.wack.pop2.physics.util.constants.PhysicsConstants;
 

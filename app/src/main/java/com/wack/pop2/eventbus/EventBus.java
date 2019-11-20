@@ -2,8 +2,6 @@ package com.wack.pop2.eventbus;
 
 import android.util.Log;
 
-import com.wack.pop2.EventPayload;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;

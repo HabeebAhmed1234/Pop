@@ -2,6 +2,7 @@ package com.wack.pop2;
 
 import com.wack.pop2.physics.PhysicsConnector;
 import com.wack.pop2.physics.PhysicsWorld;
+import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.engine.Engine;
 import org.andengine.entity.IEntity;

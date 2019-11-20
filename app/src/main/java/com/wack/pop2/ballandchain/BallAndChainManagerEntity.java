@@ -1,7 +1,13 @@
-package com.wack.pop2;
+package com.wack.pop2.ballandchain;
 
 import android.util.Pair;
 
+import com.wack.pop2.BaseEntity;
+import com.wack.pop2.BubblePopperEntity;
+import com.wack.pop2.utils.CoordinateConversionUtil;
+import com.wack.pop2.GamePhysicsContactsEntity;
+import com.wack.pop2.GameResources;
+import com.wack.pop2.utils.ScreenUtils;
 import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
 import com.wack.pop2.fixturedefdata.ChainLinkEntityUserData;
 import com.wack.pop2.fixturedefdata.FixtureDefDataUtil;

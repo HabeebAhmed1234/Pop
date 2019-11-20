@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
+import com.wack.pop2.ballandchain.BallAndChainManagerEntity;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.hudentities.ScoreHudEntity;
 import com.wack.pop2.hudentities.TimerHudEntity;
 import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
+import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;

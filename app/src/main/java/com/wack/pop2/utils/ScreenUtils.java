@@ -1,4 +1,4 @@
-package com.wack.pop2;
+package com.wack.pop2.utils;
 
 import android.app.Activity;
 import android.graphics.Point;

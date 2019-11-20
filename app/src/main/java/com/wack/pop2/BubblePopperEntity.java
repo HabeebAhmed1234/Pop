@@ -10,6 +10,7 @@ import com.wack.pop2.resources.fonts.FontId;
 import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
+import com.wack.pop2.utils.BubblePhysicsUtil;
 
 import org.andengine.audio.sound.Sound;
 import org.andengine.entity.modifier.AlphaModifier;
