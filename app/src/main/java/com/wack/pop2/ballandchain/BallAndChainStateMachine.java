@@ -53,6 +53,28 @@ public class BallAndChainStateMachine {
     private State currentState = State.LOCKED;
     private Map<State, Set<Listener>> transitionListeners = new HashMap<>();
 
+    /**
+     * Adds a transition listener for all states
+     * @param listener
+     */
+    public void addAllStateTransitionListener(Listener listener) {
+        for (State state : State.values()) {
+            addTransitionListener(state, listener);
+        }
+    }
+
+    public void removeAllStateTransitionListener(Listener listener) {
+        for (State state : State.values()) {
+            removeTransitionListener(state, listener);
+        }
+    }
+
+    /**
+     * Add a new listener for the given state.
+     * Triggers a callback on this listener for the current state immediately
+     * @param state
+     * @param listener
+     */
     public void addTransitionListener(State state, Listener listener) {
         if (transitionListeners.containsKey(state)) {
             Set<Listener> listeners = transitionListeners.get(state);
@@ -60,6 +82,7 @@ public class BallAndChainStateMachine {
                 throw new IllegalStateException("Listener had already been added");
             }
             listeners.add(listener);
+            notifyListenerOfNewState(state, listener);
         }
     }
 
@@ -109,8 +132,12 @@ public class BallAndChainStateMachine {
     private void notifyTransition(State newState) {
         if (transitionListeners.containsKey(newState)) {
             for (Listener listener : transitionListeners.get(newState)) {
-                listener.onEnterState(newState);
+                notifyListenerOfNewState(newState, listener);
             }
         }
+    }
+
+    private void notifyListenerOfNewState(State newState, Listener listener) {
+        listener.onEnterState(newState);
     }
 }
