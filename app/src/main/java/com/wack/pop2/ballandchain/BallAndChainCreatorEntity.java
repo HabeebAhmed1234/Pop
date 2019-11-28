@@ -31,7 +31,7 @@ import static com.wack.pop2.GameFixtureDefs.BASE_WRECKING_BALL_DEF;
 /**
  * Creates a ball and chain in the game
  */
-public class BallAndChainCreatorEntity extends BaseEntity {
+class BallAndChainCreatorEntity extends BaseEntity {
 
     private static final int NUM_CHAIN_LINKS = 4;
     private static final float JOINT_ANCHOR_PERCENT_FROM_EDGE =  0.05f;

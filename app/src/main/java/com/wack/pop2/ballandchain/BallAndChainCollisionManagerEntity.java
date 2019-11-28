@@ -13,7 +13,7 @@ import com.wack.pop2.utils.CoordinateConversionUtil;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
 
-public class BallAndChainCollisionManagerEntity extends BaseEntity implements GamePhysicsContactsEntity.GameContactListener {
+class BallAndChainCollisionManagerEntity extends BaseEntity implements GamePhysicsContactsEntity.GameContactListener {
 
     private GamePhysicsContactsEntity gamePhysicsContactsEntity;
     private BubblePopperEntity bubblePopperEntity;

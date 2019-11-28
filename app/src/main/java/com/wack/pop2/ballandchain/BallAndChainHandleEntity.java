@@ -18,7 +18,7 @@ import androidx.annotation.Nullable;
  * Manages the handle of the ball and chain based off of the current state of the ball and chain
  * system
  */
-public class BallAndChainHandleEntity extends BaseEntity implements BallAndChainStateMachine.Listener, IOnSceneTouchListener {
+class BallAndChainHandleEntity extends BaseEntity implements BallAndChainStateMachine.Listener, IOnSceneTouchListener {
 
     private static final Vec2 OFF_SCREEN_HANDLE_POSITION =
             new Vec2(ScreenUtils.getSreenSize().width,
@@ -35,13 +35,15 @@ public class BallAndChainHandleEntity extends BaseEntity implements BallAndChain
     }
 
     public void setHandleJoint(MouseJoint handleJoint) {
+        if (this.handleJoint != null) throw new IllegalStateException("Ball and chain handle has already been set");
+
         this.handleJoint = handleJoint;
+        // start listening to state when the handle is set
+        stateMachine.addAllStateTransitionListener(this);
     }
 
     @Override
-    public void onCreateScene() {
-        stateMachine.addAllStateTransitionListener(this);
-    }
+    public void onCreateScene() {}
 
     @Override
     public void onDestroy() {
@@ -93,6 +95,7 @@ public class BallAndChainHandleEntity extends BaseEntity implements BallAndChain
     }
 
     private void setHandlePositionTarget(TouchEvent touchEvent) {
+        if (BallAndChainStateClassifier.isChainHandleDraggingPermitted(stateMachine.getCurrentState()))
         setHandlePositionTarget(
                 CoordinateConversionUtil.sceneToPhysicsWorld(
                         Vec2Pool.obtain(

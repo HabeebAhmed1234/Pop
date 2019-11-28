@@ -1,13 +1,14 @@
 package com.wack.pop2.ballandchain;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 /**
  * Manages the state of the ball and chain tool that is used to pop bubbles
  */
-public class BallAndChainStateMachine {
+class BallAndChainStateMachine {
 
     public interface Listener {
         void onEnterState(State newState);
@@ -75,18 +76,20 @@ public class BallAndChainStateMachine {
      * @param state
      * @param listener
      */
-    public void addTransitionListener(State state, Listener listener) {
-        if (transitionListeners.containsKey(state)) {
-            Set<Listener> listeners = transitionListeners.get(state);
-            if (listeners.contains(listener)) {
-                throw new IllegalStateException("Listener had already been added");
-            }
-            listeners.add(listener);
-            notifyListenerOfNewState(state, listener);
+    public BallAndChainStateMachine addTransitionListener(State state, Listener listener) {
+        if (!transitionListeners.containsKey(state)) {
+            transitionListeners.put(state, new HashSet<Listener>());
         }
+        Set<Listener> listeners = transitionListeners.get(state);
+        if (listeners.contains(listener)) {
+            throw new IllegalStateException("Listener had already been added");
+        }
+        listeners.add(listener);
+        notifyListenerOfNewState(state, listener);
+        return this;
     }
 
-    public void removeTransitionListener(State state, Listener listener) {
+    public BallAndChainStateMachine removeTransitionListener(State state, Listener listener) {
         if (transitionListeners.containsKey(state)) {
             Set<Listener> listeners =  transitionListeners.get(state);
             if (listeners.contains(listener)) {
@@ -98,6 +101,11 @@ public class BallAndChainStateMachine {
                 transitionListeners.remove(state);
             }
         }
+        return this;
+    }
+
+    public State getCurrentState() {
+        return currentState;
     }
 
     public void transitionState(State newState) {
