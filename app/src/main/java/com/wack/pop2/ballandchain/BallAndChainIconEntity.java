@@ -6,6 +6,12 @@ import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
+import com.wack.pop2.resources.textures.GameTexturesManager;
+import com.wack.pop2.resources.textures.TextureId;
+import com.wack.pop2.utils.ScreenUtils;
+
+import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.texture.region.ITextureRegion;
 
 /**
  * Appears when the ball and chain tool is unlocked. The user can tap and hold the icon to start
@@ -13,13 +19,30 @@ import com.wack.pop2.eventbus.GameEvent;
  */
 public class BallAndChainIconEntity extends BaseEntity implements EventBus.Subscriber, BallAndChainStateMachine.Listener {
 
+    private GameTexturesManager gameTexturesManager;
+
     private BallAndChainStateMachine stateMachine;
+    private Sprite ballAndChainIconSprite;
 
     public BallAndChainIconEntity(
             BallAndChainStateMachine stateMachine,
+            GameTexturesManager gameTexturesManager,
             GameResources gameResources) {
         super(gameResources);
-        stateMachine = stateMachine;
+        this.gameTexturesManager = gameTexturesManager;
+        this.stateMachine = stateMachine;
+    }
+
+    @Override
+    public void onCreateResources() {
+        ITextureRegion textureRegion =
+                gameTexturesManager.getTextureRegion(TextureId.BALL_AND_CHAIN_ICON);
+        ballAndChainIconSprite = new Sprite(
+                ScreenUtils.getSreenSize().width - textureRegion.getWidth(),
+                ScreenUtils.getSreenSize().height - textureRegion.getHeight(),
+                textureRegion,
+                vertexBufferObjectManager);
+        addToScene(ballAndChainIconSprite);
     }
 
     @Override

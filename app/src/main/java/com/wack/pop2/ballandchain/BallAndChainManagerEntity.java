@@ -33,7 +33,7 @@ public class BallAndChainManagerEntity extends BaseEntity {
         this.ballAndChainCreatorEntity = new BallAndChainCreatorEntity(texturesManager, gameResources);
         this.ballAndChainCollisionManagerEntity = new BallAndChainCollisionManagerEntity(bubblePopperEntity, gamePhysicsContactsEntity, gameResources);
         this.ballAndChainHandleEntity = new BallAndChainHandleEntity(ballAndChainStateMachine, gameResources);
-        this.ballAndChainIconEntity = new BallAndChainIconEntity(ballAndChainStateMachine, gameResources);
+        this.ballAndChainIconEntity = new BallAndChainIconEntity(ballAndChainStateMachine, texturesManager, gameResources);
     }
 
     @Override

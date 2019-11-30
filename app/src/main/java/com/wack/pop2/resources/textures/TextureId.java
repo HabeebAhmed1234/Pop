@@ -12,4 +12,5 @@ public enum TextureId {
     SKULL_BALL,
     GAME_OVER,
     CHAIN_LINK,
+    BALL_AND_CHAIN_ICON,
 }
