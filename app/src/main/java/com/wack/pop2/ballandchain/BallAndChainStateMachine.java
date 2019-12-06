@@ -1,5 +1,7 @@
 package com.wack.pop2.ballandchain;
 
+import android.util.Log;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -55,13 +57,17 @@ class BallAndChainStateMachine {
     private Map<State, Set<Listener>> transitionListeners = new HashMap<>();
 
     /**
-     * Adds a transition listener for all states
+     * Adds a transition listener for all states.
+     *
+     * Notifies of the current state once.
+     *
      * @param listener
      */
     public void addAllStateTransitionListener(Listener listener) {
         for (State state : State.values()) {
-            addTransitionListener(state, listener);
+            addTransitionListener(state, listener, false);
         }
+        notifyListenerOfNewState(currentState, listener);
     }
 
     public void removeAllStateTransitionListener(Listener listener) {
@@ -75,8 +81,12 @@ class BallAndChainStateMachine {
      * Triggers a callback on this listener for the current state immediately
      * @param state
      * @param listener
+     * @param shouldNotify whether or not we should immediately notify of the current state
      */
-    public BallAndChainStateMachine addTransitionListener(State state, Listener listener) {
+    public BallAndChainStateMachine addTransitionListener(
+            State state,
+            Listener listener,
+            boolean shouldNotify) {
         if (!transitionListeners.containsKey(state)) {
             transitionListeners.put(state, new HashSet<Listener>());
         }
@@ -85,8 +95,16 @@ class BallAndChainStateMachine {
             throw new IllegalStateException("Listener had already been added");
         }
         listeners.add(listener);
-        notifyListenerOfNewState(state, listener);
+        if (shouldNotify) {
+            notifyListenerOfNewState(currentState, listener);
+        }
         return this;
+    }
+
+    public BallAndChainStateMachine addTransitionListener(
+            State state,
+            Listener listener) {
+        return addTransitionListener(state, listener, true);
     }
 
     public BallAndChainStateMachine removeTransitionListener(State state, Listener listener) {
@@ -130,6 +148,7 @@ class BallAndChainStateMachine {
         }
 
         if (isValidTransition) {
+            Log.d("asdasd", currentState + " -> " + newState);
             currentState = newState;
             notifyTransition(currentState);
         } else {

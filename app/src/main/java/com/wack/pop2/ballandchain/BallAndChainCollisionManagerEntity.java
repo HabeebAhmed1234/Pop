@@ -15,11 +15,17 @@ import org.jbox2d.dynamics.Fixture;
 
 class BallAndChainCollisionManagerEntity extends BaseEntity implements GamePhysicsContactsEntity.GameContactListener {
 
+    private BallAndChainStateMachine stateMachine;
     private GamePhysicsContactsEntity gamePhysicsContactsEntity;
     private BubblePopperEntity bubblePopperEntity;
 
-    public BallAndChainCollisionManagerEntity(BubblePopperEntity bubblePopperEntity, GamePhysicsContactsEntity gamePhysicsContactsEntity, GameResources gameResources) {
+    public BallAndChainCollisionManagerEntity(
+            BallAndChainStateMachine stateMachine,
+            BubblePopperEntity bubblePopperEntity,
+            GamePhysicsContactsEntity gamePhysicsContactsEntity,
+            GameResources gameResources) {
         super(gameResources);
+        this.stateMachine = stateMachine;
         this.bubblePopperEntity = bubblePopperEntity;
         this.gamePhysicsContactsEntity = gamePhysicsContactsEntity;
     }
@@ -41,6 +47,9 @@ class BallAndChainCollisionManagerEntity extends BaseEntity implements GamePhysi
 
     @Override
     public void onBeginContact(Fixture fixture1, Fixture fixture2) {
+        if (!shouldBallAndChainPop(stateMachine.getCurrentState())) {
+            return;
+        }
         Fixture bubbleFixture = FixtureDefDataUtil.getBubbleFixture(fixture1, fixture2);
         BubbleEntityUserData bubbleEntityUserData = (BubbleEntityUserData) bubbleFixture.getUserData();
         if (!bubbleEntityUserData.isPoppable()) {
@@ -55,11 +64,9 @@ class BallAndChainCollisionManagerEntity extends BaseEntity implements GamePhysi
     }
 
     @Override
-    public void onEndContact(final Fixture fixture1, final Fixture fixture2) {
-        Fixture bubbleFixture = FixtureDefDataUtil.getBubbleFixture(fixture1, fixture2);
-        BubbleEntityUserData bubbleEntityUserData = (BubbleEntityUserData) bubbleFixture.getUserData();
-        if (!bubbleEntityUserData.isPoppable()) {
-            return;
-        }
+    public void onEndContact(Fixture fixture1, Fixture fixture2) {}
+
+    private boolean shouldBallAndChainPop(BallAndChainStateMachine.State state) {
+        return state == BallAndChainStateMachine.State.IN_USE_CHARGED;
     }
 }

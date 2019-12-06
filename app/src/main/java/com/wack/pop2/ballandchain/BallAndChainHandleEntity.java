@@ -21,8 +21,9 @@ import androidx.annotation.Nullable;
 class BallAndChainHandleEntity extends BaseEntity implements BallAndChainStateMachine.Listener, IOnSceneTouchListener {
 
     private static final Vec2 OFF_SCREEN_HANDLE_POSITION =
-            new Vec2(ScreenUtils.getSreenSize().width,
-                    ScreenUtils.getSreenSize().height * 10);
+            CoordinateConversionUtil.sceneToPhysicsWorld(
+                    new Vec2(ScreenUtils.getSreenSize().width,
+                            ScreenUtils.getSreenSize().height * 1.1f));
 
     @Nullable private MouseJoint handleJoint;
     private BallAndChainStateMachine stateMachine;
