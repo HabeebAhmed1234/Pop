@@ -4,6 +4,7 @@ import com.wack.pop2.BaseEntity;
 import com.wack.pop2.BubblePopperEntity;
 import com.wack.pop2.GamePhysicsContactsEntity;
 import com.wack.pop2.GameResources;
+import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
 import com.wack.pop2.fixturedefdata.ChainLinkEntityUserData;
 import com.wack.pop2.fixturedefdata.FixtureDefDataUtil;
@@ -12,6 +13,8 @@ import com.wack.pop2.utils.CoordinateConversionUtil;
 
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
+
+import static com.wack.pop2.eventbus.GameEvent.BALL_AND_CHAIN_POPPED_BUBBLE;
 
 class BallAndChainCollisionManagerEntity extends BaseEntity implements GamePhysicsContactsEntity.GameContactListener {
 
@@ -61,6 +64,7 @@ class BallAndChainCollisionManagerEntity extends BaseEntity implements GamePhysi
                 bubbleEntityUserData.size,
                 CoordinateConversionUtil.physicsWorldToScene(bubbleBody.getPosition()),
                 bubbleEntityUserData.bubbleType);
+        EventBus.get().sendEvent(BALL_AND_CHAIN_POPPED_BUBBLE);
     }
 
     @Override

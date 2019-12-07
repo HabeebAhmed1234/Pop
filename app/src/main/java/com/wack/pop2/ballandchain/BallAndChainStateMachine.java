@@ -143,12 +143,12 @@ class BallAndChainStateMachine {
                 if (newState == State.IN_USE_DISCHARGED || newState == State.UNLOCKED_CHARGED) isValidTransition = true;
                 break;
             case IN_USE_DISCHARGED:
-                if (newState == State.UNLOCKED_DISCHARGED) isValidTransition = true;
+                if (newState == State.UNLOCKED_DISCHARGED || newState == State.IN_USE_CHARGED) isValidTransition = true;
                 break;
         }
 
         if (isValidTransition) {
-            Log.d("asdasd", currentState + " -> " + newState);
+            Log.d("BallAndChainStateMachine", currentState + " -> " + newState);
             currentState = newState;
             notifyTransition(currentState);
         } else {

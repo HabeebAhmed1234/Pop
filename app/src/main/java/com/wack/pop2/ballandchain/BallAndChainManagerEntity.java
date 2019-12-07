@@ -20,6 +20,7 @@ public class BallAndChainManagerEntity extends BaseEntity {
     private BallAndChainCollisionManagerEntity ballAndChainCollisionManagerEntity;
     private BallAndChainHandleEntity ballAndChainHandleEntity;
     private BallAndChainIconEntity ballAndChainIconEntity;
+    private BallAndChainDurabilityEntity ballAndChainDurabilityEntity;
 
     private BallAndChainStateMachine ballAndChainStateMachine = new BallAndChainStateMachine();
 
@@ -36,6 +37,7 @@ public class BallAndChainManagerEntity extends BaseEntity {
         this.ballAndChainCollisionManagerEntity = new BallAndChainCollisionManagerEntity(ballAndChainStateMachine, bubblePopperEntity, gamePhysicsContactsEntity, gameResources);
         this.ballAndChainHandleEntity = new BallAndChainHandleEntity(ballAndChainStateMachine, gameResources);
         this.ballAndChainIconEntity = new BallAndChainIconEntity(ballAndChainStateMachine, gameAreaTouchListenerEntity, texturesManager, gameResources);
+        this.ballAndChainDurabilityEntity = new BallAndChainDurabilityEntity(ballAndChainStateMachine, gameResources);
     }
 
     @Override
