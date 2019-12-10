@@ -6,9 +6,7 @@ package com.wack.pop2.resources.textures;
  */
 public enum TextureId {
     EXPLOSION,
-    RED_BUBBLE,
-    GREEN_BUBBLE,
-    BLUE_BUBBLE,
+    BUBBLE,
     SKULL_BALL,
     GAME_OVER,
     CHAIN_LINK,

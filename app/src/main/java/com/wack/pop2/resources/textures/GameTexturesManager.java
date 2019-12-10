@@ -50,23 +50,19 @@ public class GameTexturesManager extends BaseEntity {
                         "explosion.png",
                         0, 0, 3, 4));
 
-        BitmapTextureAtlas mainBitmapTextureAtlas = new BitmapTextureAtlas(textureManager, 1000, 700, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        BitmapTextureAtlas mainBitmapTextureAtlas = new BitmapTextureAtlas(textureManager, 600, 700, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
         mTextureRegions.put(
-                TextureId.RED_BUBBLE,
-                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "red_ball.png", 0, 0));
-        mTextureRegions.put(TextureId.GREEN_BUBBLE,
-                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "green_ball.png", 150, 0));
-        mTextureRegions.put(TextureId.BLUE_BUBBLE,
-                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "blue_ball.png", 300, 0));
+                TextureId.BUBBLE,
+                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "ball.png", 0, 0));
         mTextureRegions.put(TextureId.SKULL_BALL,
-                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "skull_ball.png", 450, 0));
+                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "skull_ball.png", 150, 0));
         mTextureRegions.put(TextureId.GAME_OVER,
-                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "gameover_fade.png", 550, 0));
+                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "gameover_fade.png", 250, 0));
         mTextureRegions.put(TextureId.CHAIN_LINK,
-                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "chain_link.png", 650, 0));
+                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "chain_link.png", 350, 0));
         mTextureRegions.put(TextureId.BALL_AND_CHAIN_ICON,
-                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "ball_and_chain_icon.png",750, 0));
+                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "ball_and_chain_icon.png",450, 0));
 
         explosionBitmapTextureAtlas.load();
         mainBitmapTextureAtlas.load();

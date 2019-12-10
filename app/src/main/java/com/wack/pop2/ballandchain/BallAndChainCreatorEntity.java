@@ -7,6 +7,7 @@ import com.wack.pop2.GameResources;
 import com.wack.pop2.fixturedefdata.ChainLinkEntityUserData;
 import com.wack.pop2.fixturedefdata.WreckingBallEntityUserData;
 import com.wack.pop2.physics.PhysicsFactory;
+import com.wack.pop2.physics.util.Vec2Pool;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.utils.CoordinateConversionUtil;
@@ -27,6 +28,7 @@ import androidx.annotation.Nullable;
 
 import static com.wack.pop2.GameFixtureDefs.BASE_CHAIN_LINK_FIXTURE_DEF;
 import static com.wack.pop2.GameFixtureDefs.BASE_WRECKING_BALL_DEF;
+import static com.wack.pop2.ballandchain.BallAndChainHandleEntity.OFF_SCREEN_HANDLE_POSITION;
 
 /**
  * Creates a ball and chain in the game
@@ -48,7 +50,11 @@ class BallAndChainCreatorEntity extends BaseEntity {
     }
 
     public MouseJoint createBallAndChain() {
-        Pair<Sprite, Body> wreckingBall = createBall();
+        Pair<Sprite, Body> wreckingBall = createBall(
+                OFF_SCREEN_HANDLE_POSITION.add(
+                        Vec2Pool.obtain(
+                                0 - ScreenUtils.getSreenSize().width,
+                                ScreenUtils.getSreenSize().height / 3)));
         Pair<Sprite, Body> previousChainLink = createChainLinkAndJoin(wreckingBall.first, wreckingBall.second);
         for (int i = 1 ; i < NUM_CHAIN_LINKS ; i++) {
             previousChainLink = createChainLinkAndJoin(previousChainLink.first, previousChainLink.second);
@@ -58,15 +64,15 @@ class BallAndChainCreatorEntity extends BaseEntity {
         return createMouseJoint(lastChainLink.first, lastChainLink.second);
     }
 
-    private Pair<Sprite, Body> createBall() {
+    private Pair<Sprite, Body> createBall(final Vec2 position) {
         ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
-        ITextureRegion ballTexture = texturesManager.getTextureRegion(TextureId.GREEN_BUBBLE);
+        ITextureRegion ballTexture = texturesManager.getTextureRegion(TextureId.BUBBLE);
         float x = 0;
         float y = screenSize.height / 2;
         WreckingBallEntityUserData wreckingBallEntityUserData = new WreckingBallEntityUserData();
         final Sprite ballSprite = new Sprite(
-                x,
-                y,
+                position.x,
+                position.y,
                 ballTexture,
                 vertexBufferObjectManager);
         ballSprite.setUserData(wreckingBallEntityUserData);

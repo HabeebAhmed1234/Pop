@@ -20,6 +20,7 @@ import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.shape.IShape;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.util.color.AndengineColor;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
@@ -125,6 +126,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
                 yScene,
                 getBubbleTexture(bubbleType),
                 vertexBufferObjectManager);
+        colorBubble(bubbleType, bubbleSprite);
         final BaseEntityUserData userData = getBubbleUserData(bubbleSprite, bubbleType, bubbleSize);
         bubbleSprite.setUserData(userData);
         bubbleSprite.setScale(bubbleSize.scale);
@@ -141,16 +143,38 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
     private ITextureRegion getBubbleTexture(BubbleType bubbleType) {
         switch(bubbleType) {
             case RED:
-                return texturesManager.getTextureRegion(TextureId.RED_BUBBLE);
             case GREEN:
-                return texturesManager.getTextureRegion(TextureId.GREEN_BUBBLE);
             case BLUE:
-                return texturesManager.getTextureRegion(TextureId.BLUE_BUBBLE);
+                return texturesManager.getTextureRegion(TextureId.BUBBLE);
             case SKULL:
                 return texturesManager.getTextureRegion(TextureId.SKULL_BALL);
+            default:
+                throw new IllegalStateException("there is no bubble texture for bubbleType = " + bubbleType);
 
         }
-        throw new IllegalStateException("there is no bubble texture for bubbleType = " + bubbleType);
+    }
+
+    private void colorBubble(BubbleType type, Sprite bubble) {
+        AndengineColor color = AndengineColor.WHITE;
+        switch(type) {
+            case RED:
+                color = AndengineColor.RED;
+                break;
+            case GREEN:
+                color = AndengineColor.GREEN;
+                break;
+            case BLUE:
+                color = AndengineColor.BLUE;
+                break;
+            case SKULL:
+                color = null;
+                break;
+            default:
+                throw new IllegalStateException("there is no bubble color for bubbleType = " + type);
+        }
+        if (color != null) {
+            bubble.setColor(color);
+        }
     }
 
     private BaseEntityUserData getBubbleUserData(IShape bubbleSprite, BubbleType bubbleType, BubbleSize bubbleSize) {
