@@ -24,6 +24,9 @@ import org.jbox2d.dynamics.joints.MouseJoint;
 import org.jbox2d.dynamics.joints.MouseJointDef;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import androidx.annotation.Nullable;
 
 import static com.wack.pop2.GameFixtureDefs.BASE_CHAIN_LINK_FIXTURE_DEF;
@@ -49,19 +52,26 @@ class BallAndChainCreatorEntity extends BaseEntity {
         this.texturesManager = texturesManager;
     }
 
-    public MouseJoint createBallAndChain() {
+    public BallAndChain createBallAndChain() {
+        Set<Sprite> components = new HashSet<>();
         Pair<Sprite, Body> wreckingBall = createBall(
                 OFF_SCREEN_HANDLE_POSITION.add(
                         Vec2Pool.obtain(
                                 0 - ScreenUtils.getSreenSize().width,
                                 ScreenUtils.getSreenSize().height / 3)));
+        components.add(wreckingBall.first);
+
         Pair<Sprite, Body> previousChainLink = createChainLinkAndJoin(wreckingBall.first, wreckingBall.second);
+
         for (int i = 1 ; i < NUM_CHAIN_LINKS ; i++) {
+            components.add(previousChainLink.first);
             previousChainLink = createChainLinkAndJoin(previousChainLink.first, previousChainLink.second);
         }
-        lastChainLink = previousChainLink;
 
-        return createMouseJoint(lastChainLink.first, lastChainLink.second);
+        lastChainLink = previousChainLink;
+        components.add(lastChainLink.first);
+
+        return new BallAndChain(createMouseJoint(lastChainLink.first, lastChainLink.second), components);
     }
 
     private Pair<Sprite, Body> createBall(final Vec2 position) {

@@ -7,8 +7,6 @@ import com.wack.pop2.GamePhysicsContactsEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 
-import org.jbox2d.dynamics.joints.MouseJoint;
-
 /**
  * Manages the ball and chain tool that
  * gcan be used to pop bubbles by the user swinging around a
@@ -21,10 +19,11 @@ public class BallAndChainManagerEntity extends BaseEntity {
     private BallAndChainHandleEntity ballAndChainHandleEntity;
     private BallAndChainIconEntity ballAndChainIconEntity;
     private BallAndChainDurabilityEntity ballAndChainDurabilityEntity;
+    private BallAndChainColorEntity ballAndChainColorEntity;
 
     private BallAndChainStateMachine ballAndChainStateMachine = new BallAndChainStateMachine();
 
-    private MouseJoint mouseJoint;
+    private BallAndChain ballAndChain;
 
     public BallAndChainManagerEntity(
             GameTexturesManager texturesManager,
@@ -38,11 +37,13 @@ public class BallAndChainManagerEntity extends BaseEntity {
         this.ballAndChainHandleEntity = new BallAndChainHandleEntity(ballAndChainStateMachine, gameResources);
         this.ballAndChainIconEntity = new BallAndChainIconEntity(ballAndChainStateMachine, gameAreaTouchListenerEntity, texturesManager, gameResources);
         this.ballAndChainDurabilityEntity = new BallAndChainDurabilityEntity(ballAndChainStateMachine, gameResources);
+        this.ballAndChainColorEntity = new BallAndChainColorEntity(ballAndChainStateMachine, gameResources);
     }
 
     @Override
     public void onCreateScene() {
-        mouseJoint = ballAndChainCreatorEntity.createBallAndChain();
-        ballAndChainHandleEntity.setHandleJoint(mouseJoint);
+        ballAndChain = ballAndChainCreatorEntity.createBallAndChain();
+        ballAndChainColorEntity.setBallAndChain(ballAndChain);
+        ballAndChainHandleEntity.setHandleJoint(ballAndChain.handle);
     }
 }
