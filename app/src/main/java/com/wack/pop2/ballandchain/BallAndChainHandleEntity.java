@@ -86,6 +86,7 @@ class BallAndChainHandleEntity extends BaseEntity implements BallAndChainStateMa
     public boolean onSceneTouchEvent(Scene scene, TouchEvent touchEvent) {
         switch(touchEvent.getAction()) {
             case TouchEvent.ACTION_UP:
+                releaseHandle();
                 return false;
             case TouchEvent.ACTION_DOWN:
             case TouchEvent.ACTION_MOVE:
@@ -93,6 +94,16 @@ class BallAndChainHandleEntity extends BaseEntity implements BallAndChainStateMa
                 return true;
         }
         return false;
+    }
+
+    private void releaseHandle() {
+        if (BallAndChainStateClassifier.isBallAndChainInUse(stateMachine.getCurrentState())) {
+            stateMachine.transitionState(
+                    stateMachine.getCurrentState() == BallAndChainStateMachine.State.IN_USE_CHARGED
+                            ? BallAndChainStateMachine.State.UNLOCKED_CHARGED
+                            : BallAndChainStateMachine.State.UNLOCKED_DISCHARGED);
+            stopTouchTracking();
+        }
     }
 
     private void setHandlePositionTarget(TouchEvent touchEvent) {
