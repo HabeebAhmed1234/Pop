@@ -1,20 +1,18 @@
 package com.wack.pop2.ballandchain;
 
-import android.util.Log;
+import com.wack.pop2.statemachine.BaseStateMachine;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /**
  * Manages the state of the ball and chain tool that is used to pop bubbles
  */
-class BallAndChainStateMachine {
-
-    public interface Listener {
-        void onEnterState(State newState);
-    }
+class BallAndChainStateMachine extends BaseStateMachine<BallAndChainStateMachine.State> {
 
     public enum State {
 
@@ -53,118 +51,24 @@ class BallAndChainStateMachine {
         IN_USE_DISCHARGED,
     }
 
-    private State currentState = State.LOCKED;
-    private Map<State, Set<Listener>> transitionListeners = new HashMap<>();
-
-    /**
-     * Adds a transition listener for all states.
-     *
-     * Notifies of the current state once.
-     *
-     * @param listener
-     */
-    public void addAllStateTransitionListener(Listener listener) {
-        for (State state : State.values()) {
-            addTransitionListener(state, listener, false);
-        }
-        notifyListenerOfNewState(currentState, listener);
+    @Override
+    protected State getInitialState() {
+        return State.LOCKED;
     }
 
-    public void removeAllStateTransitionListener(Listener listener) {
-        for (State state : State.values()) {
-            removeTransitionListener(state, listener);
-        }
+    @Override
+    protected List getAllStatesList() {
+        return Arrays.asList(State.values());
     }
 
-    /**
-     * Add a new listener for the given state.
-     * Triggers a callback on this listener for the current state immediately
-     * @param state
-     * @param listener
-     * @param shouldNotify whether or not we should immediately notify of the current state
-     */
-    public BallAndChainStateMachine addTransitionListener(
-            State state,
-            Listener listener,
-            boolean shouldNotify) {
-        if (!transitionListeners.containsKey(state)) {
-            transitionListeners.put(state, new HashSet<Listener>());
-        }
-        Set<Listener> listeners = transitionListeners.get(state);
-        if (listeners.contains(listener)) {
-            throw new IllegalStateException("Listener had already been added");
-        }
-        listeners.add(listener);
-        if (shouldNotify) {
-            notifyListenerOfNewState(currentState, listener);
-        }
-        return this;
-    }
-
-    public BallAndChainStateMachine addTransitionListener(
-            State state,
-            Listener listener) {
-        return addTransitionListener(state, listener, true);
-    }
-
-    public BallAndChainStateMachine removeTransitionListener(State state, Listener listener) {
-        if (transitionListeners.containsKey(state)) {
-            Set<Listener> listeners =  transitionListeners.get(state);
-            if (listeners.contains(listener)) {
-                listeners.remove(listener);
-            } else {
-                throw new IllegalStateException("Listener " + listener + " was never added for state " + state);
-            }
-            if (listeners.isEmpty()) {
-                transitionListeners.remove(state);
-            }
-        }
-        return this;
-    }
-
-    public State getCurrentState() {
-        return currentState;
-    }
-
-    public void transitionState(State newState) {
-        boolean isValidTransition = false;
-
-        switch (currentState) {
-            case LOCKED:
-                if (newState == State.UNLOCKED_CHARGED) isValidTransition = true;
-                break;
-            case UNLOCKED_CHARGED:
-                if (newState == State.IN_USE_CHARGED) isValidTransition = true;
-                break;
-            case UNLOCKED_DISCHARGED:
-                if (newState == State.UNLOCKED_CHARGED) isValidTransition = true;
-                break;
-            case IN_USE_CHARGED:
-                if (newState == State.IN_USE_DISCHARGED || newState == State.UNLOCKED_CHARGED) isValidTransition = true;
-                break;
-            case IN_USE_DISCHARGED:
-                if (newState == State.UNLOCKED_DISCHARGED || newState == State.IN_USE_CHARGED) isValidTransition = true;
-                break;
-        }
-
-        if (isValidTransition) {
-            Log.d("BallAndChainStateMachine", currentState + " -> " + newState);
-            currentState = newState;
-            notifyTransition(currentState);
-        } else {
-            throw new IllegalArgumentException("Cannot transition ball and chain from " + currentState + " to " + newState);
-        }
-    }
-
-    private void notifyTransition(State newState) {
-        if (transitionListeners.containsKey(newState)) {
-            for (Listener listener : transitionListeners.get(newState)) {
-                notifyListenerOfNewState(newState, listener);
-            }
-        }
-    }
-
-    private void notifyListenerOfNewState(State newState, Listener listener) {
-        listener.onEnterState(newState);
+    @Override
+    protected Map getAllValidStateTransitions() {
+        Map<State, Set<State>> validTransitions = new HashMap<>();
+        validTransitions.put(State.LOCKED, new HashSet<>(Arrays.asList(State.UNLOCKED_CHARGED)));
+        validTransitions.put(State.UNLOCKED_CHARGED, new HashSet<>(Arrays.asList(State.IN_USE_CHARGED)));
+        validTransitions.put(State.UNLOCKED_DISCHARGED, new HashSet<>(Arrays.asList(State.UNLOCKED_CHARGED)));
+        validTransitions.put(State.IN_USE_CHARGED, new HashSet<>(Arrays.asList(State.IN_USE_DISCHARGED, State.UNLOCKED_CHARGED)));
+        validTransitions.put(State.IN_USE_DISCHARGED, new HashSet<>(Arrays.asList(State.UNLOCKED_DISCHARGED, State.IN_USE_CHARGED)));
+        return validTransitions;
     }
 }

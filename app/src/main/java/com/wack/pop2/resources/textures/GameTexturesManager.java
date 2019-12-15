@@ -50,10 +50,10 @@ public class GameTexturesManager extends BaseEntity {
                         "explosion.png",
                         0, 0, 3, 4));
 
-        BitmapTextureAtlas mainBitmapTextureAtlas = new BitmapTextureAtlas(textureManager, 600, 700, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        BitmapTextureAtlas mainBitmapTextureAtlas = new BitmapTextureAtlas(textureManager, 700, 700, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
         mTextureRegions.put(
-                TextureId.BUBBLE,
+                TextureId.BALL,
                 BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "ball.png", 0, 0));
         mTextureRegions.put(TextureId.SKULL_BALL,
                 BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "skull_ball.png", 150, 0));
@@ -63,6 +63,8 @@ public class GameTexturesManager extends BaseEntity {
                 BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "chain_link.png", 350, 0));
         mTextureRegions.put(TextureId.BALL_AND_CHAIN_ICON,
                 BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "ball_and_chain_icon.png",450, 0));
+        mTextureRegions.put(TextureId.LINE,
+                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "line.png",550, 0));
 
         explosionBitmapTextureAtlas.load();
         mainBitmapTextureAtlas.load();

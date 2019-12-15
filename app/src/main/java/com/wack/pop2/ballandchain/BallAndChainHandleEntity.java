@@ -18,7 +18,7 @@ import androidx.annotation.Nullable;
  * Manages the handle of the ball and chain based off of the current state of the ball and chain
  * system
  */
-class BallAndChainHandleEntity extends BaseEntity implements BallAndChainStateMachine.Listener, IOnSceneTouchListener {
+class BallAndChainHandleEntity extends BaseEntity implements BallAndChainStateMachine.Listener<BallAndChainStateMachine.State>, IOnSceneTouchListener {
 
     public static final Vec2 OFF_SCREEN_HANDLE_POSITION =
             CoordinateConversionUtil.sceneToPhysicsWorld(

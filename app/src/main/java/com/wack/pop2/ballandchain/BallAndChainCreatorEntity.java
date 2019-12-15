@@ -76,7 +76,7 @@ class BallAndChainCreatorEntity extends BaseEntity {
 
     private Pair<Sprite, Body> createBall(final Vec2 position) {
         ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
-        ITextureRegion ballTexture = texturesManager.getTextureRegion(TextureId.BUBBLE);
+        ITextureRegion ballTexture = texturesManager.getTextureRegion(TextureId.BALL);
         float x = 0;
         float y = screenSize.height / 2;
         WreckingBallEntityUserData wreckingBallEntityUserData = new WreckingBallEntityUserData();

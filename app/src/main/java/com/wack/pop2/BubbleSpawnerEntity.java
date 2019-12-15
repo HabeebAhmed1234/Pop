@@ -145,7 +145,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
             case RED:
             case GREEN:
             case BLUE:
-                return texturesManager.getTextureRegion(TextureId.BUBBLE);
+                return texturesManager.getTextureRegion(TextureId.BALL);
             case SKULL:
                 return texturesManager.getTextureRegion(TextureId.SKULL_BALL);
             default:

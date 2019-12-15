@@ -18,7 +18,7 @@ import org.andengine.engine.handler.timer.TimerHandler;
  *
  *
  */
-class BallAndChainDurabilityEntity extends BaseEntity implements EventBus.Subscriber, BallAndChainStateMachine.Listener {
+class BallAndChainDurabilityEntity extends BaseEntity implements EventBus.Subscriber, BallAndChainStateMachine.Listener<BallAndChainStateMachine.State> {
 
     private static final float BALL_AND_CHAIN_CHARGE_INTERVAL_TIME = 1.0f;
     private static final float BALL_AND_CHAIN_CHARGE_INCREMENT = 0.1f;

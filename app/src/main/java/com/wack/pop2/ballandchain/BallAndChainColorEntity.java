@@ -5,16 +5,18 @@ import com.wack.pop2.GameResources;
 
 import org.andengine.util.color.AndengineColor;
 
+import androidx.annotation.Nullable;
+
 /**
  * Sets the color of the ball and chain given the current state.
  */
-class BallAndChainColorEntity extends BaseEntity implements BallAndChainStateMachine.Listener {
+class BallAndChainColorEntity extends BaseEntity implements BallAndChainStateMachine.Listener<BallAndChainStateMachine.State> {
 
     private static final AndengineColor CHARGED_COLOR = AndengineColor.GREEN;
     private static final AndengineColor DISCHARGED_COLOR = AndengineColor.RED;
 
     private BallAndChainStateMachine stateMachine;
-    private BallAndChain ballAndChain;
+    @Nullable private BallAndChain ballAndChain;
 
     public BallAndChainColorEntity(
             BallAndChainStateMachine stateMachine,
@@ -39,6 +41,7 @@ class BallAndChainColorEntity extends BaseEntity implements BallAndChainStateMac
 
     @Override
     public void onEnterState(BallAndChainStateMachine.State newState) {
+        if (ballAndChain == null) return;
         switch (newState) {
             case UNLOCKED_CHARGED:
             case IN_USE_CHARGED:

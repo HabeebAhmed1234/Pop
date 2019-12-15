@@ -12,6 +12,7 @@ import com.wack.pop2.hudentities.TimerHudEntity;
 import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
+import com.wack.pop2.turret.TurretsManagerEntity;
 import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.engine.options.EngineOptions;
@@ -37,6 +38,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	private BubblePopperEntity mBubblePopperEntity;
 	private TouchPopperEntity mTouchPopperEntity;
 	private BallAndChainManagerEntity mBallAndChainManagerEntity;
+	private TurretsManagerEntity mTurrentsManagerEntity;
 
 	public static Intent newIntent(Context context) {
 		return new Intent(context, GameActivity.class);
@@ -77,6 +79,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		mBubblePopperEntity = new BubblePopperEntity(gameFontsManager, gameSoundsManager, gameAnimationManager, mBubbleSpawnerEntity, mGameResources);
 		mTouchPopperEntity = new TouchPopperEntity(gameAreaTouchListenerEntity, mBubblePopperEntity, mGameResources);
 		mBallAndChainManagerEntity = new BallAndChainManagerEntity(gameTexturesManager, gameAreaTouchListenerEntity, gamePhysicsContactsEntity, mBubblePopperEntity, mGameResources);
+		mTurrentsManagerEntity = new TurretsManagerEntity(gameTexturesManager, mGameResources);
 	}
 
 	@Override

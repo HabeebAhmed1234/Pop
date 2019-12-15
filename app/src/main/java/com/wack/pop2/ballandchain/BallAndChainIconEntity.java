@@ -22,7 +22,7 @@ import org.andengine.util.color.AndengineColor;
  * Appears when the ball and chain tool is unlocked. The user can tap and hold the icon to start
  * using the ball and chain.
  */
-class BallAndChainIconEntity extends BaseEntity implements EventBus.Subscriber, BallAndChainStateMachine.Listener, GameAreaTouchListenerEntity.AreaTouchListener {
+class BallAndChainIconEntity extends BaseEntity implements EventBus.Subscriber, BallAndChainStateMachine.Listener<BallAndChainStateMachine.State>, GameAreaTouchListenerEntity.AreaTouchListener {
 
     private GameAreaTouchListenerEntity touchListenerEntity;
     private GameTexturesManager gameTexturesManager;
