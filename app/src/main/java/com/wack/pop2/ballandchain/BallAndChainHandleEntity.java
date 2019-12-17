@@ -2,11 +2,11 @@ package com.wack.pop2.ballandchain;
 
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameResources;
+import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.physics.util.Vec2Pool;
 import com.wack.pop2.utils.CoordinateConversionUtil;
 import com.wack.pop2.utils.ScreenUtils;
 
-import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.input.touch.TouchEvent;
 import org.jbox2d.common.Vec2;
@@ -18,7 +18,7 @@ import androidx.annotation.Nullable;
  * Manages the handle of the ball and chain based off of the current state of the ball and chain
  * system
  */
-class BallAndChainHandleEntity extends BaseEntity implements BallAndChainStateMachine.Listener<BallAndChainStateMachine.State>, IOnSceneTouchListener {
+class BallAndChainHandleEntity extends BaseEntity implements BallAndChainStateMachine.Listener<BallAndChainStateMachine.State>, GameSceneTouchListenerEntity.SceneTouchListener {
 
     public static final Vec2 OFF_SCREEN_HANDLE_POSITION =
             CoordinateConversionUtil.sceneToPhysicsWorld(
@@ -26,12 +26,15 @@ class BallAndChainHandleEntity extends BaseEntity implements BallAndChainStateMa
                             ScreenUtils.getSreenSize().height * 1.1f));
 
     @Nullable private MouseJoint handleJoint;
+    private GameSceneTouchListenerEntity sceneTouchListenerEntity;
     private BallAndChainStateMachine stateMachine;
 
     public BallAndChainHandleEntity(
             BallAndChainStateMachine stateMachine,
+            GameSceneTouchListenerEntity sceneTouchListenerEntity,
             GameResources gameResources) {
         super(gameResources);
+        this.sceneTouchListenerEntity = sceneTouchListenerEntity;
         this.stateMachine = stateMachine;
     }
 
@@ -73,13 +76,13 @@ class BallAndChainHandleEntity extends BaseEntity implements BallAndChainStateMa
     }
 
     private void startTouchTracking() {
-        scene.setOnSceneTouchListener(this);
+        sceneTouchListenerEntity.addSceneTouchListener(this);
     }
 
     private void stopTouchTracking() {
         // Snap the handle out of the screen and stop tracking touch dragging the handle
         setHandlePositionTarget(OFF_SCREEN_HANDLE_POSITION);
-        scene.setOnSceneTouchListener(null);
+        sceneTouchListenerEntity.removeSceneTouchListener(this);
     }
 
     @Override

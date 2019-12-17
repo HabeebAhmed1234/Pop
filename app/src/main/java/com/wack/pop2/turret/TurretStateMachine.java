@@ -1,9 +1,15 @@
 package com.wack.pop2.turret;
 
-import static com.wack.pop2.turret.TurretStateMachine.State.DOCKED;
-import static com.wack.pop2.turret.TurretStateMachine.State.TARGETING;
+import com.wack.pop2.statemachine.BaseStateMachine;
 
-class TurretStateMachine {
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static com.wack.pop2.turret.TurretStateMachine.State.DOCKED;
+
+class TurretStateMachine extends BaseStateMachine<TurretStateMachine.State> {
 
     public enum State {
         DOCKED, // The turret is not in play
@@ -11,26 +17,18 @@ class TurretStateMachine {
         FIRING, // The turret has found a target and is firing a new projectile
     }
 
-    private State currentState = DOCKED;
+    @Override
+    protected State getInitialState() {
+        return DOCKED;
+    }
 
-    public TurretStateMachine() {}
+    @Override
+    protected List<State> getAllStatesList() {
+        return Arrays.asList(State.values());
+    }
 
-    public boolean transitionState(State newState) {
-        boolean isTransitionValid = false;
-        switch (newState) {
-            case DOCKED:
-                if (newState == TARGETING){
-                    isTransitionValid = true;
-                }
-                break;
-            case TARGETING:
-                break;
-            case FIRING:
-                break;
-        }
-        if (isTransitionValid) {
-            currentState = newState;
-        }
-        return isTransitionValid;
+    @Override
+    protected Map<State, Set<State>> getAllValidStateTransitions() {
+        return null;
     }
 }

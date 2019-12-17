@@ -45,7 +45,7 @@ public class GameAreaTouchListenerEntity extends BaseEntity implements IOnAreaTo
 
         Set<AreaTouchListener> listeners = areaTouchlisteners.get(userDataType);
         if (listeners.contains(listener)) {
-            throw new IllegalStateException("Listener " + listener + " is already listening to " + userDataType + " touch event");
+            Log.w(TAG, "Listener " + listener + " is already listening to " + userDataType + " touch event");
         }
         listeners.add(listener);
         return this;
@@ -53,7 +53,7 @@ public class GameAreaTouchListenerEntity extends BaseEntity implements IOnAreaTo
 
     public void removeAreaTouchListener(Class<? extends BaseEntityUserData> userDataType, AreaTouchListener listener) {
         if (!areaTouchlisteners.containsKey(userDataType)) {
-            throw new IllegalStateException("No listeners for " + userDataType);
+            Log.w(TAG, "No listeners for " + userDataType);
         }
         Set<AreaTouchListener> listeners = areaTouchlisteners.get(userDataType);
         listeners.remove(listener);

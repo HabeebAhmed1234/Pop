@@ -5,6 +5,7 @@ import com.wack.pop2.BubblePopperEntity;
 import com.wack.pop2.GameAreaTouchListenerEntity;
 import com.wack.pop2.GamePhysicsContactsEntity;
 import com.wack.pop2.GameResources;
+import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 
 /**
@@ -27,6 +28,7 @@ public class BallAndChainManagerEntity extends BaseEntity {
 
     public BallAndChainManagerEntity(
             GameTexturesManager texturesManager,
+            GameSceneTouchListenerEntity gameSceneTouchListenerEntity,
             GameAreaTouchListenerEntity gameAreaTouchListenerEntity,
             GamePhysicsContactsEntity gamePhysicsContactsEntity,
             BubblePopperEntity bubblePopperEntity,
@@ -34,7 +36,7 @@ public class BallAndChainManagerEntity extends BaseEntity {
         super(gameResources);
         this.ballAndChainCreatorEntity = new BallAndChainCreatorEntity(texturesManager, gameResources);
         this.ballAndChainCollisionManagerEntity = new BallAndChainCollisionManagerEntity(ballAndChainStateMachine, bubblePopperEntity, gamePhysicsContactsEntity, gameResources);
-        this.ballAndChainHandleEntity = new BallAndChainHandleEntity(ballAndChainStateMachine, gameResources);
+        this.ballAndChainHandleEntity = new BallAndChainHandleEntity(ballAndChainStateMachine, gameSceneTouchListenerEntity, gameResources);
         this.ballAndChainIconEntity = new BallAndChainIconEntity(ballAndChainStateMachine, gameAreaTouchListenerEntity, texturesManager, gameResources);
         this.ballAndChainDurabilityEntity = new BallAndChainDurabilityEntity(ballAndChainStateMachine, gameResources);
         this.ballAndChainColorEntity = new BallAndChainColorEntity(ballAndChainStateMachine, gameResources);

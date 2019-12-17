@@ -60,6 +60,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		GameAnimationManager gameAnimationManager = new GameAnimationManager(mGameResources);
 		GamePhysicsContactsEntity gamePhysicsContactsEntity = new GamePhysicsContactsEntity(mGameResources);
 		GameAreaTouchListenerEntity gameAreaTouchListenerEntity = new GameAreaTouchListenerEntity(mGameResources);
+		GameSceneTouchListenerEntity gameSceneTouchListenerEntity = new GameSceneTouchListenerEntity(mGameResources);
 
 		// Create game entities
 		mLevelEntity = new LevelEntity(mGameResources);
@@ -78,8 +79,8 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		mBubbleLossDetectorEntity = new BubbleLossDetectorEntity(gameFontsManager, gameAnimationManager, gamePhysicsContactsEntity, mGameResources);
 		mBubblePopperEntity = new BubblePopperEntity(gameFontsManager, gameSoundsManager, gameAnimationManager, mBubbleSpawnerEntity, mGameResources);
 		mTouchPopperEntity = new TouchPopperEntity(gameAreaTouchListenerEntity, mBubblePopperEntity, mGameResources);
-		mBallAndChainManagerEntity = new BallAndChainManagerEntity(gameTexturesManager, gameAreaTouchListenerEntity, gamePhysicsContactsEntity, mBubblePopperEntity, mGameResources);
-		mTurrentsManagerEntity = new TurretsManagerEntity(gameTexturesManager, mGameResources);
+		mBallAndChainManagerEntity = new BallAndChainManagerEntity(gameTexturesManager, gameSceneTouchListenerEntity, gameAreaTouchListenerEntity, gamePhysicsContactsEntity, mBubblePopperEntity, mGameResources);
+		mTurrentsManagerEntity = new TurretsManagerEntity(gameSceneTouchListenerEntity, gameTexturesManager, mGameResources);
 	}
 
 	@Override
