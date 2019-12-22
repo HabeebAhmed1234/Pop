@@ -21,8 +21,9 @@ public class GameTexturesManager extends BaseEntity {
 
     private final Context context;
     private final TextureManager textureManager;
-
     private final Map<TextureId, ITextureRegion> mTextureRegions = new HashMap();
+
+    private int currentTexturesWidth = 0;
 
     public GameTexturesManager(Context context, TextureManager textureManager, GameResources gameResources) {
         super(gameResources);
@@ -50,24 +51,26 @@ public class GameTexturesManager extends BaseEntity {
                         "explosion.png",
                         0, 0, 3, 4));
 
-        BitmapTextureAtlas mainBitmapTextureAtlas = new BitmapTextureAtlas(textureManager, 700, 700, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        BitmapTextureAtlas mainBitmapTextureAtlas = new BitmapTextureAtlas(textureManager, 800, 700, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-        mTextureRegions.put(
-                TextureId.BALL,
-                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "ball.png", 0, 0));
-        mTextureRegions.put(TextureId.SKULL_BALL,
-                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "skull_ball.png", 150, 0));
-        mTextureRegions.put(TextureId.GAME_OVER,
-                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "gameover_fade.png", 250, 0));
-        mTextureRegions.put(TextureId.CHAIN_LINK,
-                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "chain_link.png", 350, 0));
-        mTextureRegions.put(TextureId.BALL_AND_CHAIN_ICON,
-                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "ball_and_chain_icon.png",450, 0));
-        mTextureRegions.put(TextureId.LINE,
-                BitmapTextureAtlasTextureRegionFactory.createFromAsset(mainBitmapTextureAtlas, context, "line.png",550, 0));
+        addTexture(TextureId.BALL, mainBitmapTextureAtlas, "ball.png", 150);
+        addTexture(TextureId.SKULL_BALL, mainBitmapTextureAtlas,  "skull_ball.png", 100);
+        addTexture(TextureId.GAME_OVER, mainBitmapTextureAtlas, "gameover_fade.png", 100);
+        addTexture(TextureId.CHAIN_LINK, mainBitmapTextureAtlas, "chain_link.png", 100);
+        addTexture(TextureId.BALL_AND_CHAIN_ICON, mainBitmapTextureAtlas, "ball_and_chain_icon.png",100);
+        addTexture(TextureId.LINE, mainBitmapTextureAtlas, "line.png", 110);
+        addTexture(TextureId.TURRETS_ICON, mainBitmapTextureAtlas, "turrets_icon.png",110);
 
         explosionBitmapTextureAtlas.load();
         mainBitmapTextureAtlas.load();
 
+    }
+
+    private void addTexture(TextureId id, BitmapTextureAtlas textureAtlas, String filename, int width) {
+        mTextureRegions.put(
+                id,
+                BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+                        textureAtlas, context, filename,currentTexturesWidth, 0));
+        currentTexturesWidth += width + 1;
     }
 }

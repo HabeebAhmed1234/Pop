@@ -1,5 +1,8 @@
 package com.wack.pop2;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -29,11 +32,22 @@ public class GameLifeCycleCalllbackManager {
          * Cleanup all resources here
          */
         void onDestroy();
+
+        /**
+         * Called when the entity gets created on a posted thread only if it is safe to initialize
+         * the entity (load and add sprites)
+         */
+        void onLazyInit();
     }
 
     private final Set<BaseEntity> gameEntities = new HashSet<>();
 
     private static GameLifeCycleCalllbackManager sInstance;
+
+    /**
+     * True in between the scene being created and onDestroy being called
+     */
+    private boolean isGameSceneAlive = false;
 
     private GameLifeCycleCalllbackManager() {}
 
@@ -62,8 +76,8 @@ public class GameLifeCycleCalllbackManager {
 
     public void registerGameEntity(BaseEntity baseEntity) {
         gameEntities.add(baseEntity);
+        maybeLazyInit(baseEntity);
     }
-
 
     public void onCreateResources() {
         Iterator<BaseEntity> it = gameEntities.iterator();
@@ -73,16 +87,31 @@ public class GameLifeCycleCalllbackManager {
     }
 
     public void onCreateScene() {
+        isGameSceneAlive = true;
         Iterator<BaseEntity> it = gameEntities.iterator();
         while (it.hasNext()) {
-            it.next().onCreateScene();
+            BaseEntity baseEntity = it.next();
+            baseEntity.onCreateScene();
+            maybeLazyInit(baseEntity);
         }
     }
 
     public void onDestroy() {
+        isGameSceneAlive = false;
         Iterator<BaseEntity> it = gameEntities.iterator();
         while (it.hasNext()) {
             it.next().onDestroy();
+        }
+    }
+
+    private void maybeLazyInit(final BaseEntity baseEntity) {
+        if (isGameSceneAlive) {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    baseEntity.onLazyInit();
+                }
+            });
         }
     }
 }

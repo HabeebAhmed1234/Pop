@@ -11,16 +11,18 @@ import com.wack.pop2.utils.ScreenUtils;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
-public class TurretCreatorEntity extends BaseEntity {
+public class TurretEntityCreator extends BaseEntity {
 
+    private GameResources gameResources;
     private GameTexturesManager texturesManager;
 
-    public TurretCreatorEntity(GameTexturesManager texturesManager, GameResources gameResources) {
+    public TurretEntityCreator(GameTexturesManager texturesManager, GameResources gameResources) {
         super(gameResources);
+        this.gameResources = gameResources;
         this.texturesManager = texturesManager;
     }
 
-    public Turret createTurret() {
+    public TurretEntity createTurret() {
         ITextureRegion turretBodyTexture = texturesManager.getTextureRegion(TextureId.BALL);
         ITextureRegion turretCannonTexture = texturesManager.getTextureRegion(TextureId.LINE);
 
@@ -41,6 +43,6 @@ public class TurretCreatorEntity extends BaseEntity {
         addToScene(turretCannonSprite);
         turretCannonSprite.setRotationCenter(0f, turretCannonTexture.getHeight() / 2);
 
-        return new Turret(turretBodySprite, turretCannonSprite);
+        return new TurretEntity(turretBodySprite, turretCannonSprite, gameResources);
     }
 }

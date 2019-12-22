@@ -11,5 +11,6 @@ public enum TextureId {
     GAME_OVER,
     CHAIN_LINK,
     BALL_AND_CHAIN_ICON,
+    TURRETS_ICON,
     LINE,
 }

@@ -19,6 +19,7 @@ public abstract class BaseStateMachine<StateType extends Enum> {
 
     private StateType currentState = null;
     private Map<StateType, Set<Listener<StateType>>> transitionListeners = new HashMap<>();
+    private Map<StateType, Set<StateType>> validTransitions = null;
 
     protected abstract StateType getInitialState();
     protected abstract List<StateType> getAllStatesList();
@@ -99,7 +100,7 @@ public abstract class BaseStateMachine<StateType extends Enum> {
     }
 
     public void transitionState(StateType newState) {
-        Map<StateType, Set<StateType>> validTransitions = getAllValidStateTransitions();
+        Map<StateType, Set<StateType>> validTransitions = getAllValidStateTransitionsInternal();
         boolean isValidTransition =
                 validTransitions.containsKey(currentState)
                         ? validTransitions.get(currentState).contains(newState)
@@ -112,6 +113,13 @@ public abstract class BaseStateMachine<StateType extends Enum> {
         } else {
             throw new IllegalArgumentException("Cannot transition ball and chain from " + currentState + " to " + newState);
         }
+    }
+
+    private Map<StateType, Set<StateType>> getAllValidStateTransitionsInternal() {
+        if (validTransitions == null) {
+            validTransitions = getAllValidStateTransitions();
+        }
+        return validTransitions;
     }
 
     private void notifyTransition(StateType newState) {
