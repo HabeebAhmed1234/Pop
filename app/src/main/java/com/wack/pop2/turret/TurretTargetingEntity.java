@@ -1,15 +1,16 @@
 package com.wack.pop2.turret;
 
+import android.util.Log;
+
 import com.wack.pop2.BaseEntity;
+import com.wack.pop2.BubblesEntityMatcher;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.comparators.ClosestDistanceComparator;
-import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
 import com.wack.pop2.statemachine.BaseStateMachine;
 
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.IEntity;
-import org.andengine.entity.IEntityMatcher;
 import org.andengine.entity.sprite.Sprite;
 
 import java.util.Collections;
@@ -20,13 +21,13 @@ import androidx.annotation.Nullable;
 import static com.wack.pop2.turret.TurretsConstants.TARGETING_TIMER_UPDATE_INTERVAL_SECONDS;
 
 /**
- * Manages the targeting for each turret (unique TurrentTargetingEntity is made for each turret).
+ * Manages the targeting for each turret (unique TurretTargetingEntity is made for each turret).
  * If the state machine for the turret enters the TARGETING state then we lock onto a bubble and
  * fire when we are allowed. We fire by calling the TurretFiringEntity.
  *
  *
  */
-public class TurrentTargetingEntity extends BaseEntity implements BaseStateMachine.Listener<TurretStateMachine.State> {
+public class TurretTargetingEntity extends BaseEntity implements BaseStateMachine.Listener<TurretStateMachine.State> {
 
     public interface TurretTargetingCallback {
         void setTurretAngle(float angle);
@@ -42,7 +43,7 @@ public class TurrentTargetingEntity extends BaseEntity implements BaseStateMachi
 
     private TimerHandler targetingUpdateHandler = new TimerHandler(
             TARGETING_TIMER_UPDATE_INTERVAL_SECONDS,
-            false,
+            true,
             new ITimerCallback() {
                 @Override
                 public void onTimePassed(TimerHandler pTimerHandler) {
@@ -50,7 +51,7 @@ public class TurrentTargetingEntity extends BaseEntity implements BaseStateMachi
                 }
             });
 
-    public TurrentTargetingEntity(
+    public TurretTargetingEntity(
             TurretFiringEntity turretFiringEntity,
             TurretStateMachine stateMachine,
             TurretTargetingCallback turretTargetingCallback,
@@ -103,6 +104,7 @@ public class TurrentTargetingEntity extends BaseEntity implements BaseStateMachi
         if (targetBubbleSprite != null) {
             rotateTurretToTarget(targetBubbleSprite);
             if (turretFiringEntity.isReadyToFire()) {
+                Log.d("asdasd", "Fire");
                 turretFiringEntity.fire(targetBubbleSprite);
             }
         }
@@ -122,16 +124,7 @@ public class TurrentTargetingEntity extends BaseEntity implements BaseStateMachi
      * Returns all the bubbles present in the scene
      */
     private List<IEntity> getAllBubbles() {
-        return scene.query(new IEntityMatcher() {
-            @Override
-            public boolean matches(IEntity pEntity) {
-                @Nullable Object userdata = pEntity.getUserData();
-                if (userdata != null) {
-                    return userdata instanceof BubbleEntityUserData;
-                }
-                return false;
-            }
-        });
+        return scene.query(new BubblesEntityMatcher());
     }
 
     private void rotateTurretToTarget(IEntity target) {

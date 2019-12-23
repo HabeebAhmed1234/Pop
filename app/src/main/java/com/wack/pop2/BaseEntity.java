@@ -92,6 +92,7 @@ public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCa
     }
 
     protected boolean isInScene(final IEntity entity) {
+        if (entity == null) return false;
         return scene.queryFirst(new IEntityMatcher() {
             @Override
             public boolean matches(IEntity pEntity) {

@@ -1,7 +1,5 @@
 package com.wack.pop2.statemachine;
 
-import android.util.Log;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -107,7 +105,6 @@ public abstract class BaseStateMachine<StateType extends Enum> {
                         : false;
 
         if (isValidTransition) {
-            Log.d("BaseStateMachine", currentState + " -> " + newState);
             currentState = newState;
             notifyTransition(currentState);
         } else {

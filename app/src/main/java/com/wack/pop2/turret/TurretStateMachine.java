@@ -40,6 +40,6 @@ class TurretStateMachine extends BaseStateMachine<TurretStateMachine.State> {
         transitions.put(DRAGGING, new HashSet<>(Arrays.asList(TARGETING, DOCKED)));
         transitions.put(TARGETING, new HashSet<>(Arrays.asList(DRAGGING, FIRING)));
         transitions.put(FIRING, new HashSet<>(Arrays.asList(TARGETING)));
-        return null;
+        return transitions;
     }
 }

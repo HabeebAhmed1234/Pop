@@ -29,7 +29,7 @@ public class TurretsManagerEntity extends BaseEntity {
     @Override
     public void onCreateScene() {
         super.onCreateScene();
-        //turret = turretEntityCreator.createTurret();
+        turret = turretEntityCreator.createTurret();
     }
 
     @Override

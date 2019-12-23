@@ -3,9 +3,9 @@ package com.wack.pop2;
 import android.os.Handler;
 import android.os.Looper;
 
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * All {@link BaseEntity}s are added to this class and will receive callbacks anytime a relevany game
@@ -35,12 +35,12 @@ public class GameLifeCycleCalllbackManager {
 
         /**
          * Called when the entity gets created on a posted thread only if it is safe to initialize
-         * the entity (load and add sprites)
+         * the entity (load and add sprites). Only ever gets called once.
          */
         void onLazyInit();
     }
 
-    private final Set<BaseEntity> gameEntities = new HashSet<>();
+    private final Queue<BaseEntity> gameEntities = new ConcurrentLinkedQueue<>();
 
     private static GameLifeCycleCalllbackManager sInstance;
 
@@ -90,9 +90,7 @@ public class GameLifeCycleCalllbackManager {
         isGameSceneAlive = true;
         Iterator<BaseEntity> it = gameEntities.iterator();
         while (it.hasNext()) {
-            BaseEntity baseEntity = it.next();
-            baseEntity.onCreateScene();
-            maybeLazyInit(baseEntity);
+            it.next().onCreateScene();
         }
     }
 

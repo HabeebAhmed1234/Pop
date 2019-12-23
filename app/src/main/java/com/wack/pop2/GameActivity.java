@@ -35,6 +35,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	private GameOverSequenceEntity mGameOverSequenceEntity;
 	private BubbleSpawnerEntity mBubbleSpawnerEntity;
 	private BubbleLossDetectorEntity mBubbleLossDetectorEntity;
+	private BubbleCleanerEntity mBubbleCleanerEntity;
 	private BubblePopperEntity mBubblePopperEntity;
 	private TouchPopperEntity mTouchPopperEntity;
 	private BallAndChainManagerEntity mBallAndChainManagerEntity;
@@ -77,6 +78,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 				mGameResources);
 		mBubbleSpawnerEntity = new BubbleSpawnerEntity(gameTexturesManager, mGameResources);
 		mBubbleLossDetectorEntity = new BubbleLossDetectorEntity(gameFontsManager, gameAnimationManager, gamePhysicsContactsEntity, mGameResources);
+		mBubbleCleanerEntity = new BubbleCleanerEntity(mGameResources);
 		mBubblePopperEntity = new BubblePopperEntity(gameFontsManager, gameSoundsManager, gameAnimationManager, mBubbleSpawnerEntity, mGameResources);
 		mTouchPopperEntity = new TouchPopperEntity(gameAreaTouchListenerEntity, mBubblePopperEntity, mGameResources);
 		mBallAndChainManagerEntity = new BallAndChainManagerEntity(gameTexturesManager, gameSceneTouchListenerEntity, gameAreaTouchListenerEntity, gamePhysicsContactsEntity, mBubblePopperEntity, mGameResources);

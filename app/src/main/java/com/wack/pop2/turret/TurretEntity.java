@@ -10,11 +10,11 @@ import org.andengine.entity.sprite.Sprite;
  * turret.
  * Each turret contains a state machine
  */
-public class TurretEntity extends BaseEntity implements TurrentTargetingEntity.TurretTargetingCallback {
+public class TurretEntity extends BaseEntity implements TurretTargetingEntity.TurretTargetingCallback {
 
     private TurretStateMachine stateMachine;
     private TurretFiringEntity turretFiringEntity;
-    private TurrentTargetingEntity turrentTargetingEntity;
+    private TurretTargetingEntity turretTargetingEntity;
     private Sprite turretBodySprite;
     private Sprite turretCannonSprite;
 
@@ -23,8 +23,12 @@ public class TurretEntity extends BaseEntity implements TurrentTargetingEntity.T
                         GameResources gameResources) {
         super(gameResources);
         stateMachine = new TurretStateMachine();
-        turretFiringEntity = new TurretFiringEntity(gameResources);
-        turrentTargetingEntity = new TurrentTargetingEntity(turretFiringEntity, stateMachine, this, gameResources);
+        // DEBUG
+        stateMachine.transitionState(TurretStateMachine.State.DRAGGING);
+        stateMachine.transitionState(TurretStateMachine.State.TARGETING);
+        // DEBUG
+        turretFiringEntity = new TurretFiringEntity(stateMachine, gameResources);
+        turretTargetingEntity = new TurretTargetingEntity(turretFiringEntity, stateMachine, this, gameResources);
         this.turretBodySprite = turretBodySprite;
         this.turretCannonSprite = turretCannonSprite;
     }

@@ -131,6 +131,10 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         bubbleSprite.setUserData(userData);
         bubbleSprite.setScale(bubbleSize.scale);
 
+        // If the bubble's right or left edge will clip outside of the screen horizontal bounds
+        // We need to adjust the bubble position
+        clipBubblePosition(bubbleSprite);
+
         final FixtureDef bubbleFixtureDef = GameFixtureDefs.BASE_BUBBLE_FIXTURE_DEF;
         bubbleFixtureDef.setUserData(userData);
         final Body body = PhysicsFactory.createCircleBody(physicsWorld, bubbleSprite, BodyType.DYNAMIC, bubbleFixtureDef);
@@ -138,6 +142,16 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         scene.registerTouchArea(bubbleSprite);
         addToScene(bubbleSprite, body);
         return body;
+    }
+
+    private void clipBubblePosition(Sprite bubbleSprite) {
+        if (bubbleSprite.getX() < 0) {
+            bubbleSprite.setX(0);
+        }
+        float bubbleWidth = bubbleSprite.getWidthScaled();
+        if (bubbleSprite.getX() + bubbleWidth > ScreenUtils.getSreenSize().width) {
+            bubbleSprite.setX(ScreenUtils.getSreenSize().width - bubbleWidth);
+        }
     }
 
     private ITextureRegion getBubbleTexture(BubbleType bubbleType) {
