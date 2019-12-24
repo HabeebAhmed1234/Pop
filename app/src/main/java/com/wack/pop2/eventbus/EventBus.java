@@ -43,11 +43,8 @@ public class EventBus {
     }
     private EventBus() {}
 
-    private Set<Subscriber> getSubscribers(GameEvent event) {
-        if (!mEventSubscribers.containsKey(event)) {
-            mEventSubscribers.put(event, new HashSet());
-        }
-        return mEventSubscribers.get(event);
+    public boolean containsSubscriber(GameEvent event, Subscriber subscriber) {
+        return getSubscribers(event).contains(subscriber);
     }
 
     public EventBus subscribe(GameEvent event, Subscriber subscriber) {
@@ -81,5 +78,12 @@ public class EventBus {
         while (it.hasNext()) {
             it.next().onEvent(event, payload);
         }
+    }
+
+    private Set<Subscriber> getSubscribers(GameEvent event) {
+        if (!mEventSubscribers.containsKey(event)) {
+            mEventSubscribers.put(event, new HashSet());
+        }
+        return mEventSubscribers.get(event);
     }
 }

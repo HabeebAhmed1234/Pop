@@ -133,6 +133,14 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
         }
     }
 
+    public boolean containsContactListener(
+            Class<? extends BaseEntityUserData> entityType1,
+            Class<? extends BaseEntityUserData> entityType2,
+            GameContactListener contactListener) {
+        Set<Class<? extends BaseEntityUserData>> key = createKeyFromTypes(entityType1, entityType2);
+        return gameContactListenerMap.containsKey(key) && gameContactListenerMap.get(key).contains(contactListener);
+    }
+
     /**
      * Returns true if the given contact is one that we are listening to. If not then discard it.
      */

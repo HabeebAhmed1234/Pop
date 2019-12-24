@@ -1,20 +1,13 @@
 package com.wack.pop2.turret;
 
-import android.util.Log;
-
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.BubblesEntityMatcher;
 import com.wack.pop2.GameResources;
-import com.wack.pop2.comparators.ClosestDistanceComparator;
 import com.wack.pop2.statemachine.BaseStateMachine;
 
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.sprite.Sprite;
-
-import java.util.Collections;
-import java.util.List;
 
 import androidx.annotation.Nullable;
 
@@ -29,17 +22,12 @@ import static com.wack.pop2.turret.TurretsConstants.TARGETING_TIMER_UPDATE_INTER
  */
 public class TurretTargetingEntity extends BaseEntity implements BaseStateMachine.Listener<TurretStateMachine.State> {
 
-    public interface TurretTargetingCallback {
-        void setTurretAngle(float angle);
-        Sprite getTurretBodySprite();
-    }
-
     private TurretFiringEntity turretFiringEntity;
     private TurretStateMachine stateMachine;
-    private TurretTargetingCallback turretTargetingCallback;
+    private HostTurretCallback hostTurretCallback;
 
     // Set to a bubble when we want to target this bubble
-    private IEntity targetBubbleSprite = null;
+    private Sprite targetBubbleSprite = null;
 
     private TimerHandler targetingUpdateHandler = new TimerHandler(
             TARGETING_TIMER_UPDATE_INTERVAL_SECONDS,
@@ -54,16 +42,13 @@ public class TurretTargetingEntity extends BaseEntity implements BaseStateMachin
     public TurretTargetingEntity(
             TurretFiringEntity turretFiringEntity,
             TurretStateMachine stateMachine,
-            TurretTargetingCallback turretTargetingCallback,
+            HostTurretCallback hostTurretCallback,
             GameResources gameResources) {
         super(gameResources);
         this.turretFiringEntity = turretFiringEntity;
         this.stateMachine = stateMachine;
-        this.turretTargetingCallback = turretTargetingCallback;
-    }
+        this.hostTurretCallback = hostTurretCallback;
 
-    @Override
-    public void onLazyInit() {
         stateMachine.addAllStateTransitionListener(this);
     }
 
@@ -104,35 +89,22 @@ public class TurretTargetingEntity extends BaseEntity implements BaseStateMachin
         if (targetBubbleSprite != null) {
             rotateTurretToTarget(targetBubbleSprite);
             if (turretFiringEntity.isReadyToFire()) {
-                Log.d("asdasd", "Fire");
                 turretFiringEntity.fire(targetBubbleSprite);
             }
         }
     }
 
     @Nullable
-    private IEntity getBubbleToTarget() {
-        List<IEntity> allBubbles = getAllBubbles();
-        if (allBubbles == null || allBubbles.isEmpty()) {
-            return null;
-        }
-        Collections.sort(allBubbles, new ClosestDistanceComparator(turretTargetingCallback.getTurretBodySprite()));
-        return allBubbles.get(0);
-    }
-
-    /**
-     * Returns all the bubbles present in the scene
-     */
-    private List<IEntity> getAllBubbles() {
-        return scene.query(new BubblesEntityMatcher());
+    private Sprite getBubbleToTarget() {
+        return TurretUtils.getClosestPoppableBubble(scene, hostTurretCallback.getTurretBodySprite());
     }
 
     private void rotateTurretToTarget(IEntity target) {
-        Sprite turretBodySprite = turretTargetingCallback.getTurretBodySprite();
+        Sprite turretBodySprite = hostTurretCallback.getTurretBodySprite();
         float turretCenterX = turretBodySprite.getX() + turretBodySprite.getWidth() / 2;
         float turretCenterY = turretBodySprite.getY() + turretBodySprite.getHeight() / 2;
         float angle = getAngle(turretCenterX, turretCenterY, target.getX(), target.getY());
-        turretTargetingCallback.setTurretAngle(angle);
+        hostTurretCallback.setTurretAngle(angle);
 
     }
 

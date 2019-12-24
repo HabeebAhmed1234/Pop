@@ -12,4 +12,5 @@ public enum GameEvent {
     STARTING_BUBBLE_SPAWNED, // Fired anytime a new bubble is spawned, Payload contains the bubble type
     DIFFICULTY_CHANGE, // Fired when the difficulty changes. Payload contains new difficulty
     BALL_AND_CHAIN_POPPED_BUBBLE, // Fired when the ball and chain pops a bubble
+    TURRET_BULLET_POPPED_BUBBLE, // Fired bullet popped a bubble
 }

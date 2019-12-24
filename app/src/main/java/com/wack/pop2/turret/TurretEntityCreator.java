@@ -43,6 +43,6 @@ public class TurretEntityCreator extends BaseEntity {
         addToScene(turretCannonSprite);
         turretCannonSprite.setRotationCenter(0f, turretCannonTexture.getHeight() / 2);
 
-        return new TurretEntity(turretBodySprite, turretCannonSprite, gameResources);
+        return new TurretEntity(turretBodySprite, turretCannonSprite, texturesManager, gameResources);
     }
 }

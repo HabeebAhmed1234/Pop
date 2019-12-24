@@ -1,5 +1,7 @@
 package org.andengine.entity;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +63,9 @@ public class Entity implements IEntity {
 	protected int mZIndex = 0;
 
 	private IEntity mParent;
+
+	private boolean isAttached = false;
+	private OnDetachedListener listener;
 
 	protected SmartList<IEntity> mChildren;
 	private EntityModifierList mEntityModifiers;
@@ -1136,12 +1141,30 @@ public class Entity implements IEntity {
 
 	@Override
 	public void onAttached() {
-
+		isAttached = true;
 	}
 
 	@Override
 	public void onDetached() {
+		isAttached = false;
+		if (listener != null) {
+			listener.onDetached(this);
+		}
+	}
 
+	@Override
+	public boolean isAttached() {
+		return isAttached;
+	}
+
+	@Override
+	public void setOnDetachedListener(OnDetachedListener listener) {
+		this.listener = listener;
+	}
+
+	@Override
+	public void removeOnDetachedListener() {
+		this.listener = null;
 	}
 
 	@Override

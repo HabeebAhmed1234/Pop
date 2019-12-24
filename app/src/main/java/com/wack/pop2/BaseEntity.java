@@ -6,7 +6,6 @@ import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.engine.Engine;
 import org.andengine.entity.IEntity;
-import org.andengine.entity.IEntityMatcher;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.shape.IAreaShape;
@@ -56,9 +55,6 @@ public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCa
     @Override
     public void onDestroy() {}
 
-    @Override
-    public void onLazyInit() {}
-
     protected void addToSceneWithTouch(Sprite sprite) {
         scene.registerTouchArea(sprite);
         addToScene(sprite);
@@ -92,13 +88,7 @@ public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCa
     }
 
     protected boolean isInScene(final IEntity entity) {
-        if (entity == null) return false;
-        return scene.queryFirst(new IEntityMatcher() {
-            @Override
-            public boolean matches(IEntity pEntity) {
-                return pEntity.equals(entity);
-            }
-        }) != null;
+        return entity != null && entity.isAttached();
     }
 
     private void removeFromSceneInternal(IEntity entity) {

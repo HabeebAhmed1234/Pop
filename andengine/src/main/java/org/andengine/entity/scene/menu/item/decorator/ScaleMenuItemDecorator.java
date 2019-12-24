@@ -1,5 +1,6 @@
 package org.andengine.entity.scene.menu.item.decorator;
 
+import org.andengine.entity.OnDetachedListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 
 /**
@@ -59,6 +60,21 @@ public class ScaleMenuItemDecorator extends BaseMenuItemDecorator {
 	@Override
 	public void onMenuItemReset(final IMenuItem pMenuItem) {
 		this.setScale(this.mUnselectedScale);
+	}
+
+	@Override
+	public boolean isAttached() {
+		return false;
+	}
+
+	@Override
+	public void setOnDetachedListener(OnDetachedListener listener) {
+
+	}
+
+	@Override
+	public void removeOnDetachedListener() {
+
 	}
 
 	// ===========================================================

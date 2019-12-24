@@ -1,5 +1,6 @@
 package org.andengine.entity.scene.menu.item.decorator;
 
+import org.andengine.entity.OnDetachedListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.util.color.AndengineColor;
 
@@ -60,6 +61,21 @@ public class ColorMenuItemDecorator extends BaseMenuItemDecorator {
 	@Override
 	public void onMenuItemReset(final IMenuItem pMenuItem) {
 		pMenuItem.setColor(this.mUnselectedAndengineColor);
+	}
+
+	@Override
+	public boolean isAttached() {
+		return false;
+	}
+
+	@Override
+	public void setOnDetachedListener(OnDetachedListener listener) {
+
+	}
+
+	@Override
+	public void removeOnDetachedListener() {
+
 	}
 
 	// ===========================================================

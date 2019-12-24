@@ -299,6 +299,10 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.mUpdateHandlers.add(pUpdateHandler);
 	}
 
+	public boolean containsUpdateHandler(final IUpdateHandler pUpdateHandler) {
+		return this.mUpdateHandlers.contains(pUpdateHandler);
+	}
+
 	public void unregisterUpdateHandler(final IUpdateHandler pUpdateHandler) {
 		this.mUpdateHandlers.remove(pUpdateHandler);
 	}

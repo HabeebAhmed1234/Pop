@@ -9,11 +9,18 @@ import androidx.annotation.Nullable;
 
 public class BubblesEntityMatcher implements IEntityMatcher {
 
+    private final boolean onlyPoppableBubbles;
+
+    public BubblesEntityMatcher(boolean onlyPoppableBubbles) {
+        this.onlyPoppableBubbles = onlyPoppableBubbles;
+    }
+
     @Override
     public boolean matches(IEntity pEntity) {
         @Nullable Object userdata = pEntity.getUserData();
-        if (userdata != null) {
-            return userdata instanceof BubbleEntityUserData;
+        if (userdata != null && userdata instanceof BubbleEntityUserData) {
+            BubbleEntityUserData bubbleUserData = (BubbleEntityUserData) userdata;
+            return onlyPoppableBubbles ? bubbleUserData.isPoppable() : true;
         }
         return false;
     }

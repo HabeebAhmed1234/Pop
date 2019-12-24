@@ -32,22 +32,11 @@ public class GameLifeCycleCalllbackManager {
          * Cleanup all resources here
          */
         void onDestroy();
-
-        /**
-         * Called when the entity gets created on a posted thread only if it is safe to initialize
-         * the entity (load and add sprites). Only ever gets called once.
-         */
-        void onLazyInit();
     }
 
     private final Queue<BaseEntity> gameEntities = new ConcurrentLinkedQueue<>();
 
     private static GameLifeCycleCalllbackManager sInstance;
-
-    /**
-     * True in between the scene being created and onDestroy being called
-     */
-    private boolean isGameSceneAlive = false;
 
     private GameLifeCycleCalllbackManager() {}
 
@@ -76,7 +65,6 @@ public class GameLifeCycleCalllbackManager {
 
     public void registerGameEntity(BaseEntity baseEntity) {
         gameEntities.add(baseEntity);
-        maybeLazyInit(baseEntity);
     }
 
     public void onCreateResources() {
@@ -87,7 +75,6 @@ public class GameLifeCycleCalllbackManager {
     }
 
     public void onCreateScene() {
-        isGameSceneAlive = true;
         Iterator<BaseEntity> it = gameEntities.iterator();
         while (it.hasNext()) {
             it.next().onCreateScene();
@@ -95,21 +82,9 @@ public class GameLifeCycleCalllbackManager {
     }
 
     public void onDestroy() {
-        isGameSceneAlive = false;
         Iterator<BaseEntity> it = gameEntities.iterator();
         while (it.hasNext()) {
             it.next().onDestroy();
-        }
-    }
-
-    private void maybeLazyInit(final BaseEntity baseEntity) {
-        if (isGameSceneAlive) {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    baseEntity.onLazyInit();
-                }
-            });
         }
     }
 }

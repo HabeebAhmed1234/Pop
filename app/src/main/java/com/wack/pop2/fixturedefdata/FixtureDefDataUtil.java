@@ -8,6 +8,9 @@ public class FixtureDefDataUtil {
         return fixture.m_userData != null && fixture.m_userData instanceof BubbleEntityUserData;
     }
 
+    public static boolean isBulletFixtureDefData(Fixture fixture) {
+        return fixture.m_userData != null && fixture.m_userData instanceof TurretBulletUserData;
+    }
 
     public static boolean isFloorFixtureDefData(Fixture fixture) {
         return fixture.m_userData != null && fixture.m_userData instanceof FloorEntityUserData;
@@ -23,6 +26,19 @@ public class FixtureDefDataUtil {
             return f2;
         } else {
             throw new IllegalStateException("neither of the fixtures are bubbles!");
+        }
+    }
+
+    /**
+     * Returns the first bubble fixture from the given two fixtures
+     */
+    public static Fixture getBulletFixture(Fixture f1, Fixture f2) {
+        if (FixtureDefDataUtil.isBulletFixtureDefData(f1)) {
+            return f1;
+        } else if (FixtureDefDataUtil.isBulletFixtureDefData(f2)) {
+            return f2;
+        } else {
+            throw new IllegalStateException("neither of the fixtures are bullets!");
         }
     }
 }
