@@ -9,4 +9,5 @@ public interface HostTurretCallback {
     void setTurretAngle(float angle);
     Sprite getTurretBodySprite();
     Sprite getTurretCannonSprite();
+    void setTurretPosition(float x, float y);
 }

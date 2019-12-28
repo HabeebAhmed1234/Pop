@@ -38,6 +38,10 @@ public class GameAreaTouchListenerEntity extends BaseEntity implements IOnAreaTo
         scene.setOnAreaTouchListener(this);
     }
 
+    public boolean hasAreaTouchListener(Class<? extends BaseEntityUserData> userDataType, AreaTouchListener listener) {
+        return areaTouchlisteners.containsKey(userDataType) && areaTouchlisteners.get(userDataType).contains(listener);
+    }
+
     public GameAreaTouchListenerEntity addAreaTouchListener(Class<? extends BaseEntityUserData> userDataType, AreaTouchListener listener) {
         if (!areaTouchlisteners.containsKey(userDataType)) {
             areaTouchlisteners.put(userDataType, new HashSet<AreaTouchListener>());

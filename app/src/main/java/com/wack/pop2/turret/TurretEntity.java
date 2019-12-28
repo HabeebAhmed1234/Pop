@@ -2,6 +2,7 @@ package com.wack.pop2.turret;
 
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameResources;
+import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 
 import org.andengine.entity.sprite.Sprite;
@@ -16,6 +17,8 @@ public class TurretEntity extends BaseEntity implements HostTurretCallback {
     private TurretStateMachine stateMachine;
     private TurretFiringEntity turretFiringEntity;
     private TurretTargetingEntity turretTargetingEntity;
+    private TurretDraggingManager turretDraggingManager;
+
     private Sprite turretBodySprite;
     private Sprite turretCannonSprite;
     private GameTexturesManager texturesManager;
@@ -23,6 +26,7 @@ public class TurretEntity extends BaseEntity implements HostTurretCallback {
     public TurretEntity(Sprite turretBodySprite,
                         Sprite turretCannonSprite,
                         GameTexturesManager texturesManager,
+                        GameSceneTouchListenerEntity gameSceneTouchListener,
                         GameResources gameResources) {
         super(gameResources);
         stateMachine = new TurretStateMachine();
@@ -35,6 +39,7 @@ public class TurretEntity extends BaseEntity implements HostTurretCallback {
         this.turretCannonSprite = turretCannonSprite;
         this.turretFiringEntity = new TurretFiringEntity(this, stateMachine, texturesManager, gameResources);
         this.turretTargetingEntity = new TurretTargetingEntity(turretFiringEntity, stateMachine, this, gameResources);
+        this.turretDraggingManager = new TurretDraggingManager(gameSceneTouchListener, stateMachine, this, gameResources);
     }
 
     @Override
@@ -50,5 +55,11 @@ public class TurretEntity extends BaseEntity implements HostTurretCallback {
     @Override
     public Sprite getTurretCannonSprite() {
         return turretCannonSprite;
+    }
+
+    @Override
+    public void setTurretPosition(float x, float y) {
+        turretBodySprite.setX(x - turretBodySprite.getWidthScaled() / 2);
+        turretBodySprite.setY(y - turretBodySprite.getHeightScaled() / 2);
     }
 }

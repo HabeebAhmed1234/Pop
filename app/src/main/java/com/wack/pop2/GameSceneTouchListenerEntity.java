@@ -31,6 +31,10 @@ public class GameSceneTouchListenerEntity extends BaseEntity implements IOnScene
         scene.setOnSceneTouchListener(this);
     }
 
+    public boolean hasSceneTouchListener(SceneTouchListener listener) {
+        return sceneTouchlisteners.contains(listener);
+    }
+
     public GameSceneTouchListenerEntity addSceneTouchListener(SceneTouchListener listener) {
         if (sceneTouchlisteners.contains(listener)) {
             Log.w(TAG, "SceneTouchListener has already been added to the GameSceneTouchListenerEntity");

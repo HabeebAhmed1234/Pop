@@ -2,12 +2,13 @@ package com.wack.pop2.eventbus;
 
 import android.util.Log;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
+// TODO: make this threadsafe
 public class EventBus {
 
     public interface Subscriber {
@@ -17,7 +18,7 @@ public class EventBus {
     private static EventBus sEventBus;
     private static final String TAG = EventBus.class.getName();
 
-    private Map<GameEvent, Set<Subscriber>> mEventSubscribers = new HashMap<>();
+    private Map<GameEvent, ConcurrentLinkedQueue<Subscriber>> mEventSubscribers = new ConcurrentHashMap<>();
 
     public static void init() {
         if (sEventBus != null) {
@@ -48,7 +49,7 @@ public class EventBus {
     }
 
     public EventBus subscribe(GameEvent event, Subscriber subscriber) {
-        Set<Subscriber> subscribers = getSubscribers(event);
+        Queue<Subscriber> subscribers = getSubscribers(event);
         if (subscribers.contains(subscriber)) {
             throw new IllegalStateException("Event " + event + " is already subscribed to by subscriber " + subscriber);
         }
@@ -57,7 +58,7 @@ public class EventBus {
     }
 
     public EventBus unSubscribe(GameEvent event, Subscriber subscriber) {
-        Set<Subscriber> subscribers = getSubscribers(event);
+        Queue<Subscriber> subscribers = getSubscribers(event);
         if (!subscribers.contains(subscriber)) {
             throw new IllegalStateException("Subscriber " + subscriber + " was never subscribed to event " + event);
         }
@@ -70,7 +71,7 @@ public class EventBus {
     }
 
     public void sendEvent(GameEvent event, EventPayload payload) {
-        Set<Subscriber> subscribers = getSubscribers(event);
+        Queue<Subscriber> subscribers = getSubscribers(event);
         if (subscribers.isEmpty()) {
             Log.e(TAG, "There are no subscribers for event " + event);
         }
@@ -80,9 +81,9 @@ public class EventBus {
         }
     }
 
-    private Set<Subscriber> getSubscribers(GameEvent event) {
+    private Queue<Subscriber> getSubscribers(GameEvent event) {
         if (!mEventSubscribers.containsKey(event)) {
-            mEventSubscribers.put(event, new HashSet());
+            mEventSubscribers.put(event, new ConcurrentLinkedQueue<Subscriber>());
         }
         return mEventSubscribers.get(event);
     }

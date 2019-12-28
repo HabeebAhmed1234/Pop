@@ -51,9 +51,9 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
     }
 
     public enum BubbleSize {
-        LARGE(2f),
-        MEDIUM(1f),
-        SMALL(0.5f);
+        LARGE(3f),
+        MEDIUM(2f),
+        SMALL(1f);
 
         public final float scale;
 
