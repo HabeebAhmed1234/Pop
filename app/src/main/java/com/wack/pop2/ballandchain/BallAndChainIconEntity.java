@@ -2,6 +2,7 @@ package com.wack.pop2.ballandchain;
 
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameAreaTouchListenerEntity;
+import com.wack.pop2.GameIconsTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
@@ -24,6 +25,7 @@ import org.andengine.util.color.AndengineColor;
  */
 class BallAndChainIconEntity extends BaseEntity implements EventBus.Subscriber, BallAndChainStateMachine.Listener<BallAndChainStateMachine.State>, GameAreaTouchListenerEntity.AreaTouchListener {
 
+    private GameIconsTrayEntity gameIconsTrayEntity;
     private GameAreaTouchListenerEntity touchListenerEntity;
     private GameTexturesManager gameTexturesManager;
 
@@ -32,30 +34,21 @@ class BallAndChainIconEntity extends BaseEntity implements EventBus.Subscriber, 
 
     public BallAndChainIconEntity(
             BallAndChainStateMachine stateMachine,
+            GameIconsTrayEntity gameIconsTrayEntity,
             GameAreaTouchListenerEntity touchListenerEntity,
             GameTexturesManager gameTexturesManager,
             GameResources gameResources) {
         super(gameResources);
+        this.gameIconsTrayEntity = gameIconsTrayEntity;
         this.touchListenerEntity = touchListenerEntity;
         this.gameTexturesManager = gameTexturesManager;
         this.stateMachine = stateMachine;
     }
 
     @Override
-    public void onCreateResources() {
-        ITextureRegion textureRegion =
-                gameTexturesManager.getTextureRegion(TextureId.BALL_AND_CHAIN_ICON);
-        ballAndChainIconSprite = new Sprite(
-                ScreenUtils.getSreenSize().width - textureRegion.getWidth(),
-                ScreenUtils.getSreenSize().height - textureRegion.getHeight(),
-                textureRegion,
-                vertexBufferObjectManager);
-        ballAndChainIconSprite.setUserData(new BallAndChainIconUserData());
-        addToSceneWithTouch(ballAndChainIconSprite);
-    }
-
-    @Override
     public void onCreateScene() {
+        createIcon();
+
         EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this);
         stateMachine.addAllStateTransitionListener(this);
         touchListenerEntity.addAreaTouchListener(BallAndChainIconUserData.class, this);
@@ -75,6 +68,19 @@ class BallAndChainIconEntity extends BaseEntity implements EventBus.Subscriber, 
                 onScoreChanged(difficultyChangedEventPayload.newDifficulty);
                 break;
         }
+    }
+
+    private void createIcon() {
+        ITextureRegion textureRegion =
+                gameTexturesManager.getTextureRegion(TextureId.BALL_AND_CHAIN_ICON);
+        ballAndChainIconSprite = new Sprite(
+                0,
+                0,
+                textureRegion,
+                vertexBufferObjectManager);
+        ballAndChainIconSprite.setUserData(new BallAndChainIconUserData());
+        addToSceneWithTouch(ballAndChainIconSprite);
+        gameIconsTrayEntity.addIcon(ballAndChainIconSprite);
     }
 
     private void onScoreChanged(int newDifficulty) {

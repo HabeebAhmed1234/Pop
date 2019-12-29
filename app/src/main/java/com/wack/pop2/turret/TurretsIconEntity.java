@@ -2,10 +2,21 @@ package com.wack.pop2.turret;
 
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameAreaTouchListenerEntity;
+import com.wack.pop2.GameIconsTrayEntity;
 import com.wack.pop2.GameResources;
+import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
+import com.wack.pop2.eventbus.EventBus;
+import com.wack.pop2.eventbus.EventPayload;
+import com.wack.pop2.eventbus.GameEvent;
+import com.wack.pop2.fixturedefdata.TurretsIconUserData;
 import com.wack.pop2.resources.textures.GameTexturesManager;
+import com.wack.pop2.resources.textures.TextureId;
 
+import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.util.color.AndengineColor;
 
 /**
  * Icon used to utilized turrets. Once unlocked this icon appears. The user can then press down on
@@ -13,10 +24,11 @@ import org.andengine.entity.sprite.Sprite;
  * want it. The icon has a number on it to show the number of turrets in stock. The user can drag
  * turrets back onto the icon to store them this increasing the number turrets in stock on the icon.
  */
-class TurretsIconEntity extends BaseEntity /*implements GameAreaTouchListenerEntity.AreaTouchListener, EventBus.Subscriber */{
+class TurretsIconEntity extends BaseEntity implements EventBus.Subscriber, GameAreaTouchListenerEntity.AreaTouchListener {
 
     private GameAreaTouchListenerEntity touchListenerEntity;
     private GameTexturesManager gameTexturesManager;
+    private GameIconsTrayEntity gameIconsTrayEntity;
 
     // True if the Turrets have been unlocked in the game
     private boolean isUnlocked;
@@ -25,27 +37,18 @@ class TurretsIconEntity extends BaseEntity /*implements GameAreaTouchListenerEnt
     public TurretsIconEntity(
             GameAreaTouchListenerEntity touchListenerEntity,
             GameTexturesManager gameTexturesManager,
+            GameIconsTrayEntity gameIconsTrayEntity,
             GameResources gameResources) {
         super(gameResources);
         this.touchListenerEntity = touchListenerEntity;
         this.gameTexturesManager = gameTexturesManager;
-    }
-
-    /*@Override
-    public void onCreateResources() {
-        ITextureRegion textureRegion =
-                gameTexturesManager.getTextureRegion(TextureId.BALL_AND_CHAIN_ICON);
-        turretIconSprite = new Sprite(
-                ScreenUtils.getSreenSize().width - textureRegion.getWidth() * 2,
-                ScreenUtils.getSreenSize().height - textureRegion.getHeight() * 2,
-                textureRegion,
-                vertexBufferObjectManager);
-        turretIconSprite.setUserData(new TurretsIconUserData());
-        addToSceneWithTouch(turretIconSprite);
+        this.gameIconsTrayEntity = gameIconsTrayEntity;
     }
 
     @Override
     public void onCreateScene() {
+        createIcon();
+
         EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this);
         touchListenerEntity.addAreaTouchListener(TurretsIconUserData.class, this);
     }
@@ -66,53 +69,34 @@ class TurretsIconEntity extends BaseEntity /*implements GameAreaTouchListenerEnt
         }
     }
 
+    private void createIcon() {
+        ITextureRegion textureRegion =
+                gameTexturesManager.getTextureRegion(TextureId.TURRETS_ICON);
+        turretIconSprite = new Sprite(
+                0,
+                0,
+                textureRegion,
+                vertexBufferObjectManager);
+        turretIconSprite.setUserData(new TurretsIconUserData());
+        addToSceneWithTouch(turretIconSprite);
+        gameIconsTrayEntity.addIcon(turretIconSprite);
+
+        onStateChanged();
+    }
+
     private void onScoreChanged(int newDifficulty) {
-        if (newDifficulty >= BallAndChainConstants.BALL_AND_CHAIN_DIFFICULTY_UNLOCK_THRESHOLD
-                && stateMachine.getCurrentState() == BallAndChainStateMachine.State.LOCKED) {
-            stateMachine.transitionState(
-                    BallAndChainStateMachine.State.UNLOCKED_CHARGED);
+        if (newDifficulty >= TurretsConstants.TURRETS_DIFFICULTY_UNLOCK_THRESHOLD && !isUnlocked) {
+            isUnlocked = true;
+            onStateChanged();
         }
-    }
-
-    @Override
-    public void onEnterState(BallAndChainStateMachine.State newState) {
-        switch (newState) {
-            case UNLOCKED_CHARGED:
-                break;
-            case UNLOCKED_DISCHARGED:
-                break;
-            case IN_USE_CHARGED:
-                break;
-            case IN_USE_DISCHARGED:
-                break;
-        }
-        setIconColor(newState);
-    }
-
-    private void setIconColor(BallAndChainStateMachine.State newState) {
-        AndengineColor color = AndengineColor.WHITE;
-        switch (newState) {
-            case LOCKED:
-                color = AndengineColor.TRANSPARENT;
-                break;
-            case UNLOCKED_CHARGED:
-            case IN_USE_CHARGED:
-                color = AndengineColor.GREEN;
-                break;
-            case UNLOCKED_DISCHARGED:
-            case IN_USE_DISCHARGED:
-                color = AndengineColor.RED;
-                break;
-        }
-        ballAndChainIconSprite.setColor(color);
     }
 
     @Override
     public boolean onTouch(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-        if (pSceneTouchEvent.isActionDown() && stateMachine.getCurrentState() == BallAndChainStateMachine.State.UNLOCKED_CHARGED) {
-            stateMachine.transitionState(BallAndChainStateMachine.State.IN_USE_CHARGED);
-            return true;
-        }
         return false;
-    }*/
+    }
+
+    private void onStateChanged() {
+        turretIconSprite.setColor(isUnlocked ? AndengineColor.GREEN : AndengineColor.TRANSPARENT);
+    }
 }
