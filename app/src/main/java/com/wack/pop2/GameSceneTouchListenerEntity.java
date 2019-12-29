@@ -6,8 +6,8 @@ import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.input.touch.TouchEvent;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class GameSceneTouchListenerEntity extends BaseEntity implements IOnSceneTouchListener {
 
@@ -24,7 +24,7 @@ public class GameSceneTouchListenerEntity extends BaseEntity implements IOnScene
 
     private static final String TAG = "TouchListener";
 
-    private Set<SceneTouchListener> sceneTouchlisteners = new HashSet<>();
+    private Queue<SceneTouchListener> sceneTouchlisteners = new ConcurrentLinkedQueue<>();
 
     public GameSceneTouchListenerEntity(GameResources gameResources) {
         super(gameResources);

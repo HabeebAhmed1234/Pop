@@ -1,5 +1,7 @@
 package com.wack.pop2.turret;
 
+import android.util.Log;
+
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
@@ -17,17 +19,20 @@ public class TurretDraggingManager extends BaseEntity implements GameSceneTouchL
     private static final float DRAGGING_OFFSET_DISTANCE = 100f;
 
     private GameSceneTouchListenerEntity touchListenerEntity;
+    private TurretsMutex mutex;
     private TurretStateMachine stateMachine;
     private LongPressGesture longPressGesture;
     private HostTurretCallback hostTurretCallback;
 
     public TurretDraggingManager(
             GameSceneTouchListenerEntity touchListenerEntity,
+            TurretsMutex mutex,
             TurretStateMachine stateMachine,
             HostTurretCallback hostTurretCallback,
             GameResources gameResources) {
         super(gameResources);
         this.touchListenerEntity = touchListenerEntity;
+        this.mutex = mutex;
         this.stateMachine = stateMachine;
         this.hostTurretCallback = hostTurretCallback;
         this.longPressGesture = new LongPressGesture(engine);
@@ -54,14 +59,19 @@ public class TurretDraggingManager extends BaseEntity implements GameSceneTouchL
 
     @Override
     public void onEnterState(TurretStateMachine.State newState) {
+        Log.d("asdasd", "onEnterState " + newState);
         if (newState == TurretStateMachine.State.DRAGGING) {
+            mutex.setIsDragging(true);
             longPressGesture.cancelLongPress();
+        } else {
+            mutex.setIsDragging(false);
         }
     }
 
     @Override
     public boolean onSceneTouchEvent(Scene scene, TouchEvent touchEvent) {
-        if (stateMachine.getCurrentState() != TurretStateMachine.State.DRAGGING) {
+        TurretStateMachine.State state = stateMachine.getCurrentState();
+        if (state != TurretStateMachine.State.DRAGGING && !mutex.isDragging()) {
             if (isTouchOnTurret(touchEvent.getX(), touchEvent.getY())) {
                 // We are not dragging so check for a long press on the turret body
                 longPressGesture.onTouch(touchEvent);
@@ -73,7 +83,7 @@ public class TurretDraggingManager extends BaseEntity implements GameSceneTouchL
             } else {
                 return false;
             }
-        } else {
+        } else if (state == TurretStateMachine.State.DRAGGING){
             // If we are dragging then set the position of the turret to the touch event
             trackPointerOnDrag(touchEvent.getX(), touchEvent.getY());
             if (touchEvent.getAction() == TouchEvent.ACTION_UP) {
@@ -83,6 +93,15 @@ public class TurretDraggingManager extends BaseEntity implements GameSceneTouchL
             }
         }
         return true;
+    }
+
+    /**
+     * Force the turret to start dragging without the prerequisite long press.
+     */
+    public void forceStartDragging(float pointerX, float pointerY) {
+        longPressGesture.cancelLongPress();
+        stateMachine.transitionState(TurretStateMachine.State.DRAGGING);
+        trackPointerOnDrag(pointerX, pointerY);
     }
 
     private void trackPointerOnDrag(float x, float y) {

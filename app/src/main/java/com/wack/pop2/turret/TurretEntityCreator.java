@@ -16,15 +16,18 @@ public class TurretEntityCreator extends BaseEntity {
     private GameResources gameResources;
     private GameTexturesManager texturesManager;
     private GameSceneTouchListenerEntity gameSceneTouchListener;
+    private TurretsMutex mutex;
 
     public TurretEntityCreator(
             GameTexturesManager texturesManager,
             GameSceneTouchListenerEntity gameSceneTouchListener,
+            TurretsMutex mutex,
             GameResources gameResources) {
         super(gameResources);
         this.gameResources = gameResources;
         this.texturesManager = texturesManager;
         this.gameSceneTouchListener = gameSceneTouchListener;
+        this.mutex = mutex;
     }
 
     public TurretEntity createTurret(float centerX, float centerY) {
@@ -48,6 +51,6 @@ public class TurretEntityCreator extends BaseEntity {
         turretBodySprite.attachChild(turretCannonSprite);
         turretCannonSprite.setRotationCenter(0f, turretCannonTexture.getHeight() / 2);
 
-        return new TurretEntity(turretBodySprite, turretCannonSprite, texturesManager, gameSceneTouchListener, gameResources);
+        return new TurretEntity(turretBodySprite, turretCannonSprite, mutex, texturesManager, gameSceneTouchListener, gameResources);
     }
 }

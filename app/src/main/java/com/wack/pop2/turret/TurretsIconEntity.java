@@ -1,9 +1,9 @@
 package com.wack.pop2.turret;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameIconsTrayEntity;
 import com.wack.pop2.GameResources;
+import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
@@ -12,11 +12,17 @@ import com.wack.pop2.fixturedefdata.TurretsIconUserData;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 
-import org.andengine.entity.scene.ITouchArea;
+import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.AndengineColor;
+
+import static org.andengine.input.touch.TouchEvent.ACTION_CANCEL;
+import static org.andengine.input.touch.TouchEvent.ACTION_DOWN;
+import static org.andengine.input.touch.TouchEvent.ACTION_MOVE;
+import static org.andengine.input.touch.TouchEvent.ACTION_OUTSIDE;
+import static org.andengine.input.touch.TouchEvent.ACTION_UP;
 
 /**
  * Icon used to utilized turrets. Once unlocked this icon appears. The user can then press down on
@@ -24,25 +30,33 @@ import org.andengine.util.color.AndengineColor;
  * want it. The icon has a number on it to show the number of turrets in stock. The user can drag
  * turrets back onto the icon to store them this increasing the number turrets in stock on the icon.
  */
-class TurretsIconEntity extends BaseEntity implements EventBus.Subscriber, GameAreaTouchListenerEntity.AreaTouchListener {
+class TurretsIconEntity extends BaseEntity implements EventBus.Subscriber, GameSceneTouchListenerEntity.SceneTouchListener {
 
-    private GameAreaTouchListenerEntity touchListenerEntity;
+    private GameSceneTouchListenerEntity touchListenerEntity;
     private GameTexturesManager gameTexturesManager;
     private GameIconsTrayEntity gameIconsTrayEntity;
+    private TurretEntityCreator turretEntityCreator;
+    private TurretsMutex mutex;
 
     // True if the Turrets have been unlocked in the game
     private boolean isUnlocked;
+    // True if we are currently spawning
+    private boolean isSpawning;
     private Sprite turretIconSprite;
 
     public TurretsIconEntity(
-            GameAreaTouchListenerEntity touchListenerEntity,
+            GameSceneTouchListenerEntity touchListenerEntity,
             GameTexturesManager gameTexturesManager,
             GameIconsTrayEntity gameIconsTrayEntity,
+            TurretEntityCreator turretEntityCreator,
+            TurretsMutex mutex,
             GameResources gameResources) {
         super(gameResources);
         this.touchListenerEntity = touchListenerEntity;
         this.gameTexturesManager = gameTexturesManager;
         this.gameIconsTrayEntity = gameIconsTrayEntity;
+        this.turretEntityCreator = turretEntityCreator;
+        this.mutex = mutex;
     }
 
     @Override
@@ -50,7 +64,10 @@ class TurretsIconEntity extends BaseEntity implements EventBus.Subscriber, GameA
         createIcon();
 
         EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this);
-        touchListenerEntity.addAreaTouchListener(TurretsIconUserData.class, this);
+        touchListenerEntity.addSceneTouchListener(this);
+
+        //TODO: DEBUG
+        unlock();
     }
 
     @Override
@@ -86,17 +103,60 @@ class TurretsIconEntity extends BaseEntity implements EventBus.Subscriber, GameA
 
     private void onScoreChanged(int newDifficulty) {
         if (newDifficulty >= TurretsConstants.TURRETS_DIFFICULTY_UNLOCK_THRESHOLD && !isUnlocked) {
-            isUnlocked = true;
-            onStateChanged();
+            unlock();
         }
     }
 
-    @Override
-    public boolean onTouch(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-        return false;
+    private void unlock() {
+        isUnlocked = true;
+        onStateChanged();
     }
 
     private void onStateChanged() {
         turretIconSprite.setColor(isUnlocked ? AndengineColor.GREEN : AndengineColor.TRANSPARENT);
+    }
+
+    @Override
+    public boolean onSceneTouchEvent(Scene scene, TouchEvent touchEvent) {
+        boolean handled = false;
+        switch (touchEvent.getAction()) {
+            case ACTION_DOWN:
+                handled = maybeStartSpawning(touchEvent);
+                break;
+            case ACTION_UP:
+                finishedSpawning();
+                handled = true;
+                break;
+            case ACTION_CANCEL:
+            case ACTION_OUTSIDE:
+            case ACTION_MOVE:
+                // NOOP
+                break;
+
+        }
+        return handled;
+    }
+
+    /**
+     * If the user has pressed down on the icon and they are not already dragging a turret then
+     * we need to start spawning a new turret. While this new turret is being spawned we cannot
+     * spawn another turret.
+     *
+     * @Return true if we started spawning
+     */
+    private boolean maybeStartSpawning(TouchEvent touchEvent) {
+        if (!isSpawning && !mutex.isDragging() && turretIconSprite.contains(touchEvent.getX(), touchEvent.getY())) {
+            // Create a turret and set it to be dragging
+            TurretEntity turretEntity = turretEntityCreator.createTurret(touchEvent.getX(), touchEvent.getY());
+            turretEntity.forceStartDragging(touchEvent.getX(), touchEvent.getY());
+
+            isSpawning = true;
+            return true;
+        }
+        return false;
+    }
+
+    private void finishedSpawning() {
+        isSpawning = false;
     }
 }

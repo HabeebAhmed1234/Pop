@@ -4,20 +4,25 @@ import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.resources.textures.GameTexturesManager;
+import com.wack.pop2.statemachine.BaseStateMachine;
 
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.util.color.AndengineColor;
+
+import static com.wack.pop2.turret.TurretsConstants.TURRET_DRAGGING_SCALE_MULTIPLIER;
 
 /**
  * Contains the components of the TurretEntity. Can be used to set the position and rotation of the
  * turret.
  * Each turret contains a state machine
  */
-public class TurretEntity extends BaseEntity implements HostTurretCallback {
+public class TurretEntity extends BaseEntity implements HostTurretCallback, BaseStateMachine.Listener<TurretStateMachine.State> {
 
     private TurretStateMachine stateMachine;
     private TurretFiringEntity turretFiringEntity;
     private TurretTargetingEntity turretTargetingEntity;
     private TurretDraggingManager turretDraggingManager;
+    private TurretsMutex mutex;
 
     private Sprite turretBodySprite;
     private Sprite turretCannonSprite;
@@ -25,21 +30,21 @@ public class TurretEntity extends BaseEntity implements HostTurretCallback {
 
     public TurretEntity(Sprite turretBodySprite,
                         Sprite turretCannonSprite,
+                        TurretsMutex mutex,
                         GameTexturesManager texturesManager,
                         GameSceneTouchListenerEntity gameSceneTouchListener,
                         GameResources gameResources) {
         super(gameResources);
         stateMachine = new TurretStateMachine();
-        // DEBUG
-        stateMachine.transitionState(TurretStateMachine.State.DRAGGING);
-        stateMachine.transitionState(TurretStateMachine.State.TARGETING);
-        // DEBUG
         this.texturesManager = texturesManager;
         this.turretBodySprite = turretBodySprite;
         this.turretCannonSprite = turretCannonSprite;
+        this.mutex = mutex;
         this.turretFiringEntity = new TurretFiringEntity(this, stateMachine, texturesManager, gameResources);
         this.turretTargetingEntity = new TurretTargetingEntity(turretFiringEntity, stateMachine, this, gameResources);
-        this.turretDraggingManager = new TurretDraggingManager(gameSceneTouchListener, stateMachine, this, gameResources);
+        this.turretDraggingManager = new TurretDraggingManager(gameSceneTouchListener, mutex, stateMachine, this, gameResources);
+
+        init();
     }
 
     @Override
@@ -61,5 +66,45 @@ public class TurretEntity extends BaseEntity implements HostTurretCallback {
     public void setTurretPosition(float x, float y) {
         turretBodySprite.setX(x - turretBodySprite.getWidthScaled() / 2);
         turretBodySprite.setY(y - turretBodySprite.getHeightScaled() / 2);
+    }
+
+    public void forceStartDragging(float pointerX, float pointerY) {
+        turretDraggingManager.forceStartDragging(pointerX, pointerY);
+    }
+
+    private void init() {
+        stateMachine.addAllStateTransitionListener(this);
+    }
+
+    @Override
+    public void onEnterState(TurretStateMachine.State newState) {
+        AndengineColor color = AndengineColor.WHITE;
+        switch (newState) {
+            case DRAGGING:
+                color = AndengineColor.YELLOW;
+                break;
+            case FIRING:
+                color = AndengineColor.RED;
+                break;
+            case DOCKED:
+                color = AndengineColor.TRANSPARENT;
+                break;
+            case TARGETING:
+                color = AndengineColor.GREEN;
+                break;
+        }
+
+        turretBodySprite.setColor(color);
+        turretCannonSprite.setColor(color);
+
+        updateScale(newState);
+    }
+
+    private void updateScale(TurretStateMachine.State state) {
+        if (state == TurretStateMachine.State.DRAGGING) {
+            turretBodySprite.setScale(TURRET_DRAGGING_SCALE_MULTIPLIER);
+        } else {
+            turretBodySprite.setScale(1);
+        }
     }
 }
