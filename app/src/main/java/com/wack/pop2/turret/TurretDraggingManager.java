@@ -79,6 +79,7 @@ public class TurretDraggingManager extends BaseEntity implements GameSceneTouchL
             if (touchEvent.getAction() == TouchEvent.ACTION_UP) {
                 stateMachine.transitionState(TurretStateMachine.State.TARGETING);
                 hostTurretCallback.setTurretPosition(touchEvent.getX(), touchEvent.getY());
+                longPressGesture.cancelLongPress();
             }
         }
         return true;
