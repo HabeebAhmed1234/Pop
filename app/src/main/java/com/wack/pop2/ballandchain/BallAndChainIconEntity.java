@@ -80,7 +80,7 @@ class BallAndChainIconEntity extends BaseEntity implements EventBus.Subscriber, 
                 vertexBufferObjectManager);
         ballAndChainIconSprite.setUserData(new BallAndChainIconUserData());
         addToSceneWithTouch(ballAndChainIconSprite);
-        gameIconsTrayEntity.addIcon(ballAndChainIconSprite);
+        gameIconsTrayEntity.addIcon(GameIconsTrayEntity.ICON_ID.BALL_AND_CHAIN_ICON, ballAndChainIconSprite);
     }
 
     private void onScoreChanged(int newDifficulty) {

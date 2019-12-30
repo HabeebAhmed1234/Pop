@@ -1,6 +1,7 @@
 package com.wack.pop2.turret;
 
 import com.wack.pop2.BaseEntity;
+import com.wack.pop2.GameIconsTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.resources.textures.GameTexturesManager;
@@ -32,6 +33,7 @@ public class TurretEntity extends BaseEntity implements HostTurretCallback, Base
                         Sprite turretCannonSprite,
                         TurretsMutex mutex,
                         GameTexturesManager texturesManager,
+                        GameIconsTrayEntity gameIconsTray,
                         GameSceneTouchListenerEntity gameSceneTouchListener,
                         GameResources gameResources) {
         super(gameResources);
@@ -42,7 +44,7 @@ public class TurretEntity extends BaseEntity implements HostTurretCallback, Base
         this.mutex = mutex;
         this.turretFiringEntity = new TurretFiringEntity(this, stateMachine, texturesManager, gameResources);
         this.turretTargetingEntity = new TurretTargetingEntity(turretFiringEntity, stateMachine, this, gameResources);
-        this.turretDraggingManager = new TurretDraggingManager(gameSceneTouchListener, mutex, stateMachine, this, gameResources);
+        this.turretDraggingManager = new TurretDraggingManager(gameIconsTray, gameSceneTouchListener, mutex, stateMachine, this, gameResources);
 
         init();
     }

@@ -77,6 +77,7 @@ class TurretsIconEntity extends BaseEntity implements EventBus.Subscriber, GameS
         createIconAndText();
 
         EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this);
+        EventBus.get().subscribe(GameEvent.TURRET_DOCKED, this);
         touchListenerEntity.addSceneTouchListener(this);
 
         //TODO: DEBUG
@@ -95,6 +96,9 @@ class TurretsIconEntity extends BaseEntity implements EventBus.Subscriber, GameS
                 DifficultyChangedEventPayload difficultyChangedEventPayload =
                         (DifficultyChangedEventPayload) payload;
                 onScoreChanged(difficultyChangedEventPayload.newDifficulty);
+                break;
+            case TURRET_DOCKED:
+                onDockTurret();
                 break;
         }
     }
@@ -141,7 +145,7 @@ class TurretsIconEntity extends BaseEntity implements EventBus.Subscriber, GameS
                 vertexBufferObjectManager);
         turretIconSprite.setUserData(new TurretsIconUserData());
         addToSceneWithTouch(turretIconSprite);
-        gameIconsTrayEntity.addIcon(turretIconSprite);
+        gameIconsTrayEntity.addIcon(GameIconsTrayEntity.ICON_ID.TURRETS_ICON, turretIconSprite);
 
         // Create text
         dockedTurretsText = new Text(

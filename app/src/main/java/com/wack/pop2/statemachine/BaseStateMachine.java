@@ -108,7 +108,7 @@ public abstract class BaseStateMachine<StateType extends Enum> {
             currentState = newState;
             notifyTransition(currentState);
         } else {
-            throw new IllegalArgumentException("Cannot transition ball and chain from " + currentState + " to " + newState);
+            throw new IllegalArgumentException("Cannot transition state machine from " + currentState + " to " + newState);
         }
     }
 
