@@ -59,6 +59,9 @@ public class GameFontsManager extends BaseEntity {
         mFonts.put(
                 FontId.TIMER_TICKER_FONT,
                 FontFactory.createFromAsset(fontManager, new BitmapTextureAtlas(textureManager,256,256), assetManager,"neon.ttf",80f,true, Color.WHITE));
+        mFonts.put(
+                FontId.TURRET_ICON_FONT,
+                FontFactory.createFromAsset(fontManager, new BitmapTextureAtlas(textureManager,256,256), assetManager,"neon.ttf",60f,true, Color.WHITE));
         loadFonts();
     }
 

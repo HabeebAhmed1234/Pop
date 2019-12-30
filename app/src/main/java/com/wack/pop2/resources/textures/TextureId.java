@@ -13,4 +13,5 @@ public enum TextureId {
     BALL_AND_CHAIN_ICON,
     TURRETS_ICON,
     LINE,
+    BULLET,
 }

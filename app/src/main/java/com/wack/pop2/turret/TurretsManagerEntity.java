@@ -6,6 +6,7 @@ import com.wack.pop2.GameIconsTrayEntity;
 import com.wack.pop2.GamePhysicsContactsEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
+import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 
 /**
@@ -24,6 +25,7 @@ public class TurretsManagerEntity extends BaseEntity {
             GameTexturesManager gameTextureManager,
             GameIconsTrayEntity gameIconsTrayEntity,
             GamePhysicsContactsEntity gamePhysicsContactsEntity,
+            GameFontsManager fontsManager,
             GameSceneTouchListenerEntity sceneTouchListenerEntity,
             GameTexturesManager texturesManager,
             GameResources gameResources) {
@@ -31,7 +33,7 @@ public class TurretsManagerEntity extends BaseEntity {
         this.texturesManager = texturesManager;
         this.turretsMutex = new TurretsMutex(gameResources);
         this.turretEntityCreator = new TurretEntityCreator(texturesManager, sceneTouchListenerEntity, turretsMutex, gameResources);
-        this.turretsIconEntity = new TurretsIconEntity(sceneTouchListenerEntity, gameTextureManager, gameIconsTrayEntity, turretEntityCreator, turretsMutex, gameResources);
+        this.turretsIconEntity = new TurretsIconEntity(fontsManager, sceneTouchListenerEntity, gameTextureManager, gameIconsTrayEntity, turretEntityCreator, turretsMutex, gameResources);
         this.turretsBulletsCollisionManager = new TurretsBulletsCollisionManager(bubblePopperEntity, gamePhysicsContactsEntity, gameResources);
     }
 }

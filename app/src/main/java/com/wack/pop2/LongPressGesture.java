@@ -1,6 +1,10 @@
 package com.wack.pop2;
 
 import org.andengine.engine.Engine;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
+import org.andengine.entity.scene.Scene;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 
 import static org.andengine.input.touch.TouchEvent.ACTION_CANCEL;
@@ -9,48 +13,71 @@ import static org.andengine.input.touch.TouchEvent.ACTION_MOVE;
 import static org.andengine.input.touch.TouchEvent.ACTION_OUTSIDE;
 import static org.andengine.input.touch.TouchEvent.ACTION_UP;
 
-public class LongPressGesture {
+/**
+ * Checks for long press on a given sprite bounds. Must be delivered the touch events for the scene
+ */
+public class LongPressGesture implements GameSceneTouchListenerEntity.SceneTouchListener {
+
+    public interface LongPressCallback {
+        void onLongPress(float touchX, float touchY);
+    }
 
     private static final float LONG_PRESS_THRESHOLD_SECONDS = 1f;
 
-    private boolean isLongPressing;
-    private Engine engine;
-    private float lastDownEvent = -1;
+    private final LongPressCallback callback;
+    private final Engine engine;
+    private final Sprite sprite;
 
-    public LongPressGesture(Engine engine) {
+    private final TimerHandler longPressCheck = new TimerHandler(
+            LONG_PRESS_THRESHOLD_SECONDS,
+            new ITimerCallback() {
+                @Override
+                public void onTimePassed(TimerHandler pTimerHandler) {
+                    callback.onLongPress(lastTouchEventPosition[0], lastTouchEventPosition[1]);
+                }
+            });
+
+    private float[] lastTouchEventPosition = new float[2];
+
+    public LongPressGesture(LongPressCallback callback, Sprite sprite, Engine engine) {
+        this.callback = callback;
         this.engine = engine;
+        this.sprite = sprite;
     }
 
-    public void onTouch(TouchEvent pSceneTouchEvent) {
-        switch (pSceneTouchEvent.getAction()) {
+    @Override
+    public boolean onSceneTouchEvent(Scene scene, TouchEvent touchEvent) {
+        lastTouchEventPosition[0] = touchEvent.getX();
+        lastTouchEventPosition[1] = touchEvent.getY();
+        switch (touchEvent.getAction()) {
             case ACTION_DOWN:
-            case ACTION_MOVE:
-                if (lastDownEvent == -1) {
-                    lastDownEvent = engine.getSecondsElapsedTotal();
+                if (isPointerInBounds(touchEvent)) {
+                    startLongPressCheck();
                 }
-                checkThreshold();
+                break;
+            case ACTION_MOVE:
+                if (!isPointerInBounds(touchEvent)) {
+                    cancelLongPressCheck();
+                }
                 break;
             case ACTION_CANCEL:
             case ACTION_OUTSIDE:
             case ACTION_UP:
-                cancelLongPress();
+                cancelLongPressCheck();
                 break;
         }
+        return true;
     }
 
-    public boolean isLongPressing() {
-        return isLongPressing;
+    private boolean isPointerInBounds(TouchEvent touchEvent) {
+        return sprite.contains(touchEvent.getX(), touchEvent.getY());
     }
 
-    public void cancelLongPress() {
-        lastDownEvent = -1;
-        isLongPressing = false;
+    private void startLongPressCheck() {
+        engine.registerUpdateHandler(longPressCheck);
     }
 
-    private void checkThreshold() {
-        if (lastDownEvent == -1) return;
-        if (engine.getSecondsElapsedTotal() - lastDownEvent > LONG_PRESS_THRESHOLD_SECONDS) {
-            isLongPressing = true;
-        }
+    private void cancelLongPressCheck() {
+        engine.unregisterUpdateHandler(longPressCheck);
     }
 }

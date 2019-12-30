@@ -9,15 +9,19 @@ import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.fixturedefdata.TurretsIconUserData;
+import com.wack.pop2.resources.fonts.FontId;
+import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.AndengineColor;
 
+import static com.wack.pop2.turret.TurretsConstants.MAX_TURRET_INVENTORY;
 import static org.andengine.input.touch.TouchEvent.ACTION_CANCEL;
 import static org.andengine.input.touch.TouchEvent.ACTION_DOWN;
 import static org.andengine.input.touch.TouchEvent.ACTION_MOVE;
@@ -32,6 +36,10 @@ import static org.andengine.input.touch.TouchEvent.ACTION_UP;
  */
 class TurretsIconEntity extends BaseEntity implements EventBus.Subscriber, GameSceneTouchListenerEntity.SceneTouchListener {
 
+    private static final float TURRET_INVENTORY_TEXT_MAX_WIDTH_PX = 20;
+    private static final float TURRET_INVENTORY_TEXT_MAX_HEIGHT_PX = 80;
+
+    private GameFontsManager fontsManager;
     private GameSceneTouchListenerEntity touchListenerEntity;
     private GameTexturesManager gameTexturesManager;
     private GameIconsTrayEntity gameIconsTrayEntity;
@@ -43,8 +51,12 @@ class TurretsIconEntity extends BaseEntity implements EventBus.Subscriber, GameS
     // True if we are currently spawning
     private boolean isSpawning;
     private Sprite turretIconSprite;
+    private Text dockedTurretsText;
+    // Number of turrets currently DOCKED in the icon
+    private int numDockedTurets = MAX_TURRET_INVENTORY;
 
     public TurretsIconEntity(
+            GameFontsManager fontsManager,
             GameSceneTouchListenerEntity touchListenerEntity,
             GameTexturesManager gameTexturesManager,
             GameIconsTrayEntity gameIconsTrayEntity,
@@ -52,6 +64,7 @@ class TurretsIconEntity extends BaseEntity implements EventBus.Subscriber, GameS
             TurretsMutex mutex,
             GameResources gameResources) {
         super(gameResources);
+        this.fontsManager = fontsManager;
         this.touchListenerEntity = touchListenerEntity;
         this.gameTexturesManager = gameTexturesManager;
         this.gameIconsTrayEntity = gameIconsTrayEntity;
@@ -61,7 +74,7 @@ class TurretsIconEntity extends BaseEntity implements EventBus.Subscriber, GameS
 
     @Override
     public void onCreateScene() {
-        createIcon();
+        createIconAndText();
 
         EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this);
         touchListenerEntity.addSceneTouchListener(this);
@@ -86,7 +99,39 @@ class TurretsIconEntity extends BaseEntity implements EventBus.Subscriber, GameS
         }
     }
 
-    private void createIcon() {
+    @Override
+    public boolean onSceneTouchEvent(Scene scene, TouchEvent touchEvent) {
+        boolean handled = false;
+        switch (touchEvent.getAction()) {
+            case ACTION_DOWN:
+                handled = maybeStartUndocking(touchEvent);
+                break;
+            case ACTION_UP:
+                finishedSpawning();
+                handled = true;
+                break;
+            case ACTION_CANCEL:
+            case ACTION_OUTSIDE:
+            case ACTION_MOVE:
+                // NOOP
+                break;
+
+        }
+        return handled;
+    }
+
+    public void onUnDockTurret() {
+        numDockedTurets--;
+        onStateChanged();
+    }
+
+    public void onDockTurret() {
+        numDockedTurets++;
+        onStateChanged();
+    }
+
+    private void createIconAndText() {
+        // Create the icon sprite
         ITextureRegion textureRegion =
                 gameTexturesManager.getTextureRegion(TextureId.TURRETS_ICON);
         turretIconSprite = new Sprite(
@@ -97,6 +142,16 @@ class TurretsIconEntity extends BaseEntity implements EventBus.Subscriber, GameS
         turretIconSprite.setUserData(new TurretsIconUserData());
         addToSceneWithTouch(turretIconSprite);
         gameIconsTrayEntity.addIcon(turretIconSprite);
+
+        // Create text
+        dockedTurretsText = new Text(
+                turretIconSprite.getX() + turretIconSprite.getWidthScaled() / 2 - TURRET_INVENTORY_TEXT_MAX_WIDTH_PX,
+                turretIconSprite.getY() - TURRET_INVENTORY_TEXT_MAX_HEIGHT_PX,
+                fontsManager.getFont(FontId.TURRET_ICON_FONT),
+                Integer.toString(numDockedTurets),
+                (Integer.toString(MAX_TURRET_INVENTORY)).length(),
+                vertexBufferObjectManager);
+        scene.attachChild(dockedTurretsText);
 
         onStateChanged();
     }
@@ -113,47 +168,38 @@ class TurretsIconEntity extends BaseEntity implements EventBus.Subscriber, GameS
     }
 
     private void onStateChanged() {
-        turretIconSprite.setColor(isUnlocked ? AndengineColor.GREEN : AndengineColor.TRANSPARENT);
-    }
-
-    @Override
-    public boolean onSceneTouchEvent(Scene scene, TouchEvent touchEvent) {
-        boolean handled = false;
-        switch (touchEvent.getAction()) {
-            case ACTION_DOWN:
-                handled = maybeStartSpawning(touchEvent);
-                break;
-            case ACTION_UP:
-                finishedSpawning();
-                handled = true;
-                break;
-            case ACTION_CANCEL:
-            case ACTION_OUTSIDE:
-            case ACTION_MOVE:
-                // NOOP
-                break;
-
-        }
-        return handled;
+        AndengineColor iconColor = isUnlocked ? AndengineColor.GREEN : AndengineColor.TRANSPARENT;
+        turretIconSprite.setColor(iconColor);
+        dockedTurretsText.setText(Integer.toString(numDockedTurets));
+        dockedTurretsText.setColor(iconColor);
     }
 
     /**
      * If the user has pressed down on the icon and they are not already dragging a turret then
-     * we need to start spawning a new turret. While this new turret is being spawned we cannot
-     * spawn another turret.
+     * we need to start undocking a new turret. While this new turret is being undocking we cannot
+     * undocking another turret.
      *
      * @Return true if we started spawning
      */
-    private boolean maybeStartSpawning(TouchEvent touchEvent) {
-        if (!isSpawning && !mutex.isDragging() && turretIconSprite.contains(touchEvent.getX(), touchEvent.getY())) {
+    private boolean maybeStartUndocking(TouchEvent touchEvent) {
+        if (canUndockTurret(touchEvent)) {
             // Create a turret and set it to be dragging
             TurretEntity turretEntity = turretEntityCreator.createTurret(touchEvent.getX(), touchEvent.getY());
             turretEntity.forceStartDragging(touchEvent.getX(), touchEvent.getY());
 
+            onUnDockTurret();
             isSpawning = true;
             return true;
         }
         return false;
+    }
+
+    /**
+     * Returns true if it is permissible to undock a new turret
+     * @return
+     */
+    private boolean canUndockTurret(TouchEvent touchEvent) {
+        return !isSpawning && !mutex.isDragging() && turretIconSprite.contains(touchEvent.getX(), touchEvent.getY()) && numDockedTurets > 0;
     }
 
     private void finishedSpawning() {

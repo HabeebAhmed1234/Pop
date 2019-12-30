@@ -36,7 +36,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
 
     private static final float MOUSE_JOINT_DAMPING_RATIO = 0f;
     private static final float MOUSE_JOINT_FREQUENCY = 100;
-    private static final float MOUSE_JOINT_MAX_FORCE_MULTIPLIER = 1000.0f;
+    private static final float MOUSE_JOINT_MAX_FORCE_MULTIPLIER = 100.0f;
 
     private static final float TARGETING_UPDATE_INTERVAL = 1f / 30f;
 
@@ -98,7 +98,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
 
     private void initBullet() {
         Sprite turretCannonSprite = hostTurretCallback.getTurretCannonSprite();
-        ITextureRegion turretBulletTexture = texturesManager.getTextureRegion(TextureId.LINE);
+        ITextureRegion turretBulletTexture = texturesManager.getTextureRegion(TextureId.BULLET);
         float[] turretCannonPosition = new float[]{turretCannonSprite.getX(), turretCannonSprite.getY()};
         turretCannonSprite.getLocalToSceneTransformation().transform(turretCannonPosition);
         bulletSprite = new Sprite(
@@ -106,12 +106,9 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
                 turretCannonPosition[1],
                 turretBulletTexture,
                 vertexBufferObjectManager);
-        bulletSprite.setScale(0.5f);
         bulletSprite.setColor(AndengineColor.RED);
         TurretBulletUserData userData = new TurretBulletUserData();
         bulletSprite.setUserData(userData);
-        bulletSprite.setRotationCenter(0f, turretBulletTexture.getHeight() / 2);
-        bulletSprite.setRotation(turretCannonSprite.getRotation());
 
         final FixtureDef bulletFixtureDef = GameFixtureDefs.TURRET_BULLET_FIXTURE_DEF;
         bulletFixtureDef.setUserData(userData);
