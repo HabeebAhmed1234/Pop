@@ -13,7 +13,7 @@ import java.util.List;
 public class TurretUtils {
 
     public static Sprite getClosestPoppableBubble(Scene scene, IEntity center) {
-        List<IEntity> allBubbles = TurretUtils.getAllPoppableBubbles(scene);
+        List<IEntity> allBubbles = TurretUtils.getAllUntargetedPoppableBubbles(scene);
         if (allBubbles == null || allBubbles.isEmpty()) {
             return null;
         }
@@ -24,7 +24,7 @@ public class TurretUtils {
     /**
      * Returns all the bubbles present in the scene
      */
-    public static List<IEntity> getAllPoppableBubbles(Scene scene) {
-        return scene.query(new BubblesEntityMatcher(true));
+    public static List<IEntity> getAllUntargetedPoppableBubbles(Scene scene) {
+        return scene.query(new BubblesEntityMatcher(true, true));
     }
 }

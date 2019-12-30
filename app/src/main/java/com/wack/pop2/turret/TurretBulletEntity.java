@@ -31,14 +31,16 @@ import org.jbox2d.dynamics.joints.MouseJointDef;
 import androidx.annotation.Nullable;
 
 import static com.wack.pop2.eventbus.GameEvent.TURRET_BULLET_POPPED_BUBBLE;
+import static com.wack.pop2.utils.GeometryUtils.getAngleOfCenters;
 
 public class TurretBulletEntity extends BaseEntity implements EventBus.Subscriber {
 
     private static final float MOUSE_JOINT_DAMPING_RATIO = 0f;
     private static final float MOUSE_JOINT_FREQUENCY = 100;
-    private static final float MOUSE_JOINT_MAX_FORCE_MULTIPLIER = 100.0f;
+    private static final float MOUSE_JOINT_MAX_FORCE_MULTIPLIER = 350.0f;
 
     private static final float TARGETING_UPDATE_INTERVAL = 1f / 30f;
+    private static final float BULLET_MUZZLE_FORCE_MAGNITUDE = 1000;
 
     private final GameTexturesManager texturesManager;
 
@@ -99,11 +101,11 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
     private void initBullet() {
         Sprite turretCannonSprite = hostTurretCallback.getTurretCannonSprite();
         ITextureRegion turretBulletTexture = texturesManager.getTextureRegion(TextureId.BULLET);
-        float[] turretCannonPosition = new float[]{turretCannonSprite.getX(), turretCannonSprite.getY()};
-        turretCannonSprite.getLocalToSceneTransformation().transform(turretCannonPosition);
+        float[] turretCannonTipLocalPosition = new float[]{turretCannonSprite.getWidthScaled(), turretCannonSprite.getHeightScaled() / 2};
+        turretCannonSprite.getLocalToSceneTransformation().transform(turretCannonTipLocalPosition);
         bulletSprite = new Sprite(
-                turretCannonPosition[0],
-                turretCannonPosition[1],
+                turretCannonTipLocalPosition[0],
+                turretCannonTipLocalPosition[1],
                 turretBulletTexture,
                 vertexBufferObjectManager);
         bulletSprite.setColor(AndengineColor.RED);
@@ -113,9 +115,23 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
         final FixtureDef bulletFixtureDef = GameFixtureDefs.TURRET_BULLET_FIXTURE_DEF;
         bulletFixtureDef.setUserData(userData);
         bulletBody = PhysicsFactory.createCircleBody(physicsWorld, bulletSprite, BodyType.DYNAMIC, bulletFixtureDef);
+        bulletBody.setGravityScale(0);
 
         targetingMouseJoint = createBulletTargetingMouseJoint(bulletSprite, bulletBody);
         addToScene(bulletSprite, bulletBody);
+
+        //TODO fix this
+        // applyInitForceToBullet();
+    }
+
+    private void applyInitForceToBullet() {
+        if (targetBubble != null) {
+            Sprite turretBody = hostTurretCallback.getTurretBodySprite();
+            float angle = getAngleOfCenters(turretBody, targetBubble);
+            float xComponentForce = BULLET_MUZZLE_FORCE_MAGNITUDE * (float) Math.cos(angle);
+            float yComponentForce = BULLET_MUZZLE_FORCE_MAGNITUDE * (float) Math.sin(angle);
+            bulletBody.applyForceToCenter(Vec2Pool.obtain(xComponentForce, yComponentForce));
+        }
     }
 
     private MouseJoint createBulletTargetingMouseJoint(final Sprite sprite, final Body body) {

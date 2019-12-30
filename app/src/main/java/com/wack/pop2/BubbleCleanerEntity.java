@@ -54,6 +54,6 @@ public class BubbleCleanerEntity extends BaseEntity{
      * Returns all the bubbles present in the scene
      */
     private List<IEntity> getAllBubbles() {
-        return scene.query(new BubblesEntityMatcher(false));
+        return scene.query(new BubblesEntityMatcher(false, false));
     }
 }

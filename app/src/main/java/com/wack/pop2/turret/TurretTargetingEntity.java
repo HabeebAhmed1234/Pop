@@ -2,16 +2,17 @@ package com.wack.pop2.turret;
 
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameResources;
+import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
 import com.wack.pop2.statemachine.BaseStateMachine;
 
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
-import org.andengine.entity.IEntity;
 import org.andengine.entity.sprite.Sprite;
 
 import androidx.annotation.Nullable;
 
 import static com.wack.pop2.turret.TurretsConstants.TARGETING_TIMER_UPDATE_INTERVAL_SECONDS;
+import static com.wack.pop2.utils.GeometryUtils.getAngleOfCenters;
 
 /**
  * Manages the targeting for each turret (unique TurretTargetingEntity is made for each turret).
@@ -67,13 +68,13 @@ public class TurretTargetingEntity extends BaseEntity implements BaseStateMachin
     }
 
     private void startTargeting() {
-        targetBubbleSprite = getBubbleToTarget();
+        maybeAquireNewBubbleTarget();
         engine.registerUpdateHandler(targetingUpdateHandler);
     }
 
     private void stopTargeting() {
         engine.unregisterUpdateHandler(targetingUpdateHandler);
-        targetBubbleSprite = null;
+        maybeStopTargetingBubble();
     }
 
     /**
@@ -81,10 +82,10 @@ public class TurretTargetingEntity extends BaseEntity implements BaseStateMachin
      */
     private void onTargetingUpdate() {
         if (!isInScene(targetBubbleSprite)) {
-            targetBubbleSprite = null;
+            maybeStopTargetingBubble();
         }
         if (targetBubbleSprite == null) {
-            targetBubbleSprite = getBubbleToTarget();
+            maybeAquireNewBubbleTarget();
         }
         if (targetBubbleSprite != null) {
             rotateTurretToTarget(targetBubbleSprite);
@@ -94,26 +95,24 @@ public class TurretTargetingEntity extends BaseEntity implements BaseStateMachin
         }
     }
 
+    private void maybeAquireNewBubbleTarget() {
+        targetBubbleSprite = getBubbleToTarget();
+        BubbleEntityUserData.markTargeted(targetBubbleSprite, true);
+    }
+
+    private void maybeStopTargetingBubble() {
+        BubbleEntityUserData.markTargeted(targetBubbleSprite, false);
+        targetBubbleSprite = null;
+    }
+
     @Nullable
     private Sprite getBubbleToTarget() {
         return TurretUtils.getClosestPoppableBubble(scene, hostTurretCallback.getTurretBodySprite());
     }
 
-    private void rotateTurretToTarget(IEntity target) {
+    private void rotateTurretToTarget(Sprite target) {
         Sprite turretBodySprite = hostTurretCallback.getTurretBodySprite();
-        float turretCenterX = turretBodySprite.getX() + turretBodySprite.getWidth() / 2;
-        float turretCenterY = turretBodySprite.getY() + turretBodySprite.getHeight() / 2;
-        float angle = getAngle(turretCenterX, turretCenterY, target.getX(), target.getY());
+        float angle = getAngleOfCenters(turretBodySprite, target);
         hostTurretCallback.setTurretAngle(angle);
-
-    }
-
-    private static float getAngle(float x1, float y1, float x2, float y2) {
-        double theta = Math.atan2(y2 - y1, x2 - x1);
-        double angle = Math.toDegrees(theta);
-        if (angle < 0) {
-            angle += 360;
-        }
-        return (float) angle;
     }
 }
