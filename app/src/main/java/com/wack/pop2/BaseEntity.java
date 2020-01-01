@@ -65,8 +65,12 @@ public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCa
     }
 
     protected void addToScene(IAreaShape entity, Body body) {
-        physicsWorld.registerPhysicsConnector(new PhysicsConnector(entity, body, true, true));
+        linkPhysics(entity, body);
         addToScene(entity);
+    }
+
+    protected void linkPhysics(IAreaShape entity, Body body) {
+        physicsWorld.registerPhysicsConnector(new PhysicsConnector(entity, body, true, true));
     }
 
     protected void removeFromScene(Body body) {

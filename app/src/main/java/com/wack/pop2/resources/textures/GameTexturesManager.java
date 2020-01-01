@@ -61,6 +61,7 @@ public class GameTexturesManager extends BaseEntity {
         addTexture(TextureId.LINE, mainBitmapTextureAtlas, "line.png", 110);
         addTexture(TextureId.TURRETS_ICON, mainBitmapTextureAtlas, "turrets_icon.png",110);
         addTexture(TextureId.BULLET, mainBitmapTextureAtlas, "bullet.png", 30);
+        addTexture(TextureId.WHITE_PIXEL, mainBitmapTextureAtlas, "white_pixel.png", 1);
 
         explosionBitmapTextureAtlas.load();
         mainBitmapTextureAtlas.load();

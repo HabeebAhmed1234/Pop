@@ -122,6 +122,7 @@ public class PhysicsFactory {
 
 		boxBody.setTransform(boxBody.getWorldCenter(), MathUtils.degToRad(pRotation));
 
+		Log.d("asdasd", "creating box body at scene values (" + pCenterX + " , " + pCenterY + ") w = " + pWidth + " h = " + pHeight + " r = " + pRotation);
 		return boxBody;
 	}
 

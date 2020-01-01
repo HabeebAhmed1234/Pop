@@ -4,6 +4,8 @@ import org.andengine.entity.IEntity;
 
 import java.util.Comparator;
 
+import static com.wack.pop2.utils.GeometryUtils.distanceBetween;
+
 /**
  * Sorts IEntities in order of their increasing distance from the passed in IEntity
  */
@@ -28,9 +30,5 @@ public class ClosestDistanceComparator implements Comparator<IEntity> {
             return false;
         }
         return ((IEntity) obj).equals(this);
-    }
-
-    private float distanceBetween(IEntity e1, IEntity e2) {
-        return (float) Math.sqrt(Math.pow(e2.getX() - e1.getX(), 2) + Math.pow(e2.getY() - e1.getY(), 2));
     }
 }

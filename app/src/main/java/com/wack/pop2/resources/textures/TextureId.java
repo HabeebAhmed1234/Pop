@@ -5,6 +5,7 @@ package com.wack.pop2.resources.textures;
  * {@link GameTexturesManager}
  */
 public enum TextureId {
+    WHITE_PIXEL,
     EXPLOSION,
     BALL,
     SKULL_BALL,

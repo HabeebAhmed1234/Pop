@@ -14,6 +14,7 @@ import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.turret.TurretsManagerEntity;
 import com.wack.pop2.utils.ScreenUtils;
+import com.wack.pop2.walls.WallsManager;
 
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -40,6 +41,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	private TouchPopperEntity mTouchPopperEntity;
 	private BallAndChainManagerEntity mBallAndChainManagerEntity;
 	private TurretsManagerEntity mTurrentsManagerEntity;
+	private WallsManager mWallsManager;
 
 	public static Intent newIntent(Context context) {
 		return new Intent(context, GameActivity.class);
@@ -84,6 +86,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		mTouchPopperEntity = new TouchPopperEntity(gameAreaTouchListenerEntity, mBubblePopperEntity, mGameResources);
 		mBallAndChainManagerEntity = new BallAndChainManagerEntity(gameTexturesManager, gameSceneTouchListenerEntity, gameIconsTrayEntity, gameAreaTouchListenerEntity, gamePhysicsContactsEntity, mBubblePopperEntity, mGameResources);
 		mTurrentsManagerEntity = new TurretsManagerEntity(mBubblePopperEntity, gameTexturesManager, gameIconsTrayEntity, gamePhysicsContactsEntity, gameFontsManager, gameSceneTouchListenerEntity, gameTexturesManager, mGameResources);
+		mWallsManager = new WallsManager(gameSceneTouchListenerEntity, gameTexturesManager, mGameResources);
 	}
 
 	@Override
