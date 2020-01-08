@@ -1,7 +1,5 @@
 package com.wack.pop2.walls;
 
-import android.util.Log;
-
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameFixtureDefs;
 import com.wack.pop2.GameResources;
@@ -112,9 +110,6 @@ public class WallsManager extends BaseEntity implements GameSceneTouchListenerEn
      * Once the wall position and size is decided we can bake in the physics body
      */
     private void bakeWall(TouchEvent touchEvent) {
-        float[] spriteCenter = getSpriteCenter(touchEvent);
-        Log.d("asdasd", "sprite is at (" + spriteCenter[0] + " , " + spriteCenter[1] + ") w = " + wallSprite.getWidthScaled() + " h = " + wallSprite.getHeightScaled() + " r = " + wallSprite.getRotation());
-
         final FixtureDef wallFixtureDef = GameFixtureDefs.WALL_FIXTURE_DEF;
         wallFixtureDef.setUserData(userData);
         linkPhysics(wallSprite, PhysicsFactory.createBoxBody(physicsWorld, wallSprite, BodyType.STATIC, wallFixtureDef));
@@ -134,7 +129,7 @@ public class WallsManager extends BaseEntity implements GameSceneTouchListenerEn
 
     private void createWall() {
         userData = new WallEntityUserData();
-        wallSprite = new Sprite(0, 0, gameTexturesManager.getTextureRegion(TextureId.CHAIN_LINK), vertexBufferObjectManager);
+        wallSprite = new Sprite(0, 0, gameTexturesManager.getTextureRegion(TextureId.WHITE_PIXEL), vertexBufferObjectManager);
         wallSprite.setUserData(userData);
         wallSprite.setHeight(WALL_HEIGHT_PX);
 
@@ -145,8 +140,9 @@ public class WallsManager extends BaseEntity implements GameSceneTouchListenerEn
         float angle = getAngle(x1, y1, x2, y2);
         float length = distanceBetween(x1, y1, x2, y2);
         wallSprite.setWidth(length);
+        wallSprite.setRotation(angle);
+        wallSprite.resetRotationCenter();
         wallSprite.setX(x1);
         wallSprite.setY(y1);
-        wallSprite.setRotation(angle);
     }
 }
