@@ -1,5 +1,7 @@
 package com.wack.pop2.walls;
 
+import android.util.Log;
+
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameFixtureDefs;
 import com.wack.pop2.GameResources;
@@ -9,10 +11,14 @@ import com.wack.pop2.physics.PhysicsFactory;
 import com.wack.pop2.physics.util.Vec2Pool;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
+import com.wack.pop2.utils.GeometryUtils;
 
+import org.andengine.entity.primitive.Line;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.util.adt.transformation.Transformation;
+import org.andengine.util.color.AndengineColor;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
@@ -38,7 +44,7 @@ public class WallsManager extends BaseEntity implements GameSceneTouchListenerEn
     private Vec2 initialPoint;
 
     private WallEntityUserData userData;
-    private Sprite wallSprite;
+    private Line wallSprite;
 
     public WallsManager(GameSceneTouchListenerEntity touchListenerEntity, GameTexturesManager gameTexturesManager, GameResources gameResources) {
         super(gameResources);
@@ -112,7 +118,16 @@ public class WallsManager extends BaseEntity implements GameSceneTouchListenerEn
     private void bakeWall(TouchEvent touchEvent) {
         final FixtureDef wallFixtureDef = GameFixtureDefs.WALL_FIXTURE_DEF;
         wallFixtureDef.setUserData(userData);
-        linkPhysics(wallSprite, PhysicsFactory.createBoxBody(physicsWorld, wallSprite, BodyType.STATIC, wallFixtureDef));
+        float[] center = GeometryUtils.getCenterPoint(wallSprite.getX1(), wallSprite.getY1(), wallSprite.getX2(), wallSprite.getY2());
+        PhysicsFactory.createBoxBody(
+                physicsWorld,
+                center[0],
+                center[1],
+                GeometryUtils.distanceBetween(wallSprite.getX1(), wallSprite.getY1(), wallSprite.getX2(), wallSprite.getY2()),
+                wallSprite.getLineWidth(),
+                GeometryUtils.getAngle(wallSprite.getX1(), wallSprite.getY1(), wallSprite.getX2(), wallSprite.getY2()),
+                BodyType.STATIC,
+                wallFixtureDef);
     }
 
     private float[] getSpriteCenter(TouchEvent touchEvent) {
@@ -129,20 +144,15 @@ public class WallsManager extends BaseEntity implements GameSceneTouchListenerEn
 
     private void createWall() {
         userData = new WallEntityUserData();
-        wallSprite = new Sprite(0, 0, gameTexturesManager.getTextureRegion(TextureId.WHITE_PIXEL), vertexBufferObjectManager);
+        wallSprite = new Line(0, 0, 0, 0, vertexBufferObjectManager);
         wallSprite.setUserData(userData);
-        wallSprite.setHeight(WALL_HEIGHT_PX);
+        wallSprite.setLineWidth(WALL_HEIGHT_PX);
+        wallSprite.setColor(AndengineColor.WHITE);
 
         addToScene(wallSprite);
     }
 
     private void setWallBetweenPoints(float x1, float y1, float x2, float y2) {
-        float angle = getAngle(x1, y1, x2, y2);
-        float length = distanceBetween(x1, y1, x2, y2);
-        wallSprite.setWidth(length);
-        wallSprite.setRotation(angle);
-        wallSprite.resetRotationCenter();
-        wallSprite.setX(x1);
-        wallSprite.setY(y1);
+        wallSprite.setPosition(x1, y1, x2, y2);
     }
 }

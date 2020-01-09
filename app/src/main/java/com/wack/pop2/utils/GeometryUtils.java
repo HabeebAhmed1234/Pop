@@ -34,4 +34,8 @@ public class GeometryUtils {
     public static float distanceBetween(float x1, float y1, float x2, float y2) {
         return (float) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
+
+    public static float[] getCenterPoint(float x1, float y1, float x2, float y2) {
+        return new float[]{ x1 + (x2 - x1) / 2, y1 + (y2 - y1) / 2};
+    }
 }
