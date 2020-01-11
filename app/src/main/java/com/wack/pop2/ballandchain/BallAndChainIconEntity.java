@@ -11,7 +11,6 @@ import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.fixturedefdata.BallAndChainIconUserData;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
-import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.sprite.Sprite;
@@ -57,6 +56,7 @@ class BallAndChainIconEntity extends BaseEntity implements EventBus.Subscriber, 
     @Override
     public void onDestroy() {
         EventBus.get().unSubscribe(GameEvent.DIFFICULTY_CHANGE, this);
+        touchListenerEntity.removeAreaTouchListener(BallAndChainIconUserData.class, this);
     }
 
     @Override
@@ -65,7 +65,7 @@ class BallAndChainIconEntity extends BaseEntity implements EventBus.Subscriber, 
             case DIFFICULTY_CHANGE:
                 DifficultyChangedEventPayload difficultyChangedEventPayload =
                         (DifficultyChangedEventPayload) payload;
-                onScoreChanged(difficultyChangedEventPayload.newDifficulty);
+                onDifficultyChanged(difficultyChangedEventPayload.newDifficulty);
                 break;
         }
     }
@@ -83,7 +83,7 @@ class BallAndChainIconEntity extends BaseEntity implements EventBus.Subscriber, 
         gameIconsTrayEntity.addIcon(GameIconsTrayEntity.ICON_ID.BALL_AND_CHAIN_ICON, ballAndChainIconSprite);
     }
 
-    private void onScoreChanged(int newDifficulty) {
+    private void onDifficultyChanged(int newDifficulty) {
         if (newDifficulty >= BallAndChainConstants.BALL_AND_CHAIN_DIFFICULTY_UNLOCK_THRESHOLD
                 && stateMachine.getCurrentState() == BallAndChainStateMachine.State.LOCKED) {
             stateMachine.transitionState(

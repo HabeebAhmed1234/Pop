@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * Manages the state of the ball and chain tool that is used to pop bubbles
  */
-class BallAndChainStateMachine extends BaseStateMachine<BallAndChainStateMachine.State> {
+public class BallAndChainStateMachine extends BaseStateMachine<BallAndChainStateMachine.State> {
 
     public enum State {
 
