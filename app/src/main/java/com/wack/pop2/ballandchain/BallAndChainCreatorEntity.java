@@ -4,6 +4,7 @@ import android.util.Pair;
 
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameResources;
+import com.wack.pop2.collision.CollisionFilters;
 import com.wack.pop2.fixturedefdata.ChainLinkEntityUserData;
 import com.wack.pop2.fixturedefdata.WreckingBallEntityUserData;
 import com.wack.pop2.physics.PhysicsFactory;
@@ -87,6 +88,7 @@ class BallAndChainCreatorEntity extends BaseEntity {
                 vertexBufferObjectManager);
         ballSprite.setUserData(wreckingBallEntityUserData);
         FixtureDef ballFixtureDef = BASE_WRECKING_BALL_DEF;
+        ballFixtureDef.setFilter(CollisionFilters.BALL_AND_CHAIN_FILTER);
         ballFixtureDef.setUserData(wreckingBallEntityUserData);
         Body ballBody = PhysicsFactory.createCircleBody(
                 physicsWorld,
@@ -129,6 +131,7 @@ class BallAndChainCreatorEntity extends BaseEntity {
                 vertexBufferObjectManager);
         chainLinkSprite.setUserData(chainLinkEntityUserData);
         FixtureDef chainLinkFixtureDef = BASE_CHAIN_LINK_FIXTURE_DEF;
+        chainLinkFixtureDef.setFilter(CollisionFilters.BALL_AND_CHAIN_FILTER);
         chainLinkFixtureDef.setUserData(chainLinkEntityUserData);
         Body chainLinkBody = PhysicsFactory.createBoxBody(physicsWorld, chainLinkSprite, BodyType.DYNAMIC, chainLinkFixtureDef);
 

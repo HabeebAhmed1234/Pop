@@ -6,6 +6,7 @@ import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameFixtureDefs;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
+import com.wack.pop2.collision.CollisionFilters;
 import com.wack.pop2.fixturedefdata.WallEntityUserData;
 import com.wack.pop2.physics.PhysicsFactory;
 import com.wack.pop2.physics.util.Vec2Pool;
@@ -117,6 +118,7 @@ public class WallsManager extends BaseEntity implements GameSceneTouchListenerEn
      */
     private void bakeWall(TouchEvent touchEvent) {
         final FixtureDef wallFixtureDef = GameFixtureDefs.WALL_FIXTURE_DEF;
+        wallFixtureDef.setFilter(CollisionFilters.WALL_FILTER);
         wallFixtureDef.setUserData(userData);
         float[] center = GeometryUtils.getCenterPoint(wallSprite.getX1(), wallSprite.getY1(), wallSprite.getX2(), wallSprite.getY2());
         PhysicsFactory.createBoxBody(

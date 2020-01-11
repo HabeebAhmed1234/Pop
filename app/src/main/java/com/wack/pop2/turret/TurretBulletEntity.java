@@ -3,6 +3,7 @@ package com.wack.pop2.turret;
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameFixtureDefs;
 import com.wack.pop2.GameResources;
+import com.wack.pop2.collision.CollisionFilters;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
@@ -113,6 +114,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
         bulletSprite.setUserData(userData);
 
         final FixtureDef bulletFixtureDef = GameFixtureDefs.TURRET_BULLET_FIXTURE_DEF;
+        bulletFixtureDef.setFilter(CollisionFilters.BULLET_FILTER);
         bulletFixtureDef.setUserData(userData);
         bulletBody = PhysicsFactory.createCircleBody(physicsWorld, bulletSprite, BodyType.DYNAMIC, bulletFixtureDef);
         bulletBody.setGravityScale(0);

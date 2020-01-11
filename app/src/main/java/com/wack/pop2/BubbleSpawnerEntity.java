@@ -2,6 +2,7 @@ package com.wack.pop2;
 
 import android.hardware.SensorManager;
 
+import com.wack.pop2.collision.CollisionFilters;
 import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
@@ -136,6 +137,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         clipBubblePosition(bubbleSprite);
 
         final FixtureDef bubbleFixtureDef = GameFixtureDefs.BASE_BUBBLE_FIXTURE_DEF;
+        bubbleFixtureDef.setFilter(CollisionFilters.BUBBLE_FILTER);
         bubbleFixtureDef.setUserData(userData);
         final Body body = PhysicsFactory.createCircleBody(physicsWorld, bubbleSprite, BodyType.DYNAMIC, bubbleFixtureDef);
         body.setGravityScale(BUBBLE_GRAVITY_SCALE);

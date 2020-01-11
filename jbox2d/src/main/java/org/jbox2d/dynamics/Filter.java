@@ -47,7 +47,13 @@ public class Filter {
 	 * filtering always wins against the mask bits.
 	 */
 	public int groupIndex;
-	
+
+	public Filter(int categoryBits, int maskBits) {
+		this.categoryBits = categoryBits;
+		this.maskBits = maskBits;
+		this.groupIndex = 0;
+	}
+
 	public Filter() {
 	  categoryBits = 0x0001;
       maskBits = 0xFFFF;

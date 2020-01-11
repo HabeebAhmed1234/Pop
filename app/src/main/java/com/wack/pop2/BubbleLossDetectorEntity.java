@@ -2,6 +2,7 @@ package com.wack.pop2;
 
 import android.opengl.GLES20;
 
+import com.wack.pop2.collision.CollisionFilters;
 import com.wack.pop2.eventbus.DecrementScoreEventPayload;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;
@@ -62,6 +63,7 @@ public class BubbleLossDetectorEntity extends BaseEntity {
         floorDetector.setAlpha(0);
         FixtureDef floorFixtureDef = FLOOR_SENSOR_FIXTURE_DEF;
         floorFixtureDef.setUserData(new FloorEntityUserData());
+        floorFixtureDef.setFilter(CollisionFilters.WALL_FILTER);
         PhysicsFactory.createBoxBody(physicsWorld, floorDetector, BodyType.STATIC, floorFixtureDef);
         physicsContactsEntity.addContactListener(BubbleEntityUserData.class, FloorEntityUserData.class, contactListener);
     }

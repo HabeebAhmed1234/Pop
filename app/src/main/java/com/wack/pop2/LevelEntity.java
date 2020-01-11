@@ -1,11 +1,14 @@
 package com.wack.pop2;
 
+import com.wack.pop2.collision.CollisionFilters;
+import com.wack.pop2.fixturedefdata.WallEntityUserData;
 import com.wack.pop2.physics.PhysicsFactory;
 
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.util.color.AndengineColor;
 import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.FixtureDef;
 
 import static com.wack.pop2.GameFixtureDefs.WALL_FIXTURE_DEF;
 
@@ -27,9 +30,13 @@ public class LevelEntity extends BaseEntity {
         left.setAlpha(0);
         right.setAlpha(0);
 
-        PhysicsFactory.createBoxBody(physicsWorld, left, BodyType.STATIC, WALL_FIXTURE_DEF);
-        PhysicsFactory.createBoxBody(physicsWorld, right, BodyType.STATIC, WALL_FIXTURE_DEF);
-        //PhysicsFactory.createBoxBody(physicsWorld, bottom, BodyType.STATIC, WALL_FIXTURE_DEF);
+        FixtureDef fixtureDef = WALL_FIXTURE_DEF;
+        fixtureDef.setFilter(CollisionFilters.WALL_FILTER);
+        fixtureDef.setUserData(new WallEntityUserData());
+
+        PhysicsFactory.createBoxBody(physicsWorld, left, BodyType.STATIC, fixtureDef);
+        PhysicsFactory.createBoxBody(physicsWorld, right, BodyType.STATIC, fixtureDef);
+        //PhysicsFactory.createBoxBody(physicsWorld, bottom, BodyType.STATIC, fixtureDef);
 
         scene.attachChild(left);
         scene.attachChild(right);
