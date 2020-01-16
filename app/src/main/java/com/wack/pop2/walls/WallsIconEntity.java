@@ -46,7 +46,7 @@ public class WallsIconEntity extends BaseEntity implements GameAreaTouchListener
     public void onCreateScene() {
         createIcon();
 
-        EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this);
+        EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this, true);
         touchListenerEntity.addAreaTouchListener(WallsIconUserData.class, this);
         stateMachine.addAllStateTransitionListener(this);
     }

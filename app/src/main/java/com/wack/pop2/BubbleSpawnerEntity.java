@@ -38,8 +38,8 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
     public enum BubbleType {
         RED,
         GREEN,
-        BLUE,
-        SKULL;
+        BLUE;
+        // SKULL;
 
         private static final List<BubbleType> VALUES =
                 Collections.unmodifiableList(Arrays.asList(values()));
@@ -95,7 +95,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
 
     @Override
     public void onCreateScene() {
-        EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this);
+        EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this, true);
         engine.registerUpdateHandler(bubbleSpawnTimerHandler);
     }
 
@@ -162,8 +162,6 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
             case GREEN:
             case BLUE:
                 return texturesManager.getTextureRegion(TextureId.BALL);
-            case SKULL:
-                return texturesManager.getTextureRegion(TextureId.SKULL_BALL);
             default:
                 throw new IllegalStateException("there is no bubble texture for bubbleType = " + bubbleType);
 
@@ -182,9 +180,6 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
             case BLUE:
                 color = AndengineColor.BLUE;
                 break;
-            case SKULL:
-                color = null;
-                break;
             default:
                 throw new IllegalStateException("there is no bubble color for bubbleType = " + type);
         }
@@ -199,8 +194,6 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
             case GREEN:
             case BLUE:
                 return new BubbleEntityUserData(true, false, bubbleSize, bubbleType, bubbleSprite);
-            case SKULL:
-                return new BubbleEntityUserData(false, true, bubbleSize, bubbleType, bubbleSprite);
         }
         throw new IllegalStateException("there is no bubble user data for bubbleType = " + bubbleType);
     }

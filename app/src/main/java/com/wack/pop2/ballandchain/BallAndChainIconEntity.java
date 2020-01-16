@@ -48,7 +48,7 @@ class BallAndChainIconEntity extends BaseEntity implements EventBus.Subscriber, 
     public void onCreateScene() {
         createIcon();
 
-        EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this);
+        EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this, true);
         stateMachine.addAllStateTransitionListener(this);
         touchListenerEntity.addAreaTouchListener(BallAndChainIconUserData.class, this);
     }

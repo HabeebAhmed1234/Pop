@@ -78,9 +78,7 @@ public class ScoreHudEntity extends BaseEntity implements EventBus.Subscriber {
     }
 
     private void incrementMaxScore(StartingBubbleSpawnedEventPayload payload) {
-        if (payload.bubbleType != BubbleSpawnerEntity.BubbleType.SKULL) {
-            maxScoreValue += BubblePopperEntity.MAX_SCORE_INCREASE_PER_NEW_SPAWNED_BUBBLE ;
-        }
+        maxScoreValue += BubblePopperEntity.MAX_SCORE_INCREASE_PER_NEW_SPAWNED_BUBBLE;
     }
 
     private void decrementScore(DecrementScoreEventPayload payload) {

@@ -76,7 +76,7 @@ class TurretsIconEntity extends BaseEntity implements EventBus.Subscriber, GameS
     public void onCreateScene() {
         createIconAndText();
 
-        EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this);
+        EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this, true);
         EventBus.get().subscribe(GameEvent.TURRET_DOCKED, this);
         touchListenerEntity.addSceneTouchListener(this);
 

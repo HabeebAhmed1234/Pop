@@ -23,7 +23,7 @@ public class GameDifficultyEntity extends BaseEntity implements EventBus.Subscri
 
     @Override
     public void onCreateScene() {
-        EventBus.get().subscribe(GameEvent.SCORE_CHANGED, this);
+        EventBus.get().subscribe(GameEvent.SCORE_CHANGED, this, true);
         fireDifficultyUpdatedEvent();
     }
 
