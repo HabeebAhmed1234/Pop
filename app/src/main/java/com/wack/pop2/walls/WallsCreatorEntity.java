@@ -2,6 +2,7 @@ package com.wack.pop2.walls;
 
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameFixtureDefs;
+import com.wack.pop2.GameIconsTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.collision.CollisionFilters;
@@ -13,6 +14,7 @@ import com.wack.pop2.utils.GeometryUtils;
 
 import org.andengine.entity.primitive.Line;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.color.AndengineColor;
 import org.jbox2d.common.Vec2;
@@ -31,10 +33,13 @@ import static org.andengine.input.touch.TouchEvent.ACTION_UP;
 public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchListenerEntity.SceneTouchListener {
 
     private static final float WALL_HEIGHT_PX = 30;
+    private static final float MAX_WALL_WIDTH = 500;
+    private static final float MIN_WALL_WIDTH = 200;
 
     private WallsStateMachine stateMachine;
     private GameSceneTouchListenerEntity touchListenerEntity;
     private GameTexturesManager gameTexturesManager;
+    private GameIconsTrayEntity gameIconsTrayEntity;
 
     private Vec2 initialPoint;
 
@@ -45,11 +50,13 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
             WallsStateMachine stateMachine,
             GameSceneTouchListenerEntity touchListenerEntity,
             GameTexturesManager gameTexturesManager,
+            GameIconsTrayEntity gameIconsTrayEntity,
             GameResources gameResources) {
         super(gameResources);
         this.stateMachine = stateMachine;
         this.touchListenerEntity = touchListenerEntity;
         this.gameTexturesManager = gameTexturesManager;
+        this.gameIconsTrayEntity = gameIconsTrayEntity;
     }
 
     @Override
@@ -81,8 +88,9 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
         return true;
     }
 
-    private boolean shouldStartPlacingWall() {
-        return !isWallBeingPlaced() && stateMachine.getCurrentState() == WallsStateMachine.State.TOGGLED_ON;
+    private boolean shouldStartPlacingWall(TouchEvent touchEvent) {
+        Sprite wallsIcon = gameIconsTrayEntity.getIcon(GameIconsTrayEntity.ICON_ID.WALLS_ICON);
+        return !isWallBeingPlaced() && stateMachine.getCurrentState() == WallsStateMachine.State.TOGGLED_ON && !wallsIcon.contains(touchEvent.getX(), touchEvent.getY());
     }
 
     private boolean isWallBeingPlaced() {
@@ -90,7 +98,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
     }
 
     private void onActionDown(TouchEvent touchEvent) {
-        if (shouldStartPlacingWall()) {
+        if (shouldStartPlacingWall(touchEvent)) {
             initialPoint = Vec2Pool.obtain(touchEvent.getX(), touchEvent.getY());
             createWall();
             spanWall(touchEvent);
@@ -157,7 +165,21 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
         addToScene(wallSprite);
     }
 
+    private float clipWallLength(float wallLength) {
+        if (wallLength < MIN_WALL_WIDTH) {
+            return MIN_WALL_WIDTH;
+        } else if (wallLength > MAX_WALL_WIDTH) {
+            return MAX_WALL_WIDTH;
+        }
+        return wallLength;
+    }
+
     private void setWallBetweenPoints(float x1, float y1, float x2, float y2) {
-        wallSprite.setPosition(x1, y1, x2, y2);
+        float wallLength = GeometryUtils.distanceBetween(x1, y2, x2, y2);
+        wallLength = clipWallLength(wallLength);
+        float angle = (float) Math.toRadians(GeometryUtils.getAngle(x1, y1, x2, y2));
+        float xComponent = (float) Math.cos(angle) * wallLength;
+        float yComponent = (float) Math.sin(angle) * wallLength;
+        wallSprite.setPosition(x1, y1, x1 + xComponent, y1 + yComponent);
     }
 }

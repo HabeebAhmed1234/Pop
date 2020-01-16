@@ -10,13 +10,13 @@ import com.wack.pop2.resources.textures.GameTexturesManager;
 /**
  * Manages the creation of walls that can catch or redirect bubbles
  */
-public class WallsManager extends BaseEntity{
+public class WallsManagerEntity extends BaseEntity{
 
     private WallsStateMachine stateMachine;
     private WallsCreatorEntity wallsCreatorEntity;
     private WallsIconEntity wallsIconEntity;
 
-    public WallsManager(
+    public WallsManagerEntity(
             GameIconsTrayEntity gameIconsTrayEntity,
             GameAreaTouchListenerEntity gameAreaTouchListenerEntity,
             GameSceneTouchListenerEntity touchListenerEntity,
@@ -24,7 +24,7 @@ public class WallsManager extends BaseEntity{
             GameResources gameResources) {
         super(gameResources);
         this.stateMachine = new WallsStateMachine();
-        this.wallsCreatorEntity = new WallsCreatorEntity(stateMachine, touchListenerEntity, gameTexturesManager, gameResources);
+        this.wallsCreatorEntity = new WallsCreatorEntity(stateMachine, touchListenerEntity, gameTexturesManager, gameIconsTrayEntity, gameResources);
         this.wallsIconEntity = new WallsIconEntity(stateMachine, gameIconsTrayEntity, gameAreaTouchListenerEntity, gameTexturesManager, gameResources);
     }
 }
