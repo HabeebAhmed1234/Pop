@@ -6,6 +6,7 @@ import com.wack.pop2.GameIconsTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.collision.CollisionFilters;
+import com.wack.pop2.entitymatchers.WallsEntityMatcher;
 import com.wack.pop2.fixturedefdata.WallEntityUserData;
 import com.wack.pop2.physics.PhysicsFactory;
 import com.wack.pop2.physics.util.Vec2Pool;
@@ -13,6 +14,7 @@ import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.utils.GeometryUtils;
 
+import org.andengine.entity.IEntity;
 import org.andengine.entity.primitive.Line;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
@@ -20,8 +22,11 @@ import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.AndengineColor;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
+
+import java.util.List;
 
 import static org.andengine.input.touch.TouchEvent.ACTION_CANCEL;
 import static org.andengine.input.touch.TouchEvent.ACTION_DOWN;
@@ -92,7 +97,24 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
 
     private boolean shouldStartPlacingWall(TouchEvent touchEvent) {
         Sprite wallsIcon = gameIconsTrayEntity.getIcon(GameIconsTrayEntity.ICON_ID.WALLS_ICON);
-        return !isWallBeingPlaced() && stateMachine.getCurrentState() == WallsStateMachine.State.TOGGLED_ON && !wallsIcon.contains(touchEvent.getX(), touchEvent.getY());
+        return !isWallBeingPlaced() &&
+                stateMachine.getCurrentState() == WallsStateMachine.State.TOGGLED_ON &&
+                !wallsIcon.contains(touchEvent.getX(), touchEvent.getY()) &&
+                !isTouchingWallDeleteIcon(touchEvent);
+    }
+
+    private boolean isTouchingWallDeleteIcon(TouchEvent touchEvent) {
+        for (IEntity wall : getAllWalls()) {
+            WallEntityUserData userData = (WallEntityUserData) wall.getUserData();
+            if (userData.wallDeleteIcon.contains(touchEvent.getX(), touchEvent.getY())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private List<IEntity> getAllWalls() {
+        return scene.query(new WallsEntityMatcher());
     }
 
     private boolean isWallBeingPlaced() {
@@ -134,7 +156,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
         wallFixtureDef.setFilter(CollisionFilters.WALL_FILTER);
         wallFixtureDef.setUserData(userData);
         float[] center = GeometryUtils.getCenterPoint(wallSprite.getX1(), wallSprite.getY1(), wallSprite.getX2(), wallSprite.getY2());
-        userData.wallBody = PhysicsFactory.createBoxBody(
+        Body wallBody = PhysicsFactory.createBoxBody(
                 physicsWorld,
                 center[0],
                 center[1],
@@ -143,7 +165,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
                 GeometryUtils.getAngle(wallSprite.getX1(), wallSprite.getY1(), wallSprite.getX2(), wallSprite.getY2()),
                 BodyType.STATIC,
                 wallFixtureDef);
-        userData.wallDeleteIcon = WallDeleteIconUtil.getWallDeletionSprite(wallSprite, gameTexturesManager, vertexBufferObjectManager);
+        userData.wallDeleteIcon = WallDeleteIconUtil.getWallDeletionSprite(wallSprite, wallBody, gameTexturesManager, vertexBufferObjectManager);
         addToSceneWithTouch(userData.wallDeleteIcon);
     }
 
@@ -173,7 +195,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
     }
 
     private void setWallBetweenPoints(float x1, float y1, float x2, float y2) {
-        float wallLength = GeometryUtils.distanceBetween(x1, y2, x2, y2);
+        float wallLength = GeometryUtils.distanceBetween(x1, y1, x2, y2);
         wallLength = clipWallLength(wallLength);
         float angle = (float) Math.toRadians(GeometryUtils.getAngle(x1, y1, x2, y2));
         float xComponent = (float) Math.cos(angle) * wallLength;

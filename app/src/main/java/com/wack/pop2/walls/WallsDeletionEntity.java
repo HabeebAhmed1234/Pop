@@ -3,13 +3,12 @@ package com.wack.pop2.walls;
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameResources;
-import com.wack.pop2.fixturedefdata.WallEntityUserData;
+import com.wack.pop2.fixturedefdata.WallDeleteIconUserData;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.shape.IShape;
 import org.andengine.input.touch.TouchEvent;
-import org.jbox2d.dynamics.Body;
 
 /**
  * Detects clicks on wall delete icons and if the wall tool is active deletes the wall on click
@@ -27,12 +26,12 @@ public class WallsDeletionEntity extends BaseEntity implements GameAreaTouchList
 
     @Override
     public void onCreateScene() {
-        touchListenerEntity.addAreaTouchListener(WallEntityUserData.class, this);
+        touchListenerEntity.addAreaTouchListener(WallDeleteIconUserData.class, this);
     }
 
     @Override
     public void onDestroy() {
-        touchListenerEntity.removeAreaTouchListener(WallEntityUserData.class, this);
+        touchListenerEntity.removeAreaTouchListener(WallDeleteIconUserData.class, this);
     }
 
     @Override
@@ -40,16 +39,17 @@ public class WallsDeletionEntity extends BaseEntity implements GameAreaTouchList
         if (sceneTouchEvent.isActionUp()) {
             IEntity deleteIconEntity = (IEntity) touchArea;
             if (deleteIconEntity.isVisible()) {
-                deleteWall(deleteIconEntity.getParent());
+                deleteWall((IShape) deleteIconEntity);
             }
             return true;
         }
         return false;
     }
 
-    private void deleteWall(IEntity wallEntity) {
-        Body body = ((WallEntityUserData) wallEntity.getUserData()).wallBody;
-        removeFromScene(body);
-        removeFromScene((IShape) wallEntity);
+    private void deleteWall(IShape deleteIconEntity) {
+        WallDeleteIconUserData wallDeleteIconUserData = (WallDeleteIconUserData) deleteIconEntity.getUserData();
+        removeFromScene(wallDeleteIconUserData.wallSprite);
+        removeFromScene(wallDeleteIconUserData.wallBody);
+        removeFromScene(deleteIconEntity);
     }
 }

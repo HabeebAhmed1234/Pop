@@ -8,8 +8,6 @@ import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.statemachine.BaseStateMachine;
 
 import org.andengine.entity.IEntity;
-import org.andengine.entity.primitive.Line;
-import org.andengine.entity.sprite.Sprite;
 
 import java.util.List;
 
@@ -66,11 +64,5 @@ public class WallsDeleteIconsManagerEntity extends BaseEntity implements BaseSta
 
     private List<IEntity> getAllWalls() {
         return scene.query(new WallsEntityMatcher());
-    }
-
-    private Sprite addWallDeleteIcon(IEntity wall) {
-        Sprite wallDeleteSprite = WallDeleteIconUtil.getWallDeletionSprite((Line) wall, texturesManager, vertexBufferObjectManager);
-        addToSceneWithTouch(wall, wallDeleteSprite);
-        return wallDeleteSprite;
     }
 }
