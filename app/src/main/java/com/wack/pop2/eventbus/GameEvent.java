@@ -14,4 +14,6 @@ public enum GameEvent {
     BALL_AND_CHAIN_POPPED_BUBBLE, // Fired when the ball and chain pops a bubble
     TURRET_BULLET_POPPED_BUBBLE, // Fired bullet popped a bubble
     TURRET_DOCKED, // Fired when a turret gets docked back into the turret icon
+    WALL_PLACED, // Fired when a wall gets placed
+    WALL_DELETED, // Fired when a wall gets deleted
 }

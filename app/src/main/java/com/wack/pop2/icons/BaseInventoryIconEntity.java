@@ -44,6 +44,10 @@ public abstract class BaseInventoryIconEntity extends BaseIconEntity {
         createInventoryText();
     }
 
+    public boolean hasInventory() {
+        return getInventoryCount() > 0;
+    }
+
     private void createInventoryText() {
         Sprite iconSprite = getIconSprite();
         inventoryText = new Text(
@@ -64,7 +68,7 @@ public abstract class BaseInventoryIconEntity extends BaseIconEntity {
         inventoryText.setColor(isUnlocked() ? getUnlockedColor() : AndengineColor.TRANSPARENT);
     }
 
-    protected void increateInventory() {
+    protected void increaseInventory() {
         inventoryCount++;
         onInventoryChanged();
     }
@@ -76,9 +80,5 @@ public abstract class BaseInventoryIconEntity extends BaseIconEntity {
 
     protected int getInventoryCount() {
         return inventoryCount;
-    }
-
-    protected boolean hasInventory() {
-        return getInventoryCount() > 0;
     }
 }

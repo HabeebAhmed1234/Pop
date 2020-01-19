@@ -1,47 +1,30 @@
 package com.wack.pop2.walls;
 
-import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameIconsTrayEntity;
 import com.wack.pop2.GameResources;
-import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
+import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.fixturedefdata.WallsIconUserData;
-import com.wack.pop2.resources.fonts.FontId;
+import com.wack.pop2.icons.BaseInventoryIconEntity;
 import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.statemachine.BaseStateMachine;
 
 import org.andengine.entity.scene.ITouchArea;
-import org.andengine.entity.sprite.Sprite;
-import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.AndengineColor;
 
-import static com.wack.pop2.turret.TurretsConstants.MAX_TURRET_INVENTORY;
 import static com.wack.pop2.walls.WallsConstants.MAX_WALLS_INVENTORY;
+import static com.wack.pop2.walls.WallsConstants.WALLS_DIFFICULTY_UNLOCK_THRESHOLD;
 
-public class WallsIconEntity extends BaseEntity implements GameAreaTouchListenerEntity.AreaTouchListener, EventBus.Subscriber, BaseStateMachine.Listener<WallsStateMachine.State> {
-
-    private static final float WALLS_INVENTORY_TEXT_MAX_WIDTH_PX = 20;
-    private static final float WALLS_INVENTORY_TEXT_MAX_HEIGHT_PX = 80;
-
-    private GameFontsManager fontsManager;
+public class WallsIconEntity extends BaseInventoryIconEntity implements GameAreaTouchListenerEntity.AreaTouchListener, BaseStateMachine.Listener<WallsStateMachine.State> {
 
     private WallsStateMachine stateMachine;
-
-    private GameIconsTrayEntity gameIconsTrayEntity;
     private GameAreaTouchListenerEntity touchListenerEntity;
-    private GameTexturesManager gameTexturesManager;
-
-    private Sprite wallsIconSprite;
-    private Text wallsInventoryText;
-    // Number of turrets currently DOCKED in the icon
-    private int numWallsInventory = MAX_WALLS_INVENTORY;
 
     public WallsIconEntity(
             WallsStateMachine stateMachine,
@@ -50,69 +33,9 @@ public class WallsIconEntity extends BaseEntity implements GameAreaTouchListener
             GameTexturesManager gameTexturesManager,
             GameFontsManager fontsManager,
             GameResources gameResources) {
-        super(gameResources);
+        super(fontsManager, gameIconsTrayEntity, gameTexturesManager, touchListenerEntity, gameResources);
         this.stateMachine = stateMachine;
-        this.gameIconsTrayEntity = gameIconsTrayEntity;
         this.touchListenerEntity = touchListenerEntity;
-        this.fontsManager = fontsManager;
-        this.gameTexturesManager = gameTexturesManager;
-    }
-
-    @Override
-    public void onCreateScene() {
-        createIconAndText();
-
-        EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this, true);
-        touchListenerEntity.addAreaTouchListener(WallsIconUserData.class, this);
-        stateMachine.addAllStateTransitionListener(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        EventBus.get().unSubscribe(GameEvent.DIFFICULTY_CHANGE, this);
-        touchListenerEntity.removeAreaTouchListener(WallsIconUserData.class, this);
-    }
-
-    @Override
-    public void onEvent(GameEvent event, EventPayload payload) {
-        switch (event) {
-            case DIFFICULTY_CHANGE:
-                DifficultyChangedEventPayload difficultyChangedEventPayload =
-                        (DifficultyChangedEventPayload) payload;
-                onDifficultyChanged(difficultyChangedEventPayload.newDifficulty);
-                break;
-        }
-    }
-
-    private void createIconAndText() {
-        // Create the icon sprite
-        ITextureRegion textureRegion =
-                gameTexturesManager.getTextureRegion(TextureId.WALLS_ICON);
-        wallsIconSprite = new Sprite(
-                0,
-                0,
-                textureRegion,
-                vertexBufferObjectManager);
-        wallsIconSprite.setUserData(new WallsIconUserData());
-        addToSceneWithTouch(wallsIconSprite);
-        gameIconsTrayEntity.addIcon(GameIconsTrayEntity.ICON_ID.WALLS_ICON, wallsIconSprite);
-
-        // Create text
-        wallsInventoryText = new Text(
-                wallsIconSprite.getX() + wallsIconSprite.getWidthScaled() / 2 - WALLS_INVENTORY_TEXT_MAX_WIDTH_PX,
-                wallsIconSprite.getY() - WALLS_INVENTORY_TEXT_MAX_HEIGHT_PX,
-                fontsManager.getFont(FontId.TURRET_ICON_FONT),
-                Integer.toString(numWallsInventory),
-                (Integer.toString(MAX_TURRET_INVENTORY)).length(),
-                vertexBufferObjectManager);
-        scene.attachChild(wallsInventoryText);
-
-    }
-
-    private void onDifficultyChanged(int newDifficulty) {
-        if (newDifficulty >= WallsConstants.WALLS_DIFFICULTY_UNLOCK_THRESHOLD && stateMachine.getCurrentState() == WallsStateMachine.State.LOCKED) {
-            stateMachine.transitionState(WallsStateMachine.State.UNLOCKED_TOGGLED_OFF);
-        }
     }
 
     @Override
@@ -135,10 +58,6 @@ public class WallsIconEntity extends BaseEntity implements GameAreaTouchListener
 
     @Override
     public void onEnterState(WallsStateMachine.State newState) {
-        setIconColor(newState);
-    }
-
-    private void setIconColor(WallsStateMachine.State newState) {
         AndengineColor color = AndengineColor.WHITE;
         switch (newState) {
             case LOCKED:
@@ -151,7 +70,77 @@ public class WallsIconEntity extends BaseEntity implements GameAreaTouchListener
                 color = AndengineColor.GREEN;
                 break;
         }
-        wallsIconSprite.setColor(color);
+        setIconColor(color);
     }
 
+    @Override
+    protected int getMaxInventoryCount() {
+        return MAX_WALLS_INVENTORY;
+    }
+
+    @Override
+    public void onCreateScene() {
+        super.onCreateScene();
+        touchListenerEntity.addAreaTouchListener(WallsIconUserData.class, this);
+        stateMachine.addAllStateTransitionListener(this);
+
+        EventBus.get().subscribe(GameEvent.WALL_PLACED, this).subscribe(GameEvent.WALL_DELETED, this);
+    }
+
+    @Override
+    public void onDestroy() {
+        touchListenerEntity.removeAreaTouchListener(WallsIconUserData.class, this);
+        stateMachine.removeAllStateTransitionListener(this);
+
+        EventBus.get().unSubscribe(GameEvent.WALL_PLACED, this).unSubscribe(GameEvent.WALL_DELETED, this);
+    }
+
+    @Override
+    public void onEvent(GameEvent event, EventPayload payload) {
+        super.onEvent(event, payload);
+
+        switch (event) {
+            case WALL_PLACED:
+                decreaseInventory();
+                break;
+            case WALL_DELETED:
+                increaseInventory();
+                break;
+        }
+    }
+
+    @Override
+    protected TextureId getIconTextureId() {
+        return TextureId.WALLS_ICON;
+    }
+
+    @Override
+    protected Class<? extends BaseEntityUserData> getIconUserDataType() {
+        return WallsIconUserData.class;
+    }
+
+    @Override
+    protected BaseEntityUserData getUserData() {
+        return new WallsIconUserData();
+    }
+
+    @Override
+    protected GameIconsTrayEntity.ICON_ID getIconId() {
+        return GameIconsTrayEntity.ICON_ID.WALLS_ICON;
+    }
+
+    @Override
+    protected int getDifficultyUnlockThreshold() {
+        return WALLS_DIFFICULTY_UNLOCK_THRESHOLD;
+    }
+
+    @Override
+    protected void onIconUnlocked() {
+        stateMachine.transitionState(WallsStateMachine.State.UNLOCKED_TOGGLED_OFF);
+    }
+
+    @Override
+    protected AndengineColor getUnlockedColor() {
+        return AndengineColor.GREEN;
+    }
 }

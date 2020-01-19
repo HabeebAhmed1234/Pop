@@ -7,6 +7,8 @@ import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.collision.CollisionFilters;
 import com.wack.pop2.entitymatchers.WallsEntityMatcher;
+import com.wack.pop2.eventbus.EventBus;
+import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.fixturedefdata.WallEntityUserData;
 import com.wack.pop2.physics.PhysicsFactory;
 import com.wack.pop2.physics.util.Vec2Pool;
@@ -42,6 +44,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
     private static final float MIN_WALL_WIDTH = 200;
 
     private WallsStateMachine stateMachine;
+    private WallsIconEntity wallsIconEntity;
     private GameSceneTouchListenerEntity touchListenerEntity;
     private GameTexturesManager gameTexturesManager;
     private GameIconsTrayEntity gameIconsTrayEntity;
@@ -53,12 +56,14 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
 
     public WallsCreatorEntity(
             WallsStateMachine stateMachine,
+            WallsIconEntity wallsIconEntity,
             GameSceneTouchListenerEntity touchListenerEntity,
             GameTexturesManager gameTexturesManager,
             GameIconsTrayEntity gameIconsTrayEntity,
             GameResources gameResources) {
         super(gameResources);
         this.stateMachine = stateMachine;
+        this.wallsIconEntity = wallsIconEntity;
         this.touchListenerEntity = touchListenerEntity;
         this.gameTexturesManager = gameTexturesManager;
         this.gameIconsTrayEntity = gameIconsTrayEntity;
@@ -97,6 +102,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
         Sprite wallsIcon = gameIconsTrayEntity.getIcon(GameIconsTrayEntity.ICON_ID.WALLS_ICON);
         return !isWallBeingPlaced() &&
                 stateMachine.getCurrentState() == WallsStateMachine.State.TOGGLED_ON &&
+                wallsIconEntity.hasInventory() &&
                 !wallsIcon.contains(touchEvent.getX(), touchEvent.getY()) &&
                 !isTouchingWallDeleteIcon(touchEvent);
     }
@@ -165,6 +171,8 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
                 wallFixtureDef);
         userData.wallDeleteIcon = WallDeleteIconUtil.getWallDeletionSprite(wallSprite, wallBody, gameTexturesManager, vertexBufferObjectManager);
         addToSceneWithTouch(userData.wallDeleteIcon);
+
+        EventBus.get().sendEvent(GameEvent.WALL_PLACED);
     }
 
     private void spanWall(TouchEvent touchEvent) {

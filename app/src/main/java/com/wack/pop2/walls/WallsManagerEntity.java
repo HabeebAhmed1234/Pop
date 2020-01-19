@@ -28,9 +28,9 @@ public class WallsManagerEntity extends BaseEntity{
             GameResources gameResources) {
         super(gameResources);
         this.stateMachine = new WallsStateMachine();
-        this.wallsCreatorEntity = new WallsCreatorEntity(stateMachine, gameSceneTouchListenerEntity, gameTexturesManager, gameIconsTrayEntity, gameResources);
+        this.wallsIconEntity = new WallsIconEntity(stateMachine, gameIconsTrayEntity, gameAreaTouchListenerEntity, gameTexturesManager, gameFontsManager, gameResources);
+        this.wallsCreatorEntity = new WallsCreatorEntity(stateMachine, wallsIconEntity, gameSceneTouchListenerEntity, gameTexturesManager, gameIconsTrayEntity, gameResources);
         this.wallsDeleteIconsManagerEntity = new WallsDeleteIconsManagerEntity(stateMachine, gameTexturesManager, gameResources);
         this.wallsDeletionEntity = new WallsDeletionEntity(gameAreaTouchListenerEntity, gameResources);
-        this.wallsIconEntity = new WallsIconEntity(stateMachine, gameIconsTrayEntity, gameAreaTouchListenerEntity, gameTexturesManager, gameFontsManager, gameResources);
     }
 }

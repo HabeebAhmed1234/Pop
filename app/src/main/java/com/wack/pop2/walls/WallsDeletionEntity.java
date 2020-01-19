@@ -3,6 +3,8 @@ package com.wack.pop2.walls;
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameResources;
+import com.wack.pop2.eventbus.EventBus;
+import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.fixturedefdata.WallDeleteIconUserData;
 
 import org.andengine.entity.IEntity;
@@ -51,5 +53,7 @@ public class WallsDeletionEntity extends BaseEntity implements GameAreaTouchList
         removeFromScene(wallDeleteIconUserData.wallSprite);
         removeFromScene(wallDeleteIconUserData.wallBody);
         removeFromScene(deleteIconEntity);
+
+        EventBus.get().sendEvent(GameEvent.WALL_DELETED);
     }
 }

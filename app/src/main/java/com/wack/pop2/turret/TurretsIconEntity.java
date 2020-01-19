@@ -80,9 +80,10 @@ class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subs
 
     @Override
     public void onEvent(GameEvent event, EventPayload payload) {
+        super.onEvent(event, payload);
         switch (event) {
             case TURRET_DOCKED:
-                increateInventory();
+                increaseInventory();
                 break;
         }
     }
@@ -171,7 +172,7 @@ class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subs
         return AndengineColor.GREEN;
     }
 
-    
+
     @Override
     public boolean onTouch(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
         /** NOOP **/
