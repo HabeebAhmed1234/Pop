@@ -16,4 +16,5 @@ public enum TextureId {
     WALLS_ICON,
     LINE,
     BULLET,
+    DELETE_WALL_ICON,
 }

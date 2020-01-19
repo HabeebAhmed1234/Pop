@@ -51,7 +51,7 @@ public class GameTexturesManager extends BaseEntity {
                         "explosion.png",
                         0, 0, 3, 4));
 
-        BitmapTextureAtlas mainBitmapTextureAtlas = new BitmapTextureAtlas(textureManager, 1100, 700, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        BitmapTextureAtlas mainBitmapTextureAtlas = new BitmapTextureAtlas(textureManager, 1200, 700, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
         addTexture(TextureId.BALL, mainBitmapTextureAtlas, "ball.png", 150);
         addTexture(TextureId.SKULL_BALL, mainBitmapTextureAtlas,  "skull_ball.png", 100);
@@ -63,6 +63,7 @@ public class GameTexturesManager extends BaseEntity {
         addTexture(TextureId.WALLS_ICON, mainBitmapTextureAtlas, "walls_icon.png",110);
         addTexture(TextureId.BULLET, mainBitmapTextureAtlas, "bullet.png", 30);
         addTexture(TextureId.WHITE_PIXEL, mainBitmapTextureAtlas, "white_pixel.png", 1);
+        addTexture(TextureId.DELETE_WALL_ICON, mainBitmapTextureAtlas, "delete_wall_icon.png", 110);
 
         explosionBitmapTextureAtlas.load();
         mainBitmapTextureAtlas.load();

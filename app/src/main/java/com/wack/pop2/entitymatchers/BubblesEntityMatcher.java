@@ -1,4 +1,4 @@
-package com.wack.pop2;
+package com.wack.pop2.entitymatchers;
 
 import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
 

@@ -1,6 +1,6 @@
 package com.wack.pop2.turret;
 
-import com.wack.pop2.BubblesEntityMatcher;
+import com.wack.pop2.entitymatchers.BubblesEntityMatcher;
 import com.wack.pop2.comparators.ClosestDistanceComparator;
 
 import org.andengine.entity.IEntity;

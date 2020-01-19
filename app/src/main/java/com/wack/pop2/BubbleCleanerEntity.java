@@ -2,6 +2,7 @@ package com.wack.pop2;
 
 import android.util.Log;
 
+import com.wack.pop2.entitymatchers.BubblesEntityMatcher;
 import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.engine.handler.timer.ITimerCallback;

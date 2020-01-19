@@ -17,8 +17,10 @@ import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 import org.andengine.util.algorithm.collision.LineCollisionChecker;
 import org.andengine.util.algorithm.collision.RectangularShapeCollisionChecker;
 import org.andengine.util.exception.MethodNotSupportedException;
+import org.andengine.util.math.MathUtils;
 
 import android.opengl.GLES20;
+import android.util.Log;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -266,7 +268,15 @@ public class Line extends Shape {
 	@Override
 	@Deprecated
 	public boolean contains(final float pX, final float pY) {
-		throw new MethodNotSupportedException();
+		Log.d("asdasd", "scene coords = " + pX + "," + pY);
+		float[] localCoord = new float[]{pX, pY};
+		getSceneToLocalTransformation().transform(localCoord);
+		Log.d("asdasd", "local coords = " + localCoord[0] + "," + localCoord[1]);
+		float width = MathUtils.distance(mX, mY, mX2, mY2);
+		Log.d("asdasd", "width = " + width);
+		float height = getLineWidth();
+		Log.d("asdasd", "height = " + height);
+		return MathUtils.isInBounds(0, width, pX) &&  MathUtils.isInBounds(0, height, pY);
 	}
 
 	@Override
@@ -279,6 +289,18 @@ public class Line extends Shape {
 		} else {
 			return false;
 		}
+	}
+
+	public float[] getBoundingRectangleCoords() {
+		return new float[] {Math.min(mX, mX2), Math.min(mY, mY2)};
+	}
+
+	public float getBoundingRectangleWidth() {
+		return Math.abs(mX2 - mX);
+	}
+
+	public float getBoundingRectangleHeight() {
+		return Math.abs(mY2 - mY);
 	}
 
 	// ===========================================================

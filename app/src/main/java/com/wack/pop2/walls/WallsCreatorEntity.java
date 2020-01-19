@@ -10,12 +10,14 @@ import com.wack.pop2.fixturedefdata.WallEntityUserData;
 import com.wack.pop2.physics.PhysicsFactory;
 import com.wack.pop2.physics.util.Vec2Pool;
 import com.wack.pop2.resources.textures.GameTexturesManager;
+import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.utils.GeometryUtils;
 
 import org.andengine.entity.primitive.Line;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.AndengineColor;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyType;
@@ -132,7 +134,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
         wallFixtureDef.setFilter(CollisionFilters.WALL_FILTER);
         wallFixtureDef.setUserData(userData);
         float[] center = GeometryUtils.getCenterPoint(wallSprite.getX1(), wallSprite.getY1(), wallSprite.getX2(), wallSprite.getY2());
-        PhysicsFactory.createBoxBody(
+        userData.wallBody = PhysicsFactory.createBoxBody(
                 physicsWorld,
                 center[0],
                 center[1],
@@ -141,12 +143,8 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
                 GeometryUtils.getAngle(wallSprite.getX1(), wallSprite.getY1(), wallSprite.getX2(), wallSprite.getY2()),
                 BodyType.STATIC,
                 wallFixtureDef);
-    }
-
-    private float[] getSpriteCenter(TouchEvent touchEvent) {
-        float centerX = initialPoint.x + (touchEvent.getX() - initialPoint.x) / 2;
-        float centerY = initialPoint.y + (touchEvent.getY() - initialPoint.y) / 2;
-        return new float[] {centerX, centerY};
+        userData.wallDeleteIcon = WallDeleteIconUtil.getWallDeletionSprite(wallSprite, gameTexturesManager, vertexBufferObjectManager);
+        addToSceneWithTouch(userData.wallDeleteIcon);
     }
 
     private void spanWall(TouchEvent touchEvent) {
@@ -162,7 +160,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
         wallSprite.setLineWidth(WALL_HEIGHT_PX);
         wallSprite.setColor(AndengineColor.WHITE);
 
-        addToScene(wallSprite);
+        addToSceneWithTouch(wallSprite);
     }
 
     private float clipWallLength(float wallLength) {

@@ -1,7 +1,7 @@
 package com.wack.pop2;
 
 import com.wack.pop2.collision.CollisionFilters;
-import com.wack.pop2.fixturedefdata.WallEntityUserData;
+import com.wack.pop2.fixturedefdata.LevelWallEntityUserData;
 import com.wack.pop2.physics.PhysicsFactory;
 
 import org.andengine.entity.primitive.Rectangle;
@@ -32,7 +32,7 @@ public class LevelEntity extends BaseEntity {
 
         FixtureDef fixtureDef = WALL_FIXTURE_DEF;
         fixtureDef.setFilter(CollisionFilters.WALL_FILTER);
-        fixtureDef.setUserData(new WallEntityUserData());
+        fixtureDef.setUserData(new LevelWallEntityUserData());
 
         PhysicsFactory.createBoxBody(physicsWorld, left, BodyType.STATIC, fixtureDef);
         PhysicsFactory.createBoxBody(physicsWorld, right, BodyType.STATIC, fixtureDef);
