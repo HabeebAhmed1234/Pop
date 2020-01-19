@@ -9,17 +9,28 @@ import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.fixturedefdata.WallsIconUserData;
+import com.wack.pop2.resources.fonts.FontId;
+import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.statemachine.BaseStateMachine;
 
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.AndengineColor;
 
+import static com.wack.pop2.turret.TurretsConstants.MAX_TURRET_INVENTORY;
+import static com.wack.pop2.walls.WallsConstants.MAX_WALLS_INVENTORY;
+
 public class WallsIconEntity extends BaseEntity implements GameAreaTouchListenerEntity.AreaTouchListener, EventBus.Subscriber, BaseStateMachine.Listener<WallsStateMachine.State> {
+
+    private static final float WALLS_INVENTORY_TEXT_MAX_WIDTH_PX = 20;
+    private static final float WALLS_INVENTORY_TEXT_MAX_HEIGHT_PX = 80;
+
+    private GameFontsManager fontsManager;
 
     private WallsStateMachine stateMachine;
 
@@ -28,23 +39,28 @@ public class WallsIconEntity extends BaseEntity implements GameAreaTouchListener
     private GameTexturesManager gameTexturesManager;
 
     private Sprite wallsIconSprite;
+    private Text wallsInventoryText;
+    // Number of turrets currently DOCKED in the icon
+    private int numWallsInventory = MAX_WALLS_INVENTORY;
 
     public WallsIconEntity(
             WallsStateMachine stateMachine,
             GameIconsTrayEntity gameIconsTrayEntity,
             GameAreaTouchListenerEntity touchListenerEntity,
             GameTexturesManager gameTexturesManager,
+            GameFontsManager fontsManager,
             GameResources gameResources) {
         super(gameResources);
         this.stateMachine = stateMachine;
         this.gameIconsTrayEntity = gameIconsTrayEntity;
         this.touchListenerEntity = touchListenerEntity;
+        this.fontsManager = fontsManager;
         this.gameTexturesManager = gameTexturesManager;
     }
 
     @Override
     public void onCreateScene() {
-        createIcon();
+        createIconAndText();
 
         EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this, true);
         touchListenerEntity.addAreaTouchListener(WallsIconUserData.class, this);
@@ -68,7 +84,8 @@ public class WallsIconEntity extends BaseEntity implements GameAreaTouchListener
         }
     }
 
-    private void createIcon() {
+    private void createIconAndText() {
+        // Create the icon sprite
         ITextureRegion textureRegion =
                 gameTexturesManager.getTextureRegion(TextureId.WALLS_ICON);
         wallsIconSprite = new Sprite(
@@ -79,6 +96,17 @@ public class WallsIconEntity extends BaseEntity implements GameAreaTouchListener
         wallsIconSprite.setUserData(new WallsIconUserData());
         addToSceneWithTouch(wallsIconSprite);
         gameIconsTrayEntity.addIcon(GameIconsTrayEntity.ICON_ID.WALLS_ICON, wallsIconSprite);
+
+        // Create text
+        wallsInventoryText = new Text(
+                wallsIconSprite.getX() + wallsIconSprite.getWidthScaled() / 2 - WALLS_INVENTORY_TEXT_MAX_WIDTH_PX,
+                wallsIconSprite.getY() - WALLS_INVENTORY_TEXT_MAX_HEIGHT_PX,
+                fontsManager.getFont(FontId.TURRET_ICON_FONT),
+                Integer.toString(numWallsInventory),
+                (Integer.toString(MAX_TURRET_INVENTORY)).length(),
+                vertexBufferObjectManager);
+        scene.attachChild(wallsInventoryText);
+
     }
 
     private void onDifficultyChanged(int newDifficulty) {

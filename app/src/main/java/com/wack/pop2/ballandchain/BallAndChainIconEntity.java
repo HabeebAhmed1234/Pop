@@ -1,35 +1,27 @@
 package com.wack.pop2.ballandchain;
 
-import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameIconsTrayEntity;
 import com.wack.pop2.GameResources;
-import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
-import com.wack.pop2.eventbus.EventBus;
-import com.wack.pop2.eventbus.EventPayload;
-import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.fixturedefdata.BallAndChainIconUserData;
+import com.wack.pop2.fixturedefdata.BaseEntityUserData;
+import com.wack.pop2.icons.BaseIconEntity;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 
 import org.andengine.entity.scene.ITouchArea;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.AndengineColor;
+
+import static com.wack.pop2.ballandchain.BallAndChainConstants.BALL_AND_CHAIN_DIFFICULTY_UNLOCK_THRESHOLD;
 
 /**
  * Appears when the ball and chain tool is unlocked. The user can tap and hold the icon to start
  * using the ball and chain.
  */
-class BallAndChainIconEntity extends BaseEntity implements EventBus.Subscriber, BallAndChainStateMachine.Listener<BallAndChainStateMachine.State>, GameAreaTouchListenerEntity.AreaTouchListener {
-
-    private GameIconsTrayEntity gameIconsTrayEntity;
-    private GameAreaTouchListenerEntity touchListenerEntity;
-    private GameTexturesManager gameTexturesManager;
+class BallAndChainIconEntity extends BaseIconEntity implements BallAndChainStateMachine.Listener<BallAndChainStateMachine.State> {
 
     private BallAndChainStateMachine stateMachine;
-    private Sprite ballAndChainIconSprite;
 
     public BallAndChainIconEntity(
             BallAndChainStateMachine stateMachine,
@@ -37,80 +29,54 @@ class BallAndChainIconEntity extends BaseEntity implements EventBus.Subscriber, 
             GameAreaTouchListenerEntity touchListenerEntity,
             GameTexturesManager gameTexturesManager,
             GameResources gameResources) {
-        super(gameResources);
-        this.gameIconsTrayEntity = gameIconsTrayEntity;
-        this.touchListenerEntity = touchListenerEntity;
-        this.gameTexturesManager = gameTexturesManager;
+        super(gameIconsTrayEntity, gameTexturesManager, touchListenerEntity, gameResources);
         this.stateMachine = stateMachine;
     }
 
     @Override
     public void onCreateScene() {
-        createIcon();
-
-        EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this, true);
+        super.onCreateScene();
         stateMachine.addAllStateTransitionListener(this);
-        touchListenerEntity.addAreaTouchListener(BallAndChainIconUserData.class, this);
     }
 
     @Override
     public void onDestroy() {
-        EventBus.get().unSubscribe(GameEvent.DIFFICULTY_CHANGE, this);
-        touchListenerEntity.removeAreaTouchListener(BallAndChainIconUserData.class, this);
+        super.onDestroy();
+        stateMachine.removeAllStateTransitionListener(this);
     }
 
     @Override
-    public void onEvent(GameEvent event, EventPayload payload) {
-        switch (event) {
-            case DIFFICULTY_CHANGE:
-                DifficultyChangedEventPayload difficultyChangedEventPayload =
-                        (DifficultyChangedEventPayload) payload;
-                onDifficultyChanged(difficultyChangedEventPayload.newDifficulty);
-                break;
-        }
+    protected TextureId getIconTextureId() {
+        return TextureId.BALL_AND_CHAIN_ICON;
     }
 
-    private void createIcon() {
-        ITextureRegion textureRegion =
-                gameTexturesManager.getTextureRegion(TextureId.BALL_AND_CHAIN_ICON);
-        ballAndChainIconSprite = new Sprite(
-                0,
-                0,
-                textureRegion,
-                vertexBufferObjectManager);
-        ballAndChainIconSprite.setUserData(new BallAndChainIconUserData());
-        addToSceneWithTouch(ballAndChainIconSprite);
-        gameIconsTrayEntity.addIcon(GameIconsTrayEntity.ICON_ID.BALL_AND_CHAIN_ICON, ballAndChainIconSprite);
+    @Override
+    protected Class<? extends BaseEntityUserData> getIconUserDataType() {
+        return BallAndChainIconUserData.class;
     }
 
-    private void onDifficultyChanged(int newDifficulty) {
-        if (newDifficulty >= BallAndChainConstants.BALL_AND_CHAIN_DIFFICULTY_UNLOCK_THRESHOLD
-                && stateMachine.getCurrentState() == BallAndChainStateMachine.State.LOCKED) {
-            stateMachine.transitionState(
-                    BallAndChainStateMachine.State.UNLOCKED_CHARGED);
-        }
+    @Override
+    protected BaseEntityUserData getUserData() {
+        return new BallAndChainIconUserData();
+    }
+
+    @Override
+    protected GameIconsTrayEntity.ICON_ID getIconId() {
+        return GameIconsTrayEntity.ICON_ID.BALL_AND_CHAIN_ICON;
+    }
+
+    @Override
+    protected int getDifficultyUnlockThreshold() {
+        return BALL_AND_CHAIN_DIFFICULTY_UNLOCK_THRESHOLD;
+    }
+
+    @Override
+    protected void onIconUnlocked() {
+        stateMachine.transitionState(BallAndChainStateMachine.State.UNLOCKED_CHARGED);
     }
 
     @Override
     public void onEnterState(BallAndChainStateMachine.State newState) {
-        switch (newState) {
-            case UNLOCKED_CHARGED:
-                break;
-            case UNLOCKED_DISCHARGED:
-                break;
-            case IN_USE_CHARGED:
-                break;
-            case IN_USE_DISCHARGED:
-                break;
-        }
-        setIconColor(newState);
-    }
-
-    /**
-     * Given the new state of the ball and chain we set the right color for the icon
-     * @param newState
-     */
-    private void setIconColor(BallAndChainStateMachine.State newState) {
         AndengineColor color = AndengineColor.WHITE;
         switch (newState) {
             case LOCKED:
@@ -125,7 +91,7 @@ class BallAndChainIconEntity extends BaseEntity implements EventBus.Subscriber, 
                 color = AndengineColor.RED;
                 break;
         }
-        ballAndChainIconSprite.setColor(color);
+        setIconColor(color);
     }
 
     @Override

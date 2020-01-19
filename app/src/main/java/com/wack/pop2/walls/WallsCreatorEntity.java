@@ -11,7 +11,6 @@ import com.wack.pop2.fixturedefdata.WallEntityUserData;
 import com.wack.pop2.physics.PhysicsFactory;
 import com.wack.pop2.physics.util.Vec2Pool;
 import com.wack.pop2.resources.textures.GameTexturesManager;
-import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.utils.GeometryUtils;
 
 import org.andengine.entity.IEntity;
@@ -19,7 +18,6 @@ import org.andengine.entity.primitive.Line;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.AndengineColor;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;

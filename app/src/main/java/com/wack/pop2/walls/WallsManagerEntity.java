@@ -5,6 +5,7 @@ import com.wack.pop2.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameIconsTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
+import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 
 /**
@@ -23,12 +24,13 @@ public class WallsManagerEntity extends BaseEntity{
             GameAreaTouchListenerEntity gameAreaTouchListenerEntity,
             GameSceneTouchListenerEntity gameSceneTouchListenerEntity,
             GameTexturesManager gameTexturesManager,
+            GameFontsManager gameFontsManager,
             GameResources gameResources) {
         super(gameResources);
         this.stateMachine = new WallsStateMachine();
         this.wallsCreatorEntity = new WallsCreatorEntity(stateMachine, gameSceneTouchListenerEntity, gameTexturesManager, gameIconsTrayEntity, gameResources);
         this.wallsDeleteIconsManagerEntity = new WallsDeleteIconsManagerEntity(stateMachine, gameTexturesManager, gameResources);
         this.wallsDeletionEntity = new WallsDeletionEntity(gameAreaTouchListenerEntity, gameResources);
-        this.wallsIconEntity = new WallsIconEntity(stateMachine, gameIconsTrayEntity, gameAreaTouchListenerEntity, gameTexturesManager, gameResources);
+        this.wallsIconEntity = new WallsIconEntity(stateMachine, gameIconsTrayEntity, gameAreaTouchListenerEntity, gameTexturesManager, gameFontsManager, gameResources);
     }
 }
