@@ -76,6 +76,11 @@ class BallAndChainIconEntity extends BaseIconEntity implements BallAndChainState
     }
 
     @Override
+    protected AndengineColor getUnlockedColor() {
+        return AndengineColor.GREEN;
+    }
+
+    @Override
     public void onEnterState(BallAndChainStateMachine.State newState) {
         AndengineColor color = AndengineColor.WHITE;
         switch (newState) {

@@ -72,6 +72,7 @@ public abstract class BaseIconEntity extends BaseEntity implements GameAreaTouch
                 vertexBufferObjectManager);
         iconSprite.setUserData(getUserDataInternal());
         addToSceneWithTouch(iconSprite);
+        setIconColor(AndengineColor.TRANSPARENT);
         gameIconsTrayEntity.addIcon(getIconId(), iconSprite);
     }
 
@@ -84,8 +85,13 @@ public abstract class BaseIconEntity extends BaseEntity implements GameAreaTouch
     private void onDifficultyChanged(int newDifficulty) {
         if (newDifficulty >= getDifficultyUnlockThreshold() && !isUnlocked) {
             isUnlocked = true;
+            setIconColor(getUnlockedColor());
             onIconUnlocked();
         }
+    }
+
+    protected Sprite getIconSprite () {
+        return iconSprite;
     }
 
     protected void setIconColor(AndengineColor color) {
@@ -107,4 +113,6 @@ public abstract class BaseIconEntity extends BaseEntity implements GameAreaTouch
     protected abstract int getDifficultyUnlockThreshold();
 
     protected abstract void onIconUnlocked();
+
+    protected abstract AndengineColor getUnlockedColor();
 }

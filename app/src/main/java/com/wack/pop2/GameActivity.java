@@ -85,7 +85,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		mBubblePopperEntity = new BubblePopperEntity(gameFontsManager, gameSoundsManager, gameAnimationManager, mBubbleSpawnerEntity, mGameResources);
 		mTouchPopperEntity = new TouchPopperEntity(gameAreaTouchListenerEntity, mBubblePopperEntity, mGameResources);
 		mBallAndChainManagerEntity = new BallAndChainManagerEntity(gameTexturesManager, gameSceneTouchListenerEntity, gameIconsTrayEntity, gameAreaTouchListenerEntity, gamePhysicsContactsEntity, mBubblePopperEntity, mGameResources);
-		mTurrentsManagerEntity = new TurretsManagerEntity(mBubblePopperEntity, gameTexturesManager, gameIconsTrayEntity, gamePhysicsContactsEntity, gameFontsManager, gameSceneTouchListenerEntity, gameTexturesManager, mGameResources);
+		mTurrentsManagerEntity = new TurretsManagerEntity(mBubblePopperEntity, gameTexturesManager, gameIconsTrayEntity, gamePhysicsContactsEntity, gameFontsManager, gameAreaTouchListenerEntity, gameSceneTouchListenerEntity, gameTexturesManager, mGameResources);
 		mWallsManagerEntity = new WallsManagerEntity(gameIconsTrayEntity, gameAreaTouchListenerEntity, gameSceneTouchListenerEntity, gameTexturesManager, gameFontsManager, mGameResources);
 	}
 
