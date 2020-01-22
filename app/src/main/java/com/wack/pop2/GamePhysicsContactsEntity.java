@@ -78,13 +78,14 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
 
     @Override
     public void onCreateScene() {
-        physicsWorld.setOnUpdateListener(this);
+        physicsWorld.addOnUpdateListener(this);
         physicsWorld.setContactListener(this);
     }
 
     @Override
     public void onDestroy() {
         physicsWorld.setContactListener(null);
+        physicsWorld.removeOnUpdateListener(this);
     }
 
     @Override

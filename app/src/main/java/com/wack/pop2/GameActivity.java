@@ -9,6 +9,7 @@ import com.wack.pop2.ballandchain.BallAndChainManagerEntity;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.hudentities.ScoreHudEntity;
 import com.wack.pop2.hudentities.TimerHudEntity;
+import com.wack.pop2.nuke.NukeManagerEntity;
 import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
@@ -42,6 +43,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	private BallAndChainManagerEntity mBallAndChainManagerEntity;
 	private TurretsManagerEntity mTurrentsManagerEntity;
 	private WallsManagerEntity mWallsManagerEntity;
+	private NukeManagerEntity mNukeManagerEntityEntity;
 
 	public static Intent newIntent(Context context) {
 		return new Intent(context, GameActivity.class);
@@ -87,6 +89,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		mBallAndChainManagerEntity = new BallAndChainManagerEntity(gameTexturesManager, gameSceneTouchListenerEntity, gameIconsTrayEntity, gameAreaTouchListenerEntity, gamePhysicsContactsEntity, mBubblePopperEntity, mGameResources);
 		mTurrentsManagerEntity = new TurretsManagerEntity(mBubblePopperEntity, gameTexturesManager, gameIconsTrayEntity, gamePhysicsContactsEntity, gameFontsManager, gameAreaTouchListenerEntity, gameSceneTouchListenerEntity, gameTexturesManager, mGameResources);
 		mWallsManagerEntity = new WallsManagerEntity(gameIconsTrayEntity, gameAreaTouchListenerEntity, gameSceneTouchListenerEntity, gameTexturesManager, gameFontsManager, mGameResources);
+		mNukeManagerEntityEntity = new NukeManagerEntity(mBubblePopperEntity, gameIconsTrayEntity, gameTexturesManager, gameAreaTouchListenerEntity, mGameResources);
 	}
 
 	@Override

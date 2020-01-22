@@ -6,6 +6,7 @@ import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.eventbus.GameOverExplosionEventPayload;
 import com.wack.pop2.eventbus.IncrementScoreEventPayload;
+import com.wack.pop2.physics.util.Vec2Pool;
 import com.wack.pop2.resources.fonts.FontId;
 import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
@@ -50,6 +51,10 @@ public class BubblePopperEntity extends BaseEntity {
                 GameEvent.GAME_OVER_ON_EXPLOSION_EVENT,
                 new GameOverExplosionEventPayload(skullBubble.getX(), skullBubble.getY(), skullBubble.getWidth(), skullBubble.getHeight(), skullBubble.getScaleX()));
         removeFromScene(skullBubble);
+    }
+
+    public void popBubble(IShape previousBubble, BubbleSpawnerEntity.BubbleSize oldBubbleSize, BubbleSpawnerEntity.BubbleType bubbleType) {
+        popBubble(previousBubble, oldBubbleSize, Vec2Pool.obtain(previousBubble.getX(), previousBubble.getY()), bubbleType);
     }
 
     public void popBubble(IShape previousBubble, BubbleSpawnerEntity.BubbleSize oldBubbleSize, Vec2 oldBubbleScenePosition, BubbleSpawnerEntity.BubbleType bubbleType) {

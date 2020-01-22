@@ -64,6 +64,7 @@ public class GameTexturesManager extends BaseEntity {
         addTexture(TextureId.BULLET, mainBitmapTextureAtlas, "bullet.png", 30);
         addTexture(TextureId.WHITE_PIXEL, mainBitmapTextureAtlas, "white_pixel.png", 1);
         addTexture(TextureId.DELETE_WALL_ICON, mainBitmapTextureAtlas, "delete_wall_icon.png", 110);
+        addTexture(TextureId.NUKE_ICON, mainBitmapTextureAtlas, "nuke_icon.png", 110);
 
         explosionBitmapTextureAtlas.load();
         mainBitmapTextureAtlas.load();

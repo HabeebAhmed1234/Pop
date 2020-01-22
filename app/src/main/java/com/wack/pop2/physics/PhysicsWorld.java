@@ -21,7 +21,7 @@ import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.JointDef;
 
 import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -60,7 +60,7 @@ public class PhysicsWorld implements IUpdateHandler {
 	protected int mVelocityIterations = VELOCITY_ITERATIONS_DEFAULT;
 	protected int mPositionIterations = POSITION_ITERATIONS_DEFAULT;
 
-	private OnUpdateListener listener;
+	private Set<OnUpdateListener> listeners;
 
 	// ===========================================================
 	// Constructors
@@ -126,11 +126,21 @@ public class PhysicsWorld implements IUpdateHandler {
 		this.mRunnableHandler.onUpdate(pSecondsElapsed);
 		this.mWorld.step(pSecondsElapsed, this.mVelocityIterations, this.mPositionIterations);
 		this.mPhysicsConnectorManager.onUpdate(pSecondsElapsed);
-		this.listener.onUpdateCompleted();
+		notifyUpdateCompleted();
 	}
 
-	public void setOnUpdateListener(OnUpdateListener listener) {
-		this.listener = listener;
+	private void notifyUpdateCompleted() {
+		for (OnUpdateListener listener : listeners) {
+			listener.onUpdateCompleted();
+		}
+	}
+
+	public void addOnUpdateListener(OnUpdateListener listener) {
+		this.listeners.add(listener);
+	}
+
+	public void removeOnUpdateListener(OnUpdateListener listener) {
+		this.listeners.remove(listener);
 	}
 
 	@Override

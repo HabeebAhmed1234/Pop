@@ -11,10 +11,11 @@ public enum TextureId {
     SKULL_BALL,
     GAME_OVER,
     CHAIN_LINK,
+    LINE,
+    BULLET,
     BALL_AND_CHAIN_ICON,
     TURRETS_ICON,
     WALLS_ICON,
-    LINE,
-    BULLET,
+    NUKE_ICON,
     DELETE_WALL_ICON,
 }

@@ -16,6 +16,7 @@ public class GameIconsTrayEntity extends BaseEntity{
         BALL_AND_CHAIN_ICON,
         TURRETS_ICON,
         WALLS_ICON,
+        NUKE_ICON,
     }
 
     private static final int RIGHT_PADDING = 50;
