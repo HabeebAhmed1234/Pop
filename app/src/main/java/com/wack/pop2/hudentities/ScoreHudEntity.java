@@ -1,8 +1,7 @@
 package com.wack.pop2.hudentities;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.BubblePopperEntity;
-import com.wack.pop2.BubbleSpawnerEntity;
+import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.utils.ScreenUtils;

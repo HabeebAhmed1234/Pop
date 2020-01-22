@@ -1,7 +1,11 @@
-package com.wack.pop2;
+package com.wack.pop2.bubblepopper;
 
 import android.opengl.GLES20;
 
+import com.wack.pop2.BaseEntity;
+import com.wack.pop2.BubbleSpawnerEntity;
+import com.wack.pop2.GameAnimationManager;
+import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.eventbus.GameOverExplosionEventPayload;
@@ -23,7 +27,7 @@ import org.andengine.entity.text.Text;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
-public class BubblePopperEntity extends BaseEntity {
+public class BubblePopperEntity extends BaseEntity implements BubblePopper {
 
     public static final int SCORE_INCREMENT_PER_BUBBLE_POP = 10;
     public static final int MAX_SCORE_INCREASE_PER_NEW_SPAWNED_BUBBLE = 70; // Since there are three bubble sizes a total of 7 bubbles can be popped from one spawned bubble
@@ -53,17 +57,15 @@ public class BubblePopperEntity extends BaseEntity {
         removeFromScene(skullBubble);
     }
 
+    @Override
     public void popBubble(IShape previousBubble, BubbleSpawnerEntity.BubbleSize oldBubbleSize, BubbleSpawnerEntity.BubbleType bubbleType) {
-        popBubble(previousBubble, oldBubbleSize, Vec2Pool.obtain(previousBubble.getX(), previousBubble.getY()), bubbleType);
-    }
-
-    public void popBubble(IShape previousBubble, BubbleSpawnerEntity.BubbleSize oldBubbleSize, Vec2 oldBubbleScenePosition, BubbleSpawnerEntity.BubbleType bubbleType) {
         // Remove the popped bubble
         removeFromScene(previousBubble);
 
         // Play the pop sound
         getRandomPopSound().play();
 
+        Vec2 oldBubbleScenePosition = Vec2Pool.obtain(previousBubble.getX(), previousBubble.getY());
         // Spawn new bubbles if the one we popped not the smallest bubble
         if(!oldBubbleSize.isSmallestBubble()) {
             spawnPoppedBubbles(oldBubbleSize, oldBubbleScenePosition, bubbleType);

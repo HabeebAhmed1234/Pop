@@ -1,7 +1,7 @@
 package com.wack.pop2.ballandchain;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.BubblePopperEntity;
+import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.GamePhysicsContactsEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.EventBus;
@@ -58,11 +58,9 @@ class BallAndChainCollisionManagerEntity extends BaseEntity implements GamePhysi
         if (!bubbleEntityUserData.isPoppable()) {
             return;
         }
-        Body bubbleBody  = bubbleFixture.getBody();
         bubblePopperEntity.popBubble(
                 bubbleEntityUserData.bubbleSprite,
                 bubbleEntityUserData.size,
-                CoordinateConversionUtil.physicsWorldToScene(bubbleBody.getPosition()),
                 bubbleEntityUserData.bubbleType);
         EventBus.get().sendEvent(BALL_AND_CHAIN_POPPED_BUBBLE);
     }

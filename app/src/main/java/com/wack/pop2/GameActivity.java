@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 
 import com.wack.pop2.ballandchain.BallAndChainManagerEntity;
+import com.wack.pop2.bubblepopper.BubblePopperEntity;
+import com.wack.pop2.bubblepopper.BufferedBubblePopperEntity;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.hudentities.ScoreHudEntity;
 import com.wack.pop2.hudentities.TimerHudEntity;
@@ -39,6 +41,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	private BubbleLossDetectorEntity mBubbleLossDetectorEntity;
 	private BubbleCleanerEntity mBubbleCleanerEntity;
 	private BubblePopperEntity mBubblePopperEntity;
+	private BufferedBubblePopperEntity mBufferedBubblePopperEntity;
 	private TouchPopperEntity mTouchPopperEntity;
 	private BallAndChainManagerEntity mBallAndChainManagerEntity;
 	private TurretsManagerEntity mTurrentsManagerEntity;
@@ -85,11 +88,12 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		mBubbleLossDetectorEntity = new BubbleLossDetectorEntity(gameFontsManager, gameAnimationManager, gamePhysicsContactsEntity, mGameResources);
 		mBubbleCleanerEntity = new BubbleCleanerEntity(mGameResources);
 		mBubblePopperEntity = new BubblePopperEntity(gameFontsManager, gameSoundsManager, gameAnimationManager, mBubbleSpawnerEntity, mGameResources);
+		mBufferedBubblePopperEntity = new BufferedBubblePopperEntity(mBubblePopperEntity, mGameResources);
 		mTouchPopperEntity = new TouchPopperEntity(gameAreaTouchListenerEntity, mBubblePopperEntity, mGameResources);
 		mBallAndChainManagerEntity = new BallAndChainManagerEntity(gameTexturesManager, gameSceneTouchListenerEntity, gameIconsTrayEntity, gameAreaTouchListenerEntity, gamePhysicsContactsEntity, mBubblePopperEntity, mGameResources);
 		mTurrentsManagerEntity = new TurretsManagerEntity(mBubblePopperEntity, gameTexturesManager, gameIconsTrayEntity, gamePhysicsContactsEntity, gameFontsManager, gameAreaTouchListenerEntity, gameSceneTouchListenerEntity, gameTexturesManager, mGameResources);
 		mWallsManagerEntity = new WallsManagerEntity(gameIconsTrayEntity, gameAreaTouchListenerEntity, gameSceneTouchListenerEntity, gameTexturesManager, gameFontsManager, mGameResources);
-		mNukeManagerEntityEntity = new NukeManagerEntity(mBubblePopperEntity, gameIconsTrayEntity, gameTexturesManager, gameAreaTouchListenerEntity, mGameResources);
+		mNukeManagerEntityEntity = new NukeManagerEntity(mBufferedBubblePopperEntity, gameIconsTrayEntity, gameTexturesManager, gameAreaTouchListenerEntity, mGameResources);
 	}
 
 	@Override

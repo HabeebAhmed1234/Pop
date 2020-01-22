@@ -67,7 +67,10 @@ public class NukeIconEntity extends BaseIconEntity {
 
     @Override
     public boolean onTouch(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-        nukerEntity.startNuke();
-        return true;
+        if (pSceneTouchEvent.isActionUp()) {
+            nukerEntity.startNuke();
+            return true;
+        }
+        return false;
     }
 }

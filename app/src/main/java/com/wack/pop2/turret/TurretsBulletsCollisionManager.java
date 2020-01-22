@@ -1,7 +1,7 @@
 package com.wack.pop2.turret;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.BubblePopperEntity;
+import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.GamePhysicsContactsEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.EventBus;
@@ -48,11 +48,9 @@ public class TurretsBulletsCollisionManager extends BaseEntity implements GamePh
         if (!bubbleEntityUserData.isPoppable()) {
             return;
         }
-        Body bubbleBody  = bubbleFixture.getBody();
         bubblePopperEntity.popBubble(
                 bubbleEntityUserData.bubbleSprite,
                 bubbleEntityUserData.size,
-                CoordinateConversionUtil.physicsWorldToScene(bubbleBody.getPosition()),
                 bubbleEntityUserData.bubbleType);
 
         Fixture bulletFixture = FixtureDefDataUtil.getBulletFixture(fixture1, fixture2);

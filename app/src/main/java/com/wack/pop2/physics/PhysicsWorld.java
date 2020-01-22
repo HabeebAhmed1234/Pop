@@ -20,6 +20,7 @@ import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.JointDef;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -60,7 +61,7 @@ public class PhysicsWorld implements IUpdateHandler {
 	protected int mVelocityIterations = VELOCITY_ITERATIONS_DEFAULT;
 	protected int mPositionIterations = POSITION_ITERATIONS_DEFAULT;
 
-	private Set<OnUpdateListener> listeners;
+	private Set<OnUpdateListener> listeners = new HashSet<>();
 
 	// ===========================================================
 	// Constructors

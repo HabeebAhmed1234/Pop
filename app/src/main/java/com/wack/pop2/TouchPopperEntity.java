@@ -1,5 +1,6 @@
 package com.wack.pop2;
 
+import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
 
 import org.andengine.entity.scene.ITouchArea;
@@ -44,7 +45,7 @@ public class TouchPopperEntity extends BaseEntity implements GameAreaTouchListen
             if (bubbleEntityUserData.isGameOverWhenPopped) {
                 bubblePopperEntity.triggerGameOverExplosion(entity);
             } else {
-                bubblePopperEntity.popBubble(entity, bubbleEntityUserData.size, new Vec2(entity.getX(), entity.getY()), bubbleEntityUserData.bubbleType);
+                bubblePopperEntity.popBubble(entity, bubbleEntityUserData.size, bubbleEntityUserData.bubbleType);
             }
             return true;
         }
