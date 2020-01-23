@@ -4,6 +4,11 @@ import android.app.Activity;
 import android.graphics.Point;
 import android.view.Display;
 
+import org.andengine.entity.primitive.Rectangle;
+import org.andengine.entity.shape.IShape;
+import org.andengine.opengl.vbo.VertexBufferObject;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
+
 public class ScreenUtils {
 
     public static class ScreenSize {
@@ -17,8 +22,12 @@ public class ScreenUtils {
     }
 
     private static ScreenSize sScreenSize;
+    private static IShape sScreenShape;
 
-    public static void init(Activity activity) {
+    /**
+     * Initializes when onCreateEngineOptions is called
+     */
+    public static void onCreateEngineOptions(Activity activity) {
         if (Integer.valueOf(android.os.Build.VERSION.SDK_INT) < 13 ) {
             Display display = activity.getWindowManager().getDefaultDisplay();
             sScreenSize = new ScreenSize(display.getWidth(), display.getHeight());
@@ -29,10 +38,23 @@ public class ScreenUtils {
         }
     }
 
+    /**
+     * Initializes when onCreateResources is called
+     */
+    public static void onCreateResources(VertexBufferObjectManager vertexBufferObjectManager) {
+        if (sScreenShape == null) {
+            sScreenShape = new Rectangle(0, 0, getSreenSize().width, getSreenSize().height, vertexBufferObjectManager);
+        }
+    }
+
     public static ScreenSize getSreenSize() {
         if (sScreenSize == null) {
             throw new IllegalStateException("Cannot get screen size without ScreenUtils.init being called");
         }
         return sScreenSize;
+    }
+
+    public static boolean isInScreen(IShape shape) {
+        return shape.collidesWith(sScreenShape);
     }
 }

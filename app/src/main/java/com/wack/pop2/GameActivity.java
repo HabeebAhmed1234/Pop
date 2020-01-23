@@ -31,6 +31,9 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 	private ShakeCamera camera;
 
+	//Debug
+	// private DebugTouchTracerEntity mDebugTouchTracerEntity;
+
 	private GameResources mGameResources;
 	private LevelEntity mLevelEntity;
 	private GameDifficultyEntity mGameDifficultyEntity;
@@ -94,11 +97,14 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		mTurrentsManagerEntity = new TurretsManagerEntity(mBubblePopperEntity, gameTexturesManager, gameIconsTrayEntity, gamePhysicsContactsEntity, gameFontsManager, gameAreaTouchListenerEntity, gameSceneTouchListenerEntity, gameTexturesManager, mGameResources);
 		mWallsManagerEntity = new WallsManagerEntity(gameIconsTrayEntity, gameAreaTouchListenerEntity, gameSceneTouchListenerEntity, gameTexturesManager, gameFontsManager, mGameResources);
 		mNukeManagerEntityEntity = new NukeManagerEntity(mBufferedBubblePopperEntity, gameIconsTrayEntity, gameTexturesManager, gameAreaTouchListenerEntity, mGameResources);
+
+		// Debug
+		// mDebugTouchTracerEntity = new DebugTouchTracerEntity(gameSceneTouchListenerEntity, mGameResources);
 	}
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
-		ScreenUtils.init(this);
+		ScreenUtils.onCreateEngineOptions(this);
 		ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
 		camera = new ShakeCamera(0, 0, screenSize.width, screenSize.height);
 		final EngineOptions engineOptions = new EngineOptions(
@@ -113,6 +119,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 	@Override
 	public void onCreateResources() {
+		ScreenUtils.onCreateResources(getVertexBufferObjectManager());
 		GameLifeCycleCalllbackManager.getInstance().onCreateResources();
 	}
 

@@ -3,7 +3,9 @@ package com.wack.pop2.physics;
 import android.util.Log;
 
 import com.wack.pop2.physics.util.constants.PhysicsConstants;
+import com.wack.pop2.utils.GeometryUtils;
 
+import org.andengine.entity.primitive.Line;
 import org.andengine.entity.shape.IAreaShape;
 import org.andengine.entity.shape.IShape;
 import org.andengine.util.Constants;
@@ -73,6 +75,19 @@ public class PhysicsFactory {
 		filter.maskBits = pMaskBits;
 		filter.groupIndex = pGroupIndex;
 		return fixtureDef;
+	}
+
+	public static Body createLineBody(final PhysicsWorld physicsWorld, final Line line, final BodyType pBodyType, final FixtureDef pFixtureDef) {
+		float[] center = GeometryUtils.getCenterPoint(line.getX1(), line.getY1(), line.getX2(), line.getY2());
+		return PhysicsFactory.createBoxBody(
+				physicsWorld,
+				center[0],
+				center[1],
+				GeometryUtils.distanceBetween(line.getX1(), line.getY1(), line.getX2(), line.getY2()),
+				line.getLineWidth(),
+				GeometryUtils.getAngle(line.getX1(), line.getY1(), line.getX2(), line.getY2()),
+				pBodyType,
+				pFixtureDef);
 	}
 
 	public static Body createBoxBody(final PhysicsWorld pPhysicsWorld, final IAreaShape pAreaShape, final BodyType pBodyType, final FixtureDef pFixtureDef) {
