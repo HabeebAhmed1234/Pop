@@ -8,6 +8,7 @@ import com.wack.pop2.fixturedefdata.NukeIconEntityUserData;
 import com.wack.pop2.icons.BaseIconEntity;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
+import com.wack.pop2.statemachine.BaseStateMachine;
 
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.input.touch.TouchEvent;
@@ -16,17 +17,20 @@ import org.andengine.util.color.AndengineColor;
 import static com.wack.pop2.GameIconsTrayEntity.ICON_ID.NUKE_ICON;
 import static com.wack.pop2.nuke.NukeConstants.NUKE_UNLOCK_THRESHOLD;
 
-public class NukeIconEntity extends BaseIconEntity {
+public class NukeIconEntity extends BaseIconEntity implements BaseStateMachine.Listener<NukeStateMachine.State> {
 
+    private NukeStateMachine nukeStateMachine;
     private NukerEntity nukerEntity;
 
     public NukeIconEntity(
+            NukeStateMachine nukeStateMachine,
             NukerEntity nukerEntity,
             GameIconsTrayEntity gameIconsTrayEntity,
             GameTexturesManager gameTexturesManager,
             GameAreaTouchListenerEntity touchListenerEntity,
             GameResources gameResources) {
         super(gameIconsTrayEntity, gameTexturesManager, touchListenerEntity, gameResources);
+        this.nukeStateMachine = nukeStateMachine;
         this.nukerEntity = nukerEntity;
     }
 
@@ -57,7 +61,7 @@ public class NukeIconEntity extends BaseIconEntity {
 
     @Override
     protected void onIconUnlocked() {
-
+        nukeStateMachine.transitionState(NukeStateMachine.State.READY);
     }
 
     @Override
@@ -67,10 +71,44 @@ public class NukeIconEntity extends BaseIconEntity {
 
     @Override
     public boolean onTouch(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-        if (pSceneTouchEvent.isActionUp()) {
+        if (nukeStateMachine.getCurrentState() == NukeStateMachine.State.READY && pSceneTouchEvent.isActionUp()) {
             nukerEntity.startNuke();
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onCreateScene() {
+        super.onCreateScene();
+        nukeStateMachine.addAllStateTransitionListener(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        nukeStateMachine.removeAllStateTransitionListener(this);
+    }
+
+    @Override
+    public void onEnterState(NukeStateMachine.State newState) {
+        AndengineColor color = AndengineColor.TRANSPARENT;
+
+        switch (newState) {
+            case LOCKED:
+                color = AndengineColor.TRANSPARENT;
+                break;
+            case READY:
+                color = AndengineColor.GREEN;
+                break;
+            case NUKING:
+                color = AndengineColor.YELLOW;
+                break;
+            case COOLDOWN:
+                color = AndengineColor.RED;
+                break;
+        }
+
+        setIconColor(color);
     }
 }

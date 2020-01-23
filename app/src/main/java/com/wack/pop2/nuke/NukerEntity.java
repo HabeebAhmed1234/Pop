@@ -25,6 +25,7 @@ public class NukerEntity extends BaseEntity {
 
     private TimerHandler nuke;
     private BubblePopper bubblePopperEntity;
+    private NukeStateMachine nukeStateMachine;
 
     /**
      * If a bubble has been queued up to be popped by the nuker then we add it here.
@@ -49,6 +50,7 @@ public class NukerEntity extends BaseEntity {
             } else {
                 bubbleNukeMutex.clear();
                 engine.unregisterUpdateHandler(nuke);
+                nukeStateMachine.transitionState(NukeStateMachine.State.COOLDOWN);
             }
         }
 
@@ -68,12 +70,14 @@ public class NukerEntity extends BaseEntity {
         }
     }
 
-    public NukerEntity(BufferedBubblePopperEntity bubblePopperEntity, GameResources gameResources) {
+    public NukerEntity(NukeStateMachine nukeStateMachine, BufferedBubblePopperEntity bubblePopperEntity, GameResources gameResources) {
         super(gameResources);
+        this.nukeStateMachine =  nukeStateMachine;
         this.bubblePopperEntity = bubblePopperEntity;
     }
 
     public void startNuke() {
+        nukeStateMachine.transitionState(NukeStateMachine.State.NUKING);
         nuke = new TimerHandler(NUKE_INTERVAL_SECONDS, new NukeWaveTimerHandler(NUKE_DURATION_INTERVALS));
         engine.registerUpdateHandler(nuke);
     }

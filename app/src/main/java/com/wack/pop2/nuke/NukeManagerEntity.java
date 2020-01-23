@@ -9,6 +9,8 @@ import com.wack.pop2.resources.textures.GameTexturesManager;
 
 public class NukeManagerEntity extends BaseEntity {
 
+    private NukeStateMachine nukeStateMachine;
+    private NukeCooldownManager nukeCooldownManager;
     private NukerEntity nukerEntity;
     private NukeIconEntity nukeIconEntity;
 
@@ -19,7 +21,9 @@ public class NukeManagerEntity extends BaseEntity {
             GameAreaTouchListenerEntity touchListenerEntity,
             GameResources gameResources) {
         super(gameResources);
-        this.nukerEntity = new NukerEntity(bubblePopperEntity, gameResources);
-        this.nukeIconEntity = new NukeIconEntity(nukerEntity, gameIconsTrayEntity, texturesManager, touchListenerEntity, gameResources);
+        this.nukeStateMachine = new NukeStateMachine();
+        this.nukeCooldownManager = new NukeCooldownManager(nukeStateMachine, gameResources);
+        this.nukerEntity = new NukerEntity(nukeStateMachine, bubblePopperEntity, gameResources);
+        this.nukeIconEntity = new NukeIconEntity(nukeStateMachine, nukerEntity, gameIconsTrayEntity, texturesManager, touchListenerEntity, gameResources);
     }
 }
