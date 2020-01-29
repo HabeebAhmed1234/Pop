@@ -193,7 +193,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
             case RED:
             case GREEN:
             case BLUE:
-                return new BubbleEntityUserData(true, false, bubbleSize, bubbleType, bubbleSprite);
+                return new BubbleEntityUserData(true, false, bubbleSize, bubbleType, engine, bubbleSprite);
         }
         throw new IllegalStateException("there is no bubble user data for bubbleType = " + bubbleType);
     }

@@ -2,7 +2,9 @@ package com.wack.pop2.fixturedefdata;
 
 import com.wack.pop2.BubbleSpawnerEntity;
 import com.wack.pop2.BubbleSpawnerEntity.BubbleType;
+import com.wack.pop2.bubbletimeout.BubbleLifecycleControllersManager;
 
+import org.andengine.engine.Engine;
 import org.andengine.entity.shape.IShape;
 import org.andengine.entity.sprite.Sprite;
 
@@ -15,6 +17,7 @@ public class BubbleEntityUserData extends BaseEntityUserData {
     public final BubbleSpawnerEntity.BubbleSize size;
     public final BubbleType bubbleType;
     public final IShape bubbleSprite;
+    public final BubbleLifecycleControllersManager bubbleLifecycleControllersManager;
 
     public boolean isTargeted;
 
@@ -27,6 +30,7 @@ public class BubbleEntityUserData extends BaseEntityUserData {
             boolean isGameOverWhenPopped,
             BubbleSpawnerEntity.BubbleSize size,
             BubbleType bubbleType,
+            Engine engine,
             IShape bubbleSprite) {
         super();
         this.isScoreLossBubble = isScoreLossBubble;
@@ -34,6 +38,7 @@ public class BubbleEntityUserData extends BaseEntityUserData {
         this.size = size;
         this.bubbleType = bubbleType;
         this.bubbleSprite = bubbleSprite;
+        this.bubbleLifecycleControllersManager = new BubbleLifecycleControllersManager(engine, bubbleSprite);
     }
 
     public boolean isPoppable() {

@@ -268,14 +268,10 @@ public class Line extends Shape {
 	@Override
 	@Deprecated
 	public boolean contains(final float pX, final float pY) {
-		Log.d("asdasd", "scene coords = " + pX + "," + pY);
 		float[] localCoord = new float[]{pX, pY};
 		getSceneToLocalTransformation().transform(localCoord);
-		Log.d("asdasd", "local coords = " + localCoord[0] + "," + localCoord[1]);
 		float width = MathUtils.distance(mX, mY, mX2, mY2);
-		Log.d("asdasd", "width = " + width);
 		float height = getLineWidth();
-		Log.d("asdasd", "height = " + height);
 		return MathUtils.isInBounds(0, width, pX) &&  MathUtils.isInBounds(0, height, pY);
 	}
 
