@@ -50,13 +50,6 @@ public class BubblePopperEntity extends BaseEntity implements BubblePopper {
         this.bubbleSpawnerEntity = bubbleSpawnerEntity;
     }
 
-    public void triggerGameOverExplosion(Sprite skullBubble) {
-        EventBus.get().sendEvent(
-                GameEvent.GAME_OVER_ON_EXPLOSION_EVENT,
-                new GameOverExplosionEventPayload(skullBubble.getX(), skullBubble.getY(), skullBubble.getWidth(), skullBubble.getHeight(), skullBubble.getScaleX()));
-        removeFromScene(skullBubble);
-    }
-
     @Override
     public void popBubble(IShape previousBubble, BubbleSpawnerEntity.BubbleSize oldBubbleSize, BubbleSpawnerEntity.BubbleType bubbleType) {
         // Remove the popped bubble

@@ -18,7 +18,6 @@ import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
-import org.andengine.entity.shape.IShape;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.AndengineColor;
@@ -188,12 +187,12 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         }
     }
 
-    private BaseEntityUserData getBubbleUserData(IShape bubbleSprite, BubbleType bubbleType, BubbleSize bubbleSize) {
+    private BaseEntityUserData getBubbleUserData(Sprite bubbleSprite, BubbleType bubbleType, BubbleSize bubbleSize) {
         switch(bubbleType) {
             case RED:
             case GREEN:
             case BLUE:
-                return new BubbleEntityUserData(true, false, bubbleSize, bubbleType, engine, bubbleSprite);
+                return new BubbleEntityUserData(true, bubbleSize, bubbleType, engine, bubbleSprite);
         }
         throw new IllegalStateException("there is no bubble user data for bubbleType = " + bubbleType);
     }

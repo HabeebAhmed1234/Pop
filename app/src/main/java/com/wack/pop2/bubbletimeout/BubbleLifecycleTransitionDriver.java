@@ -15,14 +15,14 @@ import static com.wack.pop2.bubbletimeout.BubbleLifeCycleStateMachine.State.EXPL
 /**
  * Responsible for transitioning the bubble's state machine through its lifecycle
  */
-class BubbleLIfecycleTransitionDriver implements BubbleLifecycleController, BaseStateMachine.Listener<BubbleLifeCycleStateMachine.State> {
+class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, BaseStateMachine.Listener<BubbleLifeCycleStateMachine.State> {
 
     private final Engine engine;
     private final BubbleLifeCycleStateMachine stateMachine;
 
     private IUpdateHandler currentStateTransition;
 
-    BubbleLIfecycleTransitionDriver(Engine engine, BubbleLifeCycleStateMachine stateMachine) {
+    BubbleLifecycleTransitionDriver(Engine engine, BubbleLifeCycleStateMachine stateMachine) {
         this.engine = engine;
         this.stateMachine = stateMachine;
         addListeners();

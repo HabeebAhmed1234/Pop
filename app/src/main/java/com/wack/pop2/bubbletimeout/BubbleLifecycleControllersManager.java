@@ -3,7 +3,7 @@ package com.wack.pop2.bubbletimeout;
 import org.andengine.engine.Engine;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.OnDetachedListener;
-import org.andengine.entity.shape.IShape;
+import org.andengine.entity.sprite.Sprite;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +16,7 @@ public class BubbleLifecycleControllersManager implements OnDetachedListener {
 
     private Set<BubbleLifecycleController> lifecycleControllers = new HashSet<>();
 
-    public BubbleLifecycleControllersManager(Engine engine, IShape bubbleSprite) {
+    public BubbleLifecycleControllersManager(Engine engine, Sprite bubbleSprite) {
         bubbleSprite.setOnDetachedListener(this);
         initControllers(engine, bubbleSprite);
     }
@@ -37,9 +37,10 @@ public class BubbleLifecycleControllersManager implements OnDetachedListener {
 
     }
 
-    private void initControllers(Engine engine, IShape bubbleSprite) {
+    private void initControllers(Engine engine, Sprite bubbleSprite) {
         BubbleLifeCycleStateMachine stateMachine = new BubbleLifeCycleStateMachine();
         lifecycleControllers.add(new BubbleBlinkAnimationManager(bubbleSprite, stateMachine));
-        lifecycleControllers.add(new BubbleLIfecycleTransitionDriver(engine, stateMachine));
+        lifecycleControllers.add(new BubbleLifecycleTransitionDriver(engine, stateMachine));
+        lifecycleControllers.add(new BubbleLifecycleGameOverEntity(bubbleSprite, stateMachine));
     }
 }

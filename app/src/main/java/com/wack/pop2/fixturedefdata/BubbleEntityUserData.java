@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 public class BubbleEntityUserData extends BaseEntityUserData {
 
     public final boolean isScoreLossBubble;
-    public final boolean isGameOverWhenPopped;
     public final BubbleSpawnerEntity.BubbleSize size;
     public final BubbleType bubbleType;
     public final IShape bubbleSprite;
@@ -27,14 +26,12 @@ public class BubbleEntityUserData extends BaseEntityUserData {
      */
     public BubbleEntityUserData(
             boolean isScoreLossBubble,
-            boolean isGameOverWhenPopped,
             BubbleSpawnerEntity.BubbleSize size,
             BubbleType bubbleType,
             Engine engine,
-            IShape bubbleSprite) {
+            Sprite bubbleSprite) {
         super();
         this.isScoreLossBubble = isScoreLossBubble;
-        this.isGameOverWhenPopped = isGameOverWhenPopped;
         this.size = size;
         this.bubbleType = bubbleType;
         this.bubbleSprite = bubbleSprite;

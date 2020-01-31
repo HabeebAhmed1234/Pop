@@ -1,23 +1,15 @@
 package com.wack.pop2.eventbus;
 
+import org.andengine.entity.sprite.Sprite;
+
 public class GameOverExplosionEventPayload implements EventPayload {
 
-    public final float x;
-    public final float y;
-    public final float bubbleWidth;
-    public final float bubbleHeight;
-    public final float scale;
+    /**
+     * The bubble which exploded
+     */
+    public final Sprite bubble;
 
-    public GameOverExplosionEventPayload(
-            float x,
-            float y,
-            float bubbleWidth,
-            float bubbleHeight,
-            float scale) {
-        this.x = x;
-        this.y = y;
-        this.bubbleWidth = bubbleWidth;
-        this.bubbleHeight = bubbleHeight;
-        this.scale = scale;
+    public GameOverExplosionEventPayload(Sprite bubble) {
+        this.bubble = bubble;
     }
 }

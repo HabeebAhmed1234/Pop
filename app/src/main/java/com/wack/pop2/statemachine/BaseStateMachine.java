@@ -2,6 +2,7 @@ package com.wack.pop2.statemachine;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -121,8 +122,9 @@ public abstract class BaseStateMachine<StateType extends Enum> {
 
     private void notifyTransition(StateType newState) {
         if (transitionListeners.containsKey(newState)) {
-            for (Listener listener : transitionListeners.get(newState)) {
-                notifyListenerOfNewState(newState, listener);
+            Iterator<Listener<StateType>> listeners = transitionListeners.get(newState).iterator();
+            while(listeners.hasNext()) {
+                notifyListenerOfNewState(newState, listeners.next());
             }
         }
     }

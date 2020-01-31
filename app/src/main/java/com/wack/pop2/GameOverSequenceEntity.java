@@ -97,14 +97,15 @@ public class GameOverSequenceEntity extends BaseEntity {
     }
 
     private void runGameOverSequenceWithExplosion(GameOverExplosionEventPayload payload) {
+        Sprite bubble  = payload.bubble;
         final AnimatedSprite explosion = new AnimatedSprite(
-                payload.x,
-                payload.y,
+                bubble.getX(),
+                bubble.getY(),
                 (ITiledTextureRegion) texturesManager.getTextureRegion(TextureId.EXPLOSION),
                 vertexBufferObjectManager);
-        explosion.setX(payload.x+(payload.bubbleWidth/2-explosion.getWidth()/2));
-        explosion.setY(payload.y+(payload.bubbleHeight/2-explosion.getHeight()/2));
-        explosion.setScale((float) (payload.scale*0.6));
+        explosion.setX(bubble.getX()+(bubble.getWidthScaled()/2-explosion.getWidth()/2));
+        explosion.setY(bubble.getY()+(bubble.getHeightScaled()/2-explosion.getHeight()/2));
+        explosion.setScale((float) (bubble.getScaleX()*0.6));
         explosion.animate(80,0);
         scene.attachChild(explosion);
 
@@ -113,6 +114,8 @@ public class GameOverSequenceEntity extends BaseEntity {
         gameOverFadeRedEffect.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
         scene.attachChild(gameOverFadeRedEffect);
         camera.shake(3, 4);
+
+        removeFromScene(bubble);
     }
 
     private void onGameover() {

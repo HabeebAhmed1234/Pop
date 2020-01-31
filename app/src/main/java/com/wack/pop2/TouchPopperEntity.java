@@ -6,7 +6,6 @@ import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
-import org.jbox2d.common.Vec2;
 
 /**
  * This class enables the user to pop bubbles that they tap on the screen
@@ -42,11 +41,7 @@ public class TouchPopperEntity extends BaseEntity implements GameAreaTouchListen
                 return false;
             }
             final BubbleEntityUserData bubbleEntityUserData = (BubbleEntityUserData) entity.getUserData();
-            if (bubbleEntityUserData.isGameOverWhenPopped) {
-                bubblePopperEntity.triggerGameOverExplosion(entity);
-            } else {
-                bubblePopperEntity.popBubble(entity, bubbleEntityUserData.size, bubbleEntityUserData.bubbleType);
-            }
+            bubblePopperEntity.popBubble(entity, bubbleEntityUserData.size, bubbleEntityUserData.bubbleType);
             return true;
         }
         return false;
