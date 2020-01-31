@@ -97,7 +97,7 @@ public class GameOverSequenceEntity extends BaseEntity {
     }
 
     private void runGameOverSequenceWithExplosion(GameOverExplosionEventPayload payload) {
-        Sprite bubble  = payload.bubble;
+        final Sprite bubble  = payload.bubble;
         final AnimatedSprite explosion = new AnimatedSprite(
                 bubble.getX(),
                 bubble.getY(),
@@ -115,7 +115,12 @@ public class GameOverSequenceEntity extends BaseEntity {
         scene.attachChild(gameOverFadeRedEffect);
         camera.shake(3, 4);
 
-        removeFromScene(bubble);
+        scene.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                removeFromScene(bubble);
+            }
+        });
     }
 
     private void onGameover() {

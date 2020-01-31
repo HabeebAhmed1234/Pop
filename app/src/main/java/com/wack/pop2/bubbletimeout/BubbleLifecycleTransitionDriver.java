@@ -1,5 +1,7 @@
 package com.wack.pop2.bubbletimeout;
 
+import android.util.Log;
+
 import com.wack.pop2.statemachine.BaseStateMachine;
 
 import org.andengine.engine.Engine;
@@ -65,7 +67,9 @@ class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, Base
                 break;
         }
         if (nextState != null) {
+            Log.d("asdasd", "CurrentState =  " + stateMachine.getCurrentState());
             currentStateTransition = new TimerHandler(newState.duration, new NextStateDriver(nextState));
+            Log.d("asdasd", "scheduling next state =  " + nextState);
             engine.registerUpdateHandler(currentStateTransition);
         }
     }
@@ -86,6 +90,7 @@ class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, Base
 
         @Override
         public void onTimePassed(TimerHandler pTimerHandler) {
+            Log.d("asdasd", "tranistioning to state =  " + nextState);
             stateMachine.transitionState(nextState);
         }
     }

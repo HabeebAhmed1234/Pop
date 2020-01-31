@@ -66,4 +66,9 @@ class BubbleLifeCycleStateMachine extends BaseStateMachine {
         return validTransitions;
     }
 
+    @Override
+    public void transitionState(Enum newState) {
+        super.transitionState(newState);
+    }
+
 }
