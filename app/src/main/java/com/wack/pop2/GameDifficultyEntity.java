@@ -1,5 +1,6 @@
 package com.wack.pop2;
 
+import com.wack.pop2.difficulty.ScoreAccelerationTrackerEntity;
 import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
@@ -17,8 +18,11 @@ public class GameDifficultyEntity extends BaseEntity implements EventBus.Subscri
     private int scoreWhenLastDifficultyUpdated = 0;
     private int currentDifficulty = 1;
 
+    private ScoreAccelerationTrackerEntity scoreAccelerationTrackerEntity;
+
     public GameDifficultyEntity(GameResources gameResources) {
         super(gameResources);
+        scoreAccelerationTrackerEntity = new ScoreAccelerationTrackerEntity(gameResources);
     }
 
     @Override

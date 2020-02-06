@@ -29,4 +29,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation project(path: ':andengine')
     implementation project(path: ':jbox2d')
+    implementation("com.google.guava:guava:28.2-android")
 }
