@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import com.wack.pop2.ballandchain.BallAndChainManagerEntity;
 import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.bubblepopper.BufferedBubblePopperEntity;
+import com.wack.pop2.bubbletimeout.BubblesLifecycleManagerEntity;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.hudentities.ScoreHudEntity;
 import com.wack.pop2.hudentities.TimerHudEntity;
@@ -40,6 +41,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	private ScoreHudEntity mScoreHudEntity;
 	private TimerHudEntity mTimerHudEntity;
 	private GameOverSequenceEntity mGameOverSequenceEntity;
+	private BubblesLifecycleManagerEntity mBubblesLifecycleManagerEntity;
 	private BubbleSpawnerEntity mBubbleSpawnerEntity;
 	private BubbleLossDetectorEntity mBubbleLossDetectorEntity;
 	private BubbleCleanerEntity mBubbleCleanerEntity;
@@ -87,6 +89,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 				gameAnimationManager,
 				camera,
 				mGameResources);
+		mBubblesLifecycleManagerEntity = new BubblesLifecycleManagerEntity(mGameResources);
 		mBubbleSpawnerEntity = new BubbleSpawnerEntity(gameTexturesManager, mGameResources);
 		mBubbleLossDetectorEntity = new BubbleLossDetectorEntity(gameFontsManager, gameAnimationManager, gamePhysicsContactsEntity, mGameResources);
 		mBubbleCleanerEntity = new BubbleCleanerEntity(mGameResources);

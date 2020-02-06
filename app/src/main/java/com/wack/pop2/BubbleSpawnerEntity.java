@@ -3,6 +3,7 @@ package com.wack.pop2;
 import android.hardware.SensorManager;
 
 import com.wack.pop2.collision.CollisionFilters;
+import com.wack.pop2.eventbus.BubbleSpawnedEventPayload;
 import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
@@ -110,7 +111,6 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
             BubbleType bubbleType = BubbleType.random();
             Body body = spawnBubble(bubbleType, (int)(Math.random() * screenWidth),-200 * ( i + 1 ), BubbleSize.LARGE);
             BubblePhysicsUtil.applyVelocity(body, 0f, (float) (SensorManager.GRAVITY_EARTH * 0.3 * 2));
-            EventBus.get().sendEvent(GameEvent.STARTING_BUBBLE_SPAWNED, new StartingBubbleSpawnedEventPayload(bubbleType));
         }
     }
 
@@ -142,7 +142,13 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         body.setGravityScale(BUBBLE_GRAVITY_SCALE);
         scene.registerTouchArea(bubbleSprite);
         addToScene(bubbleSprite, body);
+        notifyBubbleSpawned(bubbleType, bubbleSprite);
         return body;
+    }
+
+    private void notifyBubbleSpawned(BubbleType type, Sprite bubbleSprite) {
+        EventBus.get().sendEvent(GameEvent.BUBBLE_SPAWNED, new BubbleSpawnedEventPayload(bubbleSprite));
+        EventBus.get().sendEvent(GameEvent.STARTING_BUBBLE_SPAWNED, new StartingBubbleSpawnedEventPayload(type));
     }
 
     private void clipBubblePosition(Sprite bubbleSprite) {
@@ -192,7 +198,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
             case RED:
             case GREEN:
             case BLUE:
-                return new BubbleEntityUserData(true, bubbleSize, bubbleType, engine, bubbleSprite);
+                return new BubbleEntityUserData(true, bubbleSize, bubbleType, bubbleSprite);
         }
         throw new IllegalStateException("there is no bubble user data for bubbleType = " + bubbleType);
     }

@@ -1,9 +1,14 @@
 package org.andengine.entity;
 
-import android.util.Log;
+import android.os.Handler;
+import android.os.Looper;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Queue;
+import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
@@ -65,7 +70,7 @@ public class Entity implements IEntity {
 	private IEntity mParent;
 
 	private boolean isAttached = false;
-	private OnDetachedListener listener;
+	private Queue<OnDetachedListener> onDetatchListeners = new ConcurrentLinkedQueue<>();
 
 	protected SmartList<IEntity> mChildren;
 	private EntityModifierList mEntityModifiers;
@@ -1147,8 +1152,10 @@ public class Entity implements IEntity {
 	@Override
 	public void onDetached() {
 		isAttached = false;
-		if (listener != null) {
-			listener.onDetached(this);
+		if (onDetatchListeners != null && !onDetatchListeners.isEmpty()) {
+			for (OnDetachedListener listener : onDetatchListeners) {
+				listener.onDetached(Entity.this);
+			}
 		}
 	}
 
@@ -1158,13 +1165,16 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public void setOnDetachedListener(OnDetachedListener listener) {
-		this.listener = listener;
+	public void addOnDetachedListener(OnDetachedListener listener) {
+		onDetatchListeners.add(listener);
 	}
 
 	@Override
-	public void removeOnDetachedListener() {
-		this.listener = null;
+	public void removeOnDetachedListener(OnDetachedListener listener) {
+		if (!this.onDetatchListeners.contains(listener)) {
+			return;
+		}
+		this.onDetatchListeners.remove(listener);
 	}
 
 	@Override

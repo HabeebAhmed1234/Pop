@@ -30,6 +30,7 @@ public class GameOverSequenceEntity extends BaseEntity {
     private ShakeCamera camera;
 
     private Sprite gameOverFadeRedEffect;
+    private boolean isGameOverStarted = false;
 
     private EventBus.Subscriber gameOverExplosionSubscriber = new EventBus.Subscriber() {
         @Override
@@ -41,6 +42,8 @@ public class GameOverSequenceEntity extends BaseEntity {
     private EventBus.Subscriber gameOverTimeoutSubscriber = new EventBus.Subscriber() {
         @Override
         public void onEvent(GameEvent event, EventPayload payload) {
+            if (isGameOverStarted) return;
+            isGameOverStarted = true;
             onGameover();
         }
     };
@@ -84,19 +87,9 @@ public class GameOverSequenceEntity extends BaseEntity {
         EventBus.get().unSubscribe(GameEvent.GAME_TIMEOUT_EVENT, gameOverTimeoutSubscriber);
     }
 
-    private void startGameOverEffectAnimation() {
-        animationManager.startModifier(
-                gameOverFadeRedEffect,
-                new ParallelEntityModifier(new AlphaModifier(3, 0, 1)),
-                new GameAnimationManager.AnimationListener() {
-                    @Override
-                    public void onFinished() {
-                        onGameover();
-                    }
-                });
-    }
-
     private void runGameOverSequenceWithExplosion(GameOverExplosionEventPayload payload) {
+        if (isGameOverStarted) return;
+        isGameOverStarted = true;
         final Sprite bubble  = payload.bubble;
         final AnimatedSprite explosion = new AnimatedSprite(
                 bubble.getX(),
@@ -121,6 +114,18 @@ public class GameOverSequenceEntity extends BaseEntity {
                 removeFromScene(bubble);
             }
         });
+    }
+
+    private void startGameOverEffectAnimation() {
+        animationManager.startModifier(
+                gameOverFadeRedEffect,
+                new ParallelEntityModifier(new AlphaModifier(3, 0, 1)),
+                new GameAnimationManager.AnimationListener() {
+                    @Override
+                    public void onFinished() {
+                        onGameover();
+                    }
+                });
     }
 
     private void onGameover() {

@@ -55,10 +55,10 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
     private final OnDetachedListener targetBubbleOnDetachedListener = new OnDetachedListener() {
         @Override
         public void onDetached(IEntity entity) {
-            entity.removeOnDetachedListener();
+            entity.removeOnDetachedListener(this);
             targetBubble = TurretUtils.getClosestPoppableBubble(scene, bulletSprite);
             if (targetBubble != null) {
-                targetBubble.setOnDetachedListener(targetBubbleOnDetachedListener);
+                targetBubble.addOnDetachedListener(targetBubbleOnDetachedListener);
             } else {
                 destroyBullet();
             }
@@ -84,7 +84,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
         this.hostTurretCallback = hostTurretCallback;
         this.texturesManager = texturesManager;
 
-        targetBubble.setOnDetachedListener(targetBubbleOnDetachedListener);
+        targetBubble.addOnDetachedListener(targetBubbleOnDetachedListener);
         initBullet();
         registerUpdateHandlers();
     }
@@ -184,7 +184,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
     private void destroyBullet() {
         unregisterUpdateHandlers();
         if (targetBubble != null) {
-            targetBubble.setOnDetachedListener(null);
+            targetBubble.removeOnDetachedListener(targetBubbleOnDetachedListener);
         }
         removeFromScene(bulletBody);
     }

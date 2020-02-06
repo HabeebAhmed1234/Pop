@@ -68,12 +68,12 @@ public class ScaleMenuItemDecorator extends BaseMenuItemDecorator {
 	}
 
 	@Override
-	public void setOnDetachedListener(OnDetachedListener listener) {
+	public void addOnDetachedListener(OnDetachedListener listener) {
 
 	}
 
 	@Override
-	public void removeOnDetachedListener() {
+	public void removeOnDetachedListener(OnDetachedListener listener) {
 
 	}
 

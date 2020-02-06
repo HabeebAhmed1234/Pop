@@ -21,17 +21,20 @@ class BubbleLifecycleGameOverEntity implements BubbleLifecycleController, BaseSt
 
     @Override
     public void onDestroy() {
+        bubble = null;
         stateMachine.removeTransitionListener(BubbleLifeCycleStateMachine.State.EXPLODING, this);
-    }
-
-    public void triggerGameOverExplosion() {
-        EventBus.get().sendEvent(
-                GameEvent.GAME_OVER_ON_EXPLOSION_EVENT,
-                new GameOverExplosionEventPayload(bubble));
     }
 
     @Override
     public void onEnterState(BubbleLifeCycleStateMachine.State newState) {
-        triggerGameOverExplosion();
+        if (newState == BubbleLifeCycleStateMachine.State.EXPLODING) {
+            triggerGameOverExplosion();
+        }
+    }
+
+    private void triggerGameOverExplosion() {
+        EventBus.get().sendEvent(
+                GameEvent.GAME_OVER_ON_EXPLOSION_EVENT,
+                new GameOverExplosionEventPayload(bubble));
     }
 }

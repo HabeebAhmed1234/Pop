@@ -16,4 +16,5 @@ public enum GameEvent {
     TURRET_DOCKED, // Fired when a turret gets docked back into the turret icon
     WALL_PLACED, // Fired when a wall gets placed
     WALL_DELETED, // Fired when a wall gets deleted
+    BUBBLE_SPAWNED, // Fired when a bubble is spawned
 }
