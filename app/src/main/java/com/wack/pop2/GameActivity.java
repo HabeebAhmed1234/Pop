@@ -9,6 +9,7 @@ import com.wack.pop2.ballandchain.BallAndChainManagerEntity;
 import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.bubblepopper.BufferedBubblePopperEntity;
 import com.wack.pop2.bubbletimeout.BubblesLifecycleManagerEntity;
+import com.wack.pop2.difficulty.GameDifficultyEntity;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.hudentities.ScoreHudEntity;
 import com.wack.pop2.hudentities.TimerHudEntity;
@@ -78,8 +79,8 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 		// Create game entities
 		mLevelEntity = new LevelEntity(mGameResources);
-		mGameDifficultyEntity = new GameDifficultyEntity(mGameResources);
 		mScoreHudEntity = new ScoreHudEntity(gameFontsManager, mGameResources);
+		mGameDifficultyEntity = new GameDifficultyEntity(mScoreHudEntity, mGameResources);
 		mTimerHudEntity = new TimerHudEntity(gameFontsManager, gameAnimationManager, mGameResources);
 		mGameOverSequenceEntity = new GameOverSequenceEntity(
 				this,

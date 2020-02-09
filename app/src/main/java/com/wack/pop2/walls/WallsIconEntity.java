@@ -130,7 +130,7 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements GameArea
     }
 
     @Override
-    protected int getDifficultyUnlockThreshold() {
+    protected int getDifficultyUnlockScoreThreshold() {
         return WALLS_DIFFICULTY_UNLOCK_THRESHOLD;
     }
 

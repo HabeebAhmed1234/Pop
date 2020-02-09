@@ -4,10 +4,10 @@ import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameIconsTrayEntity;
 import com.wack.pop2.GameResources;
-import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
+import com.wack.pop2.eventbus.ScoreChangeEventPayload;
 import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
@@ -43,23 +43,23 @@ public abstract class BaseIconEntity extends BaseEntity implements GameAreaTouch
     public void onCreateScene() {
         createIcon();
 
-        EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this, true);
+        EventBus.get().subscribe(GameEvent.SCORE_CHANGED, this, true);
         touchListenerEntity.addAreaTouchListener(getIconUserDataType(), this);
     }
 
     @Override
     public void onDestroy() {
-        EventBus.get().unSubscribe(GameEvent.DIFFICULTY_CHANGE, this);
+        EventBus.get().unSubscribe(GameEvent.SCORE_CHANGED, this);
         touchListenerEntity.removeAreaTouchListener(getIconUserDataType(), this);
     }
 
     @Override
     public void onEvent(GameEvent event, EventPayload payload) {
         switch (event) {
-            case DIFFICULTY_CHANGE:
-                DifficultyChangedEventPayload difficultyChangedEventPayload =
-                        (DifficultyChangedEventPayload) payload;
-                onDifficultyChanged(difficultyChangedEventPayload.newDifficulty);
+            case SCORE_CHANGED:
+                ScoreChangeEventPayload scoreChangeEventPayload =
+                        (ScoreChangeEventPayload) payload;
+                onScoreChanged(scoreChangeEventPayload.score);
                 break;
         }
     }
@@ -82,8 +82,8 @@ public abstract class BaseIconEntity extends BaseEntity implements GameAreaTouch
         }
         return iconUserData;
     }
-    private void onDifficultyChanged(int newDifficulty) {
-        if (newDifficulty >= getDifficultyUnlockThreshold() && !isUnlocked) {
+    private void onScoreChanged(int newScore) {
+        if (newScore >= getDifficultyUnlockScoreThreshold() && !isUnlocked) {
             isUnlocked = true;
             setIconColor(getUnlockedColor());
             onIconUnlocked();
@@ -110,7 +110,7 @@ public abstract class BaseIconEntity extends BaseEntity implements GameAreaTouch
 
     protected abstract GameIconsTrayEntity.ICON_ID getIconId();
 
-    protected abstract int getDifficultyUnlockThreshold();
+    protected abstract int getDifficultyUnlockScoreThreshold();
 
     protected abstract void onIconUnlocked();
 

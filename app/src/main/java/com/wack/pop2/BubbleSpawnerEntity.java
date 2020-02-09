@@ -75,16 +75,16 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         }
     }
 
-    private static final float BUBBLE_SPAWN_INTERVAL = 5f;
     private GameTexturesManager texturesManager;
-    private int bubbleSpawnMultiplier = 1;
+    private float bubbleSpawnInterval = 5;
     private TimerHandler bubbleSpawnTimerHandler = new TimerHandler(
-            BUBBLE_SPAWN_INTERVAL,
-            true,
+            bubbleSpawnInterval,
+            false,
             new ITimerCallback() {
                 @Override
                 public void onTimePassed(TimerHandler pTimerHandler) {
-                    spawnStartingBubbles(bubbleSpawnMultiplier);
+                    spawnStartingBubble();
+                    engine.registerUpdateHandler(new TimerHandler(bubbleSpawnInterval, false, this));
                 }
             });
 
@@ -105,13 +105,11 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         EventBus.get().unSubscribe(GameEvent.DIFFICULTY_CHANGE, this);
     }
 
-    private void spawnStartingBubbles(int bubbleQuantity) {
+    private void spawnStartingBubble() {
         int screenWidth = ScreenUtils.getSreenSize().width;
-        for (int i = 0; i < bubbleQuantity; i++) {
-            BubbleType bubbleType = BubbleType.random();
-            Body body = spawnBubble(bubbleType, (int)(Math.random() * screenWidth),-200 * ( i + 1 ), BubbleSize.LARGE);
-            BubblePhysicsUtil.applyVelocity(body, 0f, (float) (SensorManager.GRAVITY_EARTH * 0.3 * 2));
-        }
+        BubbleType bubbleType = BubbleType.random();
+        Body body = spawnBubble(bubbleType, (int)(Math.random() * screenWidth),-200, BubbleSize.LARGE);
+        BubblePhysicsUtil.applyVelocity(body, 0f, (float) (SensorManager.GRAVITY_EARTH * 0.3 * 2));
     }
 
     /**
@@ -207,7 +205,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
     public void onEvent(GameEvent event, EventPayload payload) {
         if (event == GameEvent.DIFFICULTY_CHANGE) {
             DifficultyChangedEventPayload difficultyChangedEventPayload = (DifficultyChangedEventPayload) payload;
-            bubbleSpawnMultiplier = difficultyChangedEventPayload.newDifficulty;
+            bubbleSpawnInterval = difficultyChangedEventPayload.newSpawnInterval;
         }
     }
 }

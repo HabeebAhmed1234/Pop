@@ -1,16 +1,22 @@
 package com.wack.pop2.difficulty;
 
+import android.util.Log;
+
 import com.google.common.collect.EvictingQueue;
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.EventBus;
-import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
-import com.wack.pop2.eventbus.ScoreChangeEventPayload;
+import com.wack.pop2.eventbus.GameScoreAccelerationChangedPayload;
+import com.wack.pop2.hudentities.ScoreHudEntity;
+
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 
 import java.util.Queue;
 
-import static com.wack.pop2.eventbus.GameEvent.SCORE_CHANGED;
+import static com.wack.pop2.difficulty.DifficultyConstants.ACCELERATION_UPDATE_INTERVAL_SECONDS;
+import static com.wack.pop2.difficulty.DifficultyConstants.NUM_DATA_POINTS_FOR_SMA;
 
 /**
  * Listens to score changed events and calculates the acceleration of score change over some
@@ -19,48 +25,46 @@ import static com.wack.pop2.eventbus.GameEvent.SCORE_CHANGED;
  * - Tracks a simple moving average of score changed events
  * - on every event calculates the speed of changed between the last 3
  */
-public class ScoreAccelerationTrackerEntity extends BaseEntity implements EventBus.Subscriber {
+public class ScoreAccelerationTrackerEntity extends BaseEntity {
 
-    private static final int NUM_DATA_POINTS_FOR_SMA = 10;
+    private final ScoreHudEntity scoreHudEntity;
 
-    private Queue<Integer> smaDataPoints = new EvictingQueue<>(NUM_DATA_POINTS_FOR_SMA);
-    private Queue<Float> speedDataPoints = new EvictingQueue<>(3);
+    private Queue<Integer> smaDataPoints = EvictingQueue.create(NUM_DATA_POINTS_FOR_SMA);
+    private Queue<Float> speedDataPoints = EvictingQueue.create(3);
     private float[] speeds = new float[]{0,0};
 
     private float currentAccelleration = 0;
 
+    private TimerHandler scoreAccelerationCalculatorUpdate =
+            new TimerHandler(ACCELERATION_UPDATE_INTERVAL_SECONDS, true, new ITimerCallback() {
+                @Override
+                public void onTimePassed(TimerHandler pTimerHandler) {
+                    update();
+                }
+            });
 
-
-    public ScoreAccelerationTrackerEntity(GameResources gameResources) {
+    public ScoreAccelerationTrackerEntity(ScoreHudEntity scoreHudEntity, GameResources gameResources) {
         super(gameResources);
+        this.scoreHudEntity = scoreHudEntity;
     }
 
     @Override
     public void onCreateScene() {
-        EventBus.get().subscribe(SCORE_CHANGED, this);
-
+        engine.registerUpdateHandler(scoreAccelerationCalculatorUpdate);
     }
 
     @Override
     public void onDestroy() {
-        EventBus.get().unSubscribe(SCORE_CHANGED, this);
-    }
-
-    @Override
-    public void onEvent(GameEvent event, EventPayload payload) {
-        if (event == SCORE_CHANGED) {
-            ScoreChangeEventPayload scoreChangeEventPayload = (ScoreChangeEventPayload) payload;
-            smaDataPoints.add(scoreChangeEventPayload.score);
-
-            update();
-        }
+        engine.unregisterUpdateHandler(scoreAccelerationCalculatorUpdate);
     }
 
     private void update() {
+        smaDataPoints.add(scoreHudEntity.getScore());
         float sma = average(smaDataPoints);
         speedDataPoints.add(sma);
         updateSpeeds();
         updateAcceleration();
+        Log.d("sate", "sma = " + sma + " currentAccelleration = " + currentAccelleration);
     }
 
     /**
@@ -69,13 +73,14 @@ public class ScoreAccelerationTrackerEntity extends BaseEntity implements EventB
     private void updateSpeeds() {
         if (speedDataPoints.size() == 3) {
             Float[] speedDataPointsArray = speedDataPoints.toArray(new Float[speedDataPoints.size()]);
-            speeds[0] = speedDataPointsArray[0] - speedDataPointsArray[1];
-            speeds[1] = speedDataPointsArray[1] - speedDataPointsArray[2];
+            speeds[0] = speedDataPointsArray[2] - speedDataPointsArray[1];
+            speeds[1] = speedDataPointsArray[1] - speedDataPointsArray[0];
         }
     }
 
     private void updateAcceleration() {
         currentAccelleration = speeds[0] - speeds[1];
+        EventBus.get().sendEvent(GameEvent.GAME_SCORE_ACCELERATION_CHANGED, new GameScoreAccelerationChangedPayload(currentAccelleration));
     }
 
     private float average(Queue<Integer> queue) {

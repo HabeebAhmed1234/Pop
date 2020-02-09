@@ -2,9 +2,9 @@ package com.wack.pop2.eventbus;
 
 public class DifficultyChangedEventPayload implements EventPayload {
 
-    public final int newDifficulty;
+    public final float newSpawnInterval;
 
-    public DifficultyChangedEventPayload(int newDifficulty) {
-        this.newDifficulty = newDifficulty;
+    public DifficultyChangedEventPayload(float newSpawnInterval) {
+        this.newSpawnInterval = newSpawnInterval;
     }
 }
