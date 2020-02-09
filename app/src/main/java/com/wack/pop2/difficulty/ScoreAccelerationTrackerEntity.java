@@ -1,13 +1,8 @@
 package com.wack.pop2.difficulty;
 
-import android.util.Log;
-
 import com.google.common.collect.EvictingQueue;
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameResources;
-import com.wack.pop2.eventbus.EventBus;
-import com.wack.pop2.eventbus.GameEvent;
-import com.wack.pop2.eventbus.GameScoreAccelerationChangedPayload;
 import com.wack.pop2.hudentities.ScoreHudEntity;
 
 import org.andengine.engine.handler.timer.ITimerCallback;
@@ -17,6 +12,7 @@ import java.util.Queue;
 
 import static com.wack.pop2.difficulty.DifficultyConstants.ACCELERATION_UPDATE_INTERVAL_SECONDS;
 import static com.wack.pop2.difficulty.DifficultyConstants.NUM_DATA_POINTS_FOR_SMA;
+import static com.wack.pop2.difficulty.DifficultyConstants.TARGET_SCORE_ACCELERATION;
 
 /**
  * Listens to score changed events and calculates the acceleration of score change over some
@@ -27,13 +23,16 @@ import static com.wack.pop2.difficulty.DifficultyConstants.NUM_DATA_POINTS_FOR_S
  */
 public class ScoreAccelerationTrackerEntity extends BaseEntity {
 
+    public interface OnScoreAccelerationErrorListener {
+        void onAccelerationErrorChanged(float accelerationError);
+    }
+
     private final ScoreHudEntity scoreHudEntity;
+    private final OnScoreAccelerationErrorListener onScoreAccelerationErrorListener;
 
     private Queue<Integer> smaDataPoints = EvictingQueue.create(NUM_DATA_POINTS_FOR_SMA);
     private Queue<Float> speedDataPoints = EvictingQueue.create(3);
     private float[] speeds = new float[]{0,0};
-
-    private float currentAccelleration = 0;
 
     private TimerHandler scoreAccelerationCalculatorUpdate =
             new TimerHandler(ACCELERATION_UPDATE_INTERVAL_SECONDS, true, new ITimerCallback() {
@@ -43,9 +42,13 @@ public class ScoreAccelerationTrackerEntity extends BaseEntity {
                 }
             });
 
-    public ScoreAccelerationTrackerEntity(ScoreHudEntity scoreHudEntity, GameResources gameResources) {
+    public ScoreAccelerationTrackerEntity(
+            ScoreHudEntity scoreHudEntity,
+            OnScoreAccelerationErrorListener onScoreAccelerationErrorListener,
+            GameResources gameResources) {
         super(gameResources);
         this.scoreHudEntity = scoreHudEntity;
+        this.onScoreAccelerationErrorListener = onScoreAccelerationErrorListener;
     }
 
     @Override
@@ -64,7 +67,6 @@ public class ScoreAccelerationTrackerEntity extends BaseEntity {
         speedDataPoints.add(sma);
         updateSpeeds();
         updateAcceleration();
-        Log.d("sate", "sma = " + sma + " currentAccelleration = " + currentAccelleration);
     }
 
     /**
@@ -79,8 +81,8 @@ public class ScoreAccelerationTrackerEntity extends BaseEntity {
     }
 
     private void updateAcceleration() {
-        currentAccelleration = speeds[0] - speeds[1];
-        EventBus.get().sendEvent(GameEvent.GAME_SCORE_ACCELERATION_CHANGED, new GameScoreAccelerationChangedPayload(currentAccelleration));
+        float currentAcceleration = speeds[0] - speeds[1];
+        onScoreAccelerationErrorListener.onAccelerationErrorChanged(-1 * (TARGET_SCORE_ACCELERATION - currentAcceleration));
     }
 
     private float average(Queue<Integer> queue) {

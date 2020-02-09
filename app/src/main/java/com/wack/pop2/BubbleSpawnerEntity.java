@@ -1,6 +1,7 @@
 package com.wack.pop2;
 
 import android.hardware.SensorManager;
+import android.util.Log;
 
 import com.wack.pop2.collision.CollisionFilters;
 import com.wack.pop2.eventbus.BubbleSpawnedEventPayload;
@@ -83,6 +84,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
             new ITimerCallback() {
                 @Override
                 public void onTimePassed(TimerHandler pTimerHandler) {
+                    Log.d("asdasd", "spawning bubble");
                     spawnStartingBubble();
                     engine.registerUpdateHandler(new TimerHandler(bubbleSpawnInterval, false, this));
                 }
@@ -206,6 +208,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         if (event == GameEvent.DIFFICULTY_CHANGE) {
             DifficultyChangedEventPayload difficultyChangedEventPayload = (DifficultyChangedEventPayload) payload;
             bubbleSpawnInterval = difficultyChangedEventPayload.newSpawnInterval;
+            Log.d("asdasd", "bubbleSpawnInterval = " + bubbleSpawnInterval);
         }
     }
 }

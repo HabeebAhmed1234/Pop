@@ -17,6 +17,4 @@ public enum GameEvent {
     WALL_PLACED, // Fired when a wall gets placed
     WALL_DELETED, // Fired when a wall gets deleted
     BUBBLE_SPAWNED, // Fired when a bubble is spawned
-    GAME_SCORE_ACCELERATION_CHANGED, // Score acceleration changed
-    GAME_DIFFICULTY_ERROR_SIGNAL_CHANGED, // Error signal
 }
