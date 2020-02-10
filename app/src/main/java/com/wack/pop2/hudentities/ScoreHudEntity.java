@@ -40,7 +40,7 @@ public class ScoreHudEntity extends BaseEntity implements EventBus.Subscriber {
                 .subscribe(GameEvent.DECREMENT_SCORE, this)
                 .subscribe(GameEvent.STARTING_BUBBLE_SPAWNED, this);
         ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
-        scoreText = new Text(50, screenSize.height - 150, fontsManager.getFont(FontId.SCORE_TICKER_FONT), "Score: - - - - -", "Score: X X X X X".length(), vertexBufferObjectManager);
+        scoreText = new Text(50, screenSize.height - 150, fontsManager.getFont(FontId.SCORE_TICKER_FONT), "Score: - - - - - - - - - -", "Score: X X X X X X X X X X".length(), vertexBufferObjectManager);
         scoreText.setColor(0,1,0);
         scene.attachChild(scoreText);
     }
