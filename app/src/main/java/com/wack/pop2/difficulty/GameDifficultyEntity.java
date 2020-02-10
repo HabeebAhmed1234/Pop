@@ -7,31 +7,53 @@ import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;
-import com.wack.pop2.hudentities.ScoreHudEntity;
 
-import static com.wack.pop2.difficulty.DifficultyConstants.BASE_SPAWN_INTERVAL_DIFF;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
+
 import static com.wack.pop2.difficulty.DifficultyConstants.MIN_UPDATE_INTERVAL;
+import static com.wack.pop2.difficulty.DifficultyConstants.SPAWN_INTERVAL_DECREASE_SPEED;
+import static com.wack.pop2.difficulty.DifficultyConstants.SPAWN_INTERVAL_UPDATE_SECONDS;
+import static com.wack.pop2.difficulty.DifficultyConstants.STARTING_SPAWN_INTERVAL;
 
 /**
  * Controls the game difficulty
  */
-public class GameDifficultyEntity extends BaseEntity implements ScoreAccelerationTrackerEntity.OnScoreAccelerationErrorListener {
+public class GameDifficultyEntity extends BaseEntity {
 
-    private float currentSpawnInterval = 5;
+    private float currentSpawnInterval = STARTING_SPAWN_INTERVAL;
 
-    private ScoreAccelerationTrackerEntity scoreAccelerationTrackerEntity;
 
-    public GameDifficultyEntity(ScoreHudEntity scoreHudEntity, GameResources gameResources) {
+    private TimerHandler updateIntervalUpdater =
+            new TimerHandler(SPAWN_INTERVAL_UPDATE_SECONDS, true, new ITimerCallback() {
+                @Override
+                public void onTimePassed(TimerHandler pTimerHandler) {
+                    updateInterval();
+                }
+            });
+
+    public GameDifficultyEntity(GameResources gameResources) {
         super(gameResources);
-        scoreAccelerationTrackerEntity = new ScoreAccelerationTrackerEntity(scoreHudEntity, this, gameResources);
     }
+
     @Override
-    public void onAccelerationErrorChanged(float accelerationError) {
-        Log.d("sate", "onAccelerationErrorChanged = " + accelerationError);
-        currentSpawnInterval += BASE_SPAWN_INTERVAL_DIFF * accelerationError;
+    public void onCreateScene() {
+        super.onCreateScene();
+        engine.registerUpdateHandler(updateIntervalUpdater);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        engine.unregisterUpdateHandler(updateIntervalUpdater);
+    }
+
+    public void updateInterval() {
+        currentSpawnInterval -= SPAWN_INTERVAL_DECREASE_SPEED;
         if (currentSpawnInterval < MIN_UPDATE_INTERVAL) {
             currentSpawnInterval = MIN_UPDATE_INTERVAL;
         }
+        Log.d("sate", "currentSpawnInterval = " + currentSpawnInterval);
         EventBus.get().sendEvent(GameEvent.DIFFICULTY_CHANGE, new DifficultyChangedEventPayload(currentSpawnInterval));
     }
 }

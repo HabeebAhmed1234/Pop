@@ -80,7 +80,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		// Create game entities
 		mLevelEntity = new LevelEntity(mGameResources);
 		mScoreHudEntity = new ScoreHudEntity(gameFontsManager, mGameResources);
-		mGameDifficultyEntity = new GameDifficultyEntity(mScoreHudEntity, mGameResources);
+		mGameDifficultyEntity = new GameDifficultyEntity(mGameResources);
 		mTimerHudEntity = new TimerHudEntity(gameFontsManager, gameAnimationManager, mGameResources);
 		mGameOverSequenceEntity = new GameOverSequenceEntity(
 				this,
