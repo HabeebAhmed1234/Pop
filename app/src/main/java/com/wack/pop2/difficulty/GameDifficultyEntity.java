@@ -39,6 +39,7 @@ public class GameDifficultyEntity extends BaseEntity {
     @Override
     public void onCreateScene() {
         super.onCreateScene();
+        initialUpdateInterval();
         engine.registerUpdateHandler(updateIntervalUpdater);
     }
 
@@ -46,6 +47,10 @@ public class GameDifficultyEntity extends BaseEntity {
     public void onDestroy() {
         super.onDestroy();
         engine.unregisterUpdateHandler(updateIntervalUpdater);
+    }
+
+    public void initialUpdateInterval() {
+        EventBus.get().sendEvent(GameEvent.DIFFICULTY_CHANGE, new DifficultyChangedEventPayload(0));
     }
 
     public void updateInterval() {

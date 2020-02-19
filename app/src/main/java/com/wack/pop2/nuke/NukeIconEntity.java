@@ -55,7 +55,7 @@ public class NukeIconEntity extends BaseIconEntity implements BaseStateMachine.L
     }
 
     @Override
-    protected int getDifficultyUnlockScoreThreshold() {
+    protected float getDifficultyIntervalUnlockThreshold() {
         return NUKE_UNLOCK_THRESHOLD;
     }
 

@@ -1,53 +1,59 @@
 package com.wack.pop2.hudentities;
 
-import com.wack.pop2.BaseEntity;
-import com.wack.pop2.bubblepopper.BubblePopperEntity;
-import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.GameResources;
-import com.wack.pop2.utils.ScreenUtils;
+import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.eventbus.DecrementScoreEventPayload;
 import com.wack.pop2.eventbus.EventBus;
+import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.eventbus.IncrementScoreEventPayload;
 import com.wack.pop2.eventbus.ScoreChangeEventPayload;
 import com.wack.pop2.eventbus.StartingBubbleSpawnedEventPayload;
-import com.wack.pop2.resources.fonts.FontId;
 import com.wack.pop2.resources.fonts.GameFontsManager;
+import com.wack.pop2.utils.ScreenUtils;
 
-import org.andengine.entity.text.Text;
+import org.andengine.util.color.AndengineColor;
 
 /**
  * Entity that contains score hud panel
  */
-public class ScoreHudEntity extends BaseEntity implements EventBus.Subscriber {
-
-    private GameFontsManager fontsManager;
+public class ScoreHudEntity extends BaseHudTextEntity implements EventBus.Subscriber {
 
     private int scoreValue = 0;
     private int maxScoreValue = 0;
 
-    private Text scoreText;
-
     public ScoreHudEntity(GameFontsManager fontsManager, GameResources gameResources) {
-        super(gameResources);
-        this.fontsManager = fontsManager;
+        super(fontsManager, gameResources);
     }
 
     @Override
     public void onCreateScene() {
+        super.onCreateScene();
         EventBus.get()
                 .subscribe(GameEvent.INCREMENT_SCORE, this)
                 .subscribe(GameEvent.DECREMENT_SCORE, this)
                 .subscribe(GameEvent.STARTING_BUBBLE_SPAWNED, this);
-        ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
-        scoreText = new Text(50, screenSize.height - 150, fontsManager.getFont(FontId.SCORE_TICKER_FONT), "Score: - - - - - - - - - -", "Score: X X X X X X X X X X".length(), vertexBufferObjectManager);
-        scoreText.setColor(0,1,0);
-        scene.attachChild(scoreText);
     }
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         EventBus.get().unSubscribe(GameEvent.INCREMENT_SCORE, this).unSubscribe(GameEvent.DECREMENT_SCORE, this);
+    }
+
+    @Override
+    int[] getTextPosition() {
+        return new int[] {50, ScreenUtils.getSreenSize().height - 150};
+    }
+
+    @Override
+    int getMaxStringLength() {
+        return 30;
+    }
+
+    @Override
+    AndengineColor getTextColor() {
+        return AndengineColor.GREEN;
     }
 
     public int getScore() {
@@ -86,6 +92,6 @@ public class ScoreHudEntity extends BaseEntity implements EventBus.Subscriber {
     }
 
     private void updateScoreText() {
-        scoreText.setText("Score: " + scoreValue + " - " + maxScoreValue);
+        updateText("Score: " + scoreValue + " - " + maxScoreValue);
     }
 }

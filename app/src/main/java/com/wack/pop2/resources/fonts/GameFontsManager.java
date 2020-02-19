@@ -55,7 +55,7 @@ public class GameFontsManager extends BaseEntity {
         FontFactory.setAssetBasePath("font/");
         mFonts.put(
                 FontId.SCORE_TICKER_FONT,
-                FontFactory.createFromAsset(fontManager, new BitmapTextureAtlas(textureManager,256,256), assetManager,"neon.ttf",80f,true, Color.WHITE));
+                FontFactory.createFromAsset(fontManager, new BitmapTextureAtlas(textureManager,256,512), assetManager,"neon.ttf",80f,true, Color.WHITE));
         mFonts.put(
                 FontId.TIMER_TICKER_FONT,
                 FontFactory.createFromAsset(fontManager, new BitmapTextureAtlas(textureManager,256,256), assetManager,"neon.ttf",80f,true, Color.WHITE));

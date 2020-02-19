@@ -160,7 +160,7 @@ class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subs
     }
 
     @Override
-    protected int getDifficultyUnlockScoreThreshold() {
+    protected float getDifficultyIntervalUnlockThreshold() {
         return TURRETS_DIFFICULTY_UNLOCK_THRESHOLD;
     }
 

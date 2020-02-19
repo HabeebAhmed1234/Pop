@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 public class DifficultyConstants {
 
     // Static
-    public static final float TIME_TO_MIN_SPAWN_INTERVAL_SECONDS = TimeUnit.MINUTES.toSeconds(5);
+    public static final float TIME_TO_MIN_SPAWN_INTERVAL_SECONDS = TimeUnit.MINUTES.toSeconds(3);
     public static final float STARTING_SPAWN_INTERVAL = 5;
     public static final float MIN_UPDATE_INTERVAL = 0.2f;
     public static final float SPAWN_INTERVAL_UPDATE_SECONDS = 2;

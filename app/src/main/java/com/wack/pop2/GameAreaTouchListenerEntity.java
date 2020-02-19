@@ -3,6 +3,7 @@ package com.wack.pop2;
 import android.util.Log;
 
 import com.wack.pop2.fixturedefdata.BaseEntityUserData;
+import com.wack.pop2.interaction.InteractionCounter;
 
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
@@ -32,9 +33,11 @@ public class GameAreaTouchListenerEntity extends BaseEntity implements IOnAreaTo
     }
 
     private Map<Class<? extends BaseEntityUserData>, Set<AreaTouchListener>> areaTouchlisteners = new HashMap<>();
+    private InteractionCounter interactionCounter;
 
-    public GameAreaTouchListenerEntity(GameResources gameResources) {
+    public GameAreaTouchListenerEntity(InteractionCounter interactionCounter, GameResources gameResources) {
         super(gameResources);
+        this.interactionCounter = interactionCounter;
         scene.setOnAreaTouchListener(this);
     }
 
@@ -72,6 +75,8 @@ public class GameAreaTouchListenerEntity extends BaseEntity implements IOnAreaTo
         if (!(pTouchArea instanceof Sprite)) {
             return false;
         }
+        interactionCounter.onInteraction(InteractionCounter.TOUCH_INSTANCE_INTERACTION_WEIGHT);
+
         final Sprite entity =  (Sprite) pTouchArea;
         Object userData = entity.getUserData();
         if (userData == null) {

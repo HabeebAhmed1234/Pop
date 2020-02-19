@@ -11,8 +11,10 @@ import com.wack.pop2.bubblepopper.BufferedBubblePopperEntity;
 import com.wack.pop2.bubbletimeout.BubblesLifecycleManagerEntity;
 import com.wack.pop2.difficulty.GameDifficultyEntity;
 import com.wack.pop2.eventbus.EventBus;
+import com.wack.pop2.hudentities.InteractionScoreHudEntity;
 import com.wack.pop2.hudentities.ScoreHudEntity;
 import com.wack.pop2.hudentities.TimerHudEntity;
+import com.wack.pop2.interaction.InteractionCounter;
 import com.wack.pop2.nuke.NukeManagerEntity;
 import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
@@ -39,6 +41,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	private GameResources mGameResources;
 	private LevelEntity mLevelEntity;
 	private GameDifficultyEntity mGameDifficultyEntity;
+	private InteractionScoreHudEntity mInteractionScoreHudEntity;
 	private ScoreHudEntity mScoreHudEntity;
 	private TimerHudEntity mTimerHudEntity;
 	private GameOverSequenceEntity mGameOverSequenceEntity;
@@ -73,12 +76,15 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		GameSoundsManager gameSoundsManager = new GameSoundsManager(this, getSoundManager(), mGameResources);
 		GameAnimationManager gameAnimationManager = new GameAnimationManager(mGameResources);
 		GamePhysicsContactsEntity gamePhysicsContactsEntity = new GamePhysicsContactsEntity(mGameResources);
-		GameAreaTouchListenerEntity gameAreaTouchListenerEntity = new GameAreaTouchListenerEntity(mGameResources);
-		GameSceneTouchListenerEntity gameSceneTouchListenerEntity = new GameSceneTouchListenerEntity(mGameResources);
+		InteractionCounter interactionCounter = new InteractionCounter(mGameResources);
+		GameAreaTouchListenerEntity gameAreaTouchListenerEntity = new GameAreaTouchListenerEntity(interactionCounter, mGameResources);
+		GameSceneTouchListenerEntity gameSceneTouchListenerEntity = new GameSceneTouchListenerEntity(interactionCounter, mGameResources);
 		GameIconsTrayEntity gameIconsTrayEntity = new GameIconsTrayEntity(mGameResources);
 
 		// Create game entities
 		mLevelEntity = new LevelEntity(mGameResources);
+		mInteractionScoreHudEntity = new InteractionScoreHudEntity(gameFontsManager, mGameResources);
+		mScoreHudEntity = new ScoreHudEntity(gameFontsManager, mGameResources);
 		mScoreHudEntity = new ScoreHudEntity(gameFontsManager, mGameResources);
 		mGameDifficultyEntity = new GameDifficultyEntity(mGameResources);
 		mTimerHudEntity = new TimerHudEntity(gameFontsManager, mGameResources);

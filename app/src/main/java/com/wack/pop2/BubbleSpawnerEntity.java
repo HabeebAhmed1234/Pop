@@ -111,6 +111,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         int screenWidth = ScreenUtils.getSreenSize().width;
         BubbleType bubbleType = BubbleType.random();
         Body body = spawnBubble(bubbleType, (int)(Math.random() * screenWidth),-200, BubbleSize.LARGE);
+        EventBus.get().sendEvent(GameEvent.STARTING_BUBBLE_SPAWNED, new StartingBubbleSpawnedEventPayload(bubbleType));
         BubblePhysicsUtil.applyVelocity(body, 0f, (float) (SensorManager.GRAVITY_EARTH * 0.3 * 2));
     }
 
@@ -142,13 +143,12 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         body.setGravityScale(BUBBLE_GRAVITY_SCALE);
         scene.registerTouchArea(bubbleSprite);
         addToScene(bubbleSprite, body);
-        notifyBubbleSpawned(bubbleType, bubbleSprite);
+        notifyBubbleSpawned(bubbleSprite);
         return body;
     }
 
-    private void notifyBubbleSpawned(BubbleType type, Sprite bubbleSprite) {
+    private void notifyBubbleSpawned(Sprite bubbleSprite) {
         EventBus.get().sendEvent(GameEvent.BUBBLE_SPAWNED, new BubbleSpawnedEventPayload(bubbleSprite));
-        EventBus.get().sendEvent(GameEvent.STARTING_BUBBLE_SPAWNED, new StartingBubbleSpawnedEventPayload(type));
     }
 
     private void clipBubblePosition(Sprite bubbleSprite) {

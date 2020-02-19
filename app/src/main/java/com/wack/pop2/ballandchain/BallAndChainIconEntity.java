@@ -66,7 +66,7 @@ class BallAndChainIconEntity extends BaseIconEntity implements BallAndChainState
     }
 
     @Override
-    protected int getDifficultyUnlockScoreThreshold() {
+    protected float getDifficultyIntervalUnlockThreshold() {
         return BALL_AND_CHAIN_DIFFICULTY_UNLOCK_THRESHOLD;
     }
 
