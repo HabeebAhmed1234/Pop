@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<ImageView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scaleType="centerCrop"
+    android:src="@drawable/main_menu_background"/>
+
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:isScrollContainer="true">
@@ -10,22 +20,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
-        android:paddingTop="@dimen/main_menu_padding_top"
+        android:layout_gravity="center_vertical"
         android:paddingHorizontal="@dimen/main_menu_padding_horizontal">
 
-        <ImageView
+        <TextView
             android:id="@+id/logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
-            android:src="@drawable/title"/>
-
-        <Button
+            android:text="Pop"
+            android:textSize="160sp"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/neon_font"
+            />
+        <TextView
             android:id="@+id/new_game_btn"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/between_btn_padding"
-            android:text="@string/new_game_text"/>
+            android:text="@string/new_game_text"
+            android:textSize="40sp"
+            android:fontFamily="@font/neon_font"
+            android:textColor="@android:color/white"/>
 
         <!-- <Button
             android:id="@+id/options_btn"
@@ -35,10 +50,14 @@
             android:text="@string/options_text"/>
             -->
 
-        <Button
+        <TextView
             android:id="@+id/quit_btn"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/quit_text"/>
+            android:text="@string/quit_text"
+            android:textSize="30sp"
+            android:fontFamily="@font/neon_font"
+            android:textColor="@android:color/white"/>
     </LinearLayout>
 </ScrollView>
+</FrameLayout>

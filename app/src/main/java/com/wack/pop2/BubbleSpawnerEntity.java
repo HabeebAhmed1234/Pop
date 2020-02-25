@@ -32,6 +32,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import static com.wack.pop2.difficulty.DifficultyConstants.MAX_BUBBLES_PER_SPAWN;
+
 public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscriber {
 
     private static final float BUBBLE_GRAVITY_SCALE = 0.5f;
@@ -85,7 +87,10 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
                 @Override
                 public void onTimePassed(TimerHandler pTimerHandler) {
                     Log.d("asdasd", "spawning bubble");
-                    spawnStartingBubble();
+                    int numBubbles = (int) (Math.random() * MAX_BUBBLES_PER_SPAWN);
+                    for (int i = 0; i < numBubbles ; i++) {
+                        spawnStartingBubble();
+                    }
                     engine.registerUpdateHandler(new TimerHandler(bubbleSpawnInterval, false, this));
                 }
             });
