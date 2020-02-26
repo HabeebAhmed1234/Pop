@@ -82,7 +82,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		GameIconsTrayEntity gameIconsTrayEntity = new GameIconsTrayEntity(mGameResources);
 
 		// Create game entities
-		mLevelEntity = new LevelEntity(mGameResources);
+		mLevelEntity = new LevelEntity(gameTexturesManager, mGameResources);
 		mInteractionScoreHudEntity = new InteractionScoreHudEntity(gameFontsManager, mGameResources);
 		mScoreHudEntity = new ScoreHudEntity(gameFontsManager, mGameResources);
 		mScoreHudEntity = new ScoreHudEntity(gameFontsManager, mGameResources);

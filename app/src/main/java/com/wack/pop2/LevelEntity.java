@@ -3,12 +3,15 @@ package com.wack.pop2;
 import com.wack.pop2.collision.CollisionFilters;
 import com.wack.pop2.fixturedefdata.LevelWallEntityUserData;
 import com.wack.pop2.physics.PhysicsFactory;
+import com.wack.pop2.resources.textures.GameTexturesManager;
+import com.wack.pop2.resources.textures.TextureId;
+import com.wack.pop2.utils.GeometryUtils;
 import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.entity.primitive.Line;
 import org.andengine.entity.primitive.Rectangle;
-import org.andengine.entity.scene.background.Background;
-import org.andengine.util.color.AndengineColor;
+import org.andengine.entity.scene.background.SpriteBackground;
+import org.andengine.entity.sprite.Sprite;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
@@ -25,8 +28,11 @@ public class LevelEntity extends BaseEntity {
 
     private static FixtureDef levelWallFixtureDef = createWallFixtureDef();
 
-    public LevelEntity(GameResources gameResources) {
+    private GameTexturesManager texturesManager;
+
+    public LevelEntity(GameTexturesManager texturesManager, GameResources gameResources) {
         super(gameResources);
+        this.texturesManager = texturesManager;
     }
 
     @Override
@@ -36,8 +42,13 @@ public class LevelEntity extends BaseEntity {
         createLeftLevelWall();
         createRightLevelWall();
 
-        // set background color
-        scene.setBackground(new Background(AndengineColor.BLACK));
+        createBackground();
+    }
+
+    private void createBackground() {
+        final Sprite backgroundSprite = getBackgroundSprite();
+        GeometryUtils.scaleToFixScreen(backgroundSprite);
+        scene.setBackground(new SpriteBackground(backgroundSprite));
     }
 
     private void createLeftLevelWall() {
@@ -63,6 +74,13 @@ public class LevelEntity extends BaseEntity {
                 new Line(screenWidth, 0, screenWidth + RAMP_WIDTH, -RAMP_HEIGHT, vertexBufferObjectManager),
                 BodyType.STATIC,
                 levelWallFixtureDef);
+    }
+
+    private Sprite getBackgroundSprite() {
+        return new Sprite(0,
+                0,
+                texturesManager.getTextureRegion(TextureId.BACKGROUND),
+                vertexBufferObjectManager);
     }
 
     private static FixtureDef createWallFixtureDef() {

@@ -2,6 +2,8 @@ package com.wack.pop2.utils;
 
 import android.app.Activity;
 import android.graphics.Point;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.view.Display;
 
 import org.andengine.entity.primitive.Rectangle;
@@ -22,6 +24,7 @@ public class ScreenUtils {
     }
 
     private static ScreenSize sScreenSize;
+    private static RectF sScreenRect;
     private static IShape sScreenShape;
 
     /**
@@ -36,6 +39,8 @@ public class ScreenUtils {
             activity.getWindowManager().getDefaultDisplay().getSize(size);
             sScreenSize = new ScreenSize(size.x, size.y);
         }
+
+        sScreenRect = new RectF(0, 0, sScreenSize.width, sScreenSize.height);
     }
 
     /**
@@ -49,9 +54,16 @@ public class ScreenUtils {
 
     public static ScreenSize getSreenSize() {
         if (sScreenSize == null) {
-            throw new IllegalStateException("Cannot get screen size without ScreenUtils.init being called");
+            throw new IllegalStateException("Cannot get screen size without ScreenUtils.onCreateEngineOptions being called");
         }
         return sScreenSize;
+    }
+
+    public static RectF getScreenRect() {
+        if (sScreenRect == null) {
+            throw new IllegalStateException("Cannot get screen rect without ScreenUtils.onCreateEngineOptions being called");
+        }
+        return sScreenRect;
     }
 
     public static boolean isInScreen(IShape shape) {

@@ -1,5 +1,11 @@
 package com.wack.pop2.utils;
 
+import android.graphics.Matrix;
+import android.graphics.Rect;
+import android.graphics.RectF;
+
+import androidx.constraintlayout.solver.widgets.Rectangle;
+
 import com.wack.pop2.physics.util.Vec2Pool;
 
 import org.andengine.entity.IEntity;
@@ -37,5 +43,17 @@ public class GeometryUtils {
 
     public static float[] getCenterPoint(float x1, float y1, float x2, float y2) {
         return new float[]{ x1 + (x2 - x1) / 2, y1 + (y2 - y1) / 2};
+    }
+
+    /**
+     * Scales the given sprite to fix the screen width and height while maintaining the aspect ratio
+     * @return
+     */
+    public static void scaleToFixScreen(Sprite srcSprite) {
+        Matrix matrix = new Matrix();
+        RectF dstRect = new RectF(ScreenUtils.getScreenRect());
+        matrix.setRectToRect(new RectF(0, 0, (int) srcSprite.getWidth(), (int) srcSprite.getHeight()), dstRect, Matrix.ScaleToFit.CENTER);
+        srcSprite.setWidth(dstRect.width());
+        srcSprite.setHeight(dstRect.height());
     }
 }
