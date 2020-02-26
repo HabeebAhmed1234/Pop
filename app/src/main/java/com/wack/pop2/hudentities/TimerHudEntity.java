@@ -8,6 +8,7 @@ import com.wack.pop2.resources.fonts.GameFontsManager;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.text.Text;
+import org.andengine.util.color.AndengineColor;
 
 /**
  * Entity that contains score hud panel
@@ -37,7 +38,7 @@ public class TimerHudEntity extends BaseEntity {
     @Override
     public void onCreateScene() {
         timerText = new Text(20,20, fontsManager.getFont(FontId.SCORE_TICKER_FONT), getFormattedTimerText(), MAX_TIMER_TEXT_LENGTH, vertexBufferObjectManager);
-        timerText.setColor(1,0,0);
+        timerText.setColor(AndengineColor.TRANSPARENT);
         scene.attachChild(timerText);
     }
 

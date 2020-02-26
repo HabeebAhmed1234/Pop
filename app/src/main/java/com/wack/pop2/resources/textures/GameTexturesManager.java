@@ -65,6 +65,7 @@ public class GameTexturesManager extends BaseEntity {
                 TextureId.BACKGROUND,
                 BitmapTextureAtlasTextureRegionFactory.createFromAsset(
                         textureAtlas, context, "main_menu_background.png",0, 0));
+        textureAtlas.load();
     }
 
     private void loadMainTextures() {

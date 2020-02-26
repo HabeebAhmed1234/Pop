@@ -19,6 +19,8 @@ import org.andengine.util.color.AndengineColor;
  */
 public class ScoreHudEntity extends BaseHudTextEntity implements EventBus.Subscriber {
 
+    private static final String SCORE_TEXT_PREFIX = "Score: ";
+
     private int scoreValue = 0;
     private int maxScoreValue = 0;
 
@@ -36,6 +38,11 @@ public class ScoreHudEntity extends BaseHudTextEntity implements EventBus.Subscr
     }
 
     @Override
+    String getInitialText() {
+        return SCORE_TEXT_PREFIX + "-------";
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         EventBus.get().unSubscribe(GameEvent.INCREMENT_SCORE, this).unSubscribe(GameEvent.DECREMENT_SCORE, this);
@@ -43,7 +50,7 @@ public class ScoreHudEntity extends BaseHudTextEntity implements EventBus.Subscr
 
     @Override
     int[] getTextPosition() {
-        return new int[] {50, ScreenUtils.getSreenSize().height - 150};
+        return new int[] {20, 20};
     }
 
     @Override
@@ -92,6 +99,6 @@ public class ScoreHudEntity extends BaseHudTextEntity implements EventBus.Subscr
     }
 
     private void updateScoreText() {
-        updateText("Score: " + scoreValue + " - " + maxScoreValue);
+        updateText(SCORE_TEXT_PREFIX + scoreValue + " - " + maxScoreValue);
     }
 }

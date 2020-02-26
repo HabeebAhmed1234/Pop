@@ -23,6 +23,11 @@ public class InteractionScoreHudEntity extends BaseHudTextEntity implements Even
     }
 
     @Override
+    String getInitialText() {
+        return "IntScore: --------";
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         EventBus.get().unSubscribe(GameEvent.INTERACTION_SCORE_CHANGED, this);
