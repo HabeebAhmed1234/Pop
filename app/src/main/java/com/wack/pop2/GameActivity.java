@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
+import com.wack.pop2.backgroundmusic.BackgroundMusicEntity;
 import com.wack.pop2.ballandchain.BallAndChainManagerEntity;
 import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.bubblepopper.BufferedBubblePopperEntity;
@@ -17,6 +18,7 @@ import com.wack.pop2.hudentities.TimerHudEntity;
 import com.wack.pop2.interaction.InteractionCounter;
 import com.wack.pop2.nuke.NukeManagerEntity;
 import com.wack.pop2.resources.fonts.GameFontsManager;
+import com.wack.pop2.resources.music.GameMusicManagerEntity;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.turret.TurretsManagerEntity;
@@ -40,6 +42,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 	private GameResources mGameResources;
 	private LevelEntity mLevelEntity;
+	private BackgroundMusicEntity mBackgroundMusicEntity;
 	private GameDifficultyEntity mGameDifficultyEntity;
 	private InteractionScoreHudEntity mInteractionScoreHudEntity;
 	private ScoreHudEntity mScoreHudEntity;
@@ -74,6 +77,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		GameFontsManager gameFontsManager = new GameFontsManager(getFontManager(), getTextureManager(), getAssets(), mGameResources);
 		GameTexturesManager gameTexturesManager = new GameTexturesManager(this, getTextureManager(), mGameResources);
 		GameSoundsManager gameSoundsManager = new GameSoundsManager(this, getSoundManager(), mGameResources);
+		GameMusicManagerEntity gameMusicManagerEntity = new GameMusicManagerEntity(this, getMusicManager(), mGameResources);
 		GameAnimationManager gameAnimationManager = new GameAnimationManager(mGameResources);
 		GamePhysicsContactsEntity gamePhysicsContactsEntity = new GamePhysicsContactsEntity(mGameResources);
 		InteractionCounter interactionCounter = new InteractionCounter(mGameResources);
@@ -83,6 +87,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 		// Create game entities
 		mLevelEntity = new LevelEntity(gameTexturesManager, mGameResources);
+		mBackgroundMusicEntity = new BackgroundMusicEntity(gameMusicManagerEntity, mGameResources);
 		mInteractionScoreHudEntity = new InteractionScoreHudEntity(gameFontsManager, mGameResources);
 		mScoreHudEntity = new ScoreHudEntity(gameFontsManager, mGameResources);
 		mScoreHudEntity = new ScoreHudEntity(gameFontsManager, mGameResources);
@@ -124,6 +129,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 				this.camera);
 		engineOptions.getTouchOptions().setNeedsMultiTouch(true);
 		engineOptions.getAudioOptions().setNeedsSound(true);
+		engineOptions.getAudioOptions().getMusicOptions().setNeedsMusic(true);
 		return engineOptions;
 	}
 
