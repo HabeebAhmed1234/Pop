@@ -31,7 +31,6 @@ public class GameTexturesManager extends BaseEntity {
     private static class ImageResource {
 
         private TextureId textureId;
-
         private final String filename;
         private final int widthPx;
         private final int heightPx;
@@ -55,7 +54,7 @@ public class GameTexturesManager extends BaseEntity {
 
     private static final List<ImageResource> IMAGE_RESOURCES = Arrays.asList(
             new ImageResource(TextureId.EXPLOSION, "explosion.png", 850, 950, true, new Pair<>(3, 4)),
-            new ImageResource(TextureId.BALL, "ball.png", 150, 150),
+            new ImageResource(TextureId.BALL, "ball.png", 300, 300),
             new ImageResource(TextureId.GAME_OVER, "gameover_fade.png", 100, 100),
             new ImageResource(TextureId.CHAIN_LINK, "chain_link.png", 100, 50),
             new ImageResource(TextureId.BALL_AND_CHAIN_ICON, "ball_and_chain_icon.png",100, 100),
@@ -66,7 +65,7 @@ public class GameTexturesManager extends BaseEntity {
             new ImageResource(TextureId.WHITE_PIXEL, "white_pixel.png", 1, 1),
             new ImageResource(TextureId.DELETE_WALL_ICON, "delete_wall_icon.png", 100, 100),
             new ImageResource(TextureId.NUKE_ICON, "nuke_icon.png", 100, 100),
-            new ImageResource(TextureId.BACKGROUND, "main_menu_background.png", 1024, 1024)
+            new ImageResource(TextureId.BACKGROUND, "main_menu_background.png", 576, 1022)
     );
 
     private static final int MAX_TEXTURE_ATLAS_WIDTH = 1024;
@@ -120,7 +119,7 @@ public class GameTexturesManager extends BaseEntity {
     }
 
     private RectanglePacker<ImageResource> createNewRectanglePacker() {
-        return new RectanglePacker<>(MAX_TEXTURE_ATLAS_WIDTH, MAX_TEXTURE_ATLAS_HEIGHT, 0);
+        return new RectanglePacker<>(MAX_TEXTURE_ATLAS_WIDTH, MAX_TEXTURE_ATLAS_HEIGHT, 1);
     }
 
     private BitmapTextureAtlas createNewAtlas() {

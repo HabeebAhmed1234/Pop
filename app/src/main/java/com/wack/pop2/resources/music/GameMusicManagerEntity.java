@@ -8,7 +8,6 @@ import com.wack.pop2.GameResources;
 import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
 import org.andengine.audio.music.MusicManager;
-import org.andengine.audio.sound.SoundFactory;
 import org.andengine.util.debug.Debug;
 
 import java.io.IOException;
