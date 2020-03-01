@@ -57,14 +57,14 @@ public class GameTexturesManager extends BaseEntity {
             new ImageResource(TextureId.BALL, "ball.png", 300, 300),
             new ImageResource(TextureId.GAME_OVER, "gameover_fade.png", 100, 100),
             new ImageResource(TextureId.CHAIN_LINK, "chain_link.png", 150, 75),
-            new ImageResource(TextureId.BALL_AND_CHAIN_ICON, "ball_and_chain_icon.png",100, 100),
+            new ImageResource(TextureId.BALL_AND_CHAIN_ICON, "ball_and_chain_icon.png",300, 300),
             new ImageResource(TextureId.LINE, "line.png", 110, 30),
-            new ImageResource(TextureId.TURRETS_ICON, "turrets_icon.png",100, 100),
-            new ImageResource(TextureId.WALLS_ICON, "walls_icon.png",100, 100),
+            new ImageResource(TextureId.TURRETS_ICON, "turrets_icon.png",300, 300),
+            new ImageResource(TextureId.WALLS_ICON, "walls_icon.png",300, 300),
             new ImageResource(TextureId.BULLET, "bullet.png", 30, 30),
             new ImageResource(TextureId.WHITE_PIXEL, "white_pixel.png", 1, 1),
             new ImageResource(TextureId.DELETE_WALL_ICON, "delete_wall_icon.png", 100, 100),
-            new ImageResource(TextureId.NUKE_ICON, "nuke_icon.png", 100, 100),
+            new ImageResource(TextureId.NUKE_ICON, "nuke_icon.png", 300, 300),
             new ImageResource(TextureId.BACKGROUND, "main_menu_background.png", 576, 1022)
     );
 
