@@ -1,9 +1,13 @@
 package com.wack.pop2.resources.textures;
 
 import android.content.Context;
+import android.util.Pair;
+
+import androidx.annotation.Nullable;
 
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameResources;
+import com.wack.pop2.texturepacker.RectanglePacker;
 
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
@@ -11,20 +15,68 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class GameTexturesManager extends BaseEntity {
 
-    private static final int EXPLOSION_TEXTURE_ATLAS_W_PX = 850;
-    private static final int EXPLOSION_TEXTURE_ATLAS_H_PX = 950;
+    private static final String TAG = "GameTexturesManager";
+    /**
+     * Encodes an image resource being used by the app.
+     */
+    private static class ImageResource {
+
+        private TextureId textureId;
+
+        private final String filename;
+        private final int widthPx;
+        private final int heightPx;
+
+        private boolean isTiled;
+        @Nullable private Pair<Integer, Integer> tilesSize;
+
+        ImageResource(TextureId textureId, final String filename, int widthPx, int heightPx) {
+            this(textureId, filename, widthPx, heightPx, false, null);
+        }
+
+        ImageResource(TextureId textureId, final String filename, int widthPx, int heightPx, boolean isTiled, Pair<Integer, Integer> tilesSize) {
+            this.textureId = textureId;
+            this.filename = filename;
+            this.widthPx = widthPx;
+            this.heightPx = heightPx;
+            this.isTiled = isTiled;
+            this.tilesSize = tilesSize;
+        }
+    }
+
+    private static final List<ImageResource> IMAGE_RESOURCES = Arrays.asList(
+            new ImageResource(TextureId.EXPLOSION, "explosion.png", 850, 950, true, new Pair<>(3, 4)),
+            new ImageResource(TextureId.BALL, "ball.png", 150, 150),
+            new ImageResource(TextureId.GAME_OVER, "gameover_fade.png", 100, 100),
+            new ImageResource(TextureId.CHAIN_LINK, "chain_link.png", 100, 50),
+            new ImageResource(TextureId.BALL_AND_CHAIN_ICON, "ball_and_chain_icon.png",100, 100),
+            new ImageResource(TextureId.LINE, "line.png", 110, 30),
+            new ImageResource(TextureId.TURRETS_ICON, "turrets_icon.png",100, 100),
+            new ImageResource(TextureId.WALLS_ICON, "walls_icon.png",100, 100),
+            new ImageResource(TextureId.BULLET, "bullet.png", 30, 30),
+            new ImageResource(TextureId.WHITE_PIXEL, "white_pixel.png", 1, 1),
+            new ImageResource(TextureId.DELETE_WALL_ICON, "delete_wall_icon.png", 100, 100),
+            new ImageResource(TextureId.NUKE_ICON, "nuke_icon.png", 100, 100),
+            new ImageResource(TextureId.BACKGROUND, "main_menu_background.png", 1024, 1024)
+    );
+
+    private static final int MAX_TEXTURE_ATLAS_WIDTH = 1024;
+    private static final int MAX_TEXTURE_ATLAS_HEIGHT = 1024;
+
 
     private final Context context;
     private final TextureManager textureManager;
     private final Map<TextureId, ITextureRegion> mTextureRegions = new HashMap();
-    private BitmapTextureAtlas mainBitmapTextureAtlas;
-
-    private int currentTexturesWidth = 0;
+    private List<BitmapTextureAtlas> atlases = new ArrayList<>();
 
     public GameTexturesManager(Context context, TextureManager textureManager, GameResources gameResources) {
         super(gameResources);
@@ -42,54 +94,76 @@ public class GameTexturesManager extends BaseEntity {
     @Override
     public void onCreateResources() {
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-
-        loadExplosionTexture();
-        loadBackgroundTexture();
-        loadMainTextures();
+        arrangeTextures();
+        loadAtlases();
     }
 
-    private void loadExplosionTexture() {
-        BitmapTextureAtlas explosionBitmapTextureAtlas = new BitmapTextureAtlas(textureManager, EXPLOSION_TEXTURE_ATLAS_W_PX, EXPLOSION_TEXTURE_ATLAS_H_PX, TextureOptions.BILINEAR);
+    private void arrangeTextures() {
+        Iterator<ImageResource> imageResourceIterator = IMAGE_RESOURCES.iterator();
+
+        RectanglePacker<ImageResource> packer = createNewRectanglePacker();
+        BitmapTextureAtlas currentTextureAtlas = createNewAtlas();
+
+        while (imageResourceIterator.hasNext()) {
+            ImageResource resource = imageResourceIterator.next();
+            boolean packingSuccessful = packThenAddToAtlas(packer, currentTextureAtlas, resource);
+            if (!packingSuccessful) {
+                // The resource could not fit. We must make a new atlas and add the image in
+                currentTextureAtlas = createNewAtlas();
+                packer = createNewRectanglePacker();
+
+                if (!packThenAddToAtlas(packer, currentTextureAtlas, resource)) {
+                    throw new IllegalArgumentException("given texture " + resource.filename + " is too large to fit an atlas");
+                }
+            }
+        }
+    }
+
+    private RectanglePacker<ImageResource> createNewRectanglePacker() {
+        return new RectanglePacker<>(MAX_TEXTURE_ATLAS_WIDTH, MAX_TEXTURE_ATLAS_HEIGHT, 0);
+    }
+
+    private BitmapTextureAtlas createNewAtlas() {
+        BitmapTextureAtlas atlas = new BitmapTextureAtlas(textureManager, MAX_TEXTURE_ATLAS_WIDTH, MAX_TEXTURE_ATLAS_HEIGHT, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        atlases.add(atlas);
+        return atlas;
+    }
+
+    /**
+     * Returns false if there was no valid packed location. Else true if it was successful
+     */
+    private boolean packThenAddToAtlas(RectanglePacker packer, BitmapTextureAtlas textureAtlas, ImageResource resource) {
+        @Nullable RectanglePacker.Rectangle packedLocation = packer.insert(resource.widthPx, resource.heightPx, resource);
+        if (packedLocation == null) {
+            return false;
+        }
+        addToAtlas(packedLocation, textureAtlas, resource);
+        return true;
+    }
+
+    private void addToAtlas(RectanglePacker.Rectangle packedLocation, BitmapTextureAtlas textureAtlas, ImageResource resource) {
         mTextureRegions.put(
-                TextureId.EXPLOSION,
-                BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
-                        explosionBitmapTextureAtlas,
-                        context,
-                        "explosion.png",
-                        0, 0, 3, 4));
+                resource.textureId,
+                resource.isTiled
+                        ? BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
+                                textureAtlas,
+                                context,
+                                "explosion.png",
+                                packedLocation.x,
+                                packedLocation.y,
+                                resource.tilesSize.first,
+                                resource.tilesSize.second)
+                        : BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+                                textureAtlas,
+                                context,
+                                resource.filename,
+                                packedLocation.x,
+                                packedLocation.y));
     }
 
-    private void loadBackgroundTexture() {
-        BitmapTextureAtlas textureAtlas = new BitmapTextureAtlas(textureManager, 1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-        mTextureRegions.put(
-                TextureId.BACKGROUND,
-                BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-                        textureAtlas, context, "main_menu_background.png",0, 0));
-        textureAtlas.load();
-    }
-
-    private void loadMainTextures() {
-        mainBitmapTextureAtlas = new BitmapTextureAtlas(textureManager, 2048, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-        addToMainTexture(TextureId.BALL, "ball.png", 150);
-        addToMainTexture(TextureId.SKULL_BALL,  "skull_ball.png", 100);
-        addToMainTexture(TextureId.GAME_OVER, "gameover_fade.png", 100);
-        addToMainTexture(TextureId.CHAIN_LINK, "chain_link.png", 100);
-        addToMainTexture(TextureId.BALL_AND_CHAIN_ICON, "ball_and_chain_icon.png",100);
-        addToMainTexture(TextureId.LINE, "line.png", 110);
-        addToMainTexture(TextureId.TURRETS_ICON, "turrets_icon.png",110);
-        addToMainTexture(TextureId.WALLS_ICON, "walls_icon.png",110);
-        addToMainTexture(TextureId.BULLET, "bullet.png", 30);
-        addToMainTexture(TextureId.WHITE_PIXEL, "white_pixel.png", 1);
-        addToMainTexture(TextureId.DELETE_WALL_ICON, "delete_wall_icon.png", 110);
-        addToMainTexture(TextureId.NUKE_ICON, "nuke_icon.png", 110);
-        mainBitmapTextureAtlas.load();
-    }
-
-    private void addToMainTexture(TextureId id, String filename, int width) {
-        mTextureRegions.put(
-                id,
-                BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-                        mainBitmapTextureAtlas, context, filename,currentTexturesWidth, 0));
-        currentTexturesWidth += width + 1;
+    private void loadAtlases() {
+        for (BitmapTextureAtlas atlas : atlases) {
+            atlas.load();
+        }
     }
 }
