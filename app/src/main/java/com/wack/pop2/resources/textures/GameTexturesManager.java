@@ -56,7 +56,7 @@ public class GameTexturesManager extends BaseEntity {
             new ImageResource(TextureId.EXPLOSION, "explosion.png", 850, 950, true, new Pair<>(3, 4)),
             new ImageResource(TextureId.BALL, "ball.png", 300, 300),
             new ImageResource(TextureId.GAME_OVER, "gameover_fade.png", 100, 100),
-            new ImageResource(TextureId.CHAIN_LINK, "chain_link.png", 100, 50),
+            new ImageResource(TextureId.CHAIN_LINK, "chain_link.png", 150, 75),
             new ImageResource(TextureId.BALL_AND_CHAIN_ICON, "ball_and_chain_icon.png",100, 100),
             new ImageResource(TextureId.LINE, "line.png", 110, 30),
             new ImageResource(TextureId.TURRETS_ICON, "turrets_icon.png",100, 100),
