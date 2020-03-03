@@ -53,16 +53,15 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private void animateLogo() {
         final View logo = findViewById(R.id.logo);
-        logoAnimator = ObjectAnimator.ofFloat(1,0.95f, 1);
-        logoAnimator.setDuration(1000);
+        logoAnimator = ObjectAnimator.ofFloat(1,0.5f, 1,1,1,1,1,1,1,1,0.7f,1);
+        logoAnimator.setDuration(2000);
         logoAnimator.start();
         logoAnimator.setRepeatMode(ValueAnimator.RESTART);
 
         logoAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                logo.setScaleX((float) animation.getAnimatedValue());
-                logo.setScaleY((float) animation.getAnimatedValue());
+                logo.setAlpha((float) animation.getAnimatedValue());
             }
         });
         logoAnimator.addListener(new AnimatorListenerAdapter() {
