@@ -1,9 +1,11 @@
 package com.wack.pop2.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.TypedValue;
 import android.view.Display;
 
 import org.andengine.entity.primitive.Rectangle;
@@ -68,5 +70,9 @@ public class ScreenUtils {
 
     public static boolean isInScreen(IShape shape) {
         return shape.collidesWith(sScreenShape);
+    }
+
+    public static int dpToPx(float dp, Context context) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
     }
 }
