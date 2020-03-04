@@ -23,19 +23,21 @@
         android:layout_gravity="center_vertical"
         android:clipChildren="false">
 
-        <com.wack.pop2.androidbuttons.GameMenuButton
+        <TextView
             android:id="@+id/logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/title_margin_bottom"
             android:text="Pop"
             android:textSize="160sp"
             android:textColor="@android:color/white"
             android:fontFamily="@font/neon_font"
             android:shadowColor = "@android:color/white"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="80"
             android:gravity="center"
             android:clipToPadding="false"
-            app:glow_color="@android:color/white"
-            app:glow_strength="80"
             />
         <com.wack.pop2.androidbuttons.GameMenuButton
             android:id="@+id/new_game_btn"
@@ -47,20 +49,23 @@
             android:fontFamily="@font/neon_font"
             android:textColor="@android:color/white"
             android:clipToPadding="false"
-            app:glow_color="@android:color/white"
-            app:glow_strength="50"/>
+            app:glow_color="@color/menu_button_color"
+            app:pressed_glow_color = "@color/menu_button_pressed_color"
+            app:glow_strength="80"/>
 
         <com.wack.pop2.androidbuttons.GameMenuButton
             android:id="@+id/quit_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/between_btn_padding"
             android:text="@string/quit_text"
             android:textSize="30sp"
             android:fontFamily="@font/neon_font"
             android:textColor="@android:color/white"
             android:clipToPadding="false"
-            app:glow_color="@android:color/white"
-            app:glow_strength="50"/>
+            app:glow_color="@color/menu_button_color"
+            app:pressed_glow_color = "@color/menu_button_pressed_color"
+            app:glow_strength="80"/>
     </LinearLayout>
 </ScrollView>
 </FrameLayout>

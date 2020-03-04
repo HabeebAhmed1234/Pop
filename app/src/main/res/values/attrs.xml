@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="GameMenuButton">
         <attr name="glow_strength" format="float"/>
-        <attr name="glow_color" format="float"/>
+        <attr name="glow_color" format="reference"/>
+        <attr name="pressed_glow_color" format="reference"/>
     </declare-styleable>
 </resources>

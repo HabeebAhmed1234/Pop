@@ -2,4 +2,5 @@
     <dimen name="main_menu_padding_horizontal">32dp</dimen>
     <dimen name="main_menu_padding_top">120dp</dimen>
     <dimen name="between_btn_padding">16dp</dimen>
+    <dimen name="title_margin_bottom">40dp</dimen>
 </resources>
