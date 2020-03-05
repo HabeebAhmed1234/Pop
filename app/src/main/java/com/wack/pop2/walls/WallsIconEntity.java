@@ -125,8 +125,8 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements GameArea
     }
 
     @Override
-    protected GameIconsTrayEntity.ICON_ID getIconId() {
-        return GameIconsTrayEntity.ICON_ID.WALLS_ICON;
+    protected GameIconsTrayEntity.IconId getIconId() {
+        return GameIconsTrayEntity.IconId.WALLS_ICON;
     }
 
     @Override

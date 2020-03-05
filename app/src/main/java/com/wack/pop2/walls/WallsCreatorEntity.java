@@ -99,7 +99,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
     }
 
     private boolean shouldStartPlacingWall(TouchEvent touchEvent) {
-        Sprite wallsIcon = gameIconsTrayEntity.getIcon(GameIconsTrayEntity.ICON_ID.WALLS_ICON);
+        Sprite wallsIcon = gameIconsTrayEntity.getIcon(GameIconsTrayEntity.IconId.WALLS_ICON);
         return !isWallBeingPlaced() &&
                 stateMachine.getCurrentState() == WallsStateMachine.State.TOGGLED_ON &&
                 wallsIconEntity.hasInventory() &&

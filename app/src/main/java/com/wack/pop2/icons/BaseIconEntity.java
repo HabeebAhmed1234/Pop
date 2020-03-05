@@ -108,7 +108,7 @@ public abstract class BaseIconEntity extends BaseEntity implements GameAreaTouch
 
     protected abstract BaseEntityUserData getUserData();
 
-    protected abstract GameIconsTrayEntity.ICON_ID getIconId();
+    protected abstract GameIconsTrayEntity.IconId getIconId();
 
     protected abstract float getDifficultyIntervalUnlockThreshold();
 

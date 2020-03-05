@@ -14,7 +14,7 @@ import org.andengine.entity.scene.ITouchArea;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.color.AndengineColor;
 
-import static com.wack.pop2.GameIconsTrayEntity.ICON_ID.NUKE_ICON;
+import static com.wack.pop2.GameIconsTrayEntity.IconId.NUKE_ICON;
 import static com.wack.pop2.nuke.NukeConstants.NUKE_UNLOCK_THRESHOLD;
 
 public class NukeIconEntity extends BaseIconEntity implements BaseStateMachine.Listener<NukeStateMachine.State> {
@@ -50,7 +50,7 @@ public class NukeIconEntity extends BaseIconEntity implements BaseStateMachine.L
     }
 
     @Override
-    protected GameIconsTrayEntity.ICON_ID getIconId() {
+    protected GameIconsTrayEntity.IconId getIconId() {
         return NUKE_ICON;
     }
 

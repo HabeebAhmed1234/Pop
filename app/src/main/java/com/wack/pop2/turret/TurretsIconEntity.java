@@ -155,8 +155,8 @@ class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subs
     }
 
     @Override
-    protected GameIconsTrayEntity.ICON_ID getIconId() {
-        return GameIconsTrayEntity.ICON_ID.TURRETS_ICON;
+    protected GameIconsTrayEntity.IconId getIconId() {
+        return GameIconsTrayEntity.IconId.TURRETS_ICON;
     }
 
     @Override

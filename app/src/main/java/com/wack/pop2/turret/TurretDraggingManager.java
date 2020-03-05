@@ -131,6 +131,6 @@ public class TurretDraggingManager extends BaseEntity implements GameSceneTouchL
     }
 
     private boolean isTouchOverTurretsIcon(TouchEvent touchEvent) {
-        return iconsTrayEntity.getIcon(GameIconsTrayEntity.ICON_ID.TURRETS_ICON).contains(touchEvent.getX(), touchEvent.getY());
+        return iconsTrayEntity.getIcon(GameIconsTrayEntity.IconId.TURRETS_ICON).contains(touchEvent.getX(), touchEvent.getY());
     }
 }

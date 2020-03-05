@@ -61,8 +61,8 @@ class BallAndChainIconEntity extends BaseIconEntity implements BallAndChainState
     }
 
     @Override
-    protected GameIconsTrayEntity.ICON_ID getIconId() {
-        return GameIconsTrayEntity.ICON_ID.BALL_AND_CHAIN_ICON;
+    protected GameIconsTrayEntity.IconId getIconId() {
+        return GameIconsTrayEntity.IconId.BALL_AND_CHAIN_ICON;
     }
 
     @Override

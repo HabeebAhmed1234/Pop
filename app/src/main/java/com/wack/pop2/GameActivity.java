@@ -180,4 +180,9 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 	@Override
 	public void onAccelerationChanged(AccelerationData pAccelerationData) {}
+
+	@Override
+	public Context getActivityContext() {
+		return this;
+	}
 }
