@@ -41,6 +41,7 @@ public class GameIconsTrayEntity extends BaseEntity{
     private static final int PADDING_HORIZONTAL_DP = 8;
     private static final int PADDING_VERTICAL_DP = 8;
     private static final int PADDING_BETWEEN_DP = 16;
+    private static final int MARGIN_RIGHT_DP = 24;
 
     private final List<Pair<IconId, Sprite>> icons = new ArrayList<>();
 
@@ -150,6 +151,10 @@ public class GameIconsTrayEntity extends BaseEntity{
         return ScreenUtils.dpToPx(PADDING_BETWEEN_DP, hostActivity.getActivityContext());
     }
 
+    private int getMarginRightPx() {
+        return ScreenUtils.dpToPx(MARGIN_RIGHT_DP, hostActivity.getActivityContext());
+    }
+
     /**
      * Returns the width of the tray including internal padding
      */
@@ -175,7 +180,7 @@ public class GameIconsTrayEntity extends BaseEntity{
                 return ScreenUtils.getSreenSize().width;
             case EXPANDED:
             case EXPANDING:
-                return ScreenUtils.getSreenSize().width - getTrayWidthPx();
+                return ScreenUtils.getSreenSize().width - getTrayWidthPx() - getMarginRightPx();
         }
         throw new IllegalArgumentException(state + " doesn't have an x position");
     }
