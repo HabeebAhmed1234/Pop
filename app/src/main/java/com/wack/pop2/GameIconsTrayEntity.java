@@ -32,17 +32,20 @@ public class GameIconsTrayEntity extends BaseEntity{
         CLOSING,
     }
 
-    private static final AndengineColor TRAY_COLOR = AndengineColor.WHITE;
+    private static final AndengineColor TRAY_BORDER_COLOR = AndengineColor.WHITE;
+    private static final AndengineColor TRAY_INNER_COLOR = AndengineColor.BLACK;
+    private static final int TRAY_BORDER_SIZE_DP = 4;
 
     private static final float ICONS_SIZE_AS_PERCENT_OF_SCREEN_WIDTH = 0.15f;
     private static final float ICONS_TRAY_VERTICAL_CENTER_POINT_AS_PERCENT_OF_SCREEN_HEIGHT = 0.5f;
-    private static final int PADDING_HORIZONTAL_DP = 50;
-    private static final int PADDING_VERTICAL_DP = 50;
-    private static final int PADDING_BETWEEN_DP = 30;
+    private static final int PADDING_HORIZONTAL_DP = 8;
+    private static final int PADDING_VERTICAL_DP = 8;
+    private static final int PADDING_BETWEEN_DP = 16;
 
     private final List<Pair<IconId, Sprite>> icons = new ArrayList<>();
 
     private Rectangle iconsTray;
+    private Rectangle iconsTrayInner;
     private TrayState currentTrayState = TrayState.EXPANDED;
 
     public GameIconsTrayEntity(GameResources gameResources) {
@@ -53,7 +56,11 @@ public class GameIconsTrayEntity extends BaseEntity{
     public void onCreateScene() {
         super.onCreateScene();
         iconsTray = new Rectangle(0,0,0,0, vertexBufferObjectManager);
-        iconsTray.setColor(TRAY_COLOR);
+        iconsTray.setColor(TRAY_BORDER_COLOR);
+        iconsTrayInner = new Rectangle(0,0,0,0, vertexBufferObjectManager);
+        iconsTrayInner.setColor(TRAY_INNER_COLOR);
+        scene.attachChild(iconsTray);
+        scene.attachChild(iconsTrayInner);
         refreshDimensions(null);
     }
 
@@ -88,6 +95,12 @@ public class GameIconsTrayEntity extends BaseEntity{
         iconsTray.setHeight(getTrayHeightPx());
         iconsTray.setX(getTrayXPostition(currentTrayState));
         iconsTray.setY(getTrayYPostition());
+
+        int trayBorderSizePx = getTrayBorderSizePx();
+        iconsTrayInner.setWidth(iconsTray.getWidthScaled() - trayBorderSizePx * 2);
+        iconsTrayInner.setHeight(iconsTray.getHeightScaled() - trayBorderSizePx * 2);
+        iconsTrayInner.setX(iconsTray.getX() + trayBorderSizePx);
+        iconsTrayInner.setY(iconsTray.getY() + trayBorderSizePx);
     }
 
     private void refreshIconPostitions() {
@@ -115,6 +128,10 @@ public class GameIconsTrayEntity extends BaseEntity{
         int iconSizePx = getIconSizePx();
         iconSprite.setWidth(iconSizePx);
         iconSprite.setHeight(iconSizePx);
+    }
+
+    private int getTrayBorderSizePx() {
+        return ScreenUtils.dpToPx(TRAY_BORDER_SIZE_DP, hostActivity.getActivityContext());
     }
 
     private int getIconSizePx() {

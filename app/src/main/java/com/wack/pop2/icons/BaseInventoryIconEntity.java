@@ -19,7 +19,7 @@ import static com.wack.pop2.turret.TurretsConstants.MAX_TURRET_INVENTORY;
 public abstract class BaseInventoryIconEntity extends BaseIconEntity {
 
     private static final float INVENTORY_TEXT_MAX_WIDTH_PX = 20;
-    private static final float INVENTORY_TEXT_MAX_HEIGHT_PX = 80;
+    private static final float INVENTORY_TEXT_MAX_HEIGHT_PX = 50;
 
     private GameFontsManager fontsManager;
 
