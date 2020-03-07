@@ -55,9 +55,9 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
     }
 
     public enum BubbleSize {
-        LARGE(3f),
-        MEDIUM(2f),
-        SMALL(1f);
+        LARGE(1.7f),
+        MEDIUM(1.3f),
+        SMALL(0.9f);
 
         public final float scale;
 
@@ -86,7 +86,6 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
             new ITimerCallback() {
                 @Override
                 public void onTimePassed(TimerHandler pTimerHandler) {
-                    Log.d("asdasd", "spawning bubble");
                     int numBubbles = (int) (Math.random() * MAX_BUBBLES_PER_SPAWN);
                     for (int i = 0; i < numBubbles ; i++) {
                         spawnStartingBubble();
