@@ -18,7 +18,7 @@ import org.andengine.input.touch.TouchEvent;
 class GameIconsTrayOpenCloseButton extends BaseEntity implements BaseStateMachine.Listener<GameIconsTrayStateMachine.State> {
 
     private static final float ICON_SIZE_AS_PERCENT_OF_SCREEN_WIDTH = 0.15f;
-    private static final int ICON_RIGHT_MARGIN_DP = 16;
+    private static final int ICON_RIGHT_MARGIN_DP = 4;
 
     private Sprite iconSpriteOpen;
     private Sprite iconSpriteClose;

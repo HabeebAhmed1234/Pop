@@ -7,7 +7,7 @@ import org.andengine.util.modifier.IModifier;
 
 class TrayAnimationManager {
 
-    private static final float FULL_OPEN_CLOSE_ANIMATION_DURATION = 1f;
+    private static final float FULL_OPEN_CLOSE_ANIMATION_DURATION = 0.3f;
 
     private Rectangle tray;
     private GameIconsTrayStateMachine stateMachine;

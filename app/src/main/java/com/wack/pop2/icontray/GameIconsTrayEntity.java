@@ -31,10 +31,11 @@ public class GameIconsTrayEntity extends BaseEntity implements TrayCallback {
 
     private static final float ICONS_SIZE_AS_PERCENT_OF_SCREEN_WIDTH = 0.15f;
     private static final float ICONS_TRAY_VERTICAL_CENTER_POINT_AS_PERCENT_OF_SCREEN_HEIGHT = 0.5f;
-    private static final int PADDING_HORIZONTAL_DP = 8;
+
+    private static final int PADDING_HORIZONTAL_DP = 0;
     private static final int PADDING_VERTICAL_DP = 8;
     private static final int PADDING_BETWEEN_DP = 16;
-    private static final int MARGIN_RIGHT_DP = 24;
+    private static final int MARGIN_RIGHT_DP = 8;
 
     private final List<Pair<IconId, Sprite>> icons = new ArrayList<>();
 
