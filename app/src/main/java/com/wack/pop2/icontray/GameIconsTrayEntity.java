@@ -1,9 +1,12 @@
-package com.wack.pop2;
+package com.wack.pop2.icontray;
 
 import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
+import com.wack.pop2.BaseEntity;
+import com.wack.pop2.GameResources;
+import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.entity.primitive.Rectangle;
@@ -16,7 +19,7 @@ import java.util.List;
 /**
  * Single entity used to manage the icons for different tools in the game.
  */
-public class GameIconsTrayEntity extends BaseEntity{
+public class GameIconsTrayEntity extends BaseEntity {
 
     public enum IconId {
         BALL_AND_CHAIN_ICON,
@@ -24,17 +27,6 @@ public class GameIconsTrayEntity extends BaseEntity{
         WALLS_ICON,
         NUKE_ICON,
     }
-
-    public enum TrayState {
-        EXPANDED,
-        EXPANDING,
-        CLOSED,
-        CLOSING,
-    }
-
-    private static final AndengineColor TRAY_BORDER_COLOR = AndengineColor.WHITE;
-    private static final AndengineColor TRAY_INNER_COLOR = AndengineColor.BLACK;
-    private static final int TRAY_BORDER_SIZE_DP = 4;
 
     private static final float ICONS_SIZE_AS_PERCENT_OF_SCREEN_WIDTH = 0.15f;
     private static final float ICONS_TRAY_VERTICAL_CENTER_POINT_AS_PERCENT_OF_SCREEN_HEIGHT = 0.5f;
@@ -46,26 +38,29 @@ public class GameIconsTrayEntity extends BaseEntity{
     private final List<Pair<IconId, Sprite>> icons = new ArrayList<>();
 
     private Rectangle iconsTray;
-    private Rectangle iconsTrayInner;
-    private TrayState currentTrayState = TrayState.EXPANDED;
+    private GameIconsTrayOpenCloseButton gameIconsTrayOpenCloseButton;
+    private GameIconsTrayStateMachine stateMachine;
 
-    public GameIconsTrayEntity(GameResources gameResources) {
+    public GameIconsTrayEntity(GameTexturesManager gameTexturesManager, GameResources gameResources) {
         super(gameResources);
+        stateMachine = new GameIconsTrayStateMachine();
+        gameIconsTrayOpenCloseButton = new GameIconsTrayOpenCloseButton(stateMachine, gameTexturesManager, gameResources);
     }
 
     @Override
     public void onCreateScene() {
         super.onCreateScene();
-        iconsTray = new Rectangle(0,0,0,0, vertexBufferObjectManager);
-        iconsTray.setColor(TRAY_BORDER_COLOR);
-        iconsTrayInner = new Rectangle(0,0,0,0, vertexBufferObjectManager);
-        iconsTrayInner.setColor(TRAY_INNER_COLOR);
+        iconsTray = new Rectangle(getTrayXPostition(),getTrayXPostition(),getTrayWidthPx(),getTrayHeightPx(), vertexBufferObjectManager);
+        iconsTray.setColor(AndengineColor.TRANSPARENT);
         scene.attachChild(iconsTray);
-        scene.attachChild(iconsTrayInner);
+
+        gameIconsTrayOpenCloseButton.onIconsTrayCreated(iconsTray);
+
         refreshDimensions(null);
     }
 
     public void addIcon(IconId iconId, Sprite iconSprite) {
+        addToSceneWithTouch(iconsTray, iconSprite);
         icons.add(Pair.create(iconId, iconSprite));
         refreshDimensions(iconSprite);
     }
@@ -86,6 +81,7 @@ public class GameIconsTrayEntity extends BaseEntity{
         }
         refreshTrayDimensions();
         refreshIconPostitions();
+        refreshOpenCloseIconPosition();
     }
 
     /**
@@ -94,31 +90,26 @@ public class GameIconsTrayEntity extends BaseEntity{
     private void refreshTrayDimensions() {
         iconsTray.setWidth(getTrayWidthPx());
         iconsTray.setHeight(getTrayHeightPx());
-        iconsTray.setX(getTrayXPostition(currentTrayState));
-        iconsTray.setY(getTrayYPostition());
-
-        int trayBorderSizePx = getTrayBorderSizePx();
-        iconsTrayInner.setWidth(iconsTray.getWidthScaled() - trayBorderSizePx * 2);
-        iconsTrayInner.setHeight(iconsTray.getHeightScaled() - trayBorderSizePx * 2);
-        iconsTrayInner.setX(iconsTray.getX() + trayBorderSizePx);
-        iconsTrayInner.setY(iconsTray.getY() + trayBorderSizePx);
+        iconsTray.setX(getTrayXPostition());
+        iconsTray.setY(getTrayYPostitionPx());
     }
 
     private void refreshIconPostitions() {
         for (int i = 0 ; i < icons.size() ; i++) {
             Pair<IconId, Sprite> iconPair = icons.get(i);
             Sprite icon = iconPair.second;
-            float trayLeftEdge = iconsTray.getX();
-            float trayTopEdge = iconsTray.getY();
 
             // Set the posistion of this icon
-            icon.setX(trayLeftEdge + getPaddingHorizontalPx());
+            icon.setX(getPaddingHorizontalPx());
             icon.setY(
-                    trayTopEdge
-                    + getPaddingVerticalPx()
+                    getPaddingVerticalPx()
                     + (i * getIconSizePx())
                     + (i * getPaddingBetweenPx()));
         }
+    }
+
+    private void refreshOpenCloseIconPosition() {
+        gameIconsTrayOpenCloseButton.onIconsTrayPositionChanged(iconsTray);
     }
 
     /**
@@ -129,10 +120,6 @@ public class GameIconsTrayEntity extends BaseEntity{
         int iconSizePx = getIconSizePx();
         iconSprite.setWidth(iconSizePx);
         iconSprite.setHeight(iconSizePx);
-    }
-
-    private int getTrayBorderSizePx() {
-        return ScreenUtils.dpToPx(TRAY_BORDER_SIZE_DP, hostActivity.getActivityContext());
     }
 
     private int getIconSizePx() {
@@ -168,12 +155,13 @@ public class GameIconsTrayEntity extends BaseEntity{
                 + getPaddingBetweenPx() * (icons.size() -1);
     }
 
-    private int getTrayYPostition() {
+    private int getTrayYPostitionPx() {
         int trayCenterY = (int) (ScreenUtils.getSreenSize().height * ICONS_TRAY_VERTICAL_CENTER_POINT_AS_PERCENT_OF_SCREEN_HEIGHT);
         return trayCenterY - getTrayHeightPx() / 2;
     }
 
-    private int getTrayXPostition(TrayState state) {
+    private int getTrayXPostition() {
+        GameIconsTrayStateMachine.State state = stateMachine.getCurrentState();
         switch (state) {
             case CLOSED:
             case CLOSING:

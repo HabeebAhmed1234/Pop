@@ -19,4 +19,6 @@ public enum TextureId {
     WALLS_ICON,
     NUKE_ICON,
     DELETE_WALL_ICON,
+    OPEN_BTN,
+    CLOSE_BTN,
 }

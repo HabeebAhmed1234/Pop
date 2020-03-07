@@ -65,7 +65,9 @@ public class GameTexturesManager extends BaseEntity {
             new ImageResource(TextureId.WHITE_PIXEL, "white_pixel.png", 1, 1),
             new ImageResource(TextureId.DELETE_WALL_ICON, "delete_wall_icon.png", 100, 100),
             new ImageResource(TextureId.NUKE_ICON, "nuke_icon.png", 300, 300),
-            new ImageResource(TextureId.BACKGROUND, "main_menu_background.png", 576, 1022)
+            new ImageResource(TextureId.BACKGROUND, "main_menu_background.png", 576, 1022),
+            new ImageResource(TextureId.OPEN_BTN, "open_button.png", 300, 300),
+            new ImageResource(TextureId.CLOSE_BTN, "close_button.png", 300, 300)
     );
 
     private static final int MAX_TEXTURE_ATLAS_WIDTH = 1024;

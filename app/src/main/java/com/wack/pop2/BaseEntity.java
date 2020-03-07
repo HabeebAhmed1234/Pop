@@ -11,6 +11,7 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.shape.IAreaShape;
 import org.andengine.entity.shape.IShape;
 import org.andengine.entity.shape.Shape;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.jbox2d.dynamics.Body;
 
@@ -63,6 +64,15 @@ public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCa
     protected void addToSceneWithTouch(Shape sprite) {
         scene.registerTouchArea(sprite);
         addToScene(sprite);
+    }
+
+    protected void addToSceneWithTouch(IEntity parent, Sprite sprite) {
+        scene.registerTouchArea(sprite);
+        addToScene(parent, sprite);
+    }
+
+    protected void addToScene(IEntity parent, IEntity sprite) {
+        parent.attachChild(sprite);
     }
 
     protected void addToScene(IEntity entity) {

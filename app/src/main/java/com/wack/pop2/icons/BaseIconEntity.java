@@ -2,7 +2,7 @@ package com.wack.pop2.icons;
 
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameAreaTouchListenerEntity;
-import com.wack.pop2.GameIconsTrayEntity;
+import com.wack.pop2.icontray.GameIconsTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
@@ -71,7 +71,6 @@ public abstract class BaseIconEntity extends BaseEntity implements GameAreaTouch
                 gameTexturesManager.getTextureRegion(getIconTextureId()),
                 vertexBufferObjectManager);
         iconSprite.setUserData(getUserDataInternal());
-        addToSceneWithTouch(iconSprite);
         setIconColor(AndengineColor.TRANSPARENT);
         gameIconsTrayEntity.addIcon(getIconId(), iconSprite);
     }

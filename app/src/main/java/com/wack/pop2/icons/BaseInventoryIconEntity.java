@@ -1,7 +1,7 @@
 package com.wack.pop2.icons;
 
 import com.wack.pop2.GameAreaTouchListenerEntity;
-import com.wack.pop2.GameIconsTrayEntity;
+import com.wack.pop2.icontray.GameIconsTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.resources.fonts.FontId;
 import com.wack.pop2.resources.fonts.GameFontsManager;

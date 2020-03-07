@@ -1,7 +1,7 @@
 package com.wack.pop2.turret;
 
 import com.wack.pop2.GameAreaTouchListenerEntity;
-import com.wack.pop2.GameIconsTrayEntity;
+import com.wack.pop2.icontray.GameIconsTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.eventbus.EventBus;
