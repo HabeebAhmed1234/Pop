@@ -5,6 +5,7 @@ import android.util.Pair;
 import androidx.annotation.Nullable;
 
 import com.wack.pop2.BaseEntity;
+import com.wack.pop2.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.utils.ScreenUtils;
@@ -19,7 +20,7 @@ import java.util.List;
 /**
  * Single entity used to manage the icons for different tools in the game.
  */
-public class GameIconsTrayEntity extends BaseEntity {
+public class GameIconsTrayEntity extends BaseEntity implements TrayCallback {
 
     public enum IconId {
         BALL_AND_CHAIN_ICON,
@@ -38,22 +39,24 @@ public class GameIconsTrayEntity extends BaseEntity {
     private final List<Pair<IconId, Sprite>> icons = new ArrayList<>();
 
     private Rectangle iconsTray;
+    private TrayAnimationManager trayAnimationManager;
     private GameIconsTrayOpenCloseButton gameIconsTrayOpenCloseButton;
     private GameIconsTrayStateMachine stateMachine;
 
-    public GameIconsTrayEntity(GameTexturesManager gameTexturesManager, GameResources gameResources) {
+    public GameIconsTrayEntity(GameAreaTouchListenerEntity areaTouchListenerEntity, GameTexturesManager gameTexturesManager, GameResources gameResources) {
         super(gameResources);
         stateMachine = new GameIconsTrayStateMachine();
-        gameIconsTrayOpenCloseButton = new GameIconsTrayOpenCloseButton(stateMachine, gameTexturesManager, gameResources);
+        gameIconsTrayOpenCloseButton = new GameIconsTrayOpenCloseButton(this, areaTouchListenerEntity, stateMachine, gameTexturesManager, gameResources);
     }
 
     @Override
     public void onCreateScene() {
         super.onCreateScene();
-        iconsTray = new Rectangle(getTrayXPostition(),getTrayXPostition(),getTrayWidthPx(),getTrayHeightPx(), vertexBufferObjectManager);
+        iconsTray = new Rectangle(getTrayXPostitionAtRest(), getTrayXPostitionAtRest(),getTrayWidthPx(),getTrayHeightPx(), vertexBufferObjectManager);
         iconsTray.setColor(AndengineColor.TRANSPARENT);
         scene.attachChild(iconsTray);
 
+        trayAnimationManager = new TrayAnimationManager(this, stateMachine, iconsTray);
         gameIconsTrayOpenCloseButton.onIconsTrayCreated(iconsTray);
 
         refreshDimensions(null);
@@ -75,6 +78,30 @@ public class GameIconsTrayEntity extends BaseEntity {
         return null;
     }
 
+    @Override
+    public void openTray() {
+        if (trayAnimationManager != null) {
+            trayAnimationManager.openTray();
+        }
+    }
+
+    @Override
+    public void closeTray() {
+        if (trayAnimationManager != null) {
+            trayAnimationManager.closeTray();
+        }
+    }
+
+    @Override
+    public int[] getOpenPositionPx() {
+        return new int[] {ScreenUtils.getSreenSize().width - getTrayWidthPx() - getMarginRightPx(), getTrayYPostitionPx()};
+    }
+
+    @Override
+    public int[] getClosedPositionPx() {
+        return new int[] {ScreenUtils.getSreenSize().width, getTrayYPostitionPx()};
+    }
+
     private void refreshDimensions(@Nullable Sprite newIcon){
         if (newIcon != null) {
             applyIconSize(newIcon);
@@ -90,7 +117,7 @@ public class GameIconsTrayEntity extends BaseEntity {
     private void refreshTrayDimensions() {
         iconsTray.setWidth(getTrayWidthPx());
         iconsTray.setHeight(getTrayHeightPx());
-        iconsTray.setX(getTrayXPostition());
+        iconsTray.setX(getTrayXPostitionAtRest());
         iconsTray.setY(getTrayYPostitionPx());
     }
 
@@ -160,15 +187,15 @@ public class GameIconsTrayEntity extends BaseEntity {
         return trayCenterY - getTrayHeightPx() / 2;
     }
 
-    private int getTrayXPostition() {
+    private int getTrayXPostitionAtRest() {
         GameIconsTrayStateMachine.State state = stateMachine.getCurrentState();
         switch (state) {
             case CLOSED:
             case CLOSING:
-                return ScreenUtils.getSreenSize().width;
+                return getClosedPositionPx()[0];
             case EXPANDED:
             case EXPANDING:
-                return ScreenUtils.getSreenSize().width - getTrayWidthPx() - getMarginRightPx();
+                return getOpenPositionPx()[0];
         }
         throw new IllegalArgumentException(state + " doesn't have an x position");
     }

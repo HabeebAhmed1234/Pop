@@ -10,7 +10,9 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.wack.pop2.icontray.GameIconsTrayStateMachine.State.CLOSED;
+import static com.wack.pop2.icontray.GameIconsTrayStateMachine.State.CLOSING;
 import static com.wack.pop2.icontray.GameIconsTrayStateMachine.State.EXPANDED;
+import static com.wack.pop2.icontray.GameIconsTrayStateMachine.State.EXPANDING;
 
 class GameIconsTrayStateMachine extends BaseStateMachine<GameIconsTrayStateMachine.State> {
 
@@ -34,10 +36,10 @@ class GameIconsTrayStateMachine extends BaseStateMachine<GameIconsTrayStateMachi
     @Override
     protected Map<State, Set<State>> getAllValidStateTransitions() {
         Map<State, Set<State>> validTransitions = new HashMap<>();
-        validTransitions.put(EXPANDED, new HashSet<>(Arrays.asList(State.CLOSING)));
-        validTransitions.put(State.CLOSING, new HashSet<>(Arrays.asList(State.CLOSED)));
-        validTransitions.put(State.CLOSED, new HashSet<>(Arrays.asList(State.EXPANDING)));
-        validTransitions.put(State.EXPANDING, new HashSet<>(Arrays.asList(EXPANDED)));
+        validTransitions.put(EXPANDED, new HashSet<>(Arrays.asList(CLOSING)));
+        validTransitions.put(CLOSING, new HashSet<>(Arrays.asList(CLOSED, EXPANDING)));
+        validTransitions.put(CLOSED, new HashSet<>(Arrays.asList(EXPANDING)));
+        validTransitions.put(EXPANDING, new HashSet<>(Arrays.asList(EXPANDED, CLOSING)));
         return validTransitions;
     }
 

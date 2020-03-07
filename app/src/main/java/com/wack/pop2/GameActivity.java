@@ -84,7 +84,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		InteractionCounter interactionCounter = new InteractionCounter(mGameResources);
 		GameAreaTouchListenerEntity gameAreaTouchListenerEntity = new GameAreaTouchListenerEntity(interactionCounter, mGameResources);
 		GameSceneTouchListenerEntity gameSceneTouchListenerEntity = new GameSceneTouchListenerEntity(interactionCounter, mGameResources);
-		GameIconsTrayEntity gameIconsTrayEntity = new GameIconsTrayEntity(gameTexturesManager, mGameResources);
+		GameIconsTrayEntity gameIconsTrayEntity = new GameIconsTrayEntity(gameAreaTouchListenerEntity, gameTexturesManager, mGameResources);
 
 		// Create game entities
 		mLevelEntity = new LevelEntity(gameTexturesManager, mGameResources);

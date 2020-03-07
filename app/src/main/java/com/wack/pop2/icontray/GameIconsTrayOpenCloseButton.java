@@ -1,14 +1,19 @@
 package com.wack.pop2.icontray;
 
 import com.wack.pop2.BaseEntity;
+import com.wack.pop2.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameResources;
+import com.wack.pop2.fixturedefdata.TrayCloseBtnUserData;
+import com.wack.pop2.fixturedefdata.TrayOpenBtnUserData;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.statemachine.BaseStateMachine;
 import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.entity.primitive.Rectangle;
+import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.input.touch.TouchEvent;
 
 class GameIconsTrayOpenCloseButton extends BaseEntity implements BaseStateMachine.Listener<GameIconsTrayStateMachine.State> {
 
@@ -17,12 +22,45 @@ class GameIconsTrayOpenCloseButton extends BaseEntity implements BaseStateMachin
 
     private Sprite iconSpriteOpen;
     private Sprite iconSpriteClose;
+    private TrayCallback trayOpenCloseControlCallback;
+    private GameAreaTouchListenerEntity touchListenerEntity;
     private GameTexturesManager texturesManager;
     private GameIconsTrayStateMachine stateMachine;
 
-    public GameIconsTrayOpenCloseButton(GameIconsTrayStateMachine stateMachine, GameTexturesManager texturesManager, GameResources gameResources) {
+    private GameAreaTouchListenerEntity.AreaTouchListener openBtnTouchListener =
+            new GameAreaTouchListenerEntity.AreaTouchListener () {
+        @Override
+        public boolean onTouch(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+            if (pSceneTouchEvent.isActionUp() && canOpen()) {
+                onOpenBtnTouch();
+                return true;
+            }
+            return false;
+        }
+    };
+
+    private GameAreaTouchListenerEntity.AreaTouchListener closeBtnTouchListener =
+            new GameAreaTouchListenerEntity.AreaTouchListener () {
+                @Override
+                public boolean onTouch(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                    if (pSceneTouchEvent.isActionUp() && canClose()) {
+                        onCloseBtnTouch();
+                        return true;
+                    }
+                    return false;
+                }
+            };
+
+    public GameIconsTrayOpenCloseButton(
+            TrayCallback trayOpenCloseControlCallback,
+            GameAreaTouchListenerEntity touchListenerEntity,
+            GameIconsTrayStateMachine stateMachine,
+            GameTexturesManager texturesManager,
+            GameResources gameResources) {
         super(gameResources);
         this.stateMachine = stateMachine;
+        this.trayOpenCloseControlCallback = trayOpenCloseControlCallback;
+        this.touchListenerEntity = touchListenerEntity;
         this.texturesManager = texturesManager;
     }
 
@@ -34,6 +72,9 @@ class GameIconsTrayOpenCloseButton extends BaseEntity implements BaseStateMachin
     @Override
     public void onDestroy() {
         stateMachine.removeAllStateTransitionListener(this);
+
+        touchListenerEntity.removeAreaTouchListener(TrayOpenBtnUserData.class, openBtnTouchListener);
+        touchListenerEntity.removeAreaTouchListener(TrayCloseBtnUserData.class, closeBtnTouchListener);
     }
 
     @Override
@@ -48,8 +89,8 @@ class GameIconsTrayOpenCloseButton extends BaseEntity implements BaseStateMachin
             createIconSprite();
         }
 
-        addToScene(traySprite, iconSpriteOpen);
-        addToScene(traySprite, iconSpriteClose);
+        addToSceneWithTouch(traySprite, iconSpriteOpen);
+        addToSceneWithTouch(traySprite, iconSpriteClose);
 
         onIconsTrayPositionChanged(traySprite);
     }
@@ -63,6 +104,15 @@ class GameIconsTrayOpenCloseButton extends BaseEntity implements BaseStateMachin
         setIconsPosition(iconX, iconY);
     }
 
+    private boolean canOpen() {
+        return stateMachine.getCurrentState() == GameIconsTrayStateMachine.State.CLOSING || stateMachine.getCurrentState() == GameIconsTrayStateMachine.State.CLOSED;
+    }
+
+    private boolean canClose() {
+        return stateMachine.getCurrentState() == GameIconsTrayStateMachine.State.EXPANDING || stateMachine.getCurrentState() == GameIconsTrayStateMachine.State.EXPANDED;
+
+    }
+
     private boolean isIconCreated() {
         return iconSpriteOpen != null && iconSpriteClose != null;
     }
@@ -71,12 +121,16 @@ class GameIconsTrayOpenCloseButton extends BaseEntity implements BaseStateMachin
         iconSpriteOpen = new Sprite(0,0,texturesManager.getTextureRegion(TextureId.OPEN_BTN), vertexBufferObjectManager);
         iconSpriteOpen.setWidth(getIconSizePx());
         iconSpriteOpen.setHeight(getIconSizePx());
+        iconSpriteOpen.setUserData(new TrayOpenBtnUserData());
         iconSpriteOpen.setVisible(false);
+        touchListenerEntity.addAreaTouchListener(TrayOpenBtnUserData.class, openBtnTouchListener);
 
         iconSpriteClose = new Sprite(0,0,texturesManager.getTextureRegion(TextureId.CLOSE_BTN), vertexBufferObjectManager);
         iconSpriteClose.setWidth(getIconSizePx());
         iconSpriteClose.setHeight(getIconSizePx());
-        iconSpriteOpen.setVisible(false);
+        iconSpriteClose.setUserData(new TrayCloseBtnUserData());
+        iconSpriteClose.setVisible(false);
+        touchListenerEntity.addAreaTouchListener(TrayCloseBtnUserData.class, closeBtnTouchListener);
     }
 
 
@@ -97,13 +151,21 @@ class GameIconsTrayOpenCloseButton extends BaseEntity implements BaseStateMachin
     }
 
     private void updateIconTexture(GameIconsTrayStateMachine.State newState) {
-        if (newState == GameIconsTrayStateMachine.State.EXPANDED) {
+        if (newState == GameIconsTrayStateMachine.State.EXPANDED || newState == GameIconsTrayStateMachine.State.EXPANDING) {
             iconSpriteOpen.setVisible(false);
             iconSpriteClose.setVisible(true);
-        } else if (newState == GameIconsTrayStateMachine.State.CLOSED) {
+        } else if (newState == GameIconsTrayStateMachine.State.CLOSED || newState == GameIconsTrayStateMachine.State.CLOSING) {
             iconSpriteOpen.setVisible(true);
             iconSpriteClose.setVisible(false);
 
         }
+    }
+
+    private void onOpenBtnTouch() {
+        trayOpenCloseControlCallback.openTray();
+    }
+
+    private void onCloseBtnTouch() {
+        trayOpenCloseControlCallback.closeTray();
     }
 }
