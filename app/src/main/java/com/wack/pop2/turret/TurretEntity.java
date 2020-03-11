@@ -23,6 +23,7 @@ public class TurretEntity extends BaseEntity implements HostTurretCallback, Base
     private TurretFiringEntity turretFiringEntity;
     private TurretTargetingEntity turretTargetingEntity;
     private TurretDraggingManager turretDraggingManager;
+    private TurretCannonRotationManagerEntity turretCannonRotationManagerEntity;
     private TurretsMutex mutex;
 
     private Sprite turretBodySprite;
@@ -45,13 +46,14 @@ public class TurretEntity extends BaseEntity implements HostTurretCallback, Base
         this.turretFiringEntity = new TurretFiringEntity(this, stateMachine, texturesManager, gameResources);
         this.turretTargetingEntity = new TurretTargetingEntity(turretFiringEntity, stateMachine, this, gameResources);
         this.turretDraggingManager = new TurretDraggingManager(gameIconsTray, gameSceneTouchListener, mutex, stateMachine, this, gameResources);
+        this.turretCannonRotationManagerEntity = new TurretCannonRotationManagerEntity(turretCannonSprite, gameResources);
 
         init();
     }
 
     @Override
-    public void setTurretAngle(float angle) {
-        turretCannonSprite.setRotation(angle);
+    public boolean setTurretAngle(float angle) {
+        return turretCannonRotationManagerEntity.setRotation(angle);
     }
 
     @Override

@@ -88,8 +88,8 @@ public class TurretTargetingEntity extends BaseEntity implements BaseStateMachin
             maybeAquireNewBubbleTarget();
         }
         if (targetBubbleSprite != null) {
-            rotateTurretToTarget(targetBubbleSprite);
-            if (turretFiringEntity.isReadyToFire()) {
+            boolean isPointingAtTarget = rotateTurretToTarget(targetBubbleSprite);
+            if (isPointingAtTarget && turretFiringEntity.isReadyToFire()) {
                 turretFiringEntity.fire(targetBubbleSprite);
             }
         }
@@ -110,9 +110,9 @@ public class TurretTargetingEntity extends BaseEntity implements BaseStateMachin
         return TurretUtils.getClosestPoppableBubble(scene, hostTurretCallback.getTurretBodySprite());
     }
 
-    private void rotateTurretToTarget(Sprite target) {
+    private boolean rotateTurretToTarget(Sprite target) {
         Sprite turretBodySprite = hostTurretCallback.getTurretBodySprite();
         float angle = getAngleOfCenters(turretBodySprite, target);
-        hostTurretCallback.setTurretAngle(angle);
+        return hostTurretCallback.setTurretAngle(angle);
     }
 }
