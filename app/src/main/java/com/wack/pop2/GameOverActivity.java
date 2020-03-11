@@ -1,5 +1,9 @@
 package com.wack.pop2;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class GameOverActivity extends AppCompatActivity {
 
 	public static final String SCORE_EXTRA = "score_extra";
+	private ValueAnimator logoAnimator;
 
 	public static Intent newIntent(Context context, int score) {
 		Intent intent = new Intent(context, GameOverActivity.class);
@@ -41,6 +46,8 @@ public class GameOverActivity extends AppCompatActivity {
 		});
 
 		((TextView) findViewById(R.id.score_text)).setText(Integer.toString(getIntent().getIntExtra(SCORE_EXTRA, 0)));
+
+		animateGameOver();
 	}
 
 	private void startNewGame() {
@@ -50,5 +57,33 @@ public class GameOverActivity extends AppCompatActivity {
 
 	private void  quitGame() {
 		this.finish();
+	}
+
+	private void animateGameOver() {
+		final View logo = findViewById(R.id.game_over_text);
+		logoAnimator = ObjectAnimator.ofFloat(1,0.5f, 1,1,1,1,1,1,1,1,0.7f,1);
+		logoAnimator.setDuration(2000);
+		logoAnimator.start();
+		logoAnimator.setRepeatMode(ValueAnimator.RESTART);
+
+		logoAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+			@Override
+			public void onAnimationUpdate(ValueAnimator animation) {
+				logo.setAlpha((float) animation.getAnimatedValue());
+			}
+		});
+		logoAnimator.addListener(new AnimatorListenerAdapter() {
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				super.onAnimationEnd(animation);
+				animation.start();
+			}
+		});
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		logoAnimator.end();
 	}
 }

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Pop!</string>
+    <string name="app_name">Pop</string>
     <string name="new_game_text">New Game</string>
+    <string name="game_over_text">Game Over</string>
     <string name="options_text">Options</string>
     <string name="quit_text">Quit</string>
     <string name="your_score_title">Your score:</string>

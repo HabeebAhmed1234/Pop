@@ -5,4 +5,5 @@
     <color name="colorAccent">#000000</color>
     <color name="menu_button_color">#FFFFFF</color>
     <color name="menu_button_pressed_color">#ca6bc9</color>
+    <color name="green">#39ff14</color>
 </resources>

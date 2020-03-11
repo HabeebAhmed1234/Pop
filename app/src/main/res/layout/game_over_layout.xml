@@ -1,53 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:isScrollContainer="true">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/main_menu_background"/>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:paddingTop="200dp"
-        android:paddingHorizontal="@dimen/main_menu_padding_horizontal">
+        android:gravity="center"
+        android:layout_gravity="center">
 
-        <ImageView
-            android:id="@+id/game_over"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/game_over"
-            android:layout_marginBottom="40dp"/>
-
-        <TextView
+        <com.wack.pop2.androidui.GameMenuText
+            android:id="@+id/game_over_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/your_score_title"
-            android:gravity="center"/>
+            android:text="@string/game_over_text"
+            android:textSize="60sp"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:fontFamily="@font/neon_font"
+            android:clipToPadding="false"
+            android:paddingVertical="@dimen/menu_btn_padding_vertical"
+            app:glow_color="@color/menu_button_color"
+            app:glow_strength="80"
+            />
 
-        <TextView
+        <com.wack.pop2.androidui.GameMenuText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:text="@string/your_score_title"
+            android:gravity="center"
+            android:fontFamily="@font/neon_font"
+            android:textColor="@android:color/white"
+            android:clipToPadding="false"
+            android:paddingVertical="@dimen/menu_btn_padding_vertical"
+            app:glow_color="@color/menu_button_color"
+            app:glow_strength="80"/>
+
+        <com.wack.pop2.androidui.GameMenuText
             android:id="@+id/score_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:textColor="@color/green"
             android:gravity="center"
-            android:textSize="20sp"
-            android:layout_marginBottom="40dp"/>
+            android:fontFamily="@font/neon_font"
+            android:paddingVertical="@dimen/menu_btn_padding_vertical"
+            android:layout_marginBottom="24dp"
+            app:glow_color="@color/menu_button_color"
+            app:glow_strength="80"/>
 
-        <Button
+        <com.wack.pop2.androidui.GameMenuButton
             android:id="@+id/new_game_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/between_btn_padding"
-            android:text="@string/new_game_text"/>
+            android:text="@string/new_game_text"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:fontFamily="@font/neon_font"
+            android:textSize="26sp"
+            android:paddingVertical="@dimen/menu_btn_padding_vertical"
+            app:glow_color="@color/menu_button_color"
+            app:pressed_glow_color = "@color/menu_button_pressed_color"
+            app:glow_strength="80"/>
 
-        <Button
+        <com.wack.pop2.androidui.GameMenuButton
             android:id="@+id/quit_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/quit_text"/>
+            android:textSize="26sp"
+            android:text="@string/quit_text"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:fontFamily="@font/neon_font"
+            android:paddingVertical="@dimen/menu_btn_padding_vertical"
+            app:glow_color="@color/menu_button_color"
+            app:pressed_glow_color = "@color/menu_button_pressed_color"
+            app:glow_strength="80"/>
     </LinearLayout>
-</ScrollView>
+</FrameLayout>
