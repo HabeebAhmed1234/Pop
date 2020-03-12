@@ -7,4 +7,6 @@ public enum SoundId {
     POP_4,
     POP_5,
     EXPOSION,
+    NEON_BUZZ,
+    LAZER_BURST,
 }

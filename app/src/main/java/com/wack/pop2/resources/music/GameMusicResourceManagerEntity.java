@@ -14,13 +14,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GameMusicManagerEntity extends BaseEntity {
+public class GameMusicResourceManagerEntity extends BaseEntity {
 
     private final Context context;
     private final MusicManager musicManager;
     private final Map<MusicId, Music> mMusic = new HashMap();
 
-    public GameMusicManagerEntity(Context context, MusicManager musicManager, GameResources gameResources) {
+    public GameMusicResourceManagerEntity(Context context, MusicManager musicManager, GameResources gameResources) {
         super(gameResources);
         this.context = context;
         this.musicManager = musicManager;

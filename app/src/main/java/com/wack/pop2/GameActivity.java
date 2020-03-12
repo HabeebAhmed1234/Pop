@@ -12,6 +12,7 @@ import com.wack.pop2.bubblepopper.BufferedBubblePopperEntity;
 import com.wack.pop2.bubbletimeout.BubblesLifecycleManagerEntity;
 import com.wack.pop2.difficulty.GameDifficultyEntity;
 import com.wack.pop2.eventbus.EventBus;
+import com.wack.pop2.gamesettings.GamePreferencesEntity;
 import com.wack.pop2.hudentities.InteractionScoreHudEntity;
 import com.wack.pop2.hudentities.ScoreHudEntity;
 import com.wack.pop2.hudentities.TimerHudEntity;
@@ -19,7 +20,7 @@ import com.wack.pop2.icontray.GameIconsTrayEntity;
 import com.wack.pop2.interaction.InteractionCounter;
 import com.wack.pop2.nuke.NukeManagerEntity;
 import com.wack.pop2.resources.fonts.GameFontsManager;
-import com.wack.pop2.resources.music.GameMusicManagerEntity;
+import com.wack.pop2.resources.music.GameMusicResourceManagerEntity;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.turret.TurretsManagerEntity;
@@ -76,9 +77,10 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 		// Initialize game resource managers
 		GameFontsManager gameFontsManager = new GameFontsManager(getFontManager(), getTextureManager(), getAssets(), mGameResources);
+		GamePreferencesEntity preferencesEntity = new GamePreferencesEntity(this, mGameResources);
 		GameTexturesManager gameTexturesManager = new GameTexturesManager(this, getTextureManager(), mGameResources);
 		GameSoundsManager gameSoundsManager = new GameSoundsManager(this, getSoundManager(), mGameResources);
-		GameMusicManagerEntity gameMusicManagerEntity = new GameMusicManagerEntity(this, getMusicManager(), mGameResources);
+		GameMusicResourceManagerEntity gameMusicResourceManagerEntity = new GameMusicResourceManagerEntity(this, getMusicManager(), mGameResources);
 		GameAnimationManager gameAnimationManager = new GameAnimationManager(mGameResources);
 		GamePhysicsContactsEntity gamePhysicsContactsEntity = new GamePhysicsContactsEntity(mGameResources);
 		InteractionCounter interactionCounter = new InteractionCounter(mGameResources);
@@ -88,7 +90,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 		// Create game entities
 		mLevelEntity = new LevelEntity(gameTexturesManager, mGameResources);
-		mBackgroundMusicEntity = new BackgroundMusicEntity(gameMusicManagerEntity, mGameResources);
+		mBackgroundMusicEntity = new BackgroundMusicEntity(gameMusicResourceManagerEntity, preferencesEntity, mGameResources);
 		mInteractionScoreHudEntity = new InteractionScoreHudEntity(gameFontsManager, mGameResources);
 		mScoreHudEntity = new ScoreHudEntity(gameFontsManager, mGameResources);
 		mScoreHudEntity = new ScoreHudEntity(gameFontsManager, mGameResources);
@@ -110,7 +112,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		mBufferedBubblePopperEntity = new BufferedBubblePopperEntity(mBubblePopperEntity, mGameResources);
 		mTouchPopperEntity = new TouchPopperEntity(gameAreaTouchListenerEntity, mBubblePopperEntity, mGameResources);
 		mBallAndChainManagerEntity = new BallAndChainManagerEntity(gameTexturesManager, gameSceneTouchListenerEntity, gameIconsTrayEntity, gameAreaTouchListenerEntity, gamePhysicsContactsEntity, mBubblePopperEntity, mGameResources);
-		mTurrentsManagerEntity = new TurretsManagerEntity(mBubblePopperEntity, gameTexturesManager, gameIconsTrayEntity, gamePhysicsContactsEntity, gameFontsManager, gameAreaTouchListenerEntity, gameSceneTouchListenerEntity, gameTexturesManager, mGameResources);
+		mTurrentsManagerEntity = new TurretsManagerEntity(mBubblePopperEntity, gameTexturesManager, gameIconsTrayEntity, gamePhysicsContactsEntity, gameFontsManager, gameAreaTouchListenerEntity, gameSceneTouchListenerEntity, gameTexturesManager, gameSoundsManager, mGameResources);
 		mWallsManagerEntity = new WallsManagerEntity(gameIconsTrayEntity, gameAreaTouchListenerEntity, gameSceneTouchListenerEntity, gameTexturesManager, gameFontsManager, mGameResources);
 		mNukeManagerEntityEntity = new NukeManagerEntity(mBufferedBubblePopperEntity, gameIconsTrayEntity, gameTexturesManager, gameAreaTouchListenerEntity, mGameResources);
 

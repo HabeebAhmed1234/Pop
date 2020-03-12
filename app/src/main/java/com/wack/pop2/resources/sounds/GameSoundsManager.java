@@ -28,30 +28,23 @@ public class GameSoundsManager extends BaseEntity {
 
     @Override
     public void onCreateResources() {
-
         SoundFactory.setAssetBasePath("mfx/");
         try {
-            mSounds.put(
-                    SoundId.POP_1,
-                    SoundFactory.createSoundFromAsset(soundManager, context, "pop1.wav"));
-            mSounds.put(
-                    SoundId.POP_2,
-                    SoundFactory.createSoundFromAsset(soundManager, context, "pop2.wav"));
-            mSounds.put(
-                    SoundId.POP_3,
-                    SoundFactory.createSoundFromAsset(soundManager, context, "pop3.wav"));
-            mSounds.put(
-                    SoundId.POP_4,
-                    SoundFactory.createSoundFromAsset(soundManager, context, "pop4.wav"));
-            mSounds.put(
-                    SoundId.POP_5,
-                    SoundFactory.createSoundFromAsset(soundManager, context, "pop5.wav"));
-            mSounds.put(
-                    SoundId.EXPOSION,
-                    SoundFactory.createSoundFromAsset(soundManager, context, "explosion.ogg"));
+            loadSound(SoundId.POP_1,"pop1.wav");
+            loadSound(SoundId.POP_2,"pop2.wav");
+            loadSound(SoundId.POP_3,"pop3.wav");
+            loadSound(SoundId.POP_4,"pop4.wav");
+            loadSound(SoundId.POP_5,"pop5.wav");
+            loadSound(SoundId.EXPOSION,"explosion.ogg");
+            loadSound(SoundId.NEON_BUZZ,"neon_buzz.wav");
+            loadSound(SoundId.LAZER_BURST,"lazer_burst.mp3");
         } catch (final IOException e) {
             Debug.e(e);
         }
+    }
+
+    private void loadSound(SoundId soundId, String path) throws IOException {
+        mSounds.put(soundId, SoundFactory.createSoundFromAsset(soundManager, context, path));
     }
 
     public Sound getSound(SoundId soundId) {

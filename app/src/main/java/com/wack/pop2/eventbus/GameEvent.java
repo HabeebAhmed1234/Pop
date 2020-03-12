@@ -21,4 +21,5 @@ public enum GameEvent {
     WALL_DELETED, // Fired when a wall gets deleted
     BUBBLE_SPAWNED, // Fired when a bubble is spawned
     INTERACTION_SCORE_CHANGED, // Interaction score changed event
+    SETTING_CHANGED, // Called when a setting is changed
 }

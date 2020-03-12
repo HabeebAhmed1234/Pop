@@ -6,6 +6,7 @@ import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.fixturedefdata.TurretBodyUserData;
 import com.wack.pop2.fixturedefdata.TurretCannonUserData;
+import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 
@@ -18,12 +19,14 @@ public class TurretEntityCreator extends BaseEntity {
     private GameTexturesManager texturesManager;
     private GameSceneTouchListenerEntity gameSceneTouchListener;
     private GameIconsTrayEntity gameIconsTray;
+    private GameSoundsManager soundsManager;
     private TurretsMutex mutex;
 
     public TurretEntityCreator(
             GameTexturesManager texturesManager,
             GameIconsTrayEntity gameIconsTray,
             GameSceneTouchListenerEntity gameSceneTouchListener,
+            GameSoundsManager soundsManager,
             TurretsMutex mutex,
             GameResources gameResources) {
         super(gameResources);
@@ -31,6 +34,7 @@ public class TurretEntityCreator extends BaseEntity {
         this.texturesManager = texturesManager;
         this.gameSceneTouchListener = gameSceneTouchListener;
         this.gameIconsTray = gameIconsTray;
+        this.soundsManager = soundsManager;
         this.mutex = mutex;
     }
 
@@ -55,6 +59,6 @@ public class TurretEntityCreator extends BaseEntity {
         turretBodySprite.attachChild(turretCannonSprite);
         turretCannonSprite.setRotationCenter(0f, turretCannonTexture.getHeight() / 2);
 
-        return new TurretEntity(turretBodySprite, turretCannonSprite, mutex, texturesManager, gameIconsTray, gameSceneTouchListener, gameResources);
+        return new TurretEntity(turretBodySprite, turretCannonSprite, mutex, texturesManager, gameIconsTray, gameSceneTouchListener, soundsManager, gameResources);
     }
 }

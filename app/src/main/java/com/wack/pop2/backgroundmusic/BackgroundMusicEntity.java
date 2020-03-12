@@ -5,20 +5,25 @@ import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
-import com.wack.pop2.resources.music.GameMusicManagerEntity;
+import com.wack.pop2.eventbus.GameSettingChangedEventPayload;
+import com.wack.pop2.gamesettings.GamePreferencesEntity;
+import com.wack.pop2.gamesettings.Setting;
+import com.wack.pop2.resources.music.GameMusicResourceManagerEntity;
 import com.wack.pop2.resources.music.MusicId;
 
 import org.andengine.audio.music.Music;
 
 public class BackgroundMusicEntity extends BaseEntity implements EventBus.Subscriber {
 
-    private final GameMusicManagerEntity musicManager;
+    private final GameMusicResourceManagerEntity musicManager;
+    private final GamePreferencesEntity preferencesEntity;
 
     private Music currentMusic;
 
-    public BackgroundMusicEntity(GameMusicManagerEntity musicManager, GameResources gameResources) {
+    public BackgroundMusicEntity(GameMusicResourceManagerEntity musicManager, GamePreferencesEntity preferencesEntity, GameResources gameResources) {
         super(gameResources);
         this.musicManager = musicManager;
+        this.preferencesEntity = preferencesEntity;
     }
 
     @Override
@@ -26,8 +31,9 @@ public class BackgroundMusicEntity extends BaseEntity implements EventBus.Subscr
         EventBus.get()
                 .subscribe(GameEvent.PLAY_SOFT_MUSIC, this)
                 .subscribe(GameEvent.PLAY_MEDIUM_MUSIC, this)
-                .subscribe(GameEvent.PLAY_HARD_MUSIC, this);
-        playStartignMusic();
+                .subscribe(GameEvent.PLAY_HARD_MUSIC, this)
+                .subscribe(GameEvent.SETTING_CHANGED, this);
+        playStartingMusic();
     }
 
     @Override
@@ -47,6 +53,9 @@ public class BackgroundMusicEntity extends BaseEntity implements EventBus.Subscr
             case PLAY_HARD_MUSIC:
                 playMusic(MusicId.BACKGROUND_MUSIC_HARD);
                 break;
+            case SETTING_CHANGED:
+                onSettingChanged((GameSettingChangedEventPayload) payload);
+                break;
         }
     }
 
@@ -57,6 +66,9 @@ public class BackgroundMusicEntity extends BaseEntity implements EventBus.Subscr
     }
 
     private void playMusic(MusicId soundId) {
+        if (!preferencesEntity.getBoolean(Setting.IS_MUSIC_ENABLED_SETTING_BOOLEAN)) {
+            return;
+        }
         stopCurrentMusic();
         currentMusic = musicManager.getMusic(soundId);
         if (currentMusic != null) {
@@ -64,7 +76,33 @@ public class BackgroundMusicEntity extends BaseEntity implements EventBus.Subscr
         }
     }
 
-    private void playStartignMusic() {
+    private void resume() {
+        if (currentMusic == null) {
+            playStartingMusic();
+        } else {
+            currentMusic.resume();
+        }
+    }
+
+    private void pause() {
+        if (currentMusic != null) {
+            currentMusic.pause();
+        }
+    }
+
+    private void playStartingMusic() {
         playMusic(MusicId.BACKGROUND_MUSIC_SOFT);
+    }
+
+    private void onSettingChanged(GameSettingChangedEventPayload payload) {
+        String key = payload.settingKey;
+        if (key.equals(Setting.IS_MUSIC_ENABLED_SETTING_BOOLEAN)) {
+            boolean isMusicEnabled = preferencesEntity.getBoolean(payload.settingKey);
+            if (isMusicEnabled) {
+                resume();
+            } else {
+                pause();
+            }
+        }
     }
 }
