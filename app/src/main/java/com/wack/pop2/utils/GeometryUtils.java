@@ -46,7 +46,7 @@ public class GeometryUtils {
     }
 
     /**
-     * Scales the given sprite to fix the screen width and height while maintaining the aspect ratio
+     * Scales the given sprite to fix the screen widthPx and heightPx while maintaining the aspect ratio
      * @return
      */
     public static void scaleToFixScreen(Sprite srcSprite) {

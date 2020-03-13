@@ -23,8 +23,8 @@ import static com.wack.pop2.GameFixtureDefs.WALL_FIXTURE_DEF;
  */
 public class LevelEntity extends BaseEntity {
 
-    private static final float RAMP_WIDTH = ScreenUtils.getSreenSize().width * 5;
-    private static final float RAMP_HEIGHT = ScreenUtils.getSreenSize().height * 3;
+    private static final float RAMP_WIDTH = ScreenUtils.getSreenSize().widthPx * 5;
+    private static final float RAMP_HEIGHT = ScreenUtils.getSreenSize().heightPx * 3;
 
     private static FixtureDef levelWallFixtureDef = createWallFixtureDef();
 
@@ -68,7 +68,7 @@ public class LevelEntity extends BaseEntity {
     }
 
     private void createRightFunnelWall() {
-        float screenWidth = ScreenUtils.getSreenSize().width;
+        float screenWidth = ScreenUtils.getSreenSize().widthPx;
         PhysicsFactory.createLineBody(
                 physicsWorld,
                 new Line(screenWidth, 0, screenWidth + RAMP_WIDTH, -RAMP_HEIGHT, vertexBufferObjectManager),

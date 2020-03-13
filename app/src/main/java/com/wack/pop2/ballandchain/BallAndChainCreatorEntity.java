@@ -58,8 +58,8 @@ class BallAndChainCreatorEntity extends BaseEntity {
         Pair<Sprite, Body> wreckingBall = createBall(
                 OFF_SCREEN_HANDLE_POSITION.add(
                         Vec2Pool.obtain(
-                                0 - ScreenUtils.getSreenSize().width,
-                                ScreenUtils.getSreenSize().height / 3)));
+                                0 - ScreenUtils.getSreenSize().widthPx,
+                                ScreenUtils.getSreenSize().heightPx / 3)));
         components.add(wreckingBall.first);
 
         Pair<Sprite, Body> previousChainLink = createChainLinkAndJoin(wreckingBall.first, wreckingBall.second);
@@ -79,7 +79,7 @@ class BallAndChainCreatorEntity extends BaseEntity {
         ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
         ITextureRegion ballTexture = texturesManager.getTextureRegion(TextureId.BALL);
         float x = 0;
-        float y = screenSize.height / 2;
+        float y = screenSize.heightPx / 2;
         WreckingBallEntityUserData wreckingBallEntityUserData = new WreckingBallEntityUserData();
         final Sprite ballSprite = new Sprite(
                 position.x,
@@ -111,8 +111,8 @@ class BallAndChainCreatorEntity extends BaseEntity {
 
         ITextureRegion chainLinkTexture = texturesManager.getTextureRegion(TextureId.CHAIN_LINK);
         ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
-        float previousChainLinkX = previousChainLinkSprite != null ? previousChainLinkSprite.getX() : screenSize.width / 2 - chainLinkTexture.getWidth() / 2;
-        float previousChainLinkY = previousChainLinkSprite != null ? previousChainLinkSprite.getY() : screenSize.height / 2 - chainLinkTexture.getHeight() / 2;
+        float previousChainLinkX = previousChainLinkSprite != null ? previousChainLinkSprite.getX() : screenSize.widthPx / 2 - chainLinkTexture.getWidth() / 2;
+        float previousChainLinkY = previousChainLinkSprite != null ? previousChainLinkSprite.getY() : screenSize.heightPx / 2 - chainLinkTexture.getHeight() / 2;
 
         // The distance from the left or right edge of the chain link that we will place the anchor
         float jointPixelsFromEdge = JOINT_ANCHOR_PERCENT_FROM_EDGE * chainLinkTexture.getWidth();

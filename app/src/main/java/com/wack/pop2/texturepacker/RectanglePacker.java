@@ -35,9 +35,9 @@ public class RectanglePacker<P> {
      * Builds a new {@link RectanglePacker}
      *
      * @param width
-     *            The width of the space available to pack into
+     *            The widthPx of the space available to pack into
      * @param height
-     *            The height of the space available to pack into
+     *            The heightPx of the space available to pack into
      * @param border
      *            The border to preserve between packed items
      */
@@ -80,9 +80,9 @@ public class RectanglePacker<P> {
      * Attempts to pack an item of the supplied dimensions
      *
      * @param width
-     *            The width of the item
+     *            The widthPx of the item
      * @param height
-     *            The height of the item
+     *            The heightPx of the item
      * @param o
      *            The item to pack
      * @return The packed location, or null if it will not fit.
@@ -113,18 +113,18 @@ public class RectanglePacker<P> {
     }
 
     /**
-     * Gets the width of this packer
+     * Gets the widthPx of this packer
      *
-     * @return the width of this packer
+     * @return the widthPx of this packer
      */
     public int getWidth() {
         return root.rect.width;
     }
 
     /**
-     * Gets the height of this packer
+     * Gets the heightPx of this packer
      *
-     * @return The height of this packer
+     * @return The heightPx of this packer
      */
     public int getHeight() {
         return root.rect.height;

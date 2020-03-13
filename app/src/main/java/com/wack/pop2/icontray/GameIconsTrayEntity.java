@@ -29,8 +29,9 @@ public class GameIconsTrayEntity extends BaseEntity implements TrayCallback {
         NUKE_ICON,
     }
 
-    private static final float ICONS_SIZE_AS_PERCENT_OF_SCREEN_WIDTH = 0.15f;
-    private static final float ICONS_TRAY_VERTICAL_CENTER_POINT_AS_PERCENT_OF_SCREEN_HEIGHT = 0.5f;
+    private static final int ICONS_SIZE_DP = 24;
+    private int verticalAnchorDp;
+    private int horizontalAnchorDp;
 
     private static final int PADDING_HORIZONTAL_DP = 0;
     private static final int PADDING_VERTICAL_DP = 8;
@@ -44,8 +45,14 @@ public class GameIconsTrayEntity extends BaseEntity implements TrayCallback {
     private GameIconsTrayOpenCloseButton gameIconsTrayOpenCloseButton;
     private GameIconsTrayStateMachine stateMachine;
 
-    public GameIconsTrayEntity(GameAreaTouchListenerEntity areaTouchListenerEntity, GameTexturesManager gameTexturesManager, GameResources gameResources) {
+    public GameIconsTrayEntity(
+            GameAreaTouchListenerEntity areaTouchListenerEntity,
+            GameTexturesManager gameTexturesManager,
+            GameResources gameResources) {
         super(gameResources);
+        verticalAnchorDp = ScreenUtils.getSreenSize().heightDp / 2;
+        horizontalAnchorDp = ScreenUtils.getSreenSize().widthDp / 2;
+
         stateMachine = new GameIconsTrayStateMachine();
         gameIconsTrayOpenCloseButton = new GameIconsTrayOpenCloseButton(this, areaTouchListenerEntity, stateMachine, gameTexturesManager, gameResources);
     }
@@ -95,12 +102,12 @@ public class GameIconsTrayEntity extends BaseEntity implements TrayCallback {
 
     @Override
     public int[] getOpenPositionPx() {
-        return new int[] {ScreenUtils.getSreenSize().width - getTrayWidthPx() - getMarginRightPx(), getTrayYPostitionPx()};
+        return new int[] {ScreenUtils.getSreenSize().widthPx - getTrayWidthPx() - getMarginRightPx(), getTrayYPostitionPx()};
     }
 
     @Override
     public int[] getClosedPositionPx() {
-        return new int[] {ScreenUtils.getSreenSize().width, getTrayYPostitionPx()};
+        return new int[] {ScreenUtils.getSreenSize().widthPx, getTrayYPostitionPx()};
     }
 
     private void refreshDimensions(@Nullable Sprite newIcon){
@@ -141,7 +148,7 @@ public class GameIconsTrayEntity extends BaseEntity implements TrayCallback {
     }
 
     /**
-     * Sets the given icon sprite to the correct width and height
+     * Sets the given icon sprite to the correct widthPx and heightPx
      * @param iconSprite
      */
     private void applyIconSize(Sprite iconSprite) {
@@ -151,7 +158,7 @@ public class GameIconsTrayEntity extends BaseEntity implements TrayCallback {
     }
 
     private int getIconSizePx() {
-        return (int)(ICONS_SIZE_AS_PERCENT_OF_SCREEN_WIDTH * ScreenUtils.getSreenSize().width);
+        return (int)(ICONS_SIZE_DP * ScreenUtils.getSreenSize().widthPx);
     }
 
     private int getPaddingHorizontalPx() {
@@ -171,7 +178,7 @@ public class GameIconsTrayEntity extends BaseEntity implements TrayCallback {
     }
 
     /**
-     * Returns the width of the tray including internal padding
+     * Returns the widthPx of the tray including internal padding
      */
     private int getTrayWidthPx() {
         return getPaddingHorizontalPx() * 2 + getIconSizePx();
@@ -184,7 +191,7 @@ public class GameIconsTrayEntity extends BaseEntity implements TrayCallback {
     }
 
     private int getTrayYPostitionPx() {
-        int trayCenterY = (int) (ScreenUtils.getSreenSize().height * ICONS_TRAY_VERTICAL_CENTER_POINT_AS_PERCENT_OF_SCREEN_HEIGHT);
+        int trayCenterY = ScreenUtils.dpToPx(verticalAnchorDp, hostActivity.getActivityContext());
         return trayCenterY - getTrayHeightPx() / 2;
     }
 

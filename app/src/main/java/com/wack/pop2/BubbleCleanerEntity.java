@@ -42,7 +42,7 @@ public class BubbleCleanerEntity extends BaseEntity{
         List<IEntity> bubbles = getAllBubbles();
         for (int i = 0 ; i < bubbles.size() ; i++) {
             IEntity bubble = bubbles.get(i);
-            if (bubble.getY() > ScreenUtils.getSreenSize().height * 1.2) {
+            if (bubble.getY() > ScreenUtils.getSreenSize().heightPx * 1.2) {
                 if (bubble instanceof IShape) {
                     Log.e("BubbleCleanerEntity", "Rogue bubble found at y = " + bubble.getY());
                     removeFromScene((IShape) bubble);

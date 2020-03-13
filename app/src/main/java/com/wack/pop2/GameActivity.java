@@ -124,11 +124,11 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	public EngineOptions onCreateEngineOptions() {
 		ScreenUtils.onCreateEngineOptions(this);
 		ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
-		camera = new ShakeCamera(0, 0, screenSize.width, screenSize.height);
+		camera = new ShakeCamera(0, 0, screenSize.widthPx, screenSize.heightPx);
 		final EngineOptions engineOptions = new EngineOptions(
 				true,
 				ScreenOrientation.PORTRAIT_FIXED,
-				new RatioResolutionPolicy(screenSize.width, screenSize.height),
+				new RatioResolutionPolicy(screenSize.widthPx, screenSize.heightPx),
 				this.camera);
 		engineOptions.getTouchOptions().setNeedsMultiTouch(true);
 		engineOptions.getAudioOptions().setNeedsSound(true);

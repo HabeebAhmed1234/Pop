@@ -43,7 +43,7 @@ public class InteractionScoreHudEntity extends BaseHudTextEntity implements Even
 
     @Override
     int[] getTextPosition() {
-        return new int[] {50, ScreenUtils.getSreenSize().height - 250};
+        return new int[] {50, ScreenUtils.getSreenSize().heightPx - 250};
     }
 
     @Override

@@ -112,7 +112,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
     }
 
     private void spawnStartingBubble() {
-        int screenWidth = ScreenUtils.getSreenSize().width;
+        int screenWidth = ScreenUtils.getSreenSize().widthPx;
         BubbleType bubbleType = BubbleType.random();
         Body body = spawnBubble(bubbleType, (int)(Math.random() * screenWidth),-200, BubbleSize.LARGE);
         EventBus.get().sendEvent(GameEvent.STARTING_BUBBLE_SPAWNED, new StartingBubbleSpawnedEventPayload(bubbleType));
@@ -160,8 +160,8 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
             bubbleSprite.setX(0);
         }
         float bubbleWidth = bubbleSprite.getWidthScaled();
-        if (bubbleSprite.getX() + bubbleWidth > ScreenUtils.getSreenSize().width) {
-            bubbleSprite.setX(ScreenUtils.getSreenSize().width - bubbleWidth);
+        if (bubbleSprite.getX() + bubbleWidth > ScreenUtils.getSreenSize().widthPx) {
+            bubbleSprite.setX(ScreenUtils.getSreenSize().widthPx - bubbleWidth);
         }
     }
 

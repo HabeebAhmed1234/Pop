@@ -39,8 +39,8 @@ public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCa
         this.vertexBufferObjectManager = gameResources.vertexBufferObjectManager;
         this.engine = gameResources.engine;
         this.hostActivity = gameResources.hostActivity;
-        this.levelWidth = ScreenUtils.getSreenSize().width;
-        this.levelHeight = ScreenUtils.getSreenSize().height;
+        this.levelWidth = ScreenUtils.getSreenSize().widthPx;
+        this.levelHeight = ScreenUtils.getSreenSize().heightPx;
         GameLifeCycleCalllbackManager.getInstance().registerGameEntity(this);
     }
 

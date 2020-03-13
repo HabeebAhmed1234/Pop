@@ -22,8 +22,8 @@ class BallAndChainHandleEntity extends BaseEntity implements BallAndChainStateMa
 
     public static final Vec2 OFF_SCREEN_HANDLE_POSITION =
             CoordinateConversionUtil.sceneToPhysicsWorld(
-                    new Vec2(ScreenUtils.getSreenSize().width,
-                            ScreenUtils.getSreenSize().height * 1.1f));
+                    new Vec2(ScreenUtils.getSreenSize().widthPx,
+                            ScreenUtils.getSreenSize().heightPx * 1.1f));
 
     @Nullable private MouseJoint handleJoint;
     private GameSceneTouchListenerEntity sceneTouchListenerEntity;

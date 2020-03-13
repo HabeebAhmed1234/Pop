@@ -74,8 +74,8 @@ public class GameOverSequenceEntity extends BaseEntity {
                 vertexBufferObjectManager);
         gameOverFadeRedEffect.setAlpha(0);
         ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
-        gameOverFadeRedEffect.setWidth(screenSize.width);
-        gameOverFadeRedEffect.setHeight(screenSize.height);
+        gameOverFadeRedEffect.setWidth(screenSize.widthPx);
+        gameOverFadeRedEffect.setHeight(screenSize.heightPx);
 
         EventBus.get().subscribe(GameEvent.GAME_OVER_ON_EXPLOSION_EVENT, gameOverExplosionSubscriber);
         EventBus.get().subscribe(GameEvent.GAME_TIMEOUT_EVENT, gameOverTimeoutSubscriber);

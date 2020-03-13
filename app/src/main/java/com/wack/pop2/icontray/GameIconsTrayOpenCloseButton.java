@@ -143,7 +143,7 @@ class GameIconsTrayOpenCloseButton extends BaseEntity implements BaseStateMachin
     }
 
     private int getIconSizePx() {
-        return (int)(ScreenUtils.getSreenSize().width * ICON_SIZE_AS_PERCENT_OF_SCREEN_WIDTH);
+        return (int)(ScreenUtils.getSreenSize().widthPx * ICON_SIZE_AS_PERCENT_OF_SCREEN_WIDTH);
     }
 
     private int getIconRightMarginPx() {
