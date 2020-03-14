@@ -2,7 +2,7 @@ package com.wack.pop2.walls;
 
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameFixtureDefs;
-import com.wack.pop2.icontray.GameIconsTrayEntity;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.collision.CollisionFilters;
@@ -47,7 +47,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
     private WallsIconEntity wallsIconEntity;
     private GameSceneTouchListenerEntity touchListenerEntity;
     private GameTexturesManager gameTexturesManager;
-    private GameIconsTrayEntity gameIconsTrayEntity;
+    private GameIconsHostTrayEntity gameIconsTrayEntity;
 
     private Vec2 initialPoint;
 
@@ -59,7 +59,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
             WallsIconEntity wallsIconEntity,
             GameSceneTouchListenerEntity touchListenerEntity,
             GameTexturesManager gameTexturesManager,
-            GameIconsTrayEntity gameIconsTrayEntity,
+            GameIconsHostTrayEntity gameIconsTrayEntity,
             GameResources gameResources) {
         super(gameResources);
         this.stateMachine = stateMachine;
@@ -99,7 +99,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
     }
 
     private boolean shouldStartPlacingWall(TouchEvent touchEvent) {
-        Sprite wallsIcon = gameIconsTrayEntity.getIcon(GameIconsTrayEntity.IconId.WALLS_ICON);
+        Sprite wallsIcon = gameIconsTrayEntity.getIcon(GameIconsHostTrayEntity.IconId.WALLS_ICON);
         return !isWallBeingPlaced() &&
                 stateMachine.getCurrentState() == WallsStateMachine.State.TOGGLED_ON &&
                 wallsIconEntity.hasInventory() &&

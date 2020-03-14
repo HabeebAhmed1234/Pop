@@ -1,7 +1,7 @@
 package com.wack.pop2.turret;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.icontray.GameIconsTrayEntity;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
@@ -35,7 +35,7 @@ public class TurretEntity extends BaseEntity implements HostTurretCallback, Base
                         Sprite turretCannonSprite,
                         TurretsMutex mutex,
                         GameTexturesManager texturesManager,
-                        GameIconsTrayEntity gameIconsTray,
+                        GameIconsHostTrayEntity gameIconsTray,
                         GameSceneTouchListenerEntity gameSceneTouchListener,
                         GameSoundsManager soundsManager,
                         GameResources gameResources) {

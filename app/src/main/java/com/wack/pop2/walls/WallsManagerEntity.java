@@ -2,7 +2,7 @@ package com.wack.pop2.walls;
 
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameAreaTouchListenerEntity;
-import com.wack.pop2.icontray.GameIconsTrayEntity;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.resources.fonts.GameFontsManager;
@@ -20,7 +20,7 @@ public class WallsManagerEntity extends BaseEntity{
     private WallsIconEntity wallsIconEntity;
 
     public WallsManagerEntity(
-            GameIconsTrayEntity gameIconsTrayEntity,
+            GameIconsHostTrayEntity gameIconsTrayEntity,
             GameAreaTouchListenerEntity gameAreaTouchListenerEntity,
             GameSceneTouchListenerEntity gameSceneTouchListenerEntity,
             GameTexturesManager gameTexturesManager,

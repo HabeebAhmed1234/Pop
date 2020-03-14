@@ -1,7 +1,7 @@
 package com.wack.pop2.ballandchain;
 
 import com.wack.pop2.GameAreaTouchListenerEntity;
-import com.wack.pop2.icontray.GameIconsTrayEntity;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.fixturedefdata.BallAndChainIconUserData;
 import com.wack.pop2.fixturedefdata.BaseEntityUserData;
@@ -25,7 +25,7 @@ class BallAndChainIconEntity extends BaseIconEntity implements BallAndChainState
 
     public BallAndChainIconEntity(
             BallAndChainStateMachine stateMachine,
-            GameIconsTrayEntity gameIconsTrayEntity,
+            GameIconsHostTrayEntity gameIconsTrayEntity,
             GameAreaTouchListenerEntity touchListenerEntity,
             GameTexturesManager gameTexturesManager,
             GameResources gameResources) {
@@ -61,8 +61,8 @@ class BallAndChainIconEntity extends BaseIconEntity implements BallAndChainState
     }
 
     @Override
-    protected GameIconsTrayEntity.IconId getIconId() {
-        return GameIconsTrayEntity.IconId.BALL_AND_CHAIN_ICON;
+    protected GameIconsHostTrayEntity.IconId getIconId() {
+        return GameIconsHostTrayEntity.IconId.BALL_AND_CHAIN_ICON;
     }
 
     @Override

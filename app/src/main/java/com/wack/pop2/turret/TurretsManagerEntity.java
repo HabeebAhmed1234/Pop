@@ -3,7 +3,7 @@ package com.wack.pop2.turret;
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.GameAreaTouchListenerEntity;
-import com.wack.pop2.icontray.GameIconsTrayEntity;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GamePhysicsContactsEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
@@ -25,7 +25,7 @@ public class TurretsManagerEntity extends BaseEntity {
     public TurretsManagerEntity(
             BubblePopperEntity bubblePopperEntity,
             GameTexturesManager gameTextureManager,
-            GameIconsTrayEntity gameIconsTray,
+            GameIconsHostTrayEntity gameIconsTray,
             GamePhysicsContactsEntity gamePhysicsContactsEntity,
             GameFontsManager fontsManager,
             GameAreaTouchListenerEntity gameAreaTouchListenerEntity,

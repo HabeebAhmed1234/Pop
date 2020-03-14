@@ -1,4 +1,4 @@
-package com.wack.pop2.icontray;
+package com.wack.pop2.tray;
 
 import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.modifier.MoveModifier;
@@ -7,23 +7,25 @@ import org.andengine.util.modifier.IModifier;
 
 class TrayAnimationManager {
 
-    private static final float FULL_OPEN_CLOSE_ANIMATION_DURATION = 0.3f;
-
     private Rectangle tray;
-    private GameIconsTrayStateMachine stateMachine;
-    private TrayCallback callback;
-
+    private TrayStateMachine stateMachine;
+    private HostTrayCallback callback;
     private IEntityModifier currentAnimation;
+    private final float openCloseAnimatinoDuration;
 
-    public TrayAnimationManager(TrayCallback callback, GameIconsTrayStateMachine stateMachine, Rectangle tray) {
+    public TrayAnimationManager(float openCloseAnimatinoDuration,
+                                HostTrayCallback callback,
+                                TrayStateMachine stateMachine,
+                                Rectangle tray) {
         this.callback = callback;
         this.stateMachine = stateMachine;
         this.tray = tray;
+        this.openCloseAnimatinoDuration = openCloseAnimatinoDuration;
     }
 
     public void openTray() {
         stopCurrentAnimation();
-        stateMachine.transitionState(GameIconsTrayStateMachine.State.EXPANDING);
+        stateMachine.transitionState(TrayStateMachine.State.EXPANDING);
         startAnimation(getOpenTrayEntityModifier(), new IModifier.IModifierListener() {
 
             @Override
@@ -31,14 +33,14 @@ class TrayAnimationManager {
 
             @Override
             public void onModifierFinished(IModifier pModifier, Object pItem) {
-                stateMachine.transitionState(GameIconsTrayStateMachine.State.EXPANDED);
+                stateMachine.transitionState(TrayStateMachine.State.EXPANDED);
             }
         });
     }
 
     public void closeTray() {
         stopCurrentAnimation();
-        stateMachine.transitionState(GameIconsTrayStateMachine.State.CLOSING);
+        stateMachine.transitionState(TrayStateMachine.State.CLOSING);
         startAnimation(getCloseTrayEntityModifier(), new IModifier.IModifierListener() {
 
             @Override
@@ -46,7 +48,7 @@ class TrayAnimationManager {
 
             @Override
             public void onModifierFinished(IModifier pModifier, Object pItem) {
-                stateMachine.transitionState(GameIconsTrayStateMachine.State.CLOSED);
+                stateMachine.transitionState(TrayStateMachine.State.CLOSED);
             }
         });
     }
@@ -76,6 +78,6 @@ class TrayAnimationManager {
     }
 
     private float getAnimationDuration(float destinationPosition, float currentPosition, float totalDelta) {
-        return Math.abs(destinationPosition - currentPosition) / Math.abs(totalDelta) * FULL_OPEN_CLOSE_ANIMATION_DURATION;
+        return Math.abs(destinationPosition - currentPosition) / Math.abs(totalDelta) * openCloseAnimatinoDuration;
     }
 }

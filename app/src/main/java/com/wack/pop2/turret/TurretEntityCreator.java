@@ -1,7 +1,7 @@
 package com.wack.pop2.turret;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.icontray.GameIconsTrayEntity;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.fixturedefdata.TurretBodyUserData;
@@ -18,13 +18,13 @@ public class TurretEntityCreator extends BaseEntity {
     private GameResources gameResources;
     private GameTexturesManager texturesManager;
     private GameSceneTouchListenerEntity gameSceneTouchListener;
-    private GameIconsTrayEntity gameIconsTray;
+    private GameIconsHostTrayEntity gameIconsTray;
     private GameSoundsManager soundsManager;
     private TurretsMutex mutex;
 
     public TurretEntityCreator(
             GameTexturesManager texturesManager,
-            GameIconsTrayEntity gameIconsTray,
+            GameIconsHostTrayEntity gameIconsTray,
             GameSceneTouchListenerEntity gameSceneTouchListener,
             GameSoundsManager soundsManager,
             TurretsMutex mutex,

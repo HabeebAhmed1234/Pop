@@ -1,7 +1,7 @@
 package com.wack.pop2.turret;
 
 import com.wack.pop2.GameAreaTouchListenerEntity;
-import com.wack.pop2.icontray.GameIconsTrayEntity;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.eventbus.EventBus;
@@ -47,7 +47,7 @@ class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subs
             GameAreaTouchListenerEntity areaTouchListenerEntity,
             GameSceneTouchListenerEntity touchListenerEntity,
             GameTexturesManager gameTexturesManager,
-            GameIconsTrayEntity gameIconsTrayEntity,
+            GameIconsHostTrayEntity gameIconsTrayEntity,
             TurretEntityCreator turretEntityCreator,
             TurretsMutex mutex,
             GameResources gameResources) {
@@ -155,8 +155,8 @@ class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subs
     }
 
     @Override
-    protected GameIconsTrayEntity.IconId getIconId() {
-        return GameIconsTrayEntity.IconId.TURRETS_ICON;
+    protected GameIconsHostTrayEntity.IconId getIconId() {
+        return GameIconsHostTrayEntity.IconId.TURRETS_ICON;
     }
 
     @Override

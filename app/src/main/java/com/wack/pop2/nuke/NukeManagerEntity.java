@@ -2,7 +2,7 @@ package com.wack.pop2.nuke;
 
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameAreaTouchListenerEntity;
-import com.wack.pop2.icontray.GameIconsTrayEntity;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.bubblepopper.BufferedBubblePopperEntity;
 import com.wack.pop2.resources.textures.GameTexturesManager;
@@ -16,7 +16,7 @@ public class NukeManagerEntity extends BaseEntity {
 
     public NukeManagerEntity(
             BufferedBubblePopperEntity bubblePopperEntity,
-            GameIconsTrayEntity gameIconsTrayEntity,
+            GameIconsHostTrayEntity gameIconsTrayEntity,
             GameTexturesManager texturesManager,
             GameAreaTouchListenerEntity touchListenerEntity,
             GameResources gameResources) {

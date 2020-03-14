@@ -1,7 +1,7 @@
 package com.wack.pop2.walls;
 
 import com.wack.pop2.GameAreaTouchListenerEntity;
-import com.wack.pop2.icontray.GameIconsTrayEntity;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
@@ -28,7 +28,7 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements GameArea
 
     public WallsIconEntity(
             WallsStateMachine stateMachine,
-            GameIconsTrayEntity gameIconsTrayEntity,
+            GameIconsHostTrayEntity gameIconsTrayEntity,
             GameAreaTouchListenerEntity touchListenerEntity,
             GameTexturesManager gameTexturesManager,
             GameFontsManager fontsManager,
@@ -125,8 +125,8 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements GameArea
     }
 
     @Override
-    protected GameIconsTrayEntity.IconId getIconId() {
-        return GameIconsTrayEntity.IconId.WALLS_ICON;
+    protected GameIconsHostTrayEntity.IconId getIconId() {
+        return GameIconsHostTrayEntity.IconId.WALLS_ICON;
     }
 
     @Override

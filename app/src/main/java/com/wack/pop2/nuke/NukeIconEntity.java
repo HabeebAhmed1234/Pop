@@ -1,7 +1,7 @@
 package com.wack.pop2.nuke;
 
 import com.wack.pop2.GameAreaTouchListenerEntity;
-import com.wack.pop2.icontray.GameIconsTrayEntity;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.fixturedefdata.NukeIconEntityUserData;
@@ -14,7 +14,7 @@ import org.andengine.entity.scene.ITouchArea;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.color.AndengineColor;
 
-import static com.wack.pop2.icontray.GameIconsTrayEntity.IconId.NUKE_ICON;
+import static com.wack.pop2.gameiconstray.GameIconsHostTrayEntity.IconId.NUKE_ICON;
 import static com.wack.pop2.nuke.NukeConstants.NUKE_UNLOCK_THRESHOLD;
 
 public class NukeIconEntity extends BaseIconEntity implements BaseStateMachine.Listener<NukeStateMachine.State> {
@@ -25,7 +25,7 @@ public class NukeIconEntity extends BaseIconEntity implements BaseStateMachine.L
     public NukeIconEntity(
             NukeStateMachine nukeStateMachine,
             NukerEntity nukerEntity,
-            GameIconsTrayEntity gameIconsTrayEntity,
+            GameIconsHostTrayEntity gameIconsTrayEntity,
             GameTexturesManager gameTexturesManager,
             GameAreaTouchListenerEntity touchListenerEntity,
             GameResources gameResources) {
@@ -50,7 +50,7 @@ public class NukeIconEntity extends BaseIconEntity implements BaseStateMachine.L
     }
 
     @Override
-    protected GameIconsTrayEntity.IconId getIconId() {
+    protected GameIconsHostTrayEntity.IconId getIconId() {
         return NUKE_ICON;
     }
 

@@ -3,7 +3,7 @@ package com.wack.pop2.turret;
 import android.util.Log;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.icontray.GameIconsTrayEntity;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.LongPressGesture;
@@ -22,7 +22,7 @@ public class TurretDraggingManager extends BaseEntity implements GameSceneTouchL
 
     private static final float DRAGGING_OFFSET_DISTANCE = 100f;
 
-    private GameIconsTrayEntity iconsTrayEntity;
+    private GameIconsHostTrayEntity iconsTrayEntity;
     private GameSceneTouchListenerEntity touchListenerEntity;
     private TurretsMutex mutex;
     private TurretStateMachine stateMachine;
@@ -30,7 +30,7 @@ public class TurretDraggingManager extends BaseEntity implements GameSceneTouchL
     private HostTurretCallback hostTurretCallback;
 
     public TurretDraggingManager(
-            GameIconsTrayEntity iconsTrayEntity,
+            GameIconsHostTrayEntity iconsTrayEntity,
             GameSceneTouchListenerEntity touchListenerEntity,
             TurretsMutex mutex,
             TurretStateMachine stateMachine,
@@ -131,6 +131,6 @@ public class TurretDraggingManager extends BaseEntity implements GameSceneTouchL
     }
 
     private boolean isTouchOverTurretsIcon(TouchEvent touchEvent) {
-        return iconsTrayEntity.getIcon(GameIconsTrayEntity.IconId.TURRETS_ICON).contains(touchEvent.getX(), touchEvent.getY());
+        return iconsTrayEntity.getIcon(GameIconsHostTrayEntity.IconId.TURRETS_ICON).contains(touchEvent.getX(), touchEvent.getY());
     }
 }

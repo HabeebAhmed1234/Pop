@@ -2,7 +2,7 @@ package com.wack.pop2.icons;
 
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameAreaTouchListenerEntity;
-import com.wack.pop2.icontray.GameIconsTrayEntity;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
@@ -24,12 +24,12 @@ public abstract class BaseIconEntity extends BaseEntity implements GameAreaTouch
     private boolean isUnlocked;
     private BaseEntityUserData iconUserData;
 
-    private GameIconsTrayEntity gameIconsTrayEntity;
+    private GameIconsHostTrayEntity gameIconsTrayEntity;
     private GameTexturesManager gameTexturesManager;
     private GameAreaTouchListenerEntity touchListenerEntity;
 
     public BaseIconEntity(
-            GameIconsTrayEntity gameIconsTrayEntity,
+            GameIconsHostTrayEntity gameIconsTrayEntity,
             GameTexturesManager gameTexturesManager,
             GameAreaTouchListenerEntity touchListenerEntity,
             GameResources gameResources) {
@@ -107,7 +107,7 @@ public abstract class BaseIconEntity extends BaseEntity implements GameAreaTouch
 
     protected abstract BaseEntityUserData getUserData();
 
-    protected abstract GameIconsTrayEntity.IconId getIconId();
+    protected abstract GameIconsHostTrayEntity.IconId getIconId();
 
     protected abstract float getDifficultyIntervalUnlockThreshold();
 

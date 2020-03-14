@@ -1,4 +1,4 @@
-package com.wack.pop2.icontray;
+package com.wack.pop2.tray;
 
 import com.wack.pop2.statemachine.BaseStateMachine;
 
@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.wack.pop2.icontray.GameIconsTrayStateMachine.State.CLOSED;
-import static com.wack.pop2.icontray.GameIconsTrayStateMachine.State.CLOSING;
-import static com.wack.pop2.icontray.GameIconsTrayStateMachine.State.EXPANDED;
-import static com.wack.pop2.icontray.GameIconsTrayStateMachine.State.EXPANDING;
+import static com.wack.pop2.tray.TrayStateMachine.State.CLOSED;
+import static com.wack.pop2.tray.TrayStateMachine.State.CLOSING;
+import static com.wack.pop2.tray.TrayStateMachine.State.EXPANDED;
+import static com.wack.pop2.tray.TrayStateMachine.State.EXPANDING;
 
-class GameIconsTrayStateMachine extends BaseStateMachine<GameIconsTrayStateMachine.State> {
+class TrayStateMachine extends BaseStateMachine<TrayStateMachine.State> {
 
     public enum State {
         EXPANDED,

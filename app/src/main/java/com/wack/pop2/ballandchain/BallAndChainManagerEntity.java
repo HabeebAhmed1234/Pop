@@ -3,7 +3,7 @@ package com.wack.pop2.ballandchain;
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.GameAreaTouchListenerEntity;
-import com.wack.pop2.icontray.GameIconsTrayEntity;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GamePhysicsContactsEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
@@ -30,7 +30,7 @@ public class BallAndChainManagerEntity extends BaseEntity {
     public BallAndChainManagerEntity(
             GameTexturesManager texturesManager,
             GameSceneTouchListenerEntity gameSceneTouchListenerEntity,
-            GameIconsTrayEntity gameIconsTrayEntity,
+            GameIconsHostTrayEntity gameIconsTrayEntity,
             GameAreaTouchListenerEntity gameAreaTouchListenerEntity,
             GamePhysicsContactsEntity gamePhysicsContactsEntity,
             BubblePopperEntity bubblePopperEntity,

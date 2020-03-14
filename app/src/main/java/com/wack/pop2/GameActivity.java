@@ -16,7 +16,7 @@ import com.wack.pop2.gamesettings.GamePreferencesEntity;
 import com.wack.pop2.hudentities.InteractionScoreHudEntity;
 import com.wack.pop2.hudentities.ScoreHudEntity;
 import com.wack.pop2.hudentities.TimerHudEntity;
-import com.wack.pop2.icontray.GameIconsTrayEntity;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.interaction.InteractionCounter;
 import com.wack.pop2.nuke.NukeManagerEntity;
 import com.wack.pop2.resources.fonts.GameFontsManager;
@@ -86,7 +86,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		InteractionCounter interactionCounter = new InteractionCounter(mGameResources);
 		GameAreaTouchListenerEntity gameAreaTouchListenerEntity = new GameAreaTouchListenerEntity(interactionCounter, mGameResources);
 		GameSceneTouchListenerEntity gameSceneTouchListenerEntity = new GameSceneTouchListenerEntity(interactionCounter, mGameResources);
-		GameIconsTrayEntity gameIconsTrayEntity = new GameIconsTrayEntity(gameAreaTouchListenerEntity, gameTexturesManager, mGameResources);
+		GameIconsHostTrayEntity gameIconsTrayEntity = new GameIconsHostTrayEntity(gameTexturesManager, gameAreaTouchListenerEntity, mGameResources);
 
 		// Create game entities
 		mLevelEntity = new LevelEntity(gameTexturesManager, mGameResources);
