@@ -29,7 +29,7 @@
   * Fixed a race condition in SoundManager/SoundFactory.
   * Added Missing constructors in IMenuItem implementations.
 * Francesco Zoffoli
-  * Added callback method in IAnimationListener.
+  * Added hostTrayCallback method in IAnimationListener.
 * Karl Erik Asbjørnsen
   * Fix in MultiKeyHashMap to preventing from building with a stock JDK.
 * Erik Eloff <erik@eloff.se>

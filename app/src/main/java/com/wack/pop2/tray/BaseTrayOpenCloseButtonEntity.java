@@ -12,7 +12,6 @@ import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.statemachine.BaseStateMachine;
 import com.wack.pop2.utils.ScreenUtils;
 
-import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
@@ -104,24 +103,24 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
         }
     }
 
-    public void onIconsTrayCreated(Rectangle traySprite) {
+    public void onIconsTrayCreated() {
         if (!(isIconCreated())) {
             createIconSprite();
         }
 
-        addToSceneWithTouch(traySprite, iconSpriteOpen);
-        addToSceneWithTouch(traySprite, iconSpriteClose);
+        addToSceneWithTouch(hostTrayCallback.getTrayIconsHolderRectangle(), iconSpriteOpen);
+        addToSceneWithTouch(hostTrayCallback.getTrayIconsHolderRectangle(), iconSpriteClose);
 
-        onIconsTrayPositionChanged(traySprite);
+        refreshDimensions();
     }
 
-    public void onIconsTrayPositionChanged(Rectangle traySprite) {
+    public void refreshDimensions() {
         if (iconSpriteOpen == null || iconSpriteClose == null) return;
 
 
         int iconX = -getButtonSpecInternal().iconSizePx - getButtonSpecInternal().iconRightMarginPx;
-        int iconY = (int) (traySprite.getHeightScaled() / 2 - getButtonSpecInternal().iconSizePx / 2);
-        setIconsPosition(iconX, iconY);
+        int iconY = (int) (hostTrayCallback.getTrayIconsHolderRectangle().getHeightScaled() / 2 - getButtonSpecInternal().iconSizePx / 2);
+        setIconPosition(iconX, iconY);
     }
 
     private boolean canOpen() {
@@ -166,7 +165,7 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
     }
 
 
-    private void setIconsPosition(float x, float y) {
+    private void setIconPosition(float x, float y) {
         iconSpriteOpen.setX(x);
         iconSpriteClose.setX(x);
 

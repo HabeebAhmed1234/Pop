@@ -4,10 +4,9 @@ import com.wack.pop2.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.tray.BaseHostTrayEntity;
+import com.wack.pop2.tray.BaseTrayIconsHolderEntity;
 import com.wack.pop2.tray.BaseTrayOpenCloseButtonEntity;
 import com.wack.pop2.utils.ScreenUtils;
-
-import org.andengine.util.color.AndengineColor;
 
 /**
  * Single entity used to manage the icons for different tools in the game.
@@ -32,11 +31,7 @@ public class GameIconsHostTrayEntity extends BaseHostTrayEntity<GameIconsHostTra
     protected TraySpec getTraySpec() {
         return new TraySpec(
                 hostActivity.getActivityContext(),
-                0,
                 8,
-                16,
-                8,
-                64,
                 ScreenUtils.getSreenSize().heightDp / 2,
                 ScreenUtils.getSreenSize().widthDp,
                 0.2f);
@@ -48,7 +43,7 @@ public class GameIconsHostTrayEntity extends BaseHostTrayEntity<GameIconsHostTra
     }
 
     @Override
-    protected AndengineColor getTrayBackgroundColor() {
-        return AndengineColor.TRANSPARENT;
+    protected BaseTrayIconsHolderEntity getTrayIconsHolderEntity(GameResources gameResources) {
+        return new GameTrayIconsHolderEntity(this, gameResources);
     }
 }
