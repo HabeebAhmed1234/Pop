@@ -71,8 +71,6 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
                 getTraySpecInternal().openCloseAnimationDuration,
                 this,
                 stateMachine);
-        iconsTrayOpenCloseButton.onIconsTrayCreated();
-        refreshDimensions(null);
     }
 
     public void addIcon(IconIdType iconId, Sprite iconSprite) {
@@ -126,15 +124,20 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
     }
 
     @Override
+    public void onIconsTrayInitialized() {
+        iconsTrayOpenCloseButton.onIconsTrayInitialized();
+    }
+
+    @Override
+    public void onIconsTrayDimensionsChanged() {
+        iconsTrayOpenCloseButton.onIconsTrayDimensionsChanged();
+    }
+
+    @Override
     public int[] getAnchorPx() {
         return new int[] {
                 getTraySpecInternal().horizontalAnchorPx - getMarginRightPx(),
                 getTraySpecInternal().verticalAnchorPx};
-    }
-
-    private void refreshDimensions(@Nullable Sprite newIcon){
-        trayIconsHolderEntity.refreshDimensions(newIcon);
-        iconsTrayOpenCloseButton.refreshDimensions();
     }
 
     private int getMarginRightPx() {

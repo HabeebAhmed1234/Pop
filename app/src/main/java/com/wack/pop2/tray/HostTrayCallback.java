@@ -16,4 +16,6 @@ public interface HostTrayCallback {
     TrayStateMachine getStateMachine();
     GameTexturesManager getTextureManager();
     Rectangle getTrayIconsHolderRectangle();
+    void onIconsTrayInitialized();
+    void onIconsTrayDimensionsChanged();
 }

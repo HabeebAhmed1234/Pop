@@ -103,7 +103,7 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
         }
     }
 
-    public void onIconsTrayCreated() {
+    public void onIconsTrayInitialized() {
         if (!(isIconCreated())) {
             createIconSprite();
         }
@@ -111,6 +111,10 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
         addToSceneWithTouch(hostTrayCallback.getTrayIconsHolderRectangle(), iconSpriteOpen);
         addToSceneWithTouch(hostTrayCallback.getTrayIconsHolderRectangle(), iconSpriteClose);
 
+        refreshDimensions();
+    }
+
+    public void onIconsTrayDimensionsChanged() {
         refreshDimensions();
     }
 

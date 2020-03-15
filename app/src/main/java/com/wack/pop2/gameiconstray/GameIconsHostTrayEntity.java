@@ -31,7 +31,7 @@ public class GameIconsHostTrayEntity extends BaseHostTrayEntity<GameIconsHostTra
     protected TraySpec getTraySpec() {
         return new TraySpec(
                 hostActivity.getActivityContext(),
-                8,
+                4,
                 ScreenUtils.getSreenSize().heightDp / 2,
                 ScreenUtils.getSreenSize().widthDp,
                 0.2f);

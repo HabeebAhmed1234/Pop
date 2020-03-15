@@ -72,7 +72,8 @@ public abstract class BaseTrayIconsHolderEntity<IconIdType> extends BaseEntity {
         scene.attachChild(iconsTray);
 
         refreshDimensions(null);
-        setInitTrayAnchor(hostTrayCallback.getAnchorPx());
+        refreshTrayPositionOnAnchor();
+        hostTrayCallback.onIconsTrayInitialized();
     }
 
     public void addIcon(IconIdType iconId, Sprite iconSprite) {
@@ -96,14 +97,17 @@ public abstract class BaseTrayIconsHolderEntity<IconIdType> extends BaseEntity {
             applyIconSize(newIcon);
         }
         refreshTrayDimensions();
+        refreshTrayPositionOnAnchor();
         refreshIconPostitions();
+        hostTrayCallback.onIconsTrayDimensionsChanged();
     }
 
     /**
      * The position of this tray's left anchor has changed. Update the rectangle that holds the icons
      * to this new position.
      */
-    public void setInitTrayAnchor(int[] anchor) {
+    public void refreshTrayPositionOnAnchor() {
+        int[] anchor = hostTrayCallback.getAnchorPx();
         TrayStateMachine.State currentState = hostTrayCallback.getStateMachine().getCurrentState();
         if (iconsTray != null) {
             int xPx = 0;
@@ -112,7 +116,9 @@ public abstract class BaseTrayIconsHolderEntity<IconIdType> extends BaseEntity {
             } else if (currentState == TrayStateMachine.State.EXPANDED) {
                 xPx = anchor[0] - getTrayWidthPx();
             }
-            iconsTray.setX(xPx);
+            if (xPx != 0) {
+                iconsTray.setX(xPx);
+            }
             iconsTray.setY(anchor[1] - getTrayHeightPx() / 2);
         }
     }
