@@ -21,4 +21,6 @@ public enum TextureId {
     DELETE_WALL_ICON,
     OPEN_BTN,
     CLOSE_BTN,
+    QUICK_SETTINGS_BTN,
+    MUSIC_QUICK_SETTING_ICON,
 }

@@ -23,6 +23,8 @@ import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.music.GameMusicResourceManagerEntity;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
+import com.wack.pop2.settingstray.GameQuickSettingsHostTrayEntity;
+import com.wack.pop2.settingstray.MusicQuickSettingIconEntity;
 import com.wack.pop2.turret.TurretsManagerEntity;
 import com.wack.pop2.utils.ScreenUtils;
 import com.wack.pop2.walls.WallsManagerEntity;
@@ -87,6 +89,10 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		GameAreaTouchListenerEntity gameAreaTouchListenerEntity = new GameAreaTouchListenerEntity(interactionCounter, mGameResources);
 		GameSceneTouchListenerEntity gameSceneTouchListenerEntity = new GameSceneTouchListenerEntity(interactionCounter, mGameResources);
 		GameIconsHostTrayEntity gameIconsTrayEntity = new GameIconsHostTrayEntity(gameTexturesManager, gameAreaTouchListenerEntity, mGameResources);
+		GameQuickSettingsHostTrayEntity gameQuickSettingsHostTrayEntity = new GameQuickSettingsHostTrayEntity(gameTexturesManager, gameAreaTouchListenerEntity, mGameResources);
+
+		// Settings icons
+		MusicQuickSettingIconEntity musicQuickSettingIconEntity = new MusicQuickSettingIconEntity(preferencesEntity, gameQuickSettingsHostTrayEntity, gameTexturesManager, gameAreaTouchListenerEntity, mGameResources);
 
 		// Create game entities
 		mLevelEntity = new LevelEntity(gameTexturesManager, mGameResources);

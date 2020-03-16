@@ -1,4 +1,4 @@
-package com.wack.pop2.gameiconstray;
+package com.wack.pop2.settingstray;
 
 import com.wack.pop2.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameResources;
@@ -9,18 +9,15 @@ import com.wack.pop2.tray.BaseTrayOpenCloseButtonEntity;
 import com.wack.pop2.utils.ScreenUtils;
 
 /**
- * Single entity used to manage the icons for different tools in the game.
+ * A small expandable tray that renders on the top right of the screen.
  */
-public class GameIconsHostTrayEntity extends BaseHostTrayEntity<GameIconsHostTrayEntity.IconId> {
+public class GameQuickSettingsHostTrayEntity extends BaseHostTrayEntity<GameQuickSettingsHostTrayEntity.IconId> {
 
     public enum IconId {
-        BALL_AND_CHAIN_ICON,
-        TURRETS_ICON,
-        WALLS_ICON,
-        NUKE_ICON,
+        SETTING_MUSIC_TOGGLE,
     }
 
-    public GameIconsHostTrayEntity(
+    public GameQuickSettingsHostTrayEntity(
             GameTexturesManager textureManager,
             GameAreaTouchListenerEntity areaTouchListenerEntity,
             GameResources gameResources) {
@@ -32,18 +29,18 @@ public class GameIconsHostTrayEntity extends BaseHostTrayEntity<GameIconsHostTra
         return new Spec(
                 hostActivity.getActivityContext(),
                 4,
-                ScreenUtils.getSreenSize().heightDp / 2,
+                44,
                 ScreenUtils.getSreenSize().widthDp,
                 0.2f);
     }
 
     @Override
     protected BaseTrayOpenCloseButtonEntity getOpenCloseButtonEntity(GameResources gameResources) {
-        return new GameIconsTrayOpenCloseButton(this, gameResources);
+        return new GameQuickSettingsTrayOpenCloseButton(this, gameResources);
     }
 
     @Override
     protected BaseTrayIconsHolderEntity getTrayIconsHolderEntity(GameResources gameResources) {
-        return new GameTrayIconsHolderEntity(this, gameResources);
+        return new GameQuickSettingsTrayIconsHolderEntity(this, gameResources);
     }
 }

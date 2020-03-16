@@ -92,8 +92,8 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
     public void onDestroy() {
         hostTrayCallback.getStateMachine().removeAllStateTransitionListener(this);
 
-        hostTrayCallback.getAreaTouchListener().removeAreaTouchListener(GameTrayOpenBtnUserData.class, openBtnTouchListener);
-        hostTrayCallback.getAreaTouchListener().removeAreaTouchListener(GameTrayCloseBtnUserData.class, closeBtnTouchListener);
+        hostTrayCallback.getAreaTouchListener().removeAreaTouchListener(getOpenButtonUserDataType(), openBtnTouchListener);
+        hostTrayCallback.getAreaTouchListener().removeAreaTouchListener(getCloseButtonUserDataType(), closeBtnTouchListener);
     }
 
     @Override

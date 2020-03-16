@@ -9,6 +9,7 @@ import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.texturepacker.RectanglePacker;
 
+import org.andengine.opengl.texture.Texture;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -67,7 +68,9 @@ public class GameTexturesManager extends BaseEntity {
             new ImageResource(TextureId.NUKE_ICON, "nuke_icon.png", 300, 300),
             new ImageResource(TextureId.BACKGROUND, "main_menu_background.png", 576, 1022),
             new ImageResource(TextureId.OPEN_BTN, "open_button.png", 300, 300),
-            new ImageResource(TextureId.CLOSE_BTN, "close_button.png", 300, 300)
+            new ImageResource(TextureId.CLOSE_BTN, "close_button.png", 300, 300),
+            new ImageResource(TextureId.QUICK_SETTINGS_BTN, "quick_settings_button.png", 300, 300),
+            new ImageResource(TextureId.MUSIC_QUICK_SETTING_ICON, "music_setting_button.png", 200, 200)
     );
 
     private static final int MAX_TEXTURE_ATLAS_WIDTH = 1024;

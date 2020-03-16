@@ -18,18 +18,18 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
     /**
      * Contains the specifications of the tray's dimensions and layout
      */
-    public static class TraySpec {
+    public static class Spec {
 
         public final int marginRightPx;
         public final int verticalAnchorPx;
         public final int horizontalAnchorPx;
         public final float openCloseAnimationDuration;
 
-        public TraySpec(Context context,
-                        int marginRightDp,
-                        int verticalAnchorDp,
-                        int horizontalAnchorDp,
-                        float openCloseAnimationDuration) {
+        public Spec(Context context,
+                    int marginRightDp,
+                    int verticalAnchorDp,
+                    int horizontalAnchorDp,
+                    float openCloseAnimationDuration) {
             marginRightPx = ScreenUtils.dpToPx(marginRightDp, context);
             verticalAnchorPx = ScreenUtils.dpToPx(verticalAnchorDp, context);
             horizontalAnchorPx = ScreenUtils.dpToPx(horizontalAnchorDp, context);
@@ -37,7 +37,7 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
         }
     }
 
-    private TraySpec traySpec;
+    private Spec spec;
 
     private TrayAnimationManager trayAnimationManager;
     private BaseTrayOpenCloseButtonEntity iconsTrayOpenCloseButton;
@@ -60,7 +60,7 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
 
     }
 
-    protected abstract TraySpec getTraySpec();
+    protected abstract Spec getSpec();
     protected abstract BaseTrayOpenCloseButtonEntity getOpenCloseButtonEntity(GameResources gameResources);
     protected abstract BaseTrayIconsHolderEntity getTrayIconsHolderEntity(GameResources gameResources);
 
@@ -68,7 +68,7 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
     public void onCreateScene() {
         super.onCreateScene();
         trayAnimationManager = new TrayAnimationManager(
-                getTraySpecInternal().openCloseAnimationDuration,
+                getSpecInternal().openCloseAnimationDuration,
                 this,
                 stateMachine);
     }
@@ -111,11 +111,11 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
         return textureManager;
     }
 
-    private TraySpec getTraySpecInternal() {
-        if (traySpec == null) {
-            traySpec = getTraySpec();
+    private Spec getSpecInternal() {
+        if (spec == null) {
+            spec = getSpec();
         }
-        return traySpec;
+        return spec;
     }
 
     @Override
@@ -136,11 +136,11 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
     @Override
     public int[] getAnchorPx() {
         return new int[] {
-                getTraySpecInternal().horizontalAnchorPx - getMarginRightPx(),
-                getTraySpecInternal().verticalAnchorPx};
+                getSpecInternal().horizontalAnchorPx - getMarginRightPx(),
+                getSpecInternal().verticalAnchorPx};
     }
 
     private int getMarginRightPx() {
-        return getTraySpecInternal().marginRightPx;
+        return getSpecInternal().marginRightPx;
     }
 }

@@ -61,6 +61,7 @@ public class GameAreaTouchListenerEntity extends BaseEntity implements IOnAreaTo
     public void removeAreaTouchListener(Class<? extends BaseEntityUserData> userDataType, AreaTouchListener listener) {
         if (!areaTouchlisteners.containsKey(userDataType)) {
             Log.w(TAG, "No listeners for " + userDataType);
+            return;
         }
         Set<AreaTouchListener> listeners = areaTouchlisteners.get(userDataType);
         listeners.remove(listener);
