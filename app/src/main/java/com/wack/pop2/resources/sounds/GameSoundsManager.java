@@ -38,6 +38,8 @@ public class GameSoundsManager extends BaseEntity {
             loadSound(SoundId.EXPOSION,"explosion.ogg");
             loadSound(SoundId.NEON_BUZZ,"neon_buzz.wav");
             loadSound(SoundId.LAZER_BURST,"lazer_burst.mp3");
+            loadSound(SoundId.OPEN,"open.wav");
+            loadSound(SoundId.CLOSE,"close.wav");
         } catch (final IOException e) {
             Debug.e(e);
         }

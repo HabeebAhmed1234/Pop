@@ -14,6 +14,10 @@ import java.util.Set;
  */
 public class BallAndChainStateMachine extends BaseStateMachine<BallAndChainStateMachine.State> {
 
+    public BallAndChainStateMachine() {
+        super(State.LOCKED);
+    }
+
     public enum State {
 
         /**
@@ -49,11 +53,6 @@ public class BallAndChainStateMachine extends BaseStateMachine<BallAndChainState
          * - The ball and chain cannot pop bubbles
          */
         IN_USE_DISCHARGED,
-    }
-
-    @Override
-    protected State getInitialState() {
-        return State.LOCKED;
     }
 
     @Override

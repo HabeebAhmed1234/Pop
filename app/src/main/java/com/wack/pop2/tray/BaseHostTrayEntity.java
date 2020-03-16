@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameResources;
+import com.wack.pop2.resources.sounds.GameSoundsManager;
+import com.wack.pop2.resources.sounds.SoundId;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.utils.ScreenUtils;
 
@@ -46,23 +48,29 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
 
     private GameAreaTouchListenerEntity areaTouchListenerEntity;
     private GameTexturesManager textureManager;
+    private GameSoundsManager soundsManager;
 
     public BaseHostTrayEntity(
             GameTexturesManager textureManager,
+            GameSoundsManager soundsManager,
             GameAreaTouchListenerEntity areaTouchListenerEntity,
             GameResources gameResources) {
         super(gameResources);
-        stateMachine = new TrayStateMachine();
+        stateMachine = new TrayStateMachine(getIsInitiallyExpanded());
         trayIconsHolderEntity = getTrayIconsHolderEntity(gameResources);
         iconsTrayOpenCloseButton = getOpenCloseButtonEntity(gameResources);
         this.areaTouchListenerEntity = areaTouchListenerEntity;
         this.textureManager = textureManager;
+        this.soundsManager = soundsManager;
 
     }
 
     protected abstract Spec getSpec();
+    protected abstract boolean getIsInitiallyExpanded();
     protected abstract BaseTrayOpenCloseButtonEntity getOpenCloseButtonEntity(GameResources gameResources);
     protected abstract BaseTrayIconsHolderEntity getTrayIconsHolderEntity(GameResources gameResources);
+    protected abstract SoundId getOpenSound();
+    protected abstract SoundId getCloseSound();
 
     @Override
     public void onCreateScene() {
@@ -85,6 +93,7 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
     @Override
     public void openTray() {
         if (trayAnimationManager != null) {
+            soundsManager.getSound(getOpenSound()).play();
             trayAnimationManager.openTray();
         }
     }
@@ -92,6 +101,7 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
     @Override
     public void closeTray() {
         if (trayAnimationManager != null) {
+            soundsManager.getSound(getCloseSound()).play();
             trayAnimationManager.closeTray();
         }
     }

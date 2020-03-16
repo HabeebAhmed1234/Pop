@@ -20,12 +20,11 @@ public abstract class BaseStateMachine<StateType extends Enum> {
     private Map<StateType, Set<Listener<StateType>>> transitionListeners = new HashMap<>();
     private Map<StateType, Set<StateType>> validTransitions = null;
 
-    protected abstract StateType getInitialState();
     protected abstract List<StateType> getAllStatesList();
     protected abstract Map<StateType, Set<StateType>> getAllValidStateTransitions();
 
-    public BaseStateMachine() {
-        currentState = getInitialState();
+    public BaseStateMachine(StateType initialState) {
+        currentState = initialState;
     }
 
     /**

@@ -13,6 +13,10 @@ import static com.wack.pop2.bubbletimeout.BubbleLifeCycleStateMachine.State.STAB
 
 class BubbleLifeCycleStateMachine extends BaseStateMachine {
 
+    public BubbleLifeCycleStateMachine() {
+        super(STABLE);
+    }
+
     public enum State {
         /**
          * The bubble is stable and not about to explode
@@ -44,11 +48,6 @@ class BubbleLifeCycleStateMachine extends BaseStateMachine {
         State(final float duration) {
             this.duration = duration;
         }
-    }
-
-    @Override
-    protected State getInitialState() {
-        return STABLE;
     }
 
     @Override

@@ -23,9 +23,8 @@ class TrayStateMachine extends BaseStateMachine<TrayStateMachine.State> {
         CLOSING,
     }
 
-    @Override
-    protected State getInitialState() {
-        return EXPANDED;
+    TrayStateMachine(boolean isInitiallyExpanded) {
+        super(isInitiallyExpanded ? EXPANDED : CLOSED);
     }
 
     @Override

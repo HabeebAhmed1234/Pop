@@ -13,6 +13,10 @@ import static com.wack.pop2.walls.WallsStateMachine.State.LOCKED;
 
 public class WallsStateMachine extends BaseStateMachine<WallsStateMachine.State> {
 
+    public WallsStateMachine() {
+        super(LOCKED);
+    }
+
     public enum State {
 
         /**
@@ -29,11 +33,6 @@ public class WallsStateMachine extends BaseStateMachine<WallsStateMachine.State>
          * The walls tool is toggled on
          */
         TOGGLED_ON,
-    }
-
-    @Override
-    protected State getInitialState() {
-        return LOCKED;
     }
 
     @Override

@@ -9,4 +9,6 @@ public enum SoundId {
     EXPOSION,
     NEON_BUZZ,
     LAZER_BURST,
+    OPEN,
+    CLOSE
 }

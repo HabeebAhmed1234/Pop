@@ -13,6 +13,10 @@ import static com.wack.pop2.nuke.NukeStateMachine.State.LOCKED;
 
 public class NukeStateMachine extends BaseStateMachine<NukeStateMachine.State> {
 
+    public NukeStateMachine() {
+        super(LOCKED);
+    }
+
     public enum State {
 
         /**
@@ -34,11 +38,6 @@ public class NukeStateMachine extends BaseStateMachine<NukeStateMachine.State> {
          * The nuke is on cooldown. cannot be used
          */
         COOLDOWN,
-    }
-
-    @Override
-    protected State getInitialState() {
-        return LOCKED;
     }
 
     @Override

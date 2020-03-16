@@ -2,6 +2,8 @@ package com.wack.pop2.settingstray;
 
 import com.wack.pop2.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameResources;
+import com.wack.pop2.resources.sounds.GameSoundsManager;
+import com.wack.pop2.resources.sounds.SoundId;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.tray.BaseHostTrayEntity;
 import com.wack.pop2.tray.BaseTrayIconsHolderEntity;
@@ -19,9 +21,10 @@ public class GameQuickSettingsHostTrayEntity extends BaseHostTrayEntity<GameQuic
 
     public GameQuickSettingsHostTrayEntity(
             GameTexturesManager textureManager,
+            GameSoundsManager soundsManager,
             GameAreaTouchListenerEntity areaTouchListenerEntity,
             GameResources gameResources) {
-        super(textureManager, areaTouchListenerEntity, gameResources);
+        super(textureManager, soundsManager, areaTouchListenerEntity, gameResources);
     }
 
     @Override
@@ -35,6 +38,11 @@ public class GameQuickSettingsHostTrayEntity extends BaseHostTrayEntity<GameQuic
     }
 
     @Override
+    protected boolean getIsInitiallyExpanded() {
+        return false;
+    }
+
+    @Override
     protected BaseTrayOpenCloseButtonEntity getOpenCloseButtonEntity(GameResources gameResources) {
         return new GameQuickSettingsTrayOpenCloseButton(this, gameResources);
     }
@@ -42,5 +50,15 @@ public class GameQuickSettingsHostTrayEntity extends BaseHostTrayEntity<GameQuic
     @Override
     protected BaseTrayIconsHolderEntity getTrayIconsHolderEntity(GameResources gameResources) {
         return new GameQuickSettingsTrayIconsHolderEntity(this, gameResources);
+    }
+
+    @Override
+    protected SoundId getOpenSound() {
+        return SoundId.OPEN;
+    }
+
+    @Override
+    protected SoundId getCloseSound() {
+        return SoundId.CLOSE;
     }
 }

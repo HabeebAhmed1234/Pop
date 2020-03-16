@@ -88,8 +88,8 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		InteractionCounter interactionCounter = new InteractionCounter(mGameResources);
 		GameAreaTouchListenerEntity gameAreaTouchListenerEntity = new GameAreaTouchListenerEntity(interactionCounter, mGameResources);
 		GameSceneTouchListenerEntity gameSceneTouchListenerEntity = new GameSceneTouchListenerEntity(interactionCounter, mGameResources);
-		GameIconsHostTrayEntity gameIconsTrayEntity = new GameIconsHostTrayEntity(gameTexturesManager, gameAreaTouchListenerEntity, mGameResources);
-		GameQuickSettingsHostTrayEntity gameQuickSettingsHostTrayEntity = new GameQuickSettingsHostTrayEntity(gameTexturesManager, gameAreaTouchListenerEntity, mGameResources);
+		GameIconsHostTrayEntity gameIconsTrayEntity = new GameIconsHostTrayEntity(gameTexturesManager, gameSoundsManager, gameAreaTouchListenerEntity, mGameResources);
+		GameQuickSettingsHostTrayEntity gameQuickSettingsHostTrayEntity = new GameQuickSettingsHostTrayEntity(gameTexturesManager, gameSoundsManager, gameAreaTouchListenerEntity, mGameResources);
 
 		// Settings icons
 		MusicQuickSettingIconEntity musicQuickSettingIconEntity = new MusicQuickSettingIconEntity(preferencesEntity, gameQuickSettingsHostTrayEntity, gameTexturesManager, gameAreaTouchListenerEntity, mGameResources);
