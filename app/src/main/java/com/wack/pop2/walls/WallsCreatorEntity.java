@@ -12,6 +12,8 @@ import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.fixturedefdata.WallEntityUserData;
 import com.wack.pop2.physics.PhysicsFactory;
 import com.wack.pop2.physics.util.Vec2Pool;
+import com.wack.pop2.resources.sounds.GameSoundsManager;
+import com.wack.pop2.resources.sounds.SoundId;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.utils.GeometryUtils;
 
@@ -48,6 +50,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
     private GameSceneTouchListenerEntity touchListenerEntity;
     private GameTexturesManager gameTexturesManager;
     private GameIconsHostTrayEntity gameIconsTrayEntity;
+    private GameSoundsManager soundManager;
 
     private Vec2 initialPoint;
 
@@ -60,6 +63,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
             GameSceneTouchListenerEntity touchListenerEntity,
             GameTexturesManager gameTexturesManager,
             GameIconsHostTrayEntity gameIconsTrayEntity,
+            GameSoundsManager soundManager,
             GameResources gameResources) {
         super(gameResources);
         this.stateMachine = stateMachine;
@@ -67,6 +71,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
         this.touchListenerEntity = touchListenerEntity;
         this.gameTexturesManager = gameTexturesManager;
         this.gameIconsTrayEntity = gameIconsTrayEntity;
+        this.soundManager = soundManager;
     }
 
     @Override
@@ -127,6 +132,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
 
     private void onActionDown(TouchEvent touchEvent) {
         if (shouldStartPlacingWall(touchEvent)) {
+            soundManager.getSound(SoundId.HAMMER_UP).play();
             initialPoint = Vec2Pool.obtain(touchEvent.getX(), touchEvent.getY());
             createWall();
             spanWall(touchEvent);
@@ -143,6 +149,8 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
         if (!isWallBeingPlaced()) {
             return;
         }
+
+        soundManager.getSound(SoundId.HAMMER_DOWN).play();
 
         spanWall(touchEvent);
         bakeWall();

@@ -43,6 +43,9 @@ public class GameSoundsManager extends BaseEntity {
             loadSound(SoundId.PUFF,"puff.wav");
             loadSound(SoundId.CLICK_UP,"click_up.wav");
             loadSound(SoundId.CLICK_DOWN,"click_down.wav");
+            loadSound(SoundId.HAMMER_UP,"hammer_up.wav");
+            loadSound(SoundId.HAMMER_DOWN,"hammer_down.wav");
+            loadSound(SoundId.SCRAP,"scrap.wav");
         } catch (final IOException e) {
             Debug.e(e);
         }

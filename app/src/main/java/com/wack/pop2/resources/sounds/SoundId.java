@@ -13,5 +13,8 @@ public enum SoundId {
     CLOSE,
     PUFF,
     CLICK_UP,
-    CLICK_DOWN
+    CLICK_DOWN,
+    HAMMER_UP,
+    HAMMER_DOWN,
+    SCRAP
 }

@@ -6,6 +6,8 @@ import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.fixturedefdata.WallDeleteIconUserData;
+import com.wack.pop2.resources.sounds.GameSoundsManager;
+import com.wack.pop2.resources.sounds.SoundId;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.scene.ITouchArea;
@@ -18,12 +20,15 @@ import org.andengine.input.touch.TouchEvent;
 public class WallsDeletionEntity extends BaseEntity implements GameAreaTouchListenerEntity.AreaTouchListener {
 
     private GameAreaTouchListenerEntity touchListenerEntity;
+    private GameSoundsManager soundsManager;
 
     public WallsDeletionEntity(
             GameAreaTouchListenerEntity touchListenerEntity,
+            GameSoundsManager soundsManager,
             GameResources gameResources) {
         super(gameResources);
         this.touchListenerEntity = touchListenerEntity;
+        this.soundsManager = soundsManager;
     }
 
     @Override
@@ -55,5 +60,7 @@ public class WallsDeletionEntity extends BaseEntity implements GameAreaTouchList
         removeFromScene(deleteIconEntity);
 
         EventBus.get().sendEvent(GameEvent.WALL_DELETED);
+
+        soundsManager.getSound(SoundId.SCRAP).play();
     }
 }

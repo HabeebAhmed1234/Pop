@@ -10,6 +10,8 @@ import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.fixturedefdata.WallsIconUserData;
 import com.wack.pop2.icons.BaseInventoryIconEntity;
 import com.wack.pop2.resources.fonts.GameFontsManager;
+import com.wack.pop2.resources.sounds.GameSoundsManager;
+import com.wack.pop2.resources.sounds.SoundId;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.statemachine.BaseStateMachine;
@@ -25,17 +27,20 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements GameArea
 
     private WallsStateMachine stateMachine;
     private GameAreaTouchListenerEntity touchListenerEntity;
+    private GameSoundsManager gameSoundsManager;
 
     public WallsIconEntity(
             WallsStateMachine stateMachine,
             GameIconsHostTrayEntity gameIconsTrayEntity,
             GameAreaTouchListenerEntity touchListenerEntity,
+            GameSoundsManager gameSoundsManager,
             GameTexturesManager gameTexturesManager,
             GameFontsManager fontsManager,
             GameResources gameResources) {
         super(fontsManager, gameIconsTrayEntity, gameTexturesManager, touchListenerEntity, gameResources);
         this.stateMachine = stateMachine;
         this.touchListenerEntity = touchListenerEntity;
+        this.gameSoundsManager = gameSoundsManager;
     }
 
     @Override
@@ -64,9 +69,11 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements GameArea
                 color = AndengineColor.TRANSPARENT;
                 break;
             case UNLOCKED_TOGGLED_OFF:
+                gameSoundsManager.getSound(SoundId.CLICK_DOWN).play();
                 color = AndengineColor.WHITE;
                 break;
             case TOGGLED_ON:
+                gameSoundsManager.getSound(SoundId.CLICK_UP).play();
                 color = AndengineColor.GREEN;
                 break;
         }
