@@ -46,6 +46,8 @@ public class GameSoundsManager extends BaseEntity {
             loadSound(SoundId.HAMMER_UP,"hammer_up.wav");
             loadSound(SoundId.HAMMER_DOWN,"hammer_down.wav");
             loadSound(SoundId.SCRAP,"scrap.wav");
+            loadSound(SoundId.NUKE_START,"nuke_start.wav");
+            loadSound(SoundId.BEEP,"beep.wav");
         } catch (final IOException e) {
             Debug.e(e);
         }

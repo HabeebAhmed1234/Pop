@@ -6,6 +6,7 @@ import com.wack.pop2.eventbus.BubbleSpawnedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
+import com.wack.pop2.resources.sounds.GameSoundsManager;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.OnDetachedListener;
@@ -16,11 +17,13 @@ import java.util.Map;
 
 public class BubblesLifecycleManagerEntity extends BaseEntity implements EventBus.Subscriber {
 
+    private GameSoundsManager soundsManager;
 
     private Map<Sprite, BubbleLifecycleControllersManager> controllersManagerMap = new HashMap<>();
 
-    public BubblesLifecycleManagerEntity(GameResources gameResources) {
+    public BubblesLifecycleManagerEntity(GameSoundsManager soundsManager, GameResources gameResources) {
         super(gameResources);
+        this.soundsManager = soundsManager;
     }
 
     @Override
@@ -43,6 +46,7 @@ public class BubblesLifecycleManagerEntity extends BaseEntity implements EventBu
             controllersManagerMap.put(
                     bubbleSprite,
                     new BubbleLifecycleControllersManager(
+                            soundsManager,
                             engine,
                             bubbleSprite));
             bubbleSprite.addOnDetachedListener(new OnDetachedListener() {

@@ -16,5 +16,7 @@ public enum SoundId {
     CLICK_DOWN,
     HAMMER_UP,
     HAMMER_DOWN,
-    SCRAP
+    SCRAP,
+    NUKE_START,
+    BEEP
 }

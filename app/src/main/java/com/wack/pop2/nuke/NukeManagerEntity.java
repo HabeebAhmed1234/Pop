@@ -5,6 +5,7 @@ import com.wack.pop2.GameAreaTouchListenerEntity;
 import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.bubblepopper.BufferedBubblePopperEntity;
+import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 
 public class NukeManagerEntity extends BaseEntity {
@@ -16,6 +17,7 @@ public class NukeManagerEntity extends BaseEntity {
 
     public NukeManagerEntity(
             BufferedBubblePopperEntity bubblePopperEntity,
+            GameSoundsManager soundsManager,
             GameIconsHostTrayEntity gameIconsTrayEntity,
             GameTexturesManager texturesManager,
             GameAreaTouchListenerEntity touchListenerEntity,
@@ -23,7 +25,7 @@ public class NukeManagerEntity extends BaseEntity {
         super(gameResources);
         this.nukeStateMachine = new NukeStateMachine();
         this.nukeCooldownManager = new NukeCooldownManager(nukeStateMachine, gameResources);
-        this.nukerEntity = new NukerEntity(nukeStateMachine, bubblePopperEntity, gameResources);
+        this.nukerEntity = new NukerEntity(nukeStateMachine, bubblePopperEntity, soundsManager, gameResources);
         this.nukeIconEntity = new NukeIconEntity(nukeStateMachine, nukerEntity, gameIconsTrayEntity, texturesManager, touchListenerEntity, gameResources);
     }
 }

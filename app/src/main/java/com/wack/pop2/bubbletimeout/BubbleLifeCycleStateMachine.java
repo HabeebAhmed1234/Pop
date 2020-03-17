@@ -11,7 +11,7 @@ import java.util.Set;
 
 import static com.wack.pop2.bubbletimeout.BubbleLifeCycleStateMachine.State.STABLE;
 
-class BubbleLifeCycleStateMachine extends BaseStateMachine {
+class BubbleLifeCycleStateMachine extends BaseStateMachine<BubbleLifeCycleStateMachine.State> {
 
     public BubbleLifeCycleStateMachine() {
         super(STABLE);
@@ -51,7 +51,7 @@ class BubbleLifeCycleStateMachine extends BaseStateMachine {
     }
 
     @Override
-    protected List<State> getAllStatesList() {
+    protected List<BubbleLifeCycleStateMachine.State> getAllStatesList() {
         return Arrays.asList(State.values());
     }
 
@@ -66,7 +66,7 @@ class BubbleLifeCycleStateMachine extends BaseStateMachine {
     }
 
     @Override
-    public void transitionState(Enum newState) {
+    public void transitionState(BubbleLifeCycleStateMachine.State newState) {
         super.transitionState(newState);
     }
 

@@ -6,6 +6,8 @@ import com.wack.pop2.bubblepopper.BubblePopper;
 import com.wack.pop2.bubblepopper.BufferedBubblePopperEntity;
 import com.wack.pop2.entitymatchers.BubblesEntityMatcher;
 import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
+import com.wack.pop2.resources.sounds.GameSoundsManager;
+import com.wack.pop2.resources.sounds.SoundId;
 
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -26,6 +28,8 @@ public class NukerEntity extends BaseEntity {
     private TimerHandler nuke;
     private BubblePopper bubblePopperEntity;
     private NukeStateMachine nukeStateMachine;
+
+    private GameSoundsManager soundsManager;
 
     /**
      * If a bubble has been queued up to be popped by the nuker then we add it here.
@@ -70,13 +74,19 @@ public class NukerEntity extends BaseEntity {
         }
     }
 
-    public NukerEntity(NukeStateMachine nukeStateMachine, BufferedBubblePopperEntity bubblePopperEntity, GameResources gameResources) {
+    public NukerEntity(
+            NukeStateMachine nukeStateMachine,
+            BufferedBubblePopperEntity bubblePopperEntity,
+            GameSoundsManager soundsManager,
+            GameResources gameResources) {
         super(gameResources);
         this.nukeStateMachine =  nukeStateMachine;
         this.bubblePopperEntity = bubblePopperEntity;
+        this.soundsManager = soundsManager;
     }
 
     public void startNuke() {
+        soundsManager.getSound(SoundId.NUKE_START).play();
         nukeStateMachine.transitionState(NukeStateMachine.State.NUKING);
         nuke = new TimerHandler(NUKE_INTERVAL_SECONDS, new NukeWaveTimerHandler(NUKE_DURATION_INTERVALS));
         engine.registerUpdateHandler(nuke);

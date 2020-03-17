@@ -110,7 +110,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 				gameAnimationManager,
 				camera,
 				mGameResources);
-		mBubblesLifecycleManagerEntity = new BubblesLifecycleManagerEntity(mGameResources);
+		mBubblesLifecycleManagerEntity = new BubblesLifecycleManagerEntity(gameSoundsManager, mGameResources);
 		mBubbleSpawnerEntity = new BubbleSpawnerEntity(gameTexturesManager, mGameResources);
 		mBubbleLossDetectorEntity = new BubbleLossDetectorEntity(gameFontsManager, gameAnimationManager, gamePhysicsContactsEntity, mGameResources);
 		mBubbleCleanerEntity = new BubbleCleanerEntity(mGameResources);
@@ -120,7 +120,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		mBallAndChainManagerEntity = new BallAndChainManagerEntity(gameTexturesManager, gameSceneTouchListenerEntity, gameIconsTrayEntity, gameAreaTouchListenerEntity, gamePhysicsContactsEntity, mBubblePopperEntity, mGameResources);
 		mTurrentsManagerEntity = new TurretsManagerEntity(mBubblePopperEntity, gameTexturesManager, gameIconsTrayEntity, gamePhysicsContactsEntity, gameFontsManager, gameAreaTouchListenerEntity, gameSceneTouchListenerEntity, gameTexturesManager, gameSoundsManager, mGameResources);
 		mWallsManagerEntity = new WallsManagerEntity(gameIconsTrayEntity, gameAreaTouchListenerEntity, gameSceneTouchListenerEntity, gameSoundsManager, gameTexturesManager, gameFontsManager, mGameResources);
-		mNukeManagerEntityEntity = new NukeManagerEntity(mBufferedBubblePopperEntity, gameIconsTrayEntity, gameTexturesManager, gameAreaTouchListenerEntity, mGameResources);
+		mNukeManagerEntityEntity = new NukeManagerEntity(mBufferedBubblePopperEntity, gameSoundsManager, gameIconsTrayEntity, gameTexturesManager, gameAreaTouchListenerEntity, mGameResources);
 
 		// Debug
 		// mDebugTouchTracerEntity = new DebugTouchTracerEntity(gameSceneTouchListenerEntity, mGameResources);

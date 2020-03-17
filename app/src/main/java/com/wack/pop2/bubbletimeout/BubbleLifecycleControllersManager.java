@@ -1,5 +1,7 @@
 package com.wack.pop2.bubbletimeout;
 
+import com.wack.pop2.resources.sounds.GameSoundsManager;
+
 import org.andengine.engine.Engine;
 import org.andengine.entity.sprite.Sprite;
 
@@ -14,8 +16,8 @@ class BubbleLifecycleControllersManager {
 
     private Set<BubbleLifecycleController> lifecycleControllers = new HashSet<>();
 
-    public BubbleLifecycleControllersManager(Engine engine, Sprite bubbleSprite) {
-        initControllers(engine, bubbleSprite);
+    public BubbleLifecycleControllersManager(GameSoundsManager soundsManager, Engine engine, Sprite bubbleSprite) {
+        initControllers(soundsManager, engine, bubbleSprite);
     }
 
     /**
@@ -28,10 +30,11 @@ class BubbleLifecycleControllersManager {
 
     }
 
-    private void initControllers(Engine engine, Sprite bubbleSprite) {
+    private void initControllers(GameSoundsManager soundsManager, Engine engine, Sprite bubbleSprite) {
         BubbleLifeCycleStateMachine stateMachine = new BubbleLifeCycleStateMachine();
         lifecycleControllers.add(new BubbleBlinkAnimationManager(bubbleSprite, stateMachine));
         lifecycleControllers.add(new BubbleLifecycleTransitionDriver(engine, stateMachine));
         lifecycleControllers.add(new BubbleLifecycleGameOverEntity(bubbleSprite, stateMachine));
+        lifecycleControllers.add(new BubbleLifecycleSoundsManager(stateMachine, soundsManager));
     }
 }
