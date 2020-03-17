@@ -47,7 +47,7 @@ public class TurretEntity extends BaseEntity implements HostTurretCallback, Base
         this.mutex = mutex;
         this.turretFiringEntity = new TurretFiringEntity(this, stateMachine, texturesManager, soundsManager, gameResources);
         this.turretTargetingEntity = new TurretTargetingEntity(turretFiringEntity, stateMachine, this, gameResources);
-        this.turretDraggingManager = new TurretDraggingManager(gameIconsTray, gameSceneTouchListener, mutex, stateMachine, this, gameResources);
+        this.turretDraggingManager = new TurretDraggingManager(gameIconsTray, gameSceneTouchListener, soundsManager, mutex, stateMachine, this, gameResources);
         this.turretCannonRotationManagerEntity = new TurretCannonRotationManagerEntity(turretCannonSprite, gameResources);
 
         init();

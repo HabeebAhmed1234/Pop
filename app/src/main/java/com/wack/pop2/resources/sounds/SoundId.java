@@ -10,5 +10,8 @@ public enum SoundId {
     NEON_BUZZ,
     LAZER_BURST,
     OPEN,
-    CLOSE
+    CLOSE,
+    PUFF,
+    CLICK_UP,
+    CLICK_DOWN
 }

@@ -37,7 +37,7 @@ public class TurretsManagerEntity extends BaseEntity {
         this.texturesManager = texturesManager;
         this.turretsMutex = new TurretsMutex(gameResources);
         this.turretEntityCreator = new TurretEntityCreator(texturesManager, gameIconsTray, sceneTouchListenerEntity, soundsManager, turretsMutex, gameResources);
-        this.turretsIconEntity = new TurretsIconEntity(fontsManager, gameAreaTouchListenerEntity, sceneTouchListenerEntity, gameTextureManager, gameIconsTray, turretEntityCreator, turretsMutex, gameResources);
+        this.turretsIconEntity = new TurretsIconEntity(fontsManager, gameAreaTouchListenerEntity, sceneTouchListenerEntity, soundsManager, gameTextureManager, gameIconsTray, turretEntityCreator, turretsMutex, gameResources);
         this.turretsBulletsCollisionManager = new TurretsBulletsCollisionManager(bubblePopperEntity, gamePhysicsContactsEntity, gameResources);
     }
 }

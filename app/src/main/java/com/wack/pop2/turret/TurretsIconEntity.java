@@ -11,6 +11,8 @@ import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.fixturedefdata.TurretsIconUserData;
 import com.wack.pop2.icons.BaseInventoryIconEntity;
 import com.wack.pop2.resources.fonts.GameFontsManager;
+import com.wack.pop2.resources.sounds.GameSoundsManager;
+import com.wack.pop2.resources.sounds.SoundId;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 
@@ -36,6 +38,7 @@ import static org.andengine.input.touch.TouchEvent.ACTION_UP;
 class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subscriber, GameSceneTouchListenerEntity.SceneTouchListener {
 
     private GameSceneTouchListenerEntity touchListenerEntity;
+    private GameSoundsManager soundManager;
     private TurretEntityCreator turretEntityCreator;
     private TurretsMutex mutex;
 
@@ -46,6 +49,7 @@ class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subs
             GameFontsManager gameFontsManager,
             GameAreaTouchListenerEntity areaTouchListenerEntity,
             GameSceneTouchListenerEntity touchListenerEntity,
+            GameSoundsManager soundManager,
             GameTexturesManager gameTexturesManager,
             GameIconsHostTrayEntity gameIconsTrayEntity,
             TurretEntityCreator turretEntityCreator,
@@ -53,6 +57,7 @@ class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subs
             GameResources gameResources) {
         super(gameFontsManager, gameIconsTrayEntity, gameTexturesManager, areaTouchListenerEntity, gameResources);
         this.touchListenerEntity = touchListenerEntity;
+        this.soundManager = soundManager;
         this.turretEntityCreator = turretEntityCreator;
         this.mutex = mutex;
     }
@@ -83,7 +88,7 @@ class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subs
         super.onEvent(event, payload);
         switch (event) {
             case TURRET_DOCKED:
-                increaseInventory();
+                onTurretDocked();
                 break;
         }
     }
@@ -102,6 +107,11 @@ class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subs
         touchListenerEntity.removeSceneTouchListener(this);
     }
 
+    private void onTurretDocked() {
+        soundManager.getSound(SoundId.PUFF).play();
+        increaseInventory();
+    }
+
     /**
      * If the user has pressed down on the icon and they are not already dragging a turret then
      * we need to start undocking a new turret. While this new turret is being undocking we cannot
@@ -111,6 +121,8 @@ class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subs
      */
     private boolean maybeStartUndocking(TouchEvent touchEvent) {
         if (canUndockTurret(touchEvent)) {
+            // play the sound for undocking a turret
+            soundManager.getSound(SoundId.PUFF).play();
             // Create a turret and set it to be dragging
             TurretEntity turretEntity = turretEntityCreator.createTurret(touchEvent.getX(), touchEvent.getY());
             turretEntity.forceStartDragging(touchEvent.getX(), touchEvent.getY());
