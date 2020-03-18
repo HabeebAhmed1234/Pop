@@ -39,6 +39,14 @@ public class GameAreaTouchListenerEntity extends BaseEntity implements IOnAreaTo
         super(gameResources);
         this.interactionCounter = interactionCounter;
         scene.setOnAreaTouchListener(this);
+        scene.setTouchAreaBindingOnActionDownEnabled(true);
+        scene.setOnAreaTouchTraversalFrontToBack();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        scene.setOnAreaTouchListener(null);
     }
 
     public boolean hasAreaTouchListener(Class<? extends BaseEntityUserData> userDataType, AreaTouchListener listener) {
@@ -93,6 +101,9 @@ public class GameAreaTouchListenerEntity extends BaseEntity implements IOnAreaTo
         for (AreaTouchListener listener : listeners) {
             if (listener.onTouch(pSceneTouchEvent, pTouchArea, pTouchAreaLocalX, pTouchAreaLocalY)){
                 handled = true;
+            }
+            if (handled) {
+                return handled;
             }
         }
         return handled;
