@@ -1,6 +1,6 @@
 package com.wack.pop2.ballandchain;
 
-import com.wack.pop2.GameAreaTouchListenerEntity;
+import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
 import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.fixturedefdata.BallAndChainIconUserData;

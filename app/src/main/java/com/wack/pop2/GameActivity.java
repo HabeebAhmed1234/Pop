@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
+import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
 import com.wack.pop2.backgroundmusic.BackgroundMusicEntity;
 import com.wack.pop2.ballandchain.BallAndChainManagerEntity;
 import com.wack.pop2.bubblepopper.BubblePopperEntity;
@@ -42,7 +43,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	private ShakeCamera camera;
 
 	//Debug
-	// private DebugTouchTracerEntity mDebugTouchTracerEntity;
+	//private DebugSandboxEntity mDebugSandboxEntity;
 
 	private GameResources mGameResources;
 	private LevelEntity mLevelEntity;
@@ -123,7 +124,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		mNukeManagerEntityEntity = new NukeManagerEntity(mBufferedBubblePopperEntity, gameSoundsManager, gameIconsTrayEntity, gameTexturesManager, gameAreaTouchListenerEntity, mGameResources);
 
 		// Debug
-		// mDebugTouchTracerEntity = new DebugTouchTracerEntity(gameSceneTouchListenerEntity, mGameResources);
+		//mDebugSandboxEntity = new DebugSandboxEntity(gameTexturesManager, gameSceneTouchListenerEntity, mGameResources);
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package com.wack.pop2.turret;
 
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.bubblepopper.BubblePopperEntity;
-import com.wack.pop2.GameAreaTouchListenerEntity;
+import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
 import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GamePhysicsContactsEntity;
 import com.wack.pop2.GameResources;

@@ -1,7 +1,7 @@
 package com.wack.pop2.walls;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.GameAreaTouchListenerEntity;
+import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;

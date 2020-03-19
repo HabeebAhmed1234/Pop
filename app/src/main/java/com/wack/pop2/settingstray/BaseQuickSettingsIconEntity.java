@@ -1,7 +1,7 @@
 package com.wack.pop2.settingstray;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.GameAreaTouchListenerEntity;
+import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.resources.textures.GameTexturesManager;

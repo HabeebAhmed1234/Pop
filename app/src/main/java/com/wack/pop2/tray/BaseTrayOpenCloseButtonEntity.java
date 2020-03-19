@@ -3,11 +3,9 @@ package com.wack.pop2.tray;
 import android.content.Context;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.GameAreaTouchListenerEntity;
+import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.fixturedefdata.BaseEntityUserData;
-import com.wack.pop2.fixturedefdata.GameTrayCloseBtnUserData;
-import com.wack.pop2.fixturedefdata.GameTrayOpenBtnUserData;
 import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.statemachine.BaseStateMachine;
 import com.wack.pop2.utils.ScreenUtils;

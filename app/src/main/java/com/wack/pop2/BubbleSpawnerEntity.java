@@ -212,7 +212,6 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         if (event == GameEvent.DIFFICULTY_CHANGE) {
             DifficultyChangedEventPayload difficultyChangedEventPayload = (DifficultyChangedEventPayload) payload;
             bubbleSpawnInterval = difficultyChangedEventPayload.newSpawnInterval;
-            Log.d("asdasd", "bubbleSpawnInterval = " + bubbleSpawnInterval);
         }
     }
 }

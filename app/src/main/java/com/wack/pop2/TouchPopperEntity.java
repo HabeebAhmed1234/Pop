@@ -1,5 +1,6 @@
 package com.wack.pop2;
 
+import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
 import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
 
