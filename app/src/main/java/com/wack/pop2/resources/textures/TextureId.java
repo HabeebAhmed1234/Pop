@@ -18,9 +18,8 @@ public enum TextureId {
     TURRETS_ICON,
     WALLS_ICON,
     NUKE_ICON,
-    DELETE_WALL_ICON,
     OPEN_BTN,
-    CLOSE_BTN,
+    X_BTN,
     QUICK_SETTINGS_BTN,
     MUSIC_QUICK_SETTING_ICON,
 }

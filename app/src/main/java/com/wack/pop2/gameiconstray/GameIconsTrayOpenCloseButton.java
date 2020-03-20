@@ -31,7 +31,7 @@ class GameIconsTrayOpenCloseButton extends BaseTrayOpenCloseButtonEntity {
 
     @Override
     protected TextureId getCloseButtonTextureId() {
-        return TextureId.CLOSE_BTN;
+        return TextureId.X_BTN;
     }
 
     @Override
