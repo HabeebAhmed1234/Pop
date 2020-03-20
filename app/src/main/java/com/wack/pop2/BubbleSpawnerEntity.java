@@ -1,7 +1,6 @@
 package com.wack.pop2;
 
 import android.hardware.SensorManager;
-import android.util.Log;
 
 import com.wack.pop2.collision.CollisionFilters;
 import com.wack.pop2.eventbus.BubbleSpawnedEventPayload;
@@ -78,6 +77,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         }
     }
 
+    private TouchPopperFactoryEntity touchPopperFactory;
     private GameTexturesManager texturesManager;
     private float bubbleSpawnInterval = 5;
     private TimerHandler bubbleSpawnTimerHandler = new TimerHandler(
@@ -94,8 +94,12 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
                 }
             });
 
-    public BubbleSpawnerEntity(GameTexturesManager texturesManager, GameResources gameResources) {
+    public BubbleSpawnerEntity(
+            TouchPopperFactoryEntity touchPopperFactory,
+            GameTexturesManager texturesManager,
+            GameResources gameResources) {
         super(gameResources);
+        this.touchPopperFactory = touchPopperFactory;
         this.texturesManager = texturesManager;
     }
 
@@ -145,8 +149,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         bubbleFixtureDef.setUserData(userData);
         final Body body = PhysicsFactory.createCircleBody(physicsWorld, bubbleSprite, BodyType.DYNAMIC, bubbleFixtureDef);
         body.setGravityScale(BUBBLE_GRAVITY_SCALE);
-        scene.registerTouchArea(bubbleSprite);
-        addToScene(bubbleSprite, body);
+        addToSceneWithTouch(bubbleSprite, body, touchPopperFactory.getNewTouchBubblePopper());
         notifyBubbleSpawned(bubbleSprite);
         return body;
     }

@@ -43,14 +43,4 @@ class GameIconsTrayOpenCloseButton extends BaseTrayOpenCloseButtonEntity {
     protected BaseEntityUserData getCloseButtonUserData() {
         return new GameTrayCloseBtnUserData();
     }
-
-    @Override
-    protected Class getOpenButtonUserDataType() {
-        return GameTrayOpenBtnUserData.class;
-    }
-
-    @Override
-    protected Class getCloseButtonUserDataType() {
-        return GameTrayCloseBtnUserData.class;
-    }
 }

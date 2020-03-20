@@ -5,7 +5,6 @@ import android.content.Context;
 import androidx.annotation.Nullable;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
@@ -13,6 +12,7 @@ import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.entity.primitive.Rectangle;
+import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.sprite.Sprite;
 
 public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implements HostTrayCallback {
@@ -46,20 +46,17 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
     private BaseTrayIconsHolderEntity trayIconsHolderEntity;
     private TrayStateMachine stateMachine;
 
-    private GameAreaTouchListenerEntity areaTouchListenerEntity;
     private GameTexturesManager textureManager;
     private GameSoundsManager soundsManager;
 
     public BaseHostTrayEntity(
             GameTexturesManager textureManager,
             GameSoundsManager soundsManager,
-            GameAreaTouchListenerEntity areaTouchListenerEntity,
             GameResources gameResources) {
         super(gameResources);
         stateMachine = new TrayStateMachine(getIsInitiallyExpanded());
         trayIconsHolderEntity = getTrayIconsHolderEntity(gameResources);
         iconsTrayOpenCloseButton = getOpenCloseButtonEntity(gameResources);
-        this.areaTouchListenerEntity = areaTouchListenerEntity;
         this.textureManager = textureManager;
         this.soundsManager = soundsManager;
 
@@ -81,8 +78,8 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
                 stateMachine);
     }
 
-    public void addIcon(IconIdType iconId, Sprite iconSprite) {
-        trayIconsHolderEntity.addIcon(iconId, iconSprite);
+    public void addIcon(IconIdType iconId, Sprite iconSprite, IOnAreaTouchListener areaTouchListener) {
+        trayIconsHolderEntity.addIcon(iconId, iconSprite, areaTouchListener);
     }
 
     @Nullable
@@ -104,11 +101,6 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
             soundsManager.getSound(getCloseSound()).play();
             trayAnimationManager.closeTray();
         }
-    }
-
-    @Override
-    public GameAreaTouchListenerEntity getAreaTouchListener() {
-        return areaTouchListenerEntity;
     }
 
     @Override

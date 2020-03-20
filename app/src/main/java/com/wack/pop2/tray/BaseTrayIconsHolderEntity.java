@@ -10,6 +10,7 @@ import com.wack.pop2.GameResources;
 import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.entity.primitive.Rectangle;
+import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.color.AndengineColor;
 
@@ -76,8 +77,8 @@ public abstract class BaseTrayIconsHolderEntity<IconIdType> extends BaseEntity {
         hostTrayCallback.onIconsTrayInitialized();
     }
 
-    public void addIcon(IconIdType iconId, Sprite iconSprite) {
-        addToSceneWithTouch(iconsTray, iconSprite);
+    public void addIcon(IconIdType iconId, Sprite iconSprite, IOnAreaTouchListener areaTouchListener) {
+        addToSceneWithTouch(iconsTray, iconSprite, areaTouchListener);
         icons.add(Pair.create(iconId, iconSprite));
         refreshDimensions(iconSprite);
     }

@@ -13,13 +13,14 @@ public enum GameEvent {
     INCREMENT_SCORE, // Fired when score is incrementd. Accompanied by score increment amount in payload
     SCORE_CHANGED, // Fired anytime the score changes. Payload contains score
     STARTING_BUBBLE_SPAWNED, // Fired anytime a new bubble is spawned, Payload contains the bubble type
+    BUBBLE_SPAWNED, // Fired when a bubble is spawned
+    BUBBLE_TOUCHED, // Fired when a bubble is touched by a user's finger
     DIFFICULTY_CHANGE, // Fired when the difficulty changes. Payload contains new difficulty
     BALL_AND_CHAIN_POPPED_BUBBLE, // Fired when the ball and chain pops a bubble
     TURRET_BULLET_POPPED_BUBBLE, // Fired bullet popped a bubble
     TURRET_DOCKED, // Fired when a turret gets docked back into the turret icon
     WALL_PLACED, // Fired when a wall gets placed
     WALL_DELETED, // Fired when a wall gets deleted
-    BUBBLE_SPAWNED, // Fired when a bubble is spawned
     INTERACTION_SCORE_CHANGED, // Interaction score changed event
     SETTING_CHANGED, // Called when a setting is changed
 }

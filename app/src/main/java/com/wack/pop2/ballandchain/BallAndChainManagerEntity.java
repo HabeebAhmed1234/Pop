@@ -1,12 +1,11 @@
 package com.wack.pop2.ballandchain;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.bubblepopper.BubblePopperEntity;
-import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
-import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GamePhysicsContactsEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
+import com.wack.pop2.bubblepopper.BubblePopperEntity;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 
 /**
@@ -31,7 +30,6 @@ public class BallAndChainManagerEntity extends BaseEntity {
             GameTexturesManager texturesManager,
             GameSceneTouchListenerEntity gameSceneTouchListenerEntity,
             GameIconsHostTrayEntity gameIconsTrayEntity,
-            GameAreaTouchListenerEntity gameAreaTouchListenerEntity,
             GamePhysicsContactsEntity gamePhysicsContactsEntity,
             BubblePopperEntity bubblePopperEntity,
             GameResources gameResources) {
@@ -39,7 +37,7 @@ public class BallAndChainManagerEntity extends BaseEntity {
         this.ballAndChainCreatorEntity = new BallAndChainCreatorEntity(texturesManager, gameResources);
         this.ballAndChainCollisionManagerEntity = new BallAndChainCollisionManagerEntity(ballAndChainStateMachine, bubblePopperEntity, gamePhysicsContactsEntity, gameResources);
         this.ballAndChainHandleEntity = new BallAndChainHandleEntity(ballAndChainStateMachine, gameSceneTouchListenerEntity, gameResources);
-        this.ballAndChainIconEntity = new BallAndChainIconEntity(ballAndChainStateMachine, gameIconsTrayEntity, gameAreaTouchListenerEntity, texturesManager, gameResources);
+        this.ballAndChainIconEntity = new BallAndChainIconEntity(ballAndChainStateMachine, gameIconsTrayEntity, texturesManager, gameResources);
         this.ballAndChainDurabilityEntity = new BallAndChainDurabilityEntity(ballAndChainStateMachine, gameResources);
         this.ballAndChainColorEntity = new BallAndChainColorEntity(ballAndChainStateMachine, gameResources);
     }

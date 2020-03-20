@@ -23,6 +23,9 @@ public interface ITouchArea {
 	public float[] convertSceneToLocalCoordinates(final float pX, final float pY);
 	public float[] convertLocalToSceneCoordinates(final float pX, final float pY);
 
+	public void setOnAreaTouchListener(IOnAreaTouchListener listener);
+	public void removeOnAreaTouchListener();
+
 	/**
 	 * This method only fires if this {@link ITouchArea} is registered to the {@link Scene} via {@link Scene#registerTouchArea(ITouchArea)}.
 	 * @param pSceneTouchEvent

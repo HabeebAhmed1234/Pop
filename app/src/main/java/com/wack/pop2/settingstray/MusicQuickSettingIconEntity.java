@@ -1,6 +1,5 @@
 package com.wack.pop2.settingstray;
 
-import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
@@ -27,9 +26,8 @@ public class MusicQuickSettingIconEntity extends BaseQuickSettingsIconEntity imp
             GamePreferencesEntity preferencesEntity,
             GameQuickSettingsHostTrayEntity quickSettingsTrayEntity,
             GameTexturesManager gameTexturesManager,
-            GameAreaTouchListenerEntity touchListenerEntity,
             GameResources gameResources) {
-        super(quickSettingsTrayEntity, gameTexturesManager, touchListenerEntity, gameResources);
+        super(quickSettingsTrayEntity, gameTexturesManager, gameResources);
         this.preferencesEntity = preferencesEntity;
     }
 
@@ -56,6 +54,15 @@ public class MusicQuickSettingIconEntity extends BaseQuickSettingsIconEntity imp
     }
 
     @Override
+    public boolean onAreaTouched(TouchEvent touchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+        if (touchEvent.isActionUp()) {
+            toggleMusicSetting();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     protected TextureId getIconTextureId() {
         return TextureId.MUSIC_QUICK_SETTING_ICON;
     }
@@ -66,11 +73,6 @@ public class MusicQuickSettingIconEntity extends BaseQuickSettingsIconEntity imp
     }
 
     @Override
-    protected BaseEntityUserData getUserData() {
-        return new MusicIconEntityUserData();
-    }
-
-    @Override
     protected GameQuickSettingsHostTrayEntity.IconId getIconId() {
         return GameQuickSettingsHostTrayEntity.IconId.SETTING_MUSIC_TOGGLE;
     }
@@ -78,15 +80,6 @@ public class MusicQuickSettingIconEntity extends BaseQuickSettingsIconEntity imp
     @Override
     protected AndengineColor getInitialIconColor() {
         return getSettingIconColor();
-    }
-
-    @Override
-    public boolean onTouch(TouchEvent touchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-        if (touchEvent.isActionUp()) {
-            toggleMusicSetting();
-            return true;
-        }
-        return false;
     }
 
     private void toggleMusicSetting() {

@@ -1,13 +1,12 @@
 package com.wack.pop2.walls;
 
-import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
-import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.fixturedefdata.WallsIconUserData;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.icons.BaseInventoryIconEntity;
 import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
@@ -23,42 +22,21 @@ import org.andengine.util.color.AndengineColor;
 import static com.wack.pop2.walls.WallsConstants.MAX_WALLS_INVENTORY;
 import static com.wack.pop2.walls.WallsConstants.WALLS_DIFFICULTY_UNLOCK_THRESHOLD;
 
-public class WallsIconEntity extends BaseInventoryIconEntity implements GameAreaTouchListenerEntity.AreaTouchListener, BaseStateMachine.Listener<WallsStateMachine.State> {
+public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStateMachine.Listener<WallsStateMachine.State> {
 
     private WallsStateMachine stateMachine;
-    private GameAreaTouchListenerEntity touchListenerEntity;
     private GameSoundsManager gameSoundsManager;
 
     public WallsIconEntity(
             WallsStateMachine stateMachine,
             GameIconsHostTrayEntity gameIconsTrayEntity,
-            GameAreaTouchListenerEntity touchListenerEntity,
             GameSoundsManager gameSoundsManager,
             GameTexturesManager gameTexturesManager,
             GameFontsManager fontsManager,
             GameResources gameResources) {
-        super(fontsManager, gameIconsTrayEntity, gameTexturesManager, touchListenerEntity, gameResources);
+        super(fontsManager, gameIconsTrayEntity, gameTexturesManager, gameResources);
         this.stateMachine = stateMachine;
-        this.touchListenerEntity = touchListenerEntity;
         this.gameSoundsManager = gameSoundsManager;
-    }
-
-    @Override
-    public boolean onTouch(
-            TouchEvent touchEvent,
-            ITouchArea pTouchArea,
-            float pTouchAreaLocalX,
-            float pTouchAreaLocalY) {
-        if (touchEvent.isActionUp()) {
-            if (stateMachine.getCurrentState() == WallsStateMachine.State.UNLOCKED_TOGGLED_OFF) {
-                stateMachine.transitionState(WallsStateMachine.State.TOGGLED_ON);
-                return true;
-            } else if (stateMachine.getCurrentState() == WallsStateMachine.State.TOGGLED_ON) {
-                stateMachine.transitionState(WallsStateMachine.State.UNLOCKED_TOGGLED_OFF);
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
@@ -88,7 +66,6 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements GameArea
     @Override
     public void onCreateScene() {
         super.onCreateScene();
-        touchListenerEntity.addAreaTouchListener(WallsIconUserData.class, this);
         stateMachine.addAllStateTransitionListener(this);
 
         EventBus.get().subscribe(GameEvent.WALL_PLACED, this).subscribe(GameEvent.WALL_DELETED, this);
@@ -96,7 +73,6 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements GameArea
 
     @Override
     public void onDestroy() {
-        touchListenerEntity.removeAreaTouchListener(WallsIconUserData.class, this);
         stateMachine.removeAllStateTransitionListener(this);
 
         EventBus.get().unSubscribe(GameEvent.WALL_PLACED, this).unSubscribe(GameEvent.WALL_DELETED, this);
@@ -149,5 +125,19 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements GameArea
     @Override
     protected AndengineColor getUnlockedColor() {
         return AndengineColor.GREEN;
+    }
+
+    @Override
+    public boolean onAreaTouched(TouchEvent touchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+        if (touchEvent.isActionUp()) {
+            if (stateMachine.getCurrentState() == WallsStateMachine.State.UNLOCKED_TOGGLED_OFF) {
+                stateMachine.transitionState(WallsStateMachine.State.TOGGLED_ON);
+                return true;
+            } else if (stateMachine.getCurrentState() == WallsStateMachine.State.TOGGLED_ON) {
+                stateMachine.transitionState(WallsStateMachine.State.UNLOCKED_TOGGLED_OFF);
+                return true;
+            }
+        }
+        return false;
     }
 }

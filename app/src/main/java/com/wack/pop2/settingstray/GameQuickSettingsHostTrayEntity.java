@@ -1,6 +1,5 @@
 package com.wack.pop2.settingstray;
 
-import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
@@ -22,9 +21,8 @@ public class GameQuickSettingsHostTrayEntity extends BaseHostTrayEntity<GameQuic
     public GameQuickSettingsHostTrayEntity(
             GameTexturesManager textureManager,
             GameSoundsManager soundsManager,
-            GameAreaTouchListenerEntity areaTouchListenerEntity,
             GameResources gameResources) {
-        super(textureManager, soundsManager, areaTouchListenerEntity, gameResources);
+        super(textureManager, soundsManager, gameResources);
     }
 
     @Override

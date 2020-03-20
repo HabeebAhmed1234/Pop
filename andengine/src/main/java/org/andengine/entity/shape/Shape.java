@@ -2,6 +2,7 @@ package org.andengine.entity.shape;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.Entity;
+import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.texture.ITexture;
@@ -120,8 +121,23 @@ public abstract class Shape extends Entity implements IShape {
 		}
 	}
 
+	private IOnAreaTouchListener onAreaTouchListener;
+
+	@Override
+	public void setOnAreaTouchListener(IOnAreaTouchListener listener) {
+		onAreaTouchListener = listener;
+	}
+
+	@Override
+	public void removeOnAreaTouchListener() {
+		onAreaTouchListener = null;
+	}
+
 	@Override
 	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+		if (onAreaTouchListener != null) {
+			return onAreaTouchListener.onAreaTouched(pSceneTouchEvent, this, pTouchAreaLocalX, pTouchAreaLocalY);
+		}
 		return false;
 	}
 

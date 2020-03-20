@@ -1,10 +1,9 @@
 package com.wack.pop2.nuke;
 
-import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
-import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.fixturedefdata.NukeIconEntityUserData;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.icons.BaseIconEntity;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
@@ -27,50 +26,14 @@ public class NukeIconEntity extends BaseIconEntity implements BaseStateMachine.L
             NukerEntity nukerEntity,
             GameIconsHostTrayEntity gameIconsTrayEntity,
             GameTexturesManager gameTexturesManager,
-            GameAreaTouchListenerEntity touchListenerEntity,
             GameResources gameResources) {
-        super(gameIconsTrayEntity, gameTexturesManager, touchListenerEntity, gameResources);
+        super(gameIconsTrayEntity, gameTexturesManager, gameResources);
         this.nukeStateMachine = nukeStateMachine;
         this.nukerEntity = nukerEntity;
     }
 
     @Override
-    protected TextureId getIconTextureId() {
-        return TextureId.NUKE_ICON;
-    }
-
-    @Override
-    protected Class<? extends BaseEntityUserData> getIconUserDataType() {
-        return NukeIconEntityUserData.class;
-    }
-
-    @Override
-    protected BaseEntityUserData getUserData() {
-        return new NukeIconEntityUserData();
-    }
-
-    @Override
-    protected GameIconsHostTrayEntity.IconId getIconId() {
-        return NUKE_ICON;
-    }
-
-    @Override
-    protected float getDifficultyIntervalUnlockThreshold() {
-        return NUKE_UNLOCK_THRESHOLD;
-    }
-
-    @Override
-    protected void onIconUnlocked() {
-        nukeStateMachine.transitionState(NukeStateMachine.State.READY);
-    }
-
-    @Override
-    protected AndengineColor getUnlockedColor() {
-        return AndengineColor.GREEN;
-    }
-
-    @Override
-    public boolean onTouch(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+    public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
         if (nukeStateMachine.getCurrentState() == NukeStateMachine.State.READY && pSceneTouchEvent.isActionUp()) {
             nukerEntity.startNuke();
             return true;
@@ -110,5 +73,40 @@ public class NukeIconEntity extends BaseIconEntity implements BaseStateMachine.L
         }
 
         setIconColor(color);
+    }
+
+    @Override
+    protected TextureId getIconTextureId() {
+        return TextureId.NUKE_ICON;
+    }
+
+    @Override
+    protected Class<? extends BaseEntityUserData> getIconUserDataType() {
+        return NukeIconEntityUserData.class;
+    }
+
+    @Override
+    protected BaseEntityUserData getUserData() {
+        return new NukeIconEntityUserData();
+    }
+
+    @Override
+    protected GameIconsHostTrayEntity.IconId getIconId() {
+        return NUKE_ICON;
+    }
+
+    @Override
+    protected float getDifficultyIntervalUnlockThreshold() {
+        return NUKE_UNLOCK_THRESHOLD;
+    }
+
+    @Override
+    protected void onIconUnlocked() {
+        nukeStateMachine.transitionState(NukeStateMachine.State.READY);
+    }
+
+    @Override
+    protected AndengineColor getUnlockedColor() {
+        return AndengineColor.GREEN;
     }
 }

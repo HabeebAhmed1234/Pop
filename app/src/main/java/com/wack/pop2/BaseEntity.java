@@ -6,6 +6,7 @@ import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.engine.Engine;
 import org.andengine.entity.IEntity;
+import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.shape.IAreaShape;
@@ -56,19 +57,24 @@ public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCa
     @Override
     public void onDestroy() {}
 
-    protected void addToSceneWithTouch(IEntity parentEntity, Shape childSprite) {
-        scene.registerTouchArea(childSprite);
+    protected void addToSceneWithTouch(IEntity parentEntity, IAreaShape childSprite, IOnAreaTouchListener areaTouchListener) {
+        setUpTouch(childSprite, areaTouchListener);
         parentEntity.attachChild(childSprite);
     }
 
-    protected void addToSceneWithTouch(Shape sprite) {
-        scene.registerTouchArea(sprite);
+    protected void addToSceneWithTouch(IAreaShape sprite, IOnAreaTouchListener areaTouchListener) {
+        setUpTouch(sprite, areaTouchListener);
         addToScene(sprite);
     }
 
-    protected void addToSceneWithTouch(IEntity parent, Sprite sprite) {
-        scene.registerTouchArea(sprite);
+    protected void addToSceneWithTouch(IEntity parent, Sprite sprite, IOnAreaTouchListener areaTouchListener) {
+        setUpTouch(sprite, areaTouchListener);
         addToScene(parent, sprite);
+    }
+
+    protected void addToSceneWithTouch(IAreaShape entity, Body body, IOnAreaTouchListener areaTouchListener) {
+        setUpTouch(entity, areaTouchListener);
+        addToScene(entity, body);
     }
 
     protected void addToScene(IEntity parent, IEntity sprite) {
@@ -115,5 +121,10 @@ public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCa
             scene.unregisterTouchArea((ITouchArea) entity);
         }
         scene.detachChild(entity);
+    }
+
+    private void setUpTouch(IAreaShape shape, IOnAreaTouchListener areaTouchListener) {
+        scene.registerTouchArea(shape);
+        shape.setOnAreaTouchListener(areaTouchListener);
     }
 }

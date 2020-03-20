@@ -1,6 +1,5 @@
 package com.wack.pop2.tray;
 
-import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 
 import org.andengine.entity.primitive.Rectangle;
@@ -12,7 +11,6 @@ public interface HostTrayCallback {
 
     int[] getAnchorPx();
 
-    GameAreaTouchListenerEntity getAreaTouchListener();
     TrayStateMachine getStateMachine();
     GameTexturesManager getTextureManager();
     Rectangle getTrayIconsHolderRectangle();

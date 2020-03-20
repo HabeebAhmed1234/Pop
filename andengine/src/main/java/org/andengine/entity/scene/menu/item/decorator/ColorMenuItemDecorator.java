@@ -1,6 +1,7 @@
 package org.andengine.entity.scene.menu.item.decorator;
 
 import org.andengine.entity.OnDetachedListener;
+import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.util.color.AndengineColor;
 
@@ -75,6 +76,16 @@ public class ColorMenuItemDecorator extends BaseMenuItemDecorator {
 
 	@Override
 	public void removeOnDetachedListener(OnDetachedListener listener) {
+
+	}
+
+	@Override
+	public void setOnAreaTouchListener(IOnAreaTouchListener listener) {
+
+	}
+
+	@Override
+	public void removeOnAreaTouchListener() {
 
 	}
 

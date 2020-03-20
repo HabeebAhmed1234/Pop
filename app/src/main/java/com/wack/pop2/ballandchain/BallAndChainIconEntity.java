@@ -1,10 +1,9 @@
 package com.wack.pop2.ballandchain;
 
-import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
-import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.fixturedefdata.BallAndChainIconUserData;
 import com.wack.pop2.fixturedefdata.BaseEntityUserData;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.icons.BaseIconEntity;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
@@ -26,10 +25,9 @@ class BallAndChainIconEntity extends BaseIconEntity implements BallAndChainState
     public BallAndChainIconEntity(
             BallAndChainStateMachine stateMachine,
             GameIconsHostTrayEntity gameIconsTrayEntity,
-            GameAreaTouchListenerEntity touchListenerEntity,
             GameTexturesManager gameTexturesManager,
             GameResources gameResources) {
-        super(gameIconsTrayEntity, gameTexturesManager, touchListenerEntity, gameResources);
+        super(gameIconsTrayEntity, gameTexturesManager, gameResources);
         this.stateMachine = stateMachine;
     }
 
@@ -100,7 +98,7 @@ class BallAndChainIconEntity extends BaseIconEntity implements BallAndChainState
     }
 
     @Override
-    public boolean onTouch(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+    public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
         if (pSceneTouchEvent.isActionDown() && stateMachine.getCurrentState() == BallAndChainStateMachine.State.UNLOCKED_CHARGED) {
             stateMachine.transitionState(BallAndChainStateMachine.State.IN_USE_CHARGED);
             return true;

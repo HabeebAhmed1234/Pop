@@ -3,13 +3,13 @@ package com.wack.pop2.tray;
 import android.content.Context;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.statemachine.BaseStateMachine;
 import com.wack.pop2.utils.ScreenUtils;
 
+import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
@@ -35,10 +35,10 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
     private Sprite iconSpriteClose;
     private HostTrayCallback hostTrayCallback;
 
-    private GameAreaTouchListenerEntity.AreaTouchListener openBtnTouchListener =
-            new GameAreaTouchListenerEntity.AreaTouchListener () {
+    private IOnAreaTouchListener openBtnTouchListener =
+            new IOnAreaTouchListener() {
                 @Override
-                public boolean onTouch(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                     if (pSceneTouchEvent.isActionUp() && canOpen()) {
                         onOpenBtnTouch();
                         return true;
@@ -47,10 +47,10 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
                 }
             };
 
-    private GameAreaTouchListenerEntity.AreaTouchListener closeBtnTouchListener =
-            new GameAreaTouchListenerEntity.AreaTouchListener () {
+    private IOnAreaTouchListener closeBtnTouchListener =
+            new IOnAreaTouchListener () {
                 @Override
-                public boolean onTouch(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                     if (pSceneTouchEvent.isActionUp() && canClose()) {
                         onCloseBtnTouch();
                         return true;
@@ -71,8 +71,6 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
     protected abstract TextureId getCloseButtonTextureId();
     protected abstract BaseEntityUserData getOpenButtonUserData();
     protected abstract BaseEntityUserData getCloseButtonUserData();
-    protected abstract Class getOpenButtonUserDataType();
-    protected abstract Class getCloseButtonUserDataType();
 
     private ButtonSpec getButtonSpecInternal() {
         if (buttonSpec == null) {
@@ -90,8 +88,8 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
     public void onDestroy() {
         hostTrayCallback.getStateMachine().removeAllStateTransitionListener(this);
 
-        hostTrayCallback.getAreaTouchListener().removeAreaTouchListener(getOpenButtonUserDataType(), openBtnTouchListener);
-        hostTrayCallback.getAreaTouchListener().removeAreaTouchListener(getCloseButtonUserDataType(), closeBtnTouchListener);
+        iconSpriteOpen.removeOnAreaTouchListener();
+        iconSpriteClose.removeOnAreaTouchListener();
     }
 
     @Override
@@ -106,8 +104,8 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
             createIconSprite();
         }
 
-        addToSceneWithTouch(hostTrayCallback.getTrayIconsHolderRectangle(), iconSpriteOpen);
-        addToSceneWithTouch(hostTrayCallback.getTrayIconsHolderRectangle(), iconSpriteClose);
+        addToSceneWithTouch(hostTrayCallback.getTrayIconsHolderRectangle(), iconSpriteOpen, openBtnTouchListener);
+        addToSceneWithTouch(hostTrayCallback.getTrayIconsHolderRectangle(), iconSpriteClose, closeBtnTouchListener);
 
         refreshDimensions();
     }
@@ -150,8 +148,6 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
         iconSpriteOpen.setHeight(getButtonSpecInternal().iconSizePx);
         iconSpriteOpen.setUserData(getOpenButtonUserData());
         iconSpriteOpen.setVisible(false);
-        hostTrayCallback.getAreaTouchListener().addAreaTouchListener(
-                getOpenButtonUserDataType(), openBtnTouchListener);
 
         iconSpriteClose = new Sprite(
                 0,
@@ -162,8 +158,6 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
         iconSpriteClose.setHeight(getButtonSpecInternal().iconSizePx);
         iconSpriteClose.setUserData(getCloseButtonUserData());
         iconSpriteClose.setVisible(false);
-        hostTrayCallback.getAreaTouchListener().addAreaTouchListener(
-                getCloseButtonUserDataType(), closeBtnTouchListener);
     }
 
 

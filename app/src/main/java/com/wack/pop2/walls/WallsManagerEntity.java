@@ -1,10 +1,9 @@
 package com.wack.pop2.walls;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
-import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
@@ -17,12 +16,11 @@ public class WallsManagerEntity extends BaseEntity{
     private WallsStateMachine stateMachine;
     private WallsCreatorEntity wallsCreatorEntity;
     private WallsDeleteIconsManagerEntity wallsDeleteIconsManagerEntity;
-    private WallsDeletionEntity wallsDeletionEntity;
+    private WallsDeletionHandlerFactoryEntity wallsDeletionEntity;
     private WallsIconEntity wallsIconEntity;
 
     public WallsManagerEntity(
             GameIconsHostTrayEntity gameIconsTrayEntity,
-            GameAreaTouchListenerEntity gameAreaTouchListenerEntity,
             GameSceneTouchListenerEntity gameSceneTouchListenerEntity,
             GameSoundsManager soundsManager,
             GameTexturesManager gameTexturesManager,
@@ -30,9 +28,9 @@ public class WallsManagerEntity extends BaseEntity{
             GameResources gameResources) {
         super(gameResources);
         this.stateMachine = new WallsStateMachine();
-        this.wallsIconEntity = new WallsIconEntity(stateMachine, gameIconsTrayEntity, gameAreaTouchListenerEntity, soundsManager, gameTexturesManager, gameFontsManager, gameResources);
-        this.wallsCreatorEntity = new WallsCreatorEntity(stateMachine, wallsIconEntity, gameSceneTouchListenerEntity, gameTexturesManager, gameIconsTrayEntity, soundsManager, gameResources);
+        this.wallsIconEntity = new WallsIconEntity(stateMachine, gameIconsTrayEntity, soundsManager, gameTexturesManager, gameFontsManager, gameResources);
+        this.wallsDeletionEntity = new WallsDeletionHandlerFactoryEntity(soundsManager, gameResources);
+        this.wallsCreatorEntity = new WallsCreatorEntity(stateMachine, wallsIconEntity, wallsDeletionEntity, gameSceneTouchListenerEntity, gameTexturesManager, gameIconsTrayEntity, soundsManager, gameResources);
         this.wallsDeleteIconsManagerEntity = new WallsDeleteIconsManagerEntity(stateMachine, gameTexturesManager, gameResources);
-        this.wallsDeletionEntity = new WallsDeletionEntity(gameAreaTouchListenerEntity, soundsManager, gameResources);
     }
 }

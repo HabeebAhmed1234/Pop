@@ -47,6 +47,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
 
     private WallsStateMachine stateMachine;
     private WallsIconEntity wallsIconEntity;
+    private WallsDeletionHandlerFactoryEntity wallsDeletionHandlerFactory;
     private GameSceneTouchListenerEntity touchListenerEntity;
     private GameTexturesManager gameTexturesManager;
     private GameIconsHostTrayEntity gameIconsTrayEntity;
@@ -60,6 +61,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
     public WallsCreatorEntity(
             WallsStateMachine stateMachine,
             WallsIconEntity wallsIconEntity,
+            WallsDeletionHandlerFactoryEntity wallsDeletionHandlerFactory,
             GameSceneTouchListenerEntity touchListenerEntity,
             GameTexturesManager gameTexturesManager,
             GameIconsHostTrayEntity gameIconsTrayEntity,
@@ -68,6 +70,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
         super(gameResources);
         this.stateMachine = stateMachine;
         this.wallsIconEntity = wallsIconEntity;
+        this.wallsDeletionHandlerFactory = wallsDeletionHandlerFactory;
         this.touchListenerEntity = touchListenerEntity;
         this.gameTexturesManager = gameTexturesManager;
         this.gameIconsTrayEntity = gameIconsTrayEntity;
@@ -169,7 +172,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
         wallFixtureDef.setUserData(userData);
         Body wallBody = PhysicsFactory.createLineBody( physicsWorld, wallSprite, BodyType.STATIC, wallFixtureDef);
         userData.wallDeleteIcon = WallDeleteIconUtil.getWallDeletionSprite(wallSprite, wallBody, gameTexturesManager, vertexBufferObjectManager);
-        addToSceneWithTouch(userData.wallDeleteIcon);
+        addToSceneWithTouch(userData.wallDeleteIcon, wallsDeletionHandlerFactory.getWallDeletionHandler());
 
         EventBus.get().sendEvent(GameEvent.WALL_PLACED);
     }
@@ -187,7 +190,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
         wallSprite.setLineWidth(WALL_HEIGHT_PX);
         wallSprite.setColor(AndengineColor.WHITE);
 
-        addToSceneWithTouch(wallSprite);
+        addToScene(wallSprite);
     }
 
     private float clipWallLength(float wallLength) {

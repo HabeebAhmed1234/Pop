@@ -6,6 +6,8 @@ import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.utils.ScreenUtils;
 
+import org.andengine.entity.scene.IOnAreaTouchListener;
+import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
@@ -26,43 +28,43 @@ public class DebugSandboxEntity extends BaseEntity implements GameSceneTouchList
     public void onCreateScene() {
         super.onCreateScene();
         scene.setTouchAreaBindingOnActionDownEnabled(true);
-        scene.setOnAreaTouchTraversalFrontToBack();
+        //scene.setOnAreaTouchTraversalFrontToBack();
 
         touchListenerEntity.addSceneTouchListener(this);
 
 
         final Sprite bubbleSprite1 = new Sprite(
-                ScreenUtils.getSreenSize().widthPx/2 - 300,
-                ScreenUtils.getSreenSize().heightPx/2 - 300,
+                ScreenUtils.getSreenSize().widthPx - 500,
+                ScreenUtils.getSreenSize().heightPx / 2 - 300,
                 gameTexturesManager.getTextureRegion(TextureId.BALL),
-                vertexBufferObjectManager) {
+                vertexBufferObjectManager);
+
+        final Sprite bubbleSprite2 = new Sprite(
+                bubbleSprite1.getX() + bubbleSprite1.getWidth() /3,
+                bubbleSprite1.getY() + bubbleSprite1.getHeight() /3,
+                gameTexturesManager.getTextureRegion(TextureId.BALL),
+                vertexBufferObjectManager);
+
+        addToSceneWithTouch(bubbleSprite1, new IOnAreaTouchListener() {
             @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 Log.d("asdasd", "1 touched action = " + pSceneTouchEvent.getAction());
                 if (pSceneTouchEvent.isActionDown() || pSceneTouchEvent.isActionMove() || pSceneTouchEvent.isActionUp()) {
                     return true;
                 }
                 return false;
             }
-        };
-
-        final Sprite bubbleSprite2 = new Sprite(
-                bubbleSprite1.getX() + bubbleSprite1.getWidth() /3,
-                bubbleSprite1.getY() + bubbleSprite1.getHeight() /3,
-                gameTexturesManager.getTextureRegion(TextureId.BALL),
-                vertexBufferObjectManager) {
+        });
+        addToSceneWithTouch(bubbleSprite2, new IOnAreaTouchListener() {
             @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 Log.d("asdasd", "2 touched action = " + pSceneTouchEvent.getAction());
                 if (pSceneTouchEvent.isActionDown() || pSceneTouchEvent.isActionMove() || pSceneTouchEvent.isActionUp()) {
                     return true;
                 }
                 return false;
             }
-        };
-
-        addToSceneWithTouch(bubbleSprite1);
-        addToSceneWithTouch(bubbleSprite2);
+        });
 
     }
 

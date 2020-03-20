@@ -1,6 +1,5 @@
 package com.wack.pop2.gameiconstray;
 
-import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
@@ -25,9 +24,8 @@ public class GameIconsHostTrayEntity extends BaseHostTrayEntity<GameIconsHostTra
     public GameIconsHostTrayEntity(
             GameTexturesManager textureManager,
             GameSoundsManager soundsManager,
-            GameAreaTouchListenerEntity areaTouchListenerEntity,
             GameResources gameResources) {
-        super(textureManager, soundsManager, areaTouchListenerEntity, gameResources);
+        super(textureManager, soundsManager, gameResources);
     }
 
     @Override

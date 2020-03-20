@@ -43,14 +43,4 @@ public class GameQuickSettingsTrayOpenCloseButton extends BaseTrayOpenCloseButto
     protected BaseEntityUserData getCloseButtonUserData() {
         return new GameQuickSettingsCloseBtnUserData();
     }
-
-    @Override
-    protected Class getOpenButtonUserDataType() {
-        return GameQuickSettingsOpenBtnUserData.class;
-    }
-
-    @Override
-    protected Class getCloseButtonUserDataType() {
-        return GameQuickSettingsCloseBtnUserData.class;
-    }
 }

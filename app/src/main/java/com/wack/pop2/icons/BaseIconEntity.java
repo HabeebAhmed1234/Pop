@@ -1,24 +1,24 @@
 package com.wack.pop2.icons;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
-import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.fixturedefdata.BaseEntityUserData;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 
+import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.color.AndengineColor;
 
 /**
  * The base class for all unlockable tool icons in the game.
  */
-public abstract class BaseIconEntity extends BaseEntity implements GameAreaTouchListenerEntity.AreaTouchListener, EventBus.Subscriber {
+public abstract class BaseIconEntity extends BaseEntity implements IOnAreaTouchListener, EventBus.Subscriber {
 
     private Sprite iconSprite;
     private boolean isUnlocked;
@@ -26,17 +26,14 @@ public abstract class BaseIconEntity extends BaseEntity implements GameAreaTouch
 
     private GameIconsHostTrayEntity gameIconsTrayEntity;
     private GameTexturesManager gameTexturesManager;
-    private GameAreaTouchListenerEntity touchListenerEntity;
 
     public BaseIconEntity(
             GameIconsHostTrayEntity gameIconsTrayEntity,
             GameTexturesManager gameTexturesManager,
-            GameAreaTouchListenerEntity touchListenerEntity,
             GameResources gameResources) {
         super(gameResources);
         this.gameIconsTrayEntity = gameIconsTrayEntity;
         this.gameTexturesManager = gameTexturesManager;
-        this.touchListenerEntity = touchListenerEntity;
     }
 
     @Override
@@ -44,13 +41,12 @@ public abstract class BaseIconEntity extends BaseEntity implements GameAreaTouch
         createIcon();
 
         EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this, true);
-        touchListenerEntity.addAreaTouchListener(getIconUserDataType(), this);
     }
 
     @Override
     public void onDestroy() {
         EventBus.get().unSubscribe(GameEvent.DIFFICULTY_CHANGE, this);
-        touchListenerEntity.removeAreaTouchListener(getIconUserDataType(), this);
+        iconSprite.removeOnAreaTouchListener();
     }
 
     @Override
@@ -72,7 +68,7 @@ public abstract class BaseIconEntity extends BaseEntity implements GameAreaTouch
                 vertexBufferObjectManager);
         iconSprite.setUserData(getUserDataInternal());
         setIconColor(AndengineColor.TRANSPARENT);
-        gameIconsTrayEntity.addIcon(getIconId(), iconSprite);
+        gameIconsTrayEntity.addIcon(getIconId(), iconSprite, this);
     }
 
     private BaseEntityUserData getUserDataInternal() {

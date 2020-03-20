@@ -1,7 +1,5 @@
 package com.wack.pop2.turret;
 
-import com.wack.pop2.areatouch.GameAreaTouchListenerEntity;
-import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.eventbus.EventBus;
@@ -9,6 +7,7 @@ import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.fixturedefdata.TurretsIconUserData;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.icons.BaseInventoryIconEntity;
 import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
@@ -47,7 +46,6 @@ class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subs
 
     public TurretsIconEntity(
             GameFontsManager gameFontsManager,
-            GameAreaTouchListenerEntity areaTouchListenerEntity,
             GameSceneTouchListenerEntity touchListenerEntity,
             GameSoundsManager soundManager,
             GameTexturesManager gameTexturesManager,
@@ -55,7 +53,7 @@ class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subs
             TurretEntityCreator turretEntityCreator,
             TurretsMutex mutex,
             GameResources gameResources) {
-        super(gameFontsManager, gameIconsTrayEntity, gameTexturesManager, areaTouchListenerEntity, gameResources);
+        super(gameFontsManager, gameIconsTrayEntity, gameTexturesManager, gameResources);
         this.touchListenerEntity = touchListenerEntity;
         this.soundManager = soundManager;
         this.turretEntityCreator = turretEntityCreator;
@@ -184,9 +182,8 @@ class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subs
         return AndengineColor.GREEN;
     }
 
-
     @Override
-    public boolean onTouch(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+    public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
         /** NOOP **/
         return false;
     }

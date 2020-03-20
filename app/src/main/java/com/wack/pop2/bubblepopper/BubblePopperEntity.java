@@ -6,7 +6,9 @@ import com.wack.pop2.BaseEntity;
 import com.wack.pop2.BubbleSpawnerEntity;
 import com.wack.pop2.GameAnimationManager;
 import com.wack.pop2.GameResources;
+import com.wack.pop2.eventbus.BubbleTouchedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
+import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.eventbus.IncrementScoreEventPayload;
 import com.wack.pop2.physics.util.Vec2Pool;
@@ -25,7 +27,7 @@ import org.andengine.entity.text.Text;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
-public class BubblePopperEntity extends BaseEntity implements BubblePopper {
+public class BubblePopperEntity extends BaseEntity implements BubblePopper, EventBus.Subscriber {
 
     public static final int SCORE_INCREMENT_PER_BUBBLE_POP = 10;
     public static final int MAX_SCORE_INCREASE_PER_NEW_SPAWNED_BUBBLE = 70; // Since there are three bubble sizes a total of 7 bubbles can be popped from one spawned bubble
@@ -46,6 +48,18 @@ public class BubblePopperEntity extends BaseEntity implements BubblePopper {
         this.soundsManager = soundsManager;
         this.gameAnimationManager = gameAnimationManager;
         this.bubbleSpawnerEntity = bubbleSpawnerEntity;
+    }
+
+    @Override
+    public void onCreateScene() {
+        super.onCreateScene();
+        EventBus.get().subscribe(GameEvent.BUBBLE_TOUCHED, this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.get().unSubscribe(GameEvent.BUBBLE_TOUCHED, this);
     }
 
     @Override
@@ -120,5 +134,13 @@ public class BubblePopperEntity extends BaseEntity implements BubblePopper {
                 return soundsManager.getSound(SoundId.POP_5);
         }
         throw new IllegalStateException("No sound for index " + random);
+    }
+
+    @Override
+    public void onEvent(GameEvent event, EventPayload payload) {
+        if (event == GameEvent.BUBBLE_TOUCHED) {
+            BubbleTouchedEventPayload touchedEventPayload = (BubbleTouchedEventPayload) payload;
+            popBubble(touchedEventPayload.sprite, touchedEventPayload.size, touchedEventPayload.type);
+        }
     }
 }
