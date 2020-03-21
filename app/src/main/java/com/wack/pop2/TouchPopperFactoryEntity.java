@@ -37,8 +37,6 @@ public class TouchPopperFactoryEntity extends BaseEntity {
                 final BubbleEntityUserData bubbleEntityUserData = (BubbleEntityUserData) entity.getUserData();
                 EventBus.get().sendEvent(GameEvent.BUBBLE_TOUCHED, new BubbleTouchedEventPayload(entity, bubbleEntityUserData.size, bubbleEntityUserData.bubbleType));
                 return true;
-            } else if (pSceneTouchEvent.isActionUp() || pSceneTouchEvent.isActionMove()) {
-                return true;
             }
             return false;
         }
