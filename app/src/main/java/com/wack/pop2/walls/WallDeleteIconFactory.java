@@ -13,7 +13,7 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.color.AndengineColor;
 import org.jbox2d.dynamics.Body;
 
-public class WallDeleteIconUtil {
+public class WallDeleteIconFactory {
 
     private static final int WALL_DELETE_ICON_SIZE_DP = 44;
 

@@ -44,7 +44,7 @@ public class GameResources {
         PhysicsWorld physicsWorld = new PhysicsWorld(new Vec2(0, SensorManager.GRAVITY_EARTH * 5), false);
         scene.registerUpdateHandler(physicsWorld);
         scene.setTouchAreaBindingOnActionDownEnabled(true);
-        //scene.setOnSceneTouchListenerBindingOnActionDownEnabled(true);
+        scene.setOnAreaTouchTraversalFrontToBack();
         return new GameResources(
                 scene,
                 physicsWorld,

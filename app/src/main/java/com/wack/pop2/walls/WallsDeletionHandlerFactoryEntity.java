@@ -7,9 +7,9 @@ import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.fixturedefdata.WallDeleteIconUserData;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
+import com.wack.pop2.touchlisteners.ButtonUpTouchListener;
 
 import org.andengine.entity.IEntity;
-import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.shape.IShape;
 import org.andengine.input.touch.TouchEvent;
@@ -32,7 +32,7 @@ public class WallsDeletionHandlerFactoryEntity extends BaseEntity {
         return new WallDeletionHandler();
     }
 
-    public class WallDeletionHandler implements IOnAreaTouchListener {
+    public class WallDeletionHandler extends ButtonUpTouchListener {
 
         private WallDeletionHandler() {}
 
@@ -48,12 +48,10 @@ public class WallsDeletionHandlerFactoryEntity extends BaseEntity {
         }
 
         @Override
-        public boolean onAreaTouched(TouchEvent sceneTouchEvent, ITouchArea touchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-            if (sceneTouchEvent.isActionUp()) {
-                IEntity deleteIconEntity = (IEntity) touchArea;
-                if (deleteIconEntity.isVisible()) {
-                    deleteWall((IShape) deleteIconEntity);
-                }
+        protected boolean onButtonPressed(TouchEvent sceneTouchEvent, ITouchArea touchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+            IEntity deleteIconEntity = (IEntity) touchArea;
+            if (deleteIconEntity.isVisible()) {
+                deleteWall((IShape) deleteIconEntity);
                 return true;
             }
             return false;

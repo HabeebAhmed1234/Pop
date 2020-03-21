@@ -440,6 +440,11 @@ public class Scene extends Entity {
 		this.mRunnableHandler.postRunnable(pRunnable);
 	}
 
+	public void bringTouchAreaToTop(final ITouchArea pTouchArea) {
+		unregisterTouchArea(pTouchArea);
+		registerTouchArea(pTouchArea);
+	}
+
 	public void registerTouchArea(final ITouchArea pTouchArea) {
 		this.mTouchAreas.add(pTouchArea);
 	}

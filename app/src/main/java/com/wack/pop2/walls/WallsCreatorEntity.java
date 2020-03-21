@@ -173,7 +173,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
         wallFixtureDef.setFilter(CollisionFilters.WALL_FILTER);
         wallFixtureDef.setUserData(userData);
         Body wallBody = PhysicsFactory.createLineBody( physicsWorld, wallSprite, BodyType.STATIC, wallFixtureDef);
-        userData.wallDeleteIcon = WallDeleteIconUtil.getWallDeletionSprite(hostActivity.getActivityContext(), wallSprite, wallBody, gameTexturesManager, vertexBufferObjectManager);
+        userData.wallDeleteIcon = WallDeleteIconFactory.getWallDeletionSprite(hostActivity.getActivityContext(), wallSprite, wallBody, gameTexturesManager, vertexBufferObjectManager);
         addToSceneWithTouch(userData.wallDeleteIcon, wallsDeletionHandlerFactory.getWallDeletionHandler());
 
         EventBus.get().sendEvent(GameEvent.WALL_PLACED);
