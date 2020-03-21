@@ -50,11 +50,6 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
                     }
                     return false;
                 }
-
-                @Override
-                protected void onPressedStateChanged(boolean isPressed) {
-                    setIconSpriteColor(isPressed ? AndengineColor.GREEN : AndengineColor.WHITE);
-                }
             };
 
     public BaseTrayOpenCloseButtonEntity(
@@ -157,13 +152,6 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
         iconSpriteClose.setHeight(getButtonSpecInternal().iconSizePx);
         iconSpriteClose.setUserData(getCloseButtonUserData());
         iconSpriteClose.setVisible(false);
-    }
-
-    private void setIconSpriteColor(AndengineColor color) {
-        if (iconSpriteOpen != null && iconSpriteClose != null) {
-            iconSpriteOpen.setColor(color);
-            iconSpriteClose.setColor(color);
-        }
     }
 
     private void setIconPosition(float x, float y) {

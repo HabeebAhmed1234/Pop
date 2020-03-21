@@ -5,8 +5,6 @@ import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
-import com.wack.pop2.fixturedefdata.BaseEntityUserData;
-import com.wack.pop2.fixturedefdata.TurretsIconUserData;
 import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.icons.BaseInventoryIconEntity;
 import com.wack.pop2.resources.fonts.GameFontsManager;
@@ -15,7 +13,7 @@ import com.wack.pop2.resources.sounds.SoundId;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 
-import org.andengine.entity.scene.ITouchArea;
+import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.color.AndengineColor;
@@ -155,16 +153,6 @@ class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subs
     }
 
     @Override
-    protected Class<? extends BaseEntityUserData> getIconUserDataType() {
-        return TurretsIconUserData.class;
-    }
-
-    @Override
-    protected BaseEntityUserData getUserData() {
-        return new TurretsIconUserData();
-    }
-
-    @Override
     protected GameIconsHostTrayEntity.IconId getIconId() {
         return GameIconsHostTrayEntity.IconId.TURRETS_ICON;
     }
@@ -183,8 +171,8 @@ class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subs
     }
 
     @Override
-    public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+    protected IOnAreaTouchListener getTouchListener() {
         /** NOOP **/
-        return false;
+        return null;
     }
 }

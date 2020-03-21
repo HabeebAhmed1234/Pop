@@ -1,11 +1,11 @@
 package com.wack.pop2.walls;
 
+import androidx.annotation.Nullable;
+
 import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
-import com.wack.pop2.fixturedefdata.BaseEntityUserData;
-import com.wack.pop2.fixturedefdata.WallsIconUserData;
 import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.icons.BaseInventoryIconEntity;
 import com.wack.pop2.resources.fonts.GameFontsManager;
@@ -14,7 +14,9 @@ import com.wack.pop2.resources.sounds.SoundId;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.statemachine.BaseStateMachine;
+import com.wack.pop2.touchlisteners.ButtonUpTouchListener;
 
+import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.color.AndengineColor;
@@ -23,6 +25,20 @@ import static com.wack.pop2.walls.WallsConstants.MAX_WALLS_INVENTORY;
 import static com.wack.pop2.walls.WallsConstants.WALLS_DIFFICULTY_UNLOCK_THRESHOLD;
 
 public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStateMachine.Listener<WallsStateMachine.State> {
+
+    private final ButtonUpTouchListener touchListener = new ButtonUpTouchListener() {
+        @Override
+        protected boolean onButtonPressed(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+            if (stateMachine.getCurrentState() == WallsStateMachine.State.UNLOCKED_TOGGLED_OFF) {
+                toggleOn();
+                return true;
+            } else if (stateMachine.getCurrentState() == WallsStateMachine.State.TOGGLED_ON) {
+                toggleOff();
+                return true;
+            }
+            return false;
+        }
+    };
 
     private WallsStateMachine stateMachine;
     private GameSoundsManager gameSoundsManager;
@@ -107,16 +123,6 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStat
     }
 
     @Override
-    protected Class<? extends BaseEntityUserData> getIconUserDataType() {
-        return WallsIconUserData.class;
-    }
-
-    @Override
-    protected BaseEntityUserData getUserData() {
-        return new WallsIconUserData();
-    }
-
-    @Override
     protected GameIconsHostTrayEntity.IconId getIconId() {
         return GameIconsHostTrayEntity.IconId.WALLS_ICON;
     }
@@ -136,18 +142,10 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStat
         return AndengineColor.GREEN;
     }
 
+    @Nullable
     @Override
-    public boolean onAreaTouched(TouchEvent touchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-        if (touchEvent.isActionUp()) {
-            if (stateMachine.getCurrentState() == WallsStateMachine.State.UNLOCKED_TOGGLED_OFF) {
-                toggleOn();
-                return true;
-            } else if (stateMachine.getCurrentState() == WallsStateMachine.State.TOGGLED_ON) {
-                toggleOff();
-                return true;
-            }
-        }
-        return false;
+    protected IOnAreaTouchListener getTouchListener() {
+        return touchListener;
     }
 
     private void toggleOn() {

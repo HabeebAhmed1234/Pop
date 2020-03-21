@@ -1,28 +1,37 @@
 package com.wack.pop2.icons;
 
+import androidx.annotation.Nullable;
+
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
-import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 
 import org.andengine.entity.scene.IOnAreaTouchListener;
+import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.color.AndengineColor;
 
 /**
  * The base class for all unlockable tool icons in the game.
  */
-public abstract class BaseIconEntity extends BaseEntity implements IOnAreaTouchListener, EventBus.Subscriber {
+public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subscriber {
+
+    private static final IOnAreaTouchListener NO_OP_AREA_TOUCH_LISTENER = new IOnAreaTouchListener() {
+        @Override
+        public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+            return false;
+        }
+    };
 
     private Sprite iconSprite;
     private boolean isUnlocked;
-    private BaseEntityUserData iconUserData;
 
     private GameIconsHostTrayEntity gameIconsTrayEntity;
     private GameTexturesManager gameTexturesManager;
@@ -66,17 +75,11 @@ public abstract class BaseIconEntity extends BaseEntity implements IOnAreaTouchL
                 0,
                 gameTexturesManager.getTextureRegion(getIconTextureId()),
                 vertexBufferObjectManager);
-        iconSprite.setUserData(getUserDataInternal());
         setIconColor(AndengineColor.TRANSPARENT);
-        gameIconsTrayEntity.addIcon(getIconId(), iconSprite, this);
+        @Nullable IOnAreaTouchListener touchListener = getTouchListener();
+        gameIconsTrayEntity.addIcon(getIconId(), iconSprite, touchListener == null ? NO_OP_AREA_TOUCH_LISTENER : touchListener);
     }
 
-    private BaseEntityUserData getUserDataInternal() {
-        if (iconUserData == null) {
-            iconUserData = getUserData();
-        }
-        return iconUserData;
-    }
     private void onScoreChanged(float newDifficultySpawnInterval) {
         if (newDifficultySpawnInterval >= getDifficultyIntervalUnlockThreshold() && !isUnlocked) {
             isUnlocked = true;
@@ -99,10 +102,6 @@ public abstract class BaseIconEntity extends BaseEntity implements IOnAreaTouchL
 
     protected abstract TextureId getIconTextureId();
 
-    protected abstract Class<? extends BaseEntityUserData> getIconUserDataType();
-
-    protected abstract BaseEntityUserData getUserData();
-
     protected abstract GameIconsHostTrayEntity.IconId getIconId();
 
     protected abstract float getDifficultyIntervalUnlockThreshold();
@@ -110,4 +109,7 @@ public abstract class BaseIconEntity extends BaseEntity implements IOnAreaTouchL
     protected abstract void onIconUnlocked();
 
     protected abstract AndengineColor getUnlockedColor();
+
+    @Nullable
+    protected abstract IOnAreaTouchListener getTouchListener();
 }

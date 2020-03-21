@@ -1,13 +1,12 @@
 package com.wack.pop2.ballandchain;
 
 import com.wack.pop2.GameResources;
-import com.wack.pop2.fixturedefdata.BallAndChainIconUserData;
-import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.icons.BaseIconEntity;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 
+import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.color.AndengineColor;
@@ -19,6 +18,17 @@ import static com.wack.pop2.ballandchain.BallAndChainConstants.BALL_AND_CHAIN_DI
  * using the ball and chain.
  */
 class BallAndChainIconEntity extends BaseIconEntity implements BallAndChainStateMachine.Listener<BallAndChainStateMachine.State> {
+
+    private final IOnAreaTouchListener touchListener = new IOnAreaTouchListener() {
+        @Override
+        public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+            if (pSceneTouchEvent.isActionDown() && stateMachine.getCurrentState() == BallAndChainStateMachine.State.UNLOCKED_CHARGED) {
+                stateMachine.transitionState(BallAndChainStateMachine.State.IN_USE_CHARGED);
+                return true;
+            }
+            return false;
+        }
+    };
 
     private BallAndChainStateMachine stateMachine;
 
@@ -49,16 +59,6 @@ class BallAndChainIconEntity extends BaseIconEntity implements BallAndChainState
     }
 
     @Override
-    protected Class<? extends BaseEntityUserData> getIconUserDataType() {
-        return BallAndChainIconUserData.class;
-    }
-
-    @Override
-    protected BaseEntityUserData getUserData() {
-        return new BallAndChainIconUserData();
-    }
-
-    @Override
     protected GameIconsHostTrayEntity.IconId getIconId() {
         return GameIconsHostTrayEntity.IconId.BALL_AND_CHAIN_ICON;
     }
@@ -79,6 +79,11 @@ class BallAndChainIconEntity extends BaseIconEntity implements BallAndChainState
     }
 
     @Override
+    protected IOnAreaTouchListener getTouchListener() {
+        return touchListener;
+    }
+
+    @Override
     public void onEnterState(BallAndChainStateMachine.State newState) {
         AndengineColor color = AndengineColor.WHITE;
         switch (newState) {
@@ -95,14 +100,5 @@ class BallAndChainIconEntity extends BaseIconEntity implements BallAndChainState
                 break;
         }
         setIconColor(color);
-    }
-
-    @Override
-    public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-        if (pSceneTouchEvent.isActionDown() && stateMachine.getCurrentState() == BallAndChainStateMachine.State.UNLOCKED_CHARGED) {
-            stateMachine.transitionState(BallAndChainStateMachine.State.IN_USE_CHARGED);
-            return true;
-        }
-        return false;
     }
 }

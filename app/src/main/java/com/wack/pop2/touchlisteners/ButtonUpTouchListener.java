@@ -64,6 +64,9 @@ public abstract class ButtonUpTouchListener implements IOnAreaTouchListener {
         onPressedStateChanged(pressedDown);
     }
 
+    protected void onPressedStateChanged(boolean isPressed) {
+        /** NOOP **/
+    }
+
     protected abstract boolean onButtonPressed(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY);
-    protected abstract void onPressedStateChanged(boolean isPressed);
 }
