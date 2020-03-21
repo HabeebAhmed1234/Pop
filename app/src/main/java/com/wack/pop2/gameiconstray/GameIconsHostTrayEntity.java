@@ -1,6 +1,8 @@
 package com.wack.pop2.gameiconstray;
 
 import com.wack.pop2.GameResources;
+import com.wack.pop2.eventbus.EventBus;
+import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
@@ -22,11 +24,32 @@ public class GameIconsHostTrayEntity extends BaseHostTrayEntity<GameIconsHostTra
         NUKE_ICON,
     }
 
+    private final EventBus.Subscriber openGameIconsTrayEventSubscriber = new EventBus.Subscriber() {
+        @Override
+        public void onEvent(GameEvent event, EventPayload payload) {
+            if (event == GameEvent.OPEN_GAME_ICONS_TRAY) {
+                openTray();
+            }
+        }
+    };
+
     public GameIconsHostTrayEntity(
             GameTexturesManager textureManager,
             GameSoundsManager soundsManager,
             GameResources gameResources) {
         super(textureManager, soundsManager, gameResources);
+    }
+
+    @Override
+    public void onCreateScene() {
+        super.onCreateScene();
+        EventBus.get().subscribe(GameEvent.OPEN_GAME_ICONS_TRAY, openGameIconsTrayEventSubscriber);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.get().unSubscribe(GameEvent.OPEN_GAME_ICONS_TRAY, openGameIconsTrayEventSubscriber);
     }
 
     @Override
@@ -66,11 +89,11 @@ public class GameIconsHostTrayEntity extends BaseHostTrayEntity<GameIconsHostTra
 
     @Override
     protected GameEvent getTrayOpenEvent() {
-        return GameEvent.GAME_ICONS_TRAY_OPEN;
+        return GameEvent.GAME_ICONS_TRAY_OPENED;
     }
 
     @Override
     protected GameEvent getTrayCloseEvent() {
-        return GameEvent.GAME_ICONS_TRAY_CLOSE;
+        return GameEvent.GAME_ICONS_TRAY_CLOSED;
     }
 }

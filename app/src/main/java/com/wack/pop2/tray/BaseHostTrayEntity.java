@@ -93,7 +93,7 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
 
     @Override
     public void openTray() {
-        if (trayAnimationManager != null) {
+        if (trayAnimationManager != null && stateMachine.canOpen()) {
             soundsManager.getSound(getOpenSound()).play();
             trayAnimationManager.openTray();
             EventBus.get().sendEvent(getTrayOpenEvent());
@@ -102,7 +102,7 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
 
     @Override
     public void closeTray() {
-        if (trayAnimationManager != null) {
+        if (trayAnimationManager != null && stateMachine.canClose()) {
             soundsManager.getSound(getCloseSound()).play();
             trayAnimationManager.closeTray();
             EventBus.get().sendEvent(getTrayCloseEvent());

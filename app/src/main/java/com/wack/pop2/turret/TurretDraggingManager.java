@@ -15,6 +15,7 @@ import com.wack.pop2.statemachine.BaseStateMachine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.input.touch.TouchEvent;
 
+import static com.wack.pop2.eventbus.GameEvent.OPEN_GAME_ICONS_TRAY;
 import static com.wack.pop2.eventbus.GameEvent.TURRET_DOCKED;
 
 /**
@@ -117,6 +118,7 @@ public class TurretDraggingManager extends BaseEntity implements GameSceneTouchL
         soundsManager.getSound(SoundId.CLICK_UP).play();
         stateMachine.transitionState(TurretStateMachine.State.DRAGGING);
         trackTurretToPointerOnDrag(touchX, touchY);
+        EventBus.get().sendEvent(OPEN_GAME_ICONS_TRAY);
     }
 
     private void dropTurret(TouchEvent touchEvent) {

@@ -42,4 +42,14 @@ class TrayStateMachine extends BaseStateMachine<TrayStateMachine.State> {
         return validTransitions;
     }
 
+    public boolean canOpen() {
+        return getCurrentState() == TrayStateMachine.State.CLOSING
+                || getCurrentState() == TrayStateMachine.State.CLOSED;
+    }
+
+    public boolean canClose() {
+        return getCurrentState() == TrayStateMachine.State.EXPANDING
+                || getCurrentState() == TrayStateMachine.State.EXPANDED;
+
+    }
 }

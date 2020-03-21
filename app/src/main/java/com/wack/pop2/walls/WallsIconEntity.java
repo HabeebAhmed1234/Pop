@@ -87,7 +87,7 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStat
         EventBus.get()
                 .subscribe(GameEvent.WALL_PLACED, this)
                 .subscribe(GameEvent.WALL_DELETED, this)
-                .subscribe(GameEvent.GAME_ICONS_TRAY_CLOSE, this);
+                .subscribe(GameEvent.GAME_ICONS_TRAY_CLOSED, this);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStat
         EventBus.get()
                 .unSubscribe(GameEvent.WALL_PLACED, this)
                 .unSubscribe(GameEvent.WALL_DELETED, this)
-                .unSubscribe(GameEvent.GAME_ICONS_TRAY_CLOSE, this);
+                .unSubscribe(GameEvent.GAME_ICONS_TRAY_CLOSED, this);
     }
 
     @Override
@@ -111,7 +111,7 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStat
             case WALL_DELETED:
                 increaseInventory();
                 break;
-            case GAME_ICONS_TRAY_CLOSE:
+            case GAME_ICONS_TRAY_CLOSED:
                 toggleOff();
                 break;
         }

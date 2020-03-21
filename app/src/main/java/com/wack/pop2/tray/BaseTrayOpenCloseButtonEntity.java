@@ -41,10 +41,10 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
             new ButtonUpTouchListener() {
                 @Override
                 protected boolean onButtonPressed(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-                    if (canOpen()) {
+                    if (hostTrayCallback.getStateMachine().canOpen()) {
                         onOpenBtnTouch();
                         return true;
-                    } else if (canClose()) {
+                    } else if (hostTrayCallback.getStateMachine().canClose()) {
                         onCloseBtnTouch();
                         return true;
                     }
@@ -115,17 +115,6 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
         int iconX = -getButtonSpecInternal().iconSizePx - getButtonSpecInternal().iconRightMarginPx;
         int iconY = (int) (hostTrayCallback.getTrayIconsHolderRectangle().getHeightScaled() / 2 - getButtonSpecInternal().iconSizePx / 2);
         setIconPosition(iconX, iconY);
-    }
-
-    private boolean canOpen() {
-        return hostTrayCallback.getStateMachine().getCurrentState() == TrayStateMachine.State.CLOSING
-                || hostTrayCallback.getStateMachine().getCurrentState() == TrayStateMachine.State.CLOSED;
-    }
-
-    private boolean canClose() {
-        return hostTrayCallback.getStateMachine().getCurrentState() == TrayStateMachine.State.EXPANDING
-                || hostTrayCallback.getStateMachine().getCurrentState() == TrayStateMachine.State.EXPANDED;
-
     }
 
     private boolean isIconCreated() {
