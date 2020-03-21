@@ -3,8 +3,6 @@ package com.wack.pop2.nuke;
 import androidx.annotation.Nullable;
 
 import com.wack.pop2.GameResources;
-import com.wack.pop2.fixturedefdata.BaseEntityUserData;
-import com.wack.pop2.fixturedefdata.NukeIconEntityUserData;
 import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.icons.BaseIconEntity;
 import com.wack.pop2.resources.textures.GameTexturesManager;

@@ -5,8 +5,6 @@ import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.eventbus.GameSettingChangedEventPayload;
-import com.wack.pop2.fixturedefdata.BaseEntityUserData;
-import com.wack.pop2.fixturedefdata.MusicIconEntityUserData;
 import com.wack.pop2.gamesettings.GamePreferencesEntity;
 import com.wack.pop2.gamesettings.Setting;
 import com.wack.pop2.resources.textures.GameTexturesManager;
@@ -65,11 +63,6 @@ public class MusicQuickSettingIconEntity extends BaseQuickSettingsIconEntity imp
     @Override
     protected TextureId getIconTextureId() {
         return TextureId.MUSIC_QUICK_SETTING_ICON;
-    }
-
-    @Override
-    protected Class<? extends BaseEntityUserData> getIconUserDataType() {
-        return MusicIconEntityUserData.class;
     }
 
     @Override

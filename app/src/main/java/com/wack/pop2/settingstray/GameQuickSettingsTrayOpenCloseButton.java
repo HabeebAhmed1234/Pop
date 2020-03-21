@@ -1,9 +1,6 @@
 package com.wack.pop2.settingstray;
 
 import com.wack.pop2.GameResources;
-import com.wack.pop2.fixturedefdata.BaseEntityUserData;
-import com.wack.pop2.fixturedefdata.GameQuickSettingsCloseBtnUserData;
-import com.wack.pop2.fixturedefdata.GameQuickSettingsOpenBtnUserData;
 import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.tray.BaseTrayOpenCloseButtonEntity;
 import com.wack.pop2.tray.HostTrayCallback;
@@ -32,15 +29,5 @@ public class GameQuickSettingsTrayOpenCloseButton extends BaseTrayOpenCloseButto
     @Override
     protected TextureId getCloseButtonTextureId() {
         return QUICK_SETTINGS_BTN;
-    }
-
-    @Override
-    protected BaseEntityUserData getOpenButtonUserData() {
-        return new GameQuickSettingsOpenBtnUserData();
-    }
-
-    @Override
-    protected BaseEntityUserData getCloseButtonUserData() {
-        return new GameQuickSettingsCloseBtnUserData();
     }
 }

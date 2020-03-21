@@ -2,7 +2,6 @@ package com.wack.pop2.settingstray;
 
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameResources;
-import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 
@@ -58,8 +57,6 @@ public abstract class BaseQuickSettingsIconEntity extends BaseEntity implements 
     }
 
     protected abstract TextureId getIconTextureId();
-
-    protected abstract Class<? extends BaseEntityUserData> getIconUserDataType();
 
     protected abstract GameQuickSettingsHostTrayEntity.IconId getIconId();
 

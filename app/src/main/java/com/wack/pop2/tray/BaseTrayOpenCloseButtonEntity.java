@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameResources;
-import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.statemachine.BaseStateMachine;
 import com.wack.pop2.touchlisteners.ButtonUpTouchListener;
@@ -14,7 +13,6 @@ import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.util.color.AndengineColor;
 
 public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implements BaseStateMachine.Listener<TrayStateMachine.State> {
 
@@ -62,8 +60,6 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
     protected abstract ButtonSpec getButtonSpec();
     protected abstract TextureId getOpenButtonTextureId();
     protected abstract TextureId getCloseButtonTextureId();
-    protected abstract BaseEntityUserData getOpenButtonUserData();
-    protected abstract BaseEntityUserData getCloseButtonUserData();
 
     private ButtonSpec getButtonSpecInternal() {
         if (buttonSpec == null) {
@@ -129,7 +125,6 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
                 vertexBufferObjectManager);
         iconSpriteOpen.setWidth(getButtonSpecInternal().iconSizePx);
         iconSpriteOpen.setHeight(getButtonSpecInternal().iconSizePx);
-        iconSpriteOpen.setUserData(getOpenButtonUserData());
         iconSpriteOpen.setVisible(false);
 
         iconSpriteClose = new Sprite(
@@ -139,7 +134,6 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
                 vertexBufferObjectManager);
         iconSpriteClose.setWidth(getButtonSpecInternal().iconSizePx);
         iconSpriteClose.setHeight(getButtonSpecInternal().iconSizePx);
-        iconSpriteClose.setUserData(getCloseButtonUserData());
         iconSpriteClose.setVisible(false);
     }
 
