@@ -7,12 +7,14 @@ import com.wack.pop2.GameResources;
 import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.statemachine.BaseStateMachine;
+import com.wack.pop2.touchlisteners.ButtonUpTouchListener;
 import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.util.color.AndengineColor;
 
 public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implements BaseStateMachine.Listener<TrayStateMachine.State> {
 
@@ -35,27 +37,23 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
     private Sprite iconSpriteClose;
     private HostTrayCallback hostTrayCallback;
 
-    private IOnAreaTouchListener openBtnTouchListener =
-            new IOnAreaTouchListener() {
+    private IOnAreaTouchListener toggleBtnTouchListener =
+            new ButtonUpTouchListener() {
                 @Override
-                public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-                    if (pSceneTouchEvent.isActionUp() && canOpen()) {
+                protected boolean onButtonPressed(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                    if (canOpen()) {
                         onOpenBtnTouch();
                         return true;
-                    }
-                    return false;
-                }
-            };
-
-    private IOnAreaTouchListener closeBtnTouchListener =
-            new IOnAreaTouchListener () {
-                @Override
-                public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-                    if (pSceneTouchEvent.isActionUp() && canClose()) {
+                    } else if (canClose()) {
                         onCloseBtnTouch();
                         return true;
                     }
                     return false;
+                }
+
+                @Override
+                protected void onPressedStateChanged(boolean isPressed) {
+                    setIconSpriteColor(isPressed ? AndengineColor.GREEN : AndengineColor.WHITE);
                 }
             };
 
@@ -104,8 +102,9 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
             createIconSprite();
         }
 
-        addToSceneWithTouch(hostTrayCallback.getTrayIconsHolderRectangle(), iconSpriteOpen, openBtnTouchListener);
-        addToSceneWithTouch(hostTrayCallback.getTrayIconsHolderRectangle(), iconSpriteClose, closeBtnTouchListener);
+        // we only need one of the icons to be touchable
+        addToSceneWithTouch(hostTrayCallback.getTrayIconsHolderRectangle(), iconSpriteOpen, toggleBtnTouchListener);
+        addToScene(hostTrayCallback.getTrayIconsHolderRectangle(), iconSpriteClose);
 
         refreshDimensions();
     }
@@ -160,6 +159,12 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
         iconSpriteClose.setVisible(false);
     }
 
+    private void setIconSpriteColor(AndengineColor color) {
+        if (iconSpriteOpen != null && iconSpriteClose != null) {
+            iconSpriteOpen.setColor(color);
+            iconSpriteClose.setColor(color);
+        }
+    }
 
     private void setIconPosition(float x, float y) {
         iconSpriteOpen.setX(x);
