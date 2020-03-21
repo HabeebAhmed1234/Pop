@@ -23,4 +23,8 @@ public enum GameEvent {
     WALL_DELETED, // Fired when a wall gets deleted
     INTERACTION_SCORE_CHANGED, // Interaction score changed event
     SETTING_CHANGED, // Called when a setting is changed
+    GAME_ICONS_TRAY_OPEN, // Called when the game icons tray is opening
+    GAME_ICONS_TRAY_CLOSE, // Called when the game icons tray is closing
+    QUICK_SETTINGS_TRAY_OPEN, // Called when the quick settings tray is opening
+    QUICK_SETTINGS_TRAY_CLOSE, // Called when the quick settings tray is closing
 }

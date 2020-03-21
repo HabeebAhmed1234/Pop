@@ -6,6 +6,8 @@ import androidx.annotation.Nullable;
 
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameResources;
+import com.wack.pop2.eventbus.EventBus;
+import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
 import com.wack.pop2.resources.textures.GameTexturesManager;
@@ -68,6 +70,8 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
     protected abstract BaseTrayIconsHolderEntity getTrayIconsHolderEntity(GameResources gameResources);
     protected abstract SoundId getOpenSound();
     protected abstract SoundId getCloseSound();
+    protected abstract GameEvent getTrayOpenEvent();
+    protected abstract GameEvent getTrayCloseEvent();
 
     @Override
     public void onCreateScene() {
@@ -92,6 +96,7 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
         if (trayAnimationManager != null) {
             soundsManager.getSound(getOpenSound()).play();
             trayAnimationManager.openTray();
+            EventBus.get().sendEvent(getTrayOpenEvent());
         }
     }
 
@@ -100,6 +105,7 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
         if (trayAnimationManager != null) {
             soundsManager.getSound(getCloseSound()).play();
             trayAnimationManager.closeTray();
+            EventBus.get().sendEvent(getTrayCloseEvent());
         }
     }
 

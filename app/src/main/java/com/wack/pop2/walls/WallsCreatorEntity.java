@@ -91,19 +91,15 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
     public boolean onSceneTouchEvent(Scene scene, TouchEvent touchEvent) {
         switch (touchEvent.getAction()) {
             case ACTION_DOWN:
-                onActionDown(touchEvent);
-                break;
+                return onActionDown(touchEvent);
             case ACTION_UP:
             case ACTION_CANCEL:
             case ACTION_OUTSIDE:
-                onActionUp(touchEvent);
-                break;
+                return onActionUp(touchEvent);
             case ACTION_MOVE:
-                onActionMove(touchEvent);
-                break;
-
+                return onActionMove(touchEvent);
         }
-        return true;
+        return false;
     }
 
     private boolean shouldStartPlacingWall(TouchEvent touchEvent) {
@@ -133,24 +129,28 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
         return userData != null && wallSprite != null && initialPoint != null;
     }
 
-    private void onActionDown(TouchEvent touchEvent) {
+    private boolean onActionDown(TouchEvent touchEvent) {
         if (shouldStartPlacingWall(touchEvent)) {
             soundManager.getSound(SoundId.HAMMER_UP).play();
             initialPoint = Vec2Pool.obtain(touchEvent.getX(), touchEvent.getY());
             createWall();
             spanWall(touchEvent);
+            return true;
         }
+        return false;
     }
 
-    private void onActionMove(TouchEvent touchEvent) {
+    private boolean onActionMove(TouchEvent touchEvent) {
         if (isWallBeingPlaced()) {
             spanWall(touchEvent);
+            return true;
         }
+        return false;
     }
 
-    private void onActionUp(TouchEvent touchEvent) {
+    private boolean onActionUp(TouchEvent touchEvent) {
         if (!isWallBeingPlaced()) {
-            return;
+            return false;
         }
 
         soundManager.getSound(SoundId.HAMMER_DOWN).play();
@@ -161,6 +161,8 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
         userData = null;
         wallSprite = null;
         initialPoint = null;
+
+        return true;
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.wack.pop2.settingstray;
 
 import com.wack.pop2.GameResources;
+import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
 import com.wack.pop2.resources.textures.GameTexturesManager;
@@ -58,5 +59,15 @@ public class GameQuickSettingsHostTrayEntity extends BaseHostTrayEntity<GameQuic
     @Override
     protected SoundId getCloseSound() {
         return SoundId.CLOSE;
+    }
+
+    @Override
+    protected GameEvent getTrayOpenEvent() {
+        return GameEvent.QUICK_SETTINGS_TRAY_OPEN;
+    }
+
+    @Override
+    protected GameEvent getTrayCloseEvent() {
+        return GameEvent.QUICK_SETTINGS_TRAY_CLOSE;
     }
 }

@@ -1,6 +1,7 @@
 package com.wack.pop2.gameiconstray;
 
 import com.wack.pop2.GameResources;
+import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
 import com.wack.pop2.resources.textures.GameTexturesManager;
@@ -61,5 +62,15 @@ public class GameIconsHostTrayEntity extends BaseHostTrayEntity<GameIconsHostTra
     @Override
     protected SoundId getCloseSound() {
         return SoundId.CLOSE;
+    }
+
+    @Override
+    protected GameEvent getTrayOpenEvent() {
+        return GameEvent.GAME_ICONS_TRAY_OPEN;
+    }
+
+    @Override
+    protected GameEvent getTrayCloseEvent() {
+        return GameEvent.GAME_ICONS_TRAY_CLOSE;
     }
 }

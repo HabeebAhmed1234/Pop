@@ -68,14 +68,20 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStat
         super.onCreateScene();
         stateMachine.addAllStateTransitionListener(this);
 
-        EventBus.get().subscribe(GameEvent.WALL_PLACED, this).subscribe(GameEvent.WALL_DELETED, this);
+        EventBus.get()
+                .subscribe(GameEvent.WALL_PLACED, this)
+                .subscribe(GameEvent.WALL_DELETED, this)
+                .subscribe(GameEvent.GAME_ICONS_TRAY_CLOSE, this);
     }
 
     @Override
     public void onDestroy() {
         stateMachine.removeAllStateTransitionListener(this);
 
-        EventBus.get().unSubscribe(GameEvent.WALL_PLACED, this).unSubscribe(GameEvent.WALL_DELETED, this);
+        EventBus.get()
+                .unSubscribe(GameEvent.WALL_PLACED, this)
+                .unSubscribe(GameEvent.WALL_DELETED, this)
+                .unSubscribe(GameEvent.GAME_ICONS_TRAY_CLOSE, this);
     }
 
     @Override
@@ -88,6 +94,9 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStat
                 break;
             case WALL_DELETED:
                 increaseInventory();
+                break;
+            case GAME_ICONS_TRAY_CLOSE:
+                toggleOff();
                 break;
         }
     }
@@ -131,13 +140,25 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStat
     public boolean onAreaTouched(TouchEvent touchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
         if (touchEvent.isActionUp()) {
             if (stateMachine.getCurrentState() == WallsStateMachine.State.UNLOCKED_TOGGLED_OFF) {
-                stateMachine.transitionState(WallsStateMachine.State.TOGGLED_ON);
+                toggleOn();
                 return true;
             } else if (stateMachine.getCurrentState() == WallsStateMachine.State.TOGGLED_ON) {
-                stateMachine.transitionState(WallsStateMachine.State.UNLOCKED_TOGGLED_OFF);
+                toggleOff();
                 return true;
             }
         }
         return false;
+    }
+
+    private void toggleOn() {
+        if (stateMachine.getCurrentState() == WallsStateMachine.State.UNLOCKED_TOGGLED_OFF) {
+            stateMachine.transitionState(WallsStateMachine.State.TOGGLED_ON);
+        }
+    }
+
+    private void toggleOff() {
+        if (stateMachine.getCurrentState() == WallsStateMachine.State.TOGGLED_ON) {
+            stateMachine.transitionState(WallsStateMachine.State.UNLOCKED_TOGGLED_OFF);
+        }
     }
 }
