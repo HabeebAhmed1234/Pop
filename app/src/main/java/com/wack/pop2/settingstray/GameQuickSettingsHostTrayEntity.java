@@ -37,7 +37,7 @@ public class GameQuickSettingsHostTrayEntity extends BaseHostTrayEntity<GameQuic
     }
 
     @Override
-    protected boolean getIsInitiallyExpanded() {
+    protected boolean shouldExpandWhenIconAdded() {
         return false;
     }
 

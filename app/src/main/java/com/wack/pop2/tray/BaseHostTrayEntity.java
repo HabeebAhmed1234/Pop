@@ -56,7 +56,7 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
             GameSoundsManager soundsManager,
             GameResources gameResources) {
         super(gameResources);
-        stateMachine = new TrayStateMachine(getIsInitiallyExpanded());
+        stateMachine = new TrayStateMachine();
         trayIconsHolderEntity = getTrayIconsHolderEntity(gameResources);
         iconsTrayOpenCloseButton = getOpenCloseButtonEntity(gameResources);
         this.textureManager = textureManager;
@@ -65,7 +65,7 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
     }
 
     protected abstract Spec getSpec();
-    protected abstract boolean getIsInitiallyExpanded();
+    protected abstract boolean shouldExpandWhenIconAdded();
     protected abstract BaseTrayOpenCloseButtonEntity getOpenCloseButtonEntity(GameResources gameResources);
     protected abstract BaseTrayIconsHolderEntity getTrayIconsHolderEntity(GameResources gameResources);
     protected abstract SoundId getOpenSound();
@@ -84,6 +84,12 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
 
     public void addIcon(IconIdType iconId, Sprite iconSprite, IOnAreaTouchListener areaTouchListener) {
         trayIconsHolderEntity.addIcon(iconId, iconSprite, areaTouchListener);
+        if (stateMachine.getCurrentState() == TrayStateMachine.State.EMPTY) {
+            stateMachine.transitionState(TrayStateMachine.State.CLOSED);
+        }
+        if (stateMachine.canOpen() && shouldExpandWhenIconAdded()) {
+            openTray();
+        }
     }
 
     @Nullable

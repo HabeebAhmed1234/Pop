@@ -146,7 +146,10 @@ public abstract class BaseTrayOpenCloseButtonEntity extends BaseEntity implement
     }
 
     private void updateIconTexture(TrayStateMachine.State newState) {
-        if (newState == TrayStateMachine.State.EXPANDED || newState == TrayStateMachine.State.EXPANDING) {
+        if (newState == TrayStateMachine.State.EMPTY) {
+            iconSpriteOpen.setVisible(false);
+            iconSpriteClose.setVisible(false);
+        } else if (newState == TrayStateMachine.State.EXPANDED || newState == TrayStateMachine.State.EXPANDING) {
             iconSpriteOpen.setVisible(false);
             iconSpriteClose.setVisible(true);
         } else if (newState == TrayStateMachine.State.CLOSED || newState == TrayStateMachine.State.CLOSING) {

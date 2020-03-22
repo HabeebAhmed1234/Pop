@@ -112,7 +112,7 @@ public abstract class BaseTrayIconsHolderEntity<IconIdType> extends BaseEntity {
         TrayStateMachine.State currentState = hostTrayCallback.getStateMachine().getCurrentState();
         if (iconsTray != null) {
             int xPx = 0;
-            if (currentState == TrayStateMachine.State.CLOSED) {
+            if (currentState == TrayStateMachine.State.CLOSED || currentState == TrayStateMachine.State.EMPTY) {
                 xPx = anchor[0];
             } else if (currentState == TrayStateMachine.State.EXPANDED) {
                 xPx = anchor[0] - getTrayWidthPx();

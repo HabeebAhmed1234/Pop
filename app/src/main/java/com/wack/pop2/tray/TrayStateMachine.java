@@ -11,20 +11,22 @@ import java.util.Set;
 
 import static com.wack.pop2.tray.TrayStateMachine.State.CLOSED;
 import static com.wack.pop2.tray.TrayStateMachine.State.CLOSING;
+import static com.wack.pop2.tray.TrayStateMachine.State.EMPTY;
 import static com.wack.pop2.tray.TrayStateMachine.State.EXPANDED;
 import static com.wack.pop2.tray.TrayStateMachine.State.EXPANDING;
 
 class TrayStateMachine extends BaseStateMachine<TrayStateMachine.State> {
 
     public enum State {
+        EMPTY,
         EXPANDED,
         EXPANDING,
         CLOSED,
         CLOSING,
     }
 
-    TrayStateMachine(boolean isInitiallyExpanded) {
-        super(isInitiallyExpanded ? EXPANDED : CLOSED);
+    TrayStateMachine() {
+        super(EMPTY);
     }
 
     @Override
@@ -35,6 +37,7 @@ class TrayStateMachine extends BaseStateMachine<TrayStateMachine.State> {
     @Override
     protected Map<State, Set<State>> getAllValidStateTransitions() {
         Map<State, Set<State>> validTransitions = new HashMap<>();
+        validTransitions.put(EMPTY, new HashSet<>(Arrays.asList(CLOSED)));
         validTransitions.put(EXPANDED, new HashSet<>(Arrays.asList(CLOSING)));
         validTransitions.put(CLOSING, new HashSet<>(Arrays.asList(CLOSED, EXPANDING)));
         validTransitions.put(CLOSED, new HashSet<>(Arrays.asList(EXPANDING)));
@@ -43,7 +46,7 @@ class TrayStateMachine extends BaseStateMachine<TrayStateMachine.State> {
     }
 
     public boolean canOpen() {
-        return getCurrentState() == TrayStateMachine.State.CLOSING
+        return  getCurrentState() == TrayStateMachine.State.CLOSING
                 || getCurrentState() == TrayStateMachine.State.CLOSED;
     }
 

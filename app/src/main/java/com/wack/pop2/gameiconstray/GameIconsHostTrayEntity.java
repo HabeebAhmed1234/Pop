@@ -63,7 +63,7 @@ public class GameIconsHostTrayEntity extends BaseHostTrayEntity<GameIconsHostTra
     }
 
     @Override
-    protected boolean getIsInitiallyExpanded() {
+    protected boolean shouldExpandWhenIconAdded() {
         return true;
     }
 

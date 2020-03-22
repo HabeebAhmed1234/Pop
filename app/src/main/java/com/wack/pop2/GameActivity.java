@@ -139,6 +139,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		engineOptions.getTouchOptions().setNeedsMultiTouch(true);
 		engineOptions.getAudioOptions().setNeedsSound(true);
 		engineOptions.getAudioOptions().getMusicOptions().setNeedsMusic(true);
+		engineOptions.getAudioOptions().getSoundOptions().setMaxSimultaneousStreams(50);
 		return engineOptions;
 	}
 
