@@ -12,7 +12,7 @@ import org.andengine.util.color.AndengineColor;
 /**
  * The base class for all unlockable tool icons in the game.
  */
-public abstract class BaseQuickSettingsIconEntity extends BaseEntity implements IOnAreaTouchListener {
+public abstract class BaseQuickSettingsIconEntity extends BaseEntity{
 
     private Sprite iconSprite;
 
@@ -45,7 +45,7 @@ public abstract class BaseQuickSettingsIconEntity extends BaseEntity implements 
                 gameTexturesManager.getTextureRegion(getIconTextureId()),
                 vertexBufferObjectManager);
         setIconColor(getInitialIconColor());
-        quickSettingsTrayEntity.addIcon(getIconId(), iconSprite, this);
+        quickSettingsTrayEntity.addIcon(getIconId(), iconSprite, getTouchListener());
     }
 
     protected Sprite getIconSprite () {
@@ -61,4 +61,6 @@ public abstract class BaseQuickSettingsIconEntity extends BaseEntity implements 
     protected abstract GameQuickSettingsHostTrayEntity.IconId getIconId();
 
     protected abstract AndengineColor getInitialIconColor();
+
+    protected abstract IOnAreaTouchListener getTouchListener();
 }

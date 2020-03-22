@@ -24,6 +24,7 @@ import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.music.GameMusicResourceManagerEntity;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
+import com.wack.pop2.settingstray.GamePauseQuickSettingsIconEntity;
 import com.wack.pop2.settingstray.GameQuickSettingsHostTrayEntity;
 import com.wack.pop2.settingstray.MusicQuickSettingIconEntity;
 import com.wack.pop2.turret.TurretsManagerEntity;
@@ -93,6 +94,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 		// Settings icons
 		MusicQuickSettingIconEntity musicQuickSettingIconEntity = new MusicQuickSettingIconEntity(preferencesEntity, gameQuickSettingsHostTrayEntity, gameTexturesManager, mGameResources);
+		GamePauseQuickSettingsIconEntity pauseQuickSettingsIconEntity = new GamePauseQuickSettingsIconEntity(gameQuickSettingsHostTrayEntity, gameTexturesManager, mGameResources);
 
 		// Create game entities
 		mLevelEntity = new LevelEntity(gameTexturesManager, mGameResources);
@@ -147,6 +149,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	public void onCreateResources() {
 		ScreenUtils.onCreateResources(getVertexBufferObjectManager());
 		GameLifeCycleCalllbackManager.getInstance().onCreateResources();
+		onPauseGame();
 	}
 
 	@Override

@@ -9,7 +9,9 @@ import com.wack.pop2.gamesettings.GamePreferencesEntity;
 import com.wack.pop2.gamesettings.Setting;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
+import com.wack.pop2.touchlisteners.ButtonUpTouchListener;
 
+import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.color.AndengineColor;
@@ -17,6 +19,14 @@ import org.andengine.util.color.AndengineColor;
 import static com.wack.pop2.eventbus.GameEvent.SETTING_CHANGED;
 
 public class MusicQuickSettingIconEntity extends BaseQuickSettingsIconEntity implements EventBus.Subscriber {
+
+    private final ButtonUpTouchListener touchListener = new ButtonUpTouchListener() {
+        @Override
+        protected boolean onButtonPressed(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+            toggleMusicSetting();
+            return true;
+        }
+    };
 
     GamePreferencesEntity preferencesEntity;
 
@@ -52,15 +62,6 @@ public class MusicQuickSettingIconEntity extends BaseQuickSettingsIconEntity imp
     }
 
     @Override
-    public boolean onAreaTouched(TouchEvent touchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-        if (touchEvent.isActionUp()) {
-            toggleMusicSetting();
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     protected TextureId getIconTextureId() {
         return TextureId.MUSIC_QUICK_SETTING_ICON;
     }
@@ -73,6 +74,11 @@ public class MusicQuickSettingIconEntity extends BaseQuickSettingsIconEntity imp
     @Override
     protected AndengineColor getInitialIconColor() {
         return getSettingIconColor();
+    }
+
+    @Override
+    protected IOnAreaTouchListener getTouchListener() {
+        return touchListener;
     }
 
     private void toggleMusicSetting() {
