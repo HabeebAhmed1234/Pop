@@ -9,6 +9,7 @@ import com.wack.pop2.backgroundmusic.BackgroundMusicEntity;
 import com.wack.pop2.ballandchain.BallAndChainManagerEntity;
 import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.bubblepopper.BufferedBubblePopperEntity;
+import com.wack.pop2.bubblespawn.BubbleSpawnerEntity;
 import com.wack.pop2.bubbletimeout.BubblesLifecycleManagerEntity;
 import com.wack.pop2.difficulty.GameDifficultyEntity;
 import com.wack.pop2.eventbus.EventBus;

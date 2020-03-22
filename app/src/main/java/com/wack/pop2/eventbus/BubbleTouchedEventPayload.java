@@ -1,6 +1,6 @@
 package com.wack.pop2.eventbus;
 
-import com.wack.pop2.BubbleSpawnerEntity;
+import com.wack.pop2.bubblespawn.BubbleSpawnerEntity;
 
 import org.andengine.entity.sprite.Sprite;
 

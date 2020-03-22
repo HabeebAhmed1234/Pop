@@ -1,7 +1,7 @@
 package com.wack.pop2.bubblepopper;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.BubbleSpawnerEntity;
+import com.wack.pop2.bubblespawn.BubbleSpawnerEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.physics.PhysicsWorld;
 

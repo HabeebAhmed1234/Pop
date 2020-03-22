@@ -1,7 +1,12 @@
-package com.wack.pop2;
+package com.wack.pop2.bubblespawn;
 
 import android.hardware.SensorManager;
+import android.util.Pair;
 
+import com.wack.pop2.BaseEntity;
+import com.wack.pop2.GameFixtureDefs;
+import com.wack.pop2.GameResources;
+import com.wack.pop2.TouchPopperFactoryEntity;
 import com.wack.pop2.collision.CollisionFilters;
 import com.wack.pop2.eventbus.BubbleSpawnedEventPayload;
 import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
@@ -41,7 +46,6 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         RED,
         GREEN,
         BLUE;
-        // SKULL;
 
         private static final List<BubbleType> VALUES =
                 Collections.unmodifiableList(Arrays.asList(values()));
@@ -54,14 +58,14 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
     }
 
     public enum BubbleSize {
-        LARGE(1.7f),
-        MEDIUM(1.3f),
-        SMALL(0.9f);
+        LARGE(160),
+        MEDIUM(120),
+        SMALL(80);
 
-        public final float scale;
+        public final float sizeDp;
 
-        BubbleSize(final float scale) {
-            this.scale = scale;
+        BubbleSize(final float dp) {
+            this.sizeDp = dp;
         }
 
         public BubbleSize nextPoppedSize() {
@@ -87,8 +91,11 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
                 @Override
                 public void onTimePassed(TimerHandler pTimerHandler) {
                     int numBubbles = (int) (Math.random() * MAX_BUBBLES_PER_SPAWN);
-                    for (int i = 0; i < numBubbles ; i++) {
-                        spawnStartingBubble();
+                    List<Pair<Float, Float>> startingBubblePositions = BubblePacker.getSpawnBubblesLocations(
+                            numBubbles,
+                            ScreenUtils.dpToPx(BubbleSize.LARGE.sizeDp, hostActivity.getActivityContext()));
+                    for (Pair<Float, Float> position : startingBubblePositions) {
+                        spawnStartingBubble(position.first, position.second);
                     }
                     engine.registerUpdateHandler(new TimerHandler(bubbleSpawnInterval, false, this));
                 }
@@ -115,10 +122,9 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         EventBus.get().unSubscribe(GameEvent.DIFFICULTY_CHANGE, this);
     }
 
-    private void spawnStartingBubble() {
-        int screenWidth = ScreenUtils.getSreenSize().widthPx;
+    private void spawnStartingBubble(float x, float y) {
         BubbleType bubbleType = BubbleType.random();
-        Body body = spawnBubble(bubbleType, (int)(Math.random() * screenWidth),-200, BubbleSize.LARGE);
+        Body body = spawnBubble(bubbleType, x,y, BubbleSize.LARGE);
         EventBus.get().sendEvent(GameEvent.STARTING_BUBBLE_SPAWNED, new StartingBubbleSpawnedEventPayload(bubbleType));
         BubblePhysicsUtil.applyVelocity(body, 0f, (float) (SensorManager.GRAVITY_EARTH * 0.3 * 2));
     }
@@ -128,17 +134,19 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
      *
      * returns the Body of the spawned bubble
      */
-    public Body spawnBubble(final BubbleType bubbleType, final float xScene, final float yScene, BubbleSize bubbleSize) {
+    public Body spawnBubble(final BubbleType bubbleType, final float x, final float y, BubbleSize bubbleSize) {
         //add object
         final Sprite bubbleSprite = new Sprite(
-                xScene,
-                yScene,
+                x,
+                y,
                 getBubbleTexture(bubbleType),
                 vertexBufferObjectManager);
         colorBubble(bubbleType, bubbleSprite);
         final BaseEntityUserData userData = getBubbleUserData(bubbleSprite, bubbleType, bubbleSize);
         bubbleSprite.setUserData(userData);
-        bubbleSprite.setScale(bubbleSize.scale);
+        float bubbleSizePx = ScreenUtils.dpToPx(bubbleSize.sizeDp, hostActivity.getActivityContext());
+        bubbleSprite.setWidth(bubbleSizePx);
+        bubbleSprite.setHeight(bubbleSizePx);
 
         // If the bubble's right or left edge will clip outside of the screen horizontal bounds
         // We need to adjust the bubble position

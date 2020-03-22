@@ -3,7 +3,7 @@ package com.wack.pop2.bubblepopper;
 import android.opengl.GLES20;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.BubbleSpawnerEntity;
+import com.wack.pop2.bubblespawn.BubbleSpawnerEntity;
 import com.wack.pop2.GameAnimationManager;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.BubbleTouchedEventPayload;
