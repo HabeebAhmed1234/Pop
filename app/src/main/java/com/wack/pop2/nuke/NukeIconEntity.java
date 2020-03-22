@@ -15,8 +15,8 @@ import org.andengine.entity.scene.ITouchArea;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.color.AndengineColor;
 
+import static com.wack.pop2.GameConstants.NUKE_UNLOCK_THRESHOLD;
 import static com.wack.pop2.gameiconstray.GameIconsHostTrayEntity.IconId.NUKE_ICON;
-import static com.wack.pop2.nuke.NukeConstants.NUKE_UNLOCK_THRESHOLD;
 
 public class NukeIconEntity extends BaseIconEntity implements BaseStateMachine.Listener<NukeStateMachine.State> {
 
@@ -90,7 +90,7 @@ public class NukeIconEntity extends BaseIconEntity implements BaseStateMachine.L
     }
 
     @Override
-    protected float getDifficultyIntervalUnlockThreshold() {
+    protected float getGameProgressPercentageUnlockThreshold() {
         return NUKE_UNLOCK_THRESHOLD;
     }
 

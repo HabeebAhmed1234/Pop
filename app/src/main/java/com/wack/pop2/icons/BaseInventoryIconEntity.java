@@ -39,11 +39,16 @@ public abstract class BaseInventoryIconEntity extends BaseIconEntity {
     @Override
     public void onCreateScene() {
         super.onCreateScene();
-        createInventoryText();
     }
 
     public boolean hasInventory() {
         return getInventoryCount() > 0;
+    }
+
+    @Override
+    protected void addIconToTray() {
+        super.addIconToTray();
+        createInventoryText();
     }
 
     private void createInventoryText() {

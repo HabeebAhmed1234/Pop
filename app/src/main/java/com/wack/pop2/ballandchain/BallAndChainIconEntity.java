@@ -11,7 +11,7 @@ import org.andengine.entity.scene.ITouchArea;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.color.AndengineColor;
 
-import static com.wack.pop2.ballandchain.BallAndChainConstants.BALL_AND_CHAIN_DIFFICULTY_UNLOCK_THRESHOLD;
+import static com.wack.pop2.GameConstants.BALL_AND_CHAIN_DIFFICULTY_UNLOCK_THRESHOLD;
 
 /**
  * Appears when the ball and chain tool is unlocked. The user can tap and hold the icon to start
@@ -64,7 +64,7 @@ class BallAndChainIconEntity extends BaseIconEntity implements BallAndChainState
     }
 
     @Override
-    protected float getDifficultyIntervalUnlockThreshold() {
+    protected float getGameProgressPercentageUnlockThreshold() {
         return BALL_AND_CHAIN_DIFFICULTY_UNLOCK_THRESHOLD;
     }
 

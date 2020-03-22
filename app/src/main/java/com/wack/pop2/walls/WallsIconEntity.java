@@ -21,8 +21,8 @@ import org.andengine.entity.scene.ITouchArea;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.color.AndengineColor;
 
+import static com.wack.pop2.GameConstants.WALLS_DIFFICULTY_UNLOCK_THRESHOLD;
 import static com.wack.pop2.walls.WallsConstants.MAX_WALLS_INVENTORY;
-import static com.wack.pop2.walls.WallsConstants.WALLS_DIFFICULTY_UNLOCK_THRESHOLD;
 
 public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStateMachine.Listener<WallsStateMachine.State> {
 
@@ -128,7 +128,7 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStat
     }
 
     @Override
-    protected float getDifficultyIntervalUnlockThreshold() {
+    protected float getGameProgressPercentageUnlockThreshold() {
         return WALLS_DIFFICULTY_UNLOCK_THRESHOLD;
     }
 

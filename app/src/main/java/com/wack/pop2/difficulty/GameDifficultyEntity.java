@@ -7,21 +7,22 @@ import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;
+import com.wack.pop2.eventbus.GameProgressEventPayload;
 
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 
-import static com.wack.pop2.difficulty.DifficultyConstants.MIN_UPDATE_INTERVAL;
+import static com.wack.pop2.GameConstants.MAX_SPAWN_INTERVAL;
+import static com.wack.pop2.GameConstants.MIN_SPAWN_INTERVAL;
 import static com.wack.pop2.difficulty.DifficultyConstants.SPAWN_INTERVAL_DECREASE_SPEED;
 import static com.wack.pop2.difficulty.DifficultyConstants.SPAWN_INTERVAL_UPDATE_SECONDS;
-import static com.wack.pop2.difficulty.DifficultyConstants.STARTING_SPAWN_INTERVAL;
 
 /**
  * Controls the game difficulty
  */
 public class GameDifficultyEntity extends BaseEntity {
 
-    private float currentSpawnInterval = STARTING_SPAWN_INTERVAL;
+    private float currentSpawnInterval = MAX_SPAWN_INTERVAL;
 
 
     private TimerHandler updateIntervalUpdater =
@@ -50,15 +51,26 @@ public class GameDifficultyEntity extends BaseEntity {
     }
 
     public void initialUpdateInterval() {
-        EventBus.get().sendEvent(GameEvent.DIFFICULTY_CHANGE, new DifficultyChangedEventPayload(0));
+        EventBus.get().sendEvent(GameEvent.SPAWN_INTERVAL_CHANGED, new DifficultyChangedEventPayload(0));
+        EventBus.get().sendEvent(GameEvent.GAME_PROGRESS_CHANGED, new GameProgressEventPayload(0));
     }
 
     public void updateInterval() {
         currentSpawnInterval -= SPAWN_INTERVAL_DECREASE_SPEED;
-        if (currentSpawnInterval < MIN_UPDATE_INTERVAL) {
-            currentSpawnInterval = MIN_UPDATE_INTERVAL;
+        if (currentSpawnInterval < MIN_SPAWN_INTERVAL) {
+            currentSpawnInterval = MIN_SPAWN_INTERVAL;
         }
         Log.d("state", "currentSpawnInterval = " + currentSpawnInterval);
-        EventBus.get().sendEvent(GameEvent.DIFFICULTY_CHANGE, new DifficultyChangedEventPayload(currentSpawnInterval));
+        EventBus.get().sendEvent(GameEvent.SPAWN_INTERVAL_CHANGED, new DifficultyChangedEventPayload(currentSpawnInterval));
+
+        EventBus.get().sendEvent(GameEvent.GAME_PROGRESS_CHANGED, new GameProgressEventPayload(getGameProgress()));
+    }
+
+    /**
+     * Returns the game progress as the currentSpawnInterval percentage between min and max spawn
+     * intervals
+     */
+    private float getGameProgress() {
+        return 1 - (currentSpawnInterval - MIN_SPAWN_INTERVAL) / (MAX_SPAWN_INTERVAL - MIN_SPAWN_INTERVAL);
     }
 }

@@ -36,7 +36,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import static com.wack.pop2.difficulty.DifficultyConstants.MAX_BUBBLES_PER_SPAWN;
+import static com.wack.pop2.GameConstants.MAX_BUBBLES_PER_SPAWN;
 
 public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscriber {
 
@@ -112,14 +112,14 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
 
     @Override
     public void onCreateScene() {
-        EventBus.get().subscribe(GameEvent.DIFFICULTY_CHANGE, this, true);
+        EventBus.get().subscribe(GameEvent.SPAWN_INTERVAL_CHANGED, this, true);
         engine.registerUpdateHandler(bubbleSpawnTimerHandler);
     }
 
     @Override
     public void onDestroy() {
         engine.unregisterUpdateHandler(bubbleSpawnTimerHandler);
-        EventBus.get().unSubscribe(GameEvent.DIFFICULTY_CHANGE, this);
+        EventBus.get().unSubscribe(GameEvent.SPAWN_INTERVAL_CHANGED, this);
     }
 
     private void spawnStartingBubble(float x, float y) {
@@ -220,7 +220,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
 
     @Override
     public void onEvent(GameEvent event, EventPayload payload) {
-        if (event == GameEvent.DIFFICULTY_CHANGE) {
+        if (event == GameEvent.SPAWN_INTERVAL_CHANGED) {
             DifficultyChangedEventPayload difficultyChangedEventPayload = (DifficultyChangedEventPayload) payload;
             bubbleSpawnInterval = difficultyChangedEventPayload.newSpawnInterval;
         }
