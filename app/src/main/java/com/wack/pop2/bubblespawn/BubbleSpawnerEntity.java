@@ -129,7 +129,6 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
 
     private boolean isBubbleLimitReached() {
         final int numBubbles = scene.query(new BubblesEntityMatcher(false, true)).size();
-        Log.d("BubbleSpawnerEntity", "Num bubbles = " + numBubbles);
         return numBubbles > MAX_BUBBLES_ON_SCREEN;
     }
 
