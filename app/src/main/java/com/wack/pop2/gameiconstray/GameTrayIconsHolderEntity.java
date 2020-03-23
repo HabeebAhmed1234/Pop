@@ -18,6 +18,7 @@ public class GameTrayIconsHolderEntity<IconIdType> extends BaseTrayIconsHolderEn
     protected Spec getSpec() {
         return new Spec(
                 hostActivity.getActivityContext(),
+                LayoutOrientation.VERTICAL,
                 0,
                 8,
                 16,

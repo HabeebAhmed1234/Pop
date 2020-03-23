@@ -18,8 +18,9 @@ public class GameQuickSettingsTrayIconsHolderEntity<IconIdType> extends BaseTray
     protected Spec getSpec() {
         return new Spec(
                 hostActivity.getActivityContext(),
+                LayoutOrientation.HORIZONTAL,
                 8,
-                0,
+                6,
                 8,
                 32);
     }

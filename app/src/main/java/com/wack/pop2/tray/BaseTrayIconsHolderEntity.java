@@ -19,20 +19,21 @@ import java.util.List;
 
 public abstract class BaseTrayIconsHolderEntity<IconIdType> extends BaseEntity {
 
-    private final HostTrayCallback hostTrayCallback;
-
     public static class Spec {
 
+        public final LayoutOrientation layoutOrientation;
         public final int paddingHorizontalPx;
         public final int paddingVerticalPx;
         public final int paddingBetweenIconsPx;
         public final int iconsSizePx;
 
         public Spec(Context context,
+                        LayoutOrientation layoutOrientation,
                         int paddingHorizontalDp,
                         int paddingVerticalDp,
                         int paddingBetweenIconsDp,
                         int iconsSizeDp) {
+            this.layoutOrientation = layoutOrientation;
             paddingHorizontalPx = ScreenUtils.dpToPx(paddingHorizontalDp, context);
             paddingVerticalPx = ScreenUtils.dpToPx(paddingVerticalDp, context);
             paddingBetweenIconsPx = ScreenUtils.dpToPx(paddingBetweenIconsDp, context);
@@ -40,6 +41,12 @@ public abstract class BaseTrayIconsHolderEntity<IconIdType> extends BaseEntity {
         }
     }
 
+    public enum LayoutOrientation {
+        HORIZONTAL, // Icons are arranged from left to right
+        VERTICAL // Icons are arranged from top to bottom
+    }
+
+    private final HostTrayCallback hostTrayCallback;
     private Spec spec;
     private Rectangle iconsTray;
     private final List<Pair<IconIdType, Sprite>> icons = new ArrayList<>();
@@ -137,12 +144,19 @@ public abstract class BaseTrayIconsHolderEntity<IconIdType> extends BaseEntity {
             Pair<IconIdType, Sprite> iconPair = icons.get(i);
             Sprite icon = iconPair.second;
 
-            // Set the posistion of this icon
-            icon.setX(getPaddingHorizontalPx());
-            icon.setY(
-                    getPaddingVerticalPx()
-                            + (i * getIconSizePx())
-                            + (i * getPaddingBetweenPx()));
+            // Set the position of this icon
+            if (getSpecInternal().layoutOrientation == LayoutOrientation.VERTICAL) {
+                icon.setX(getPaddingHorizontalPx());
+                icon.setY(
+                        getPaddingVerticalPx()
+                                + (i * getIconSizePx())
+                                + (i * getPaddingBetweenPx()));
+            } else if (getSpecInternal().layoutOrientation == LayoutOrientation.HORIZONTAL) {
+                icon.setX(getPaddingHorizontalPx()
+                        + (i * getIconSizePx())
+                        + (i * getPaddingBetweenPx()));
+                icon.setY(getPaddingVerticalPx());
+            }
         }
     }
 
@@ -160,13 +174,27 @@ public abstract class BaseTrayIconsHolderEntity<IconIdType> extends BaseEntity {
      * Returns the widthPx of the tray including internal padding
      */
     public int getTrayWidthPx() {
-        return getPaddingHorizontalPx() * 2 + getIconSizePx();
+        switch (getSpecInternal().layoutOrientation) {
+            case HORIZONTAL:
+                return getPaddingHorizontalPx() * 2
+                        + getIconSizePx() * icons.size()
+                        + getPaddingBetweenPx() * (icons.size() -1);
+            case VERTICAL:
+                return getPaddingHorizontalPx() * 2 + getIconSizePx();
+        }
+        throw new IllegalArgumentException("No width for layout orientation " + getSpecInternal().layoutOrientation);
     }
 
     public int getTrayHeightPx() {
-        return getPaddingVerticalPx() * 2
-                + getIconSizePx() * icons.size()
-                + getPaddingBetweenPx() * (icons.size() -1);
+        switch (getSpecInternal().layoutOrientation) {
+            case HORIZONTAL:
+                return getPaddingHorizontalPx() * 2 + getIconSizePx();
+            case VERTICAL:
+                return getPaddingVerticalPx() * 2
+                        + getIconSizePx() * icons.size()
+                        + getPaddingBetweenPx() * (icons.size() -1);
+        }
+        throw new IllegalArgumentException("No height for layout orientation " + getSpecInternal().layoutOrientation);
     }
 
     private int getIconSizePx() {
