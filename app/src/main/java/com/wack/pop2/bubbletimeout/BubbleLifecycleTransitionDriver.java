@@ -46,7 +46,8 @@ class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, Base
 
     @Override
     public void onEnterState(BubbleLifeCycleStateMachine.State newState) {
-        removeCurrentUpdateHandler();
+        return;
+        /*removeCurrentUpdateHandler();
 
         BubbleLifeCycleStateMachine.State nextState = null;
         switch (newState) {
@@ -69,7 +70,7 @@ class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, Base
         if (nextState != null) {
             currentStateTransition = new TimerHandler(newState.duration, new NextStateDriver(nextState));
             engine.registerUpdateHandler(currentStateTransition);
-        }
+        }*/
     }
 
     private void removeCurrentUpdateHandler() {

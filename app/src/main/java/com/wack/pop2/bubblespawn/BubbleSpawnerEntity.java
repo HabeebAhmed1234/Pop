@@ -1,6 +1,7 @@
 package com.wack.pop2.bubblespawn;
 
 import android.hardware.SensorManager;
+import android.util.Log;
 import android.util.Pair;
 
 import com.wack.pop2.BaseEntity;
@@ -8,6 +9,7 @@ import com.wack.pop2.GameFixtureDefs;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.TouchPopperFactoryEntity;
 import com.wack.pop2.collision.CollisionFilters;
+import com.wack.pop2.entitymatchers.BubblesEntityMatcher;
 import com.wack.pop2.eventbus.BubbleSpawnedEventPayload;
 import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
@@ -36,6 +38,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import static com.wack.pop2.GameConstants.MAX_BUBBLES_ON_SCREEN;
 import static com.wack.pop2.GameConstants.MAX_BUBBLES_PER_SPAWN;
 
 public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscriber {
@@ -90,12 +93,14 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
             new ITimerCallback() {
                 @Override
                 public void onTimePassed(TimerHandler pTimerHandler) {
-                    int numBubbles = (int) (Math.random() * MAX_BUBBLES_PER_SPAWN);
-                    List<Pair<Float, Float>> startingBubblePositions = BubblePacker.getSpawnBubblesLocations(
-                            numBubbles,
-                            ScreenUtils.dpToPx(BubbleSize.LARGE.sizeDp, hostActivity.getActivityContext()));
-                    for (Pair<Float, Float> position : startingBubblePositions) {
-                        spawnStartingBubble(position.first, position.second);
+                    if (!isBubbleLimitReached()) {
+                        int numBubbles = (int) (Math.random() * MAX_BUBBLES_PER_SPAWN);
+                        List<Pair<Float, Float>> startingBubblePositions = BubblePacker.getSpawnBubblesLocations(
+                                numBubbles,
+                                ScreenUtils.dpToPx(BubbleSize.LARGE.sizeDp, hostActivity.getActivityContext()));
+                        for (Pair<Float, Float> position : startingBubblePositions) {
+                            spawnStartingBubble(position.first, position.second);
+                        }
                     }
                     engine.registerUpdateHandler(new TimerHandler(bubbleSpawnInterval, false, this));
                 }
@@ -120,6 +125,12 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
     public void onDestroy() {
         engine.unregisterUpdateHandler(bubbleSpawnTimerHandler);
         EventBus.get().unSubscribe(GameEvent.SPAWN_INTERVAL_CHANGED, this);
+    }
+
+    private boolean isBubbleLimitReached() {
+        final int numBubbles = scene.query(new BubblesEntityMatcher(false, true)).size();
+        Log.d("BubbleSpawnerEntity", "Num bubbles = " + numBubbles);
+        return numBubbles > MAX_BUBBLES_ON_SCREEN;
     }
 
     private void spawnStartingBubble(float x, float y) {

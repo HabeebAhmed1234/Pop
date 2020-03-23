@@ -4,6 +4,9 @@ import java.util.concurrent.TimeUnit;
 
 public class GameConstants {
 
+    // Limits
+    public static final int MAX_BUBBLES_ON_SCREEN = 35;
+
     // Difficulty
     public static final float MAX_BUBBLES_PER_SPAWN = 3;
     public static final float TIME_TO_MAX_DIFFICULTY_SECONDS = 30;//TimeUnit.MINUTES.toSeconds(5);
