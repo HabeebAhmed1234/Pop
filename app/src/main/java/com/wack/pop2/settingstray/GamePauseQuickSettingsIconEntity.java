@@ -1,5 +1,6 @@
 package com.wack.pop2.settingstray;
 
+import com.wack.pop2.GamePauser;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
@@ -17,15 +18,20 @@ public class GamePauseQuickSettingsIconEntity extends BaseQuickSettingsIconEntit
     private final ButtonUpTouchListener touchListener = new ButtonUpTouchListener() {
         @Override
         protected boolean onButtonPressed(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-            return false;
+            gamePauser.pauseGame();
+            return true;
         }
     };
 
+    private GamePauser gamePauser;
+
     public GamePauseQuickSettingsIconEntity(
+            GamePauser gamePauser,
             GameQuickSettingsHostTrayEntity quickSettingsTrayEntity,
             GameTexturesManager gameTexturesManager,
             GameResources gameResources) {
         super(quickSettingsTrayEntity, gameTexturesManager, gameResources);
+        this.gamePauser = gamePauser;
     }
 
     @Override

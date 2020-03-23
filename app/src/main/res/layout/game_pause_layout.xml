@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/rounded_border"
+        >
+
+        <com.wack.pop2.androidui.GameMenuText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/game_paused_text"
+            android:textSize="60sp"
+            android:textColor="@android:color/white"
+            android:paddingVertical="@dimen/menu_btn_padding_vertical"
+            android:paddingHorizontal="@dimen/menu_btn_padding_vertical"
+            android:gravity="center"
+            android:fontFamily="@font/neon_font"
+            android:clipToPadding="false"
+            app:glow_color="@color/menu_button_color"
+            app:glow_strength="80"
+            />
+
+        <com.wack.pop2.androidui.GameMenuButton
+            android:id="@+id/resume_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/resume_btn_text"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:fontFamily="@font/neon_font"
+            android:textSize="26sp"
+            android:paddingVertical="@dimen/menu_btn_padding_vertical"
+            android:paddingHorizontal="@dimen/menu_btn_padding_vertical"
+            app:glow_color="@color/menu_button_color"
+            app:pressed_glow_color = "@color/menu_button_pressed_color"
+            app:glow_strength="80"/>
+
+        <com.wack.pop2.androidui.GameMenuButton
+            android:id="@+id/quit_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/quit_btn_text"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:fontFamily="@font/neon_font"
+            android:textSize="26sp"
+            android:paddingVertical="@dimen/menu_btn_padding_vertical"
+            android:paddingHorizontal="@dimen/menu_btn_padding_vertical"
+            app:glow_color="@color/menu_button_color"
+            app:pressed_glow_color = "@color/menu_button_pressed_color"
+            app:glow_strength="80"/>
+    </LinearLayout>
+</FrameLayout>

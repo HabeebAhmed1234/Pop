@@ -39,7 +39,9 @@ import org.andengine.input.sensor.acceleration.AccelerationData;
 import org.andengine.input.sensor.acceleration.IAccelerationListener;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
-public class GameActivity extends SimpleBaseGameActivity implements HostActivityInterface, IAccelerationListener {
+public class GameActivity extends SimpleBaseGameActivity implements HostActivityInterface, IAccelerationListener, GamePauser {
+
+	private static final int QUIT_GAME_ACTIVITY_REQUEST_CODE = 1;
 
 	private ShakeCamera camera;
 
@@ -94,7 +96,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 		// Settings icons
 		MusicQuickSettingIconEntity musicQuickSettingIconEntity = new MusicQuickSettingIconEntity(preferencesEntity, gameQuickSettingsHostTrayEntity, gameTexturesManager, mGameResources);
-		GamePauseQuickSettingsIconEntity pauseQuickSettingsIconEntity = new GamePauseQuickSettingsIconEntity(gameQuickSettingsHostTrayEntity, gameTexturesManager, mGameResources);
+		GamePauseQuickSettingsIconEntity pauseQuickSettingsIconEntity = new GamePauseQuickSettingsIconEntity(this, gameQuickSettingsHostTrayEntity, gameTexturesManager, mGameResources);
 
 		// Create game entities
 		mLevelEntity = new LevelEntity(gameTexturesManager, mGameResources);
@@ -126,6 +128,22 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 		// Debug
 		//mDebugSandboxEntity = new DebugSandboxEntity(gameTexturesManager, gameSceneTouchListenerEntity, mGameResources);
+	}
+
+	@Override
+	public void pauseGame() {
+		startActivityForResult(GamePauseActivity.newIntent(this), QUIT_GAME_ACTIVITY_REQUEST_CODE);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == QUIT_GAME_ACTIVITY_REQUEST_CODE) {
+			if(resultCode == GamePauseActivity.RESULT_QUIT) {
+				startActivity(MainMenuActivity.newIntent(this));
+				finish();
+			}
+		}
 	}
 
 	@Override

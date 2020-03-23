@@ -6,4 +6,7 @@
     <string name="options_text">Options</string>
     <string name="quit_text">Quit</string>
     <string name="your_score_title">Your score:</string>
+    <string name="game_paused_text">Paused</string>
+    <string name="resume_btn_text">Resume</string>
+    <string name="quit_btn_text">Quit</string>
 </resources>

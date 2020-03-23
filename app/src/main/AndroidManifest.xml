@@ -20,11 +20,20 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".GameActivity"
+        <activity
+            android:name=".GameActivity"
             android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".GameOverActivity"
+        <activity
+            android:name=".GameOverActivity"
             android:screenOrientation="portrait" ></activity>
+
+        <activity
+            android:name=".GamePauseActivity"
+            android:theme="@style/Theme.Transparent"
+            android:screenOrientation="portrait" >
+
+        </activity>
 
         <activity
             android:name="com.google.ads.AdActivity"
