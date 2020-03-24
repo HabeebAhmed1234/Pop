@@ -35,7 +35,6 @@ public class LongPressGesture implements GameSceneTouchListenerEntity.SceneTouch
             new ITimerCallback() {
                 @Override
                 public void onTimePassed(TimerHandler pTimerHandler) {
-                    Log.d("LongPressGesture", "long press happened after " + LONG_PRESS_THRESHOLD_SECONDS + " seconds");
                     callback.onLongPress(lastTouchEventPosition[0], lastTouchEventPosition[1]);
                 }
             });

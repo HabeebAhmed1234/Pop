@@ -120,7 +120,7 @@ class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subs
             // play the sound for undocking a turret
             soundManager.getSound(SoundId.PUFF).play();
             // Create a turret and set it to be dragging
-            TurretEntity turretEntity = turretEntityCreator.createTurret(touchEvent.getX(), touchEvent.getY());
+            TurretEntity turretEntity = turretEntityCreator.createTurret((int) touchEvent.getX(), (int) touchEvent.getY());
             turretEntity.forceStartDragging(touchEvent.getX(), touchEvent.getY());
 
             decreaseInventory();

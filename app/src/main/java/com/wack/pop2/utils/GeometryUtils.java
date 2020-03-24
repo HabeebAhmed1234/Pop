@@ -1,10 +1,10 @@
 package com.wack.pop2.utils;
 
+import android.content.Context;
 import android.graphics.Matrix;
-import android.graphics.Rect;
 import android.graphics.RectF;
 
-import androidx.constraintlayout.solver.widgets.Rectangle;
+import androidx.core.content.ContextCompat;
 
 import com.wack.pop2.physics.util.Vec2Pool;
 
@@ -55,5 +55,34 @@ public class GeometryUtils {
         matrix.setRectToRect(new RectF(0, 0, (int) srcSprite.getWidth(), (int) srcSprite.getHeight()), dstRect, Matrix.ScaleToFit.CENTER);
         srcSprite.setWidth(dstRect.width());
         srcSprite.setHeight(dstRect.height());
+    }
+
+    public static void initSpriteDimensCenterPos(
+            Context context,
+            Sprite sprite,
+            int centerPosXDp,
+            int centerPosYDp,
+            int sizeDp) {
+        initSpriteDimensCenterPos(sprite, ScreenUtils.dpToPx(centerPosXDp, context), ScreenUtils.dpToPx(centerPosYDp, context), ScreenUtils.dpToPx(sizeDp, context));
+
+    }
+    public static void initSpriteDimensCenterPos(
+            Sprite sprite,
+            int centerPosXPx,
+            int centerPosYPx,
+            int sizePx) {
+        initSpriteDimens(sprite, centerPosXPx - sizePx / 2, centerPosYPx - sizePx / 2, sizePx, sizePx);
+    }
+
+    public static void initSpriteDimens(
+            Sprite sprite,
+            int posXPx,
+            int posYPx,
+            int widthPx,
+            int heightPx) {
+        sprite.setWidth(widthPx);
+        sprite.setHeight(heightPx);
+        sprite.setX(posXPx);
+        sprite.setY(posYPx);
     }
 }

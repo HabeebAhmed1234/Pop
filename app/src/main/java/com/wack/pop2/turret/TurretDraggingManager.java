@@ -11,6 +11,7 @@ import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
 import com.wack.pop2.statemachine.BaseStateMachine;
+import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.entity.scene.Scene;
 import org.andengine.input.touch.TouchEvent;
@@ -23,7 +24,7 @@ import static com.wack.pop2.eventbus.GameEvent.TURRET_DOCKED;
  */
 public class TurretDraggingManager extends BaseEntity implements GameSceneTouchListenerEntity.SceneTouchListener, BaseStateMachine.Listener<TurretStateMachine.State>, LongPressGesture.LongPressCallback {
 
-    private static final float DRAGGING_OFFSET_DISTANCE = 100f;
+    private static final float DRAGGING_OFFSET_DISTANCE_DP = 20;
 
     private GameIconsHostTrayEntity iconsTrayEntity;
     private GameSceneTouchListenerEntity touchListenerEntity;
@@ -128,7 +129,8 @@ public class TurretDraggingManager extends BaseEntity implements GameSceneTouchL
     }
 
     private void trackTurretToPointerOnDrag(float x, float y) {
-        hostTurretCallback.setTurretPosition(x - DRAGGING_OFFSET_DISTANCE, y - DRAGGING_OFFSET_DISTANCE);
+        int offsetPx = ScreenUtils.dpToPx(DRAGGING_OFFSET_DISTANCE_DP, hostActivity.getActivityContext());
+        hostTurretCallback.setTurretPosition(x - offsetPx, y - offsetPx);
     }
 
     /**
