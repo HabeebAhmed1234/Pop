@@ -15,7 +15,7 @@ public class GameConstants {
 
     // Unlocks
     public static final float BALL_AND_CHAIN_DIFFICULTY_UNLOCK_THRESHOLD = 0.25f;
-    public static final float TURRETS_DIFFICULTY_UNLOCK_THRESHOLD = 0.50f;
+    public static final float TURRETS_DIFFICULTY_UNLOCK_THRESHOLD = 0;
     public static final float WALLS_DIFFICULTY_UNLOCK_THRESHOLD = 0.75f;
     public static final float NUKE_UNLOCK_THRESHOLD = 1f;
 }

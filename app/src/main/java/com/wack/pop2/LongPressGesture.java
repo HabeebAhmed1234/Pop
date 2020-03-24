@@ -1,5 +1,7 @@
 package com.wack.pop2;
 
+import android.util.Log;
+
 import org.andengine.engine.Engine;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -33,6 +35,7 @@ public class LongPressGesture implements GameSceneTouchListenerEntity.SceneTouch
             new ITimerCallback() {
                 @Override
                 public void onTimePassed(TimerHandler pTimerHandler) {
+                    Log.d("LongPressGesture", "long press happened after " + LONG_PRESS_THRESHOLD_SECONDS + " seconds");
                     callback.onLongPress(lastTouchEventPosition[0], lastTouchEventPosition[1]);
                 }
             });
@@ -53,20 +56,24 @@ public class LongPressGesture implements GameSceneTouchListenerEntity.SceneTouch
             case ACTION_DOWN:
                 if (isPointerInBounds(touchEvent)) {
                     startLongPressCheck();
+                    return true;
                 }
                 break;
             case ACTION_MOVE:
                 if (!isPointerInBounds(touchEvent)) {
                     cancelLongPressCheck();
+                    return true;
                 }
-                break;
+                return isCheckingLongPress();
             case ACTION_CANCEL:
             case ACTION_OUTSIDE:
             case ACTION_UP:
-                cancelLongPressCheck();
-                break;
+                if (isCheckingLongPress()) {
+                    cancelLongPressCheck();
+                    return true;
+                }
         }
-        return true;
+        return false;
     }
 
     private boolean isPointerInBounds(TouchEvent touchEvent) {
@@ -74,10 +81,18 @@ public class LongPressGesture implements GameSceneTouchListenerEntity.SceneTouch
     }
 
     private void startLongPressCheck() {
+        cancelLongPressCheck();
+        longPressCheck.reset();
         engine.registerUpdateHandler(longPressCheck);
     }
 
     private void cancelLongPressCheck() {
-        engine.unregisterUpdateHandler(longPressCheck);
+        if (isCheckingLongPress()) {
+            engine.unregisterUpdateHandler(longPressCheck);
+        }
+    }
+
+    private boolean isCheckingLongPress() {
+        return engine.containsUpdateHandler(longPressCheck);
     }
 }
