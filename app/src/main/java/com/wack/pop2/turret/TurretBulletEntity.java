@@ -1,5 +1,7 @@
 package com.wack.pop2.turret;
 
+import androidx.annotation.Nullable;
+
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameFixtureDefs;
 import com.wack.pop2.GameResources;
@@ -18,6 +20,7 @@ import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.OnDetachedListener;
+import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.AndengineColor;
@@ -28,8 +31,6 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.joints.MouseJoint;
 import org.jbox2d.dynamics.joints.MouseJointDef;
-
-import androidx.annotation.Nullable;
 
 import static com.wack.pop2.eventbus.GameEvent.TURRET_BULLET_POPPED_BUBBLE;
 import static com.wack.pop2.utils.GeometryUtils.getAngleOfCenters;
@@ -44,6 +45,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
     private static final float BULLET_MUZZLE_FORCE_MAGNITUDE = 1000;
 
     private final GameTexturesManager texturesManager;
+    private final BulletExplosionsEntity bulletExplosionsEntity;
 
     @Nullable private Sprite targetBubble;
     private MouseJoint targetingMouseJoint;
@@ -78,11 +80,17 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
         }
     });
 
-    public TurretBulletEntity(Sprite targetBubble, HostTurretCallback hostTurretCallback, GameTexturesManager texturesManager, GameResources gameResources) {
+    public TurretBulletEntity(
+            Sprite targetBubble,
+            HostTurretCallback hostTurretCallback,
+            BulletExplosionsEntity bulletExplosionsEntity,
+            GameTexturesManager texturesManager,
+            GameResources gameResources) {
         super(gameResources);
         this.targetBubble = targetBubble;
         this.hostTurretCallback = hostTurretCallback;
         this.texturesManager = texturesManager;
+        this.bulletExplosionsEntity = bulletExplosionsEntity;
 
         targetBubble.addOnDetachedListener(targetBubbleOnDetachedListener);
         initBullet();
@@ -186,6 +194,9 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
         if (targetBubble != null) {
             targetBubble.removeOnDetachedListener(targetBubbleOnDetachedListener);
         }
+        bulletExplosionsEntity.explode(
+                bulletSprite.getX() + bulletSprite.getWidthScaled() / 2,
+                bulletSprite.getY() + bulletSprite.getHeightScaled() / 2);
         removeFromScene(bulletBody);
     }
 }

@@ -12,12 +12,19 @@ import org.andengine.entity.IEntity;
 import org.andengine.entity.sprite.Sprite;
 import org.jbox2d.common.Vec2;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 public class GeometryUtils {
 
     public static float getAngleOfCenters(Sprite s1, Sprite s2) {
         Vec2 s1C = getCenter(s1);
         Vec2 s2C = getCenter(s2);
         return getAngle(s1C.x, s1C.y, s2C.x, s2C.y);
+    }
+
+    public static float getAngle(Vec2 vec2) {
+        return getAngle(0, 0, vec2.x, vec2.y);
     }
 
     public static float getAngle(float x1, float y1, float x2, float y2) {
@@ -84,5 +91,9 @@ public class GeometryUtils {
         sprite.setHeight(heightPx);
         sprite.setX(posXPx);
         sprite.setY(posYPx);
+    }
+
+    public static Vec2 getVector(float angle, float magnitude) {
+        return Vec2Pool.obtain((float) sin(angle) * magnitude, (float) cos(angle) * magnitude);
     }
 }

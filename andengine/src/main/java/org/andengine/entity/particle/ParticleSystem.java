@@ -1,6 +1,7 @@
 package org.andengine.entity.particle;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.Entity;
@@ -170,6 +171,20 @@ public class ParticleSystem<T extends IEntity> extends Entity {
 
 	public void removeParticleInitializer(final IParticleInitializer<T> pParticleInitializer) {
 		this.mParticleInitializers.remove(pParticleInitializer);
+	}
+
+	/**
+	 * removes all particly initializers of the given type
+	 * @param type
+	 */
+	public void removeParticleInitializers(final Class type) {
+		Iterator<IParticleInitializer<T>> it = mParticleInitializers.iterator();
+		while (it.hasNext()) {
+			IParticleInitializer<T> initializer = it.next();
+			if (type.isInstance(initializer)) {
+				it.remove();
+			}
+		}
 	}
 
 	private void spawnParticles(final float pSecondsElapsed) {

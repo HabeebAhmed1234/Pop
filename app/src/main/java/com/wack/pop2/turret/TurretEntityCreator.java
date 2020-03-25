@@ -23,6 +23,7 @@ public class TurretEntityCreator extends BaseEntity {
     private static final int TURRET_CANNON_LENGTH_DP = 32;
 
     private GameResources gameResources;
+    private BulletExplosionsEntity bulletExplosionsEntity;
     private GameTexturesManager texturesManager;
     private GameSceneTouchListenerEntity gameSceneTouchListener;
     private GameIconsHostTrayEntity gameIconsTray;
@@ -30,6 +31,7 @@ public class TurretEntityCreator extends BaseEntity {
     private TurretsMutex mutex;
 
     public TurretEntityCreator(
+            BulletExplosionsEntity bulletExplosionsEntity,
             GameTexturesManager texturesManager,
             GameIconsHostTrayEntity gameIconsTray,
             GameSceneTouchListenerEntity gameSceneTouchListener,
@@ -38,6 +40,7 @@ public class TurretEntityCreator extends BaseEntity {
             GameResources gameResources) {
         super(gameResources);
         this.gameResources = gameResources;
+        this.bulletExplosionsEntity = bulletExplosionsEntity;
         this.texturesManager = texturesManager;
         this.gameSceneTouchListener = gameSceneTouchListener;
         this.gameIconsTray = gameIconsTray;
@@ -77,6 +80,6 @@ public class TurretEntityCreator extends BaseEntity {
         turretBodySprite.attachChild(turretCannonSprite);
         turretCannonSprite.setRotationCenter(0f, cannonHeightPx / 2);
 
-        return new TurretEntity(turretBodySprite, turretCannonSprite, mutex, texturesManager, gameIconsTray, gameSceneTouchListener, soundsManager, gameResources);
+        return new TurretEntity(turretBodySprite, turretCannonSprite, mutex, bulletExplosionsEntity, texturesManager, gameIconsTray, gameSceneTouchListener, soundsManager, gameResources);
     }
 }

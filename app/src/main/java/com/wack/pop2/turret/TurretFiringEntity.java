@@ -22,6 +22,7 @@ public class TurretFiringEntity extends BaseEntity {
 
     private final HostTurretCallback hostTurretCallback;
     private final TurretStateMachine stateMachine;
+    private final BulletExplosionsEntity bulletExplosionsEntity;
     private final GameTexturesManager texturesManager;
     private final GameSoundsManager soundsManager;
     private final GameResources gameResources;
@@ -31,12 +32,14 @@ public class TurretFiringEntity extends BaseEntity {
     public TurretFiringEntity(
             HostTurretCallback hostTurretCallback,
             TurretStateMachine stateMachine,
+            BulletExplosionsEntity bulletExplosionsEntity,
             GameTexturesManager texturesManager,
             GameSoundsManager soundsManager,
             GameResources gameResources) {
         super(gameResources);
         this.hostTurretCallback = hostTurretCallback;
         this.stateMachine = stateMachine;
+        this.bulletExplosionsEntity = bulletExplosionsEntity;
         this.texturesManager = texturesManager;
         this.soundsManager = soundsManager;
         this.gameResources = gameResources;
@@ -56,7 +59,7 @@ public class TurretFiringEntity extends BaseEntity {
         stateMachine.transitionState(TurretStateMachine.State.FIRING);
 
         // Fire the bullet
-        TurretBulletEntity bulletEntity = new TurretBulletEntity(target, hostTurretCallback, texturesManager, gameResources);
+        TurretBulletEntity bulletEntity = new TurretBulletEntity(target, hostTurretCallback, bulletExplosionsEntity, texturesManager, gameResources);
         // Set timer to enable us to fire again after a delay
         engine.registerUpdateHandler(
                 new TimerHandler(TURRETS_FIRING_DELAY_SECONDS,
