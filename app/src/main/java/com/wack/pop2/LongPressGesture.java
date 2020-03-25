@@ -1,7 +1,5 @@
 package com.wack.pop2;
 
-import android.util.Log;
-
 import org.andengine.engine.Engine;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -24,7 +22,7 @@ public class LongPressGesture implements GameSceneTouchListenerEntity.SceneTouch
         void onLongPress(float touchX, float touchY);
     }
 
-    private static final float LONG_PRESS_THRESHOLD_SECONDS = 1f;
+    private static final float LONG_PRESS_THRESHOLD_SECONDS = 0.6f;
 
     private final LongPressCallback callback;
     private final Engine engine;

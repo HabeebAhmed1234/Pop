@@ -23,6 +23,7 @@ import com.wack.pop2.nuke.NukeManagerEntity;
 import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.music.GameMusicResourceManagerEntity;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
+import com.wack.pop2.resources.sounds.SoundId;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.settingstray.GamePauseQuickSettingsIconEntity;
 import com.wack.pop2.settingstray.GameQuickSettingsHostTrayEntity;
@@ -41,7 +42,7 @@ import org.andengine.ui.activity.SimpleBaseGameActivity;
 
 public class GameActivity extends SimpleBaseGameActivity implements HostActivityInterface, IAccelerationListener, GamePauser {
 
-	private static final int QUIT_GAME_ACTIVITY_REQUEST_CODE = 1;
+	private static final int PAUSE_ACTIVITY_REQUEST_CODE = 1;
 
 	private ShakeCamera camera;
 
@@ -49,6 +50,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	//private DebugSandboxEntity mDebugSandboxEntity;
 
 	private GameResources mGameResources;
+	private GameSoundsManager mGameSoundsManager;
 	private LevelEntity mLevelEntity;
 	private BackgroundMusicEntity mBackgroundMusicEntity;
 	private GameDifficultyEntity mGameDifficultyEntity;
@@ -81,18 +83,19 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		// Initialize game resources
 		mGameResources = GameResources.createNew(this, this);
 
+		mGameSoundsManager = new GameSoundsManager(this, getSoundManager(), mGameResources);
+
 		// Initialize game resource managers
 		GameFontsManager gameFontsManager = new GameFontsManager(getFontManager(), getTextureManager(), getAssets(), mGameResources);
 		GamePreferencesEntity preferencesEntity = new GamePreferencesEntity(this, mGameResources);
 		GameTexturesManager gameTexturesManager = new GameTexturesManager(this, getTextureManager(), mGameResources);
-		GameSoundsManager gameSoundsManager = new GameSoundsManager(this, getSoundManager(), mGameResources);
 		GameMusicResourceManagerEntity gameMusicResourceManagerEntity = new GameMusicResourceManagerEntity(this, getMusicManager(), mGameResources);
 		GameAnimationManager gameAnimationManager = new GameAnimationManager(mGameResources);
 		GamePhysicsContactsEntity gamePhysicsContactsEntity = new GamePhysicsContactsEntity(mGameResources);
 		InteractionCounter interactionCounter = new InteractionCounter(mGameResources);
 		GameSceneTouchListenerEntity gameSceneTouchListenerEntity = new GameSceneTouchListenerEntity(interactionCounter, mGameResources);
-		GameIconsHostTrayEntity gameIconsTrayEntity = new GameIconsHostTrayEntity(gameTexturesManager, gameSoundsManager, mGameResources);
-		GameQuickSettingsHostTrayEntity gameQuickSettingsHostTrayEntity = new GameQuickSettingsHostTrayEntity(gameTexturesManager, gameSoundsManager, mGameResources);
+		GameIconsHostTrayEntity gameIconsTrayEntity = new GameIconsHostTrayEntity(gameTexturesManager, mGameSoundsManager, mGameResources);
+		GameQuickSettingsHostTrayEntity gameQuickSettingsHostTrayEntity = new GameQuickSettingsHostTrayEntity(gameTexturesManager, mGameSoundsManager, mGameResources);
 
 		// Settings icons
 		MusicQuickSettingIconEntity musicQuickSettingIconEntity = new MusicQuickSettingIconEntity(preferencesEntity, gameQuickSettingsHostTrayEntity, gameTexturesManager, mGameResources);
@@ -110,21 +113,21 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 				this,
 				mScoreHudEntity,
 				gameTexturesManager,
-				gameSoundsManager,
+				mGameSoundsManager,
 				gameAnimationManager,
 				camera,
 				mGameResources);
-		mBubblesLifecycleManagerEntity = new BubblesLifecycleManagerEntity(gameSoundsManager, mGameResources);
+		mBubblesLifecycleManagerEntity = new BubblesLifecycleManagerEntity(mGameSoundsManager, mGameResources);
 		mTouchPopperFactoryEntity = new TouchPopperFactoryEntity(mGameResources);
 		mBubbleSpawnerEntity = new BubbleSpawnerEntity(mTouchPopperFactoryEntity, gameTexturesManager, mGameResources);
-		mBubblePopperEntity = new BubblePopperEntity(gameFontsManager, gameSoundsManager, gameAnimationManager, mBubbleSpawnerEntity, mGameResources);
+		mBubblePopperEntity = new BubblePopperEntity(gameFontsManager, mGameSoundsManager, gameAnimationManager, mBubbleSpawnerEntity, mGameResources);
 		mBubbleLossDetectorEntity = new BubbleLossDetectorEntity(gameFontsManager, gameAnimationManager, gamePhysicsContactsEntity, mGameResources);
 		mBubbleCleanerEntity = new BubbleCleanerEntity(mGameResources);
 		mBufferedBubblePopperEntity = new BufferedBubblePopperEntity(mBubblePopperEntity, mGameResources);
 		mBallAndChainManagerEntity = new BallAndChainManagerEntity(gameTexturesManager, gameSceneTouchListenerEntity, gameIconsTrayEntity, gamePhysicsContactsEntity, mBubblePopperEntity, mGameResources);
-		mTurrentsManagerEntity = new TurretsManagerEntity(mBubblePopperEntity, gameTexturesManager, gameIconsTrayEntity, gamePhysicsContactsEntity, gameFontsManager,  gameSceneTouchListenerEntity, gameTexturesManager, gameSoundsManager, mGameResources);
-		mWallsManagerEntity = new WallsManagerEntity(gameIconsTrayEntity, gameSceneTouchListenerEntity, gameSoundsManager, gameTexturesManager, gameFontsManager, mGameResources);
-		mNukeManagerEntityEntity = new NukeManagerEntity(mBufferedBubblePopperEntity, gameSoundsManager, gameIconsTrayEntity, gameTexturesManager, mGameResources);
+		mTurrentsManagerEntity = new TurretsManagerEntity(mBubblePopperEntity, gameTexturesManager, gameIconsTrayEntity, gamePhysicsContactsEntity, gameFontsManager,  gameSceneTouchListenerEntity, gameTexturesManager, mGameSoundsManager, mGameResources);
+		mWallsManagerEntity = new WallsManagerEntity(gameIconsTrayEntity, gameSceneTouchListenerEntity, mGameSoundsManager, gameTexturesManager, gameFontsManager, mGameResources);
+		mNukeManagerEntityEntity = new NukeManagerEntity(mBufferedBubblePopperEntity, mGameSoundsManager, gameIconsTrayEntity, gameTexturesManager, mGameResources);
 
 		// Debug
 		//mDebugSandboxEntity = new DebugSandboxEntity(gameTexturesManager, gameSceneTouchListenerEntity, mGameResources);
@@ -132,13 +135,15 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 	@Override
 	public void pauseGame() {
-		startActivityForResult(GamePauseActivity.newIntent(this), QUIT_GAME_ACTIVITY_REQUEST_CODE);
+		mGameSoundsManager.getSound(SoundId.PAUSE).play();
+		startActivityForResult(GamePauseActivity.newIntent(this), PAUSE_ACTIVITY_REQUEST_CODE);
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == QUIT_GAME_ACTIVITY_REQUEST_CODE) {
+		if (requestCode == PAUSE_ACTIVITY_REQUEST_CODE) {
+			mGameSoundsManager.getSound(SoundId.UNPAUSE).play();
 			if(resultCode == GamePauseActivity.RESULT_QUIT) {
 				startActivity(MainMenuActivity.newIntent(this));
 				finish();
