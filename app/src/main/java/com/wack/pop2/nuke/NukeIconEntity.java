@@ -8,6 +8,8 @@ import com.wack.pop2.icons.BaseIconEntity;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.statemachine.BaseStateMachine;
+import com.wack.pop2.tooltips.GameTooltipsEntity;
+import com.wack.pop2.tooltips.TooltipId;
 import com.wack.pop2.touchlisteners.ButtonUpTouchListener;
 
 import org.andengine.entity.scene.IOnAreaTouchListener;
@@ -38,9 +40,10 @@ public class NukeIconEntity extends BaseIconEntity implements BaseStateMachine.L
             NukeStateMachine nukeStateMachine,
             NukerEntity nukerEntity,
             GameIconsHostTrayEntity gameIconsTrayEntity,
+            GameTooltipsEntity gameTooltips,
             GameTexturesManager gameTexturesManager,
             GameResources gameResources) {
-        super(gameIconsTrayEntity, gameTexturesManager, gameResources);
+        super(gameIconsTrayEntity, gameTooltips, gameTexturesManager, gameResources);
         this.nukeStateMachine = nukeStateMachine;
         this.nukerEntity = nukerEntity;
     }
@@ -108,5 +111,10 @@ public class NukeIconEntity extends BaseIconEntity implements BaseStateMachine.L
     @Override
     protected IOnAreaTouchListener getTouchListener() {
         return touchListener;
+    }
+
+    @Override
+    protected TooltipId getIconTooltipId() {
+        return TooltipId.NUKE_ICON_TOOLTIP;
     }
 }

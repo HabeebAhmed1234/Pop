@@ -18,7 +18,7 @@ public class GamePauseQuickSettingsIconEntity extends BaseQuickSettingsIconEntit
     private final ButtonUpTouchListener touchListener = new ButtonUpTouchListener() {
         @Override
         protected boolean onButtonPressed(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-            gamePauser.pauseGame();
+            gamePauser.pauseGameWithPauseScreen();
             return true;
         }
     };

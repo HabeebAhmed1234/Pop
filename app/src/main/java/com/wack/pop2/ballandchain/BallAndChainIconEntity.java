@@ -5,6 +5,8 @@ import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.icons.BaseIconEntity;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
+import com.wack.pop2.tooltips.GameTooltipsEntity;
+import com.wack.pop2.tooltips.TooltipId;
 
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
@@ -35,9 +37,10 @@ class BallAndChainIconEntity extends BaseIconEntity implements BallAndChainState
     public BallAndChainIconEntity(
             BallAndChainStateMachine stateMachine,
             GameIconsHostTrayEntity gameIconsTrayEntity,
+            GameTooltipsEntity gameTooltips,
             GameTexturesManager gameTexturesManager,
             GameResources gameResources) {
-        super(gameIconsTrayEntity, gameTexturesManager, gameResources);
+        super(gameIconsTrayEntity, gameTooltips, gameTexturesManager, gameResources);
         this.stateMachine = stateMachine;
     }
 
@@ -81,6 +84,11 @@ class BallAndChainIconEntity extends BaseIconEntity implements BallAndChainState
     @Override
     protected IOnAreaTouchListener getTouchListener() {
         return touchListener;
+    }
+
+    @Override
+    protected TooltipId getIconTooltipId() {
+        return TooltipId.BALL_AND_CHAIN_ICON_TOOLTIP;
     }
 
     @Override

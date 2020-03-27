@@ -1,7 +1,5 @@
 package com.wack.pop2.icons;
 
-import android.util.Log;
-
 import androidx.annotation.Nullable;
 
 import com.wack.pop2.BaseEntity;
@@ -13,11 +11,15 @@ import com.wack.pop2.eventbus.GameProgressEventPayload;
 import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
+import com.wack.pop2.tooltips.GameTooltipsEntity;
+import com.wack.pop2.tooltips.TooltipId;
+import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.util.adt.transformation.Transformation;
 import org.andengine.util.color.AndengineColor;
 
 /**
@@ -32,18 +34,23 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
         }
     };
 
+    private static final int TOOLTIP_LEFT_PADDING_DP = 8;
+
     private Sprite iconSprite;
     private boolean isUnlocked;
 
     private GameIconsHostTrayEntity gameIconsTrayEntity;
     private GameTexturesManager gameTexturesManager;
+    private GameTooltipsEntity tooltipsEntity;
 
     public BaseIconEntity(
             GameIconsHostTrayEntity gameIconsTrayEntity,
+            GameTooltipsEntity tooltipsEntity,
             GameTexturesManager gameTexturesManager,
             GameResources gameResources) {
         super(gameResources);
         this.gameIconsTrayEntity = gameIconsTrayEntity;
+        this.tooltipsEntity = tooltipsEntity;
         this.gameTexturesManager = gameTexturesManager;
     }
 
@@ -84,7 +91,18 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
             setIconColor(getUnlockedColor());
             addIconToTray();
             onIconUnlocked();
+            float[] tooltipAnchor = getIconTooltipAnchor();
+            tooltipsEntity.maybeShowTooltip(getIconTooltipId(), tooltipAnchor[0], tooltipAnchor[1]);
         }
+    }
+
+    private float[] getIconTooltipAnchor() {
+        float[] anchor = new float[2];
+        Transformation transformation = iconSprite.getLocalToSceneTransformation();
+        anchor[0] = iconSprite.getX() - ScreenUtils.dpToPx(TOOLTIP_LEFT_PADDING_DP, hostActivity.getActivityContext());
+        anchor[1] = iconSprite.getY() + iconSprite.getHeightScaled() / 2;
+        transformation.transform(anchor);
+        return anchor;
     }
 
     protected void addIconToTray() {
@@ -116,4 +134,6 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
 
     @Nullable
     protected abstract IOnAreaTouchListener getTouchListener();
+
+    protected abstract TooltipId getIconTooltipId();
 }

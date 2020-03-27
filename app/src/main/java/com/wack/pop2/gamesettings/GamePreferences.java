@@ -11,7 +11,7 @@ import com.wack.pop2.eventbus.GameSettingChangedEventPayload;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class GamePreferencesEntity extends BaseEntity{
+public class GamePreferences {
 
     private interface Mutation {
         void mutate(SharedPreferences.Editor editor);
@@ -21,8 +21,7 @@ public class GamePreferencesEntity extends BaseEntity{
 
     private final Context context;
 
-    public GamePreferencesEntity(Context context, GameResources gameResources) {
-        super(gameResources);
+    public GamePreferences(Context context) {
         this.context =context;
     }
 
@@ -37,7 +36,7 @@ public class GamePreferencesEntity extends BaseEntity{
     }
 
     public boolean getBoolean(final String key) {
-        return getSharedPreferences().getBoolean(key, true);
+        return getSharedPreferences().getBoolean(key, false);
     }
 
     private void runMutation(Mutation mutation) {

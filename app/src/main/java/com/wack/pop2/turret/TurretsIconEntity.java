@@ -12,6 +12,8 @@ import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
+import com.wack.pop2.tooltips.GameTooltipsEntity;
+import com.wack.pop2.tooltips.TooltipId;
 
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.Scene;
@@ -46,12 +48,13 @@ class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subs
             GameFontsManager gameFontsManager,
             GameSceneTouchListenerEntity touchListenerEntity,
             GameSoundsManager soundManager,
+            GameTooltipsEntity gameTooltips,
             GameTexturesManager gameTexturesManager,
             GameIconsHostTrayEntity gameIconsTrayEntity,
             TurretEntityCreator turretEntityCreator,
             TurretsMutex mutex,
             GameResources gameResources) {
-        super(gameFontsManager, gameIconsTrayEntity, gameTexturesManager, gameResources);
+        super(gameFontsManager, gameIconsTrayEntity, gameTooltips, gameTexturesManager, gameResources);
         this.touchListenerEntity = touchListenerEntity;
         this.soundManager = soundManager;
         this.turretEntityCreator = turretEntityCreator;
@@ -174,5 +177,10 @@ class TurretsIconEntity extends BaseInventoryIconEntity implements EventBus.Subs
     protected IOnAreaTouchListener getTouchListener() {
         /** NOOP **/
         return null;
+    }
+
+    @Override
+    protected TooltipId getIconTooltipId() {
+        return TooltipId.TURRET_ICON_TOOLTIP;
     }
 }

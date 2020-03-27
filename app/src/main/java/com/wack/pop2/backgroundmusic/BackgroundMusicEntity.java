@@ -6,7 +6,7 @@ import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.eventbus.GameSettingChangedEventPayload;
-import com.wack.pop2.gamesettings.GamePreferencesEntity;
+import com.wack.pop2.gamesettings.GamePreferences;
 import com.wack.pop2.gamesettings.Setting;
 import com.wack.pop2.resources.music.GameMusicResourceManagerEntity;
 import com.wack.pop2.resources.music.MusicId;
@@ -16,11 +16,11 @@ import org.andengine.audio.music.Music;
 public class BackgroundMusicEntity extends BaseEntity implements EventBus.Subscriber {
 
     private final GameMusicResourceManagerEntity musicManager;
-    private final GamePreferencesEntity preferencesEntity;
+    private final GamePreferences preferencesEntity;
 
     private Music currentMusic;
 
-    public BackgroundMusicEntity(GameMusicResourceManagerEntity musicManager, GamePreferencesEntity preferencesEntity, GameResources gameResources) {
+    public BackgroundMusicEntity(GameMusicResourceManagerEntity musicManager, GamePreferences preferencesEntity, GameResources gameResources) {
         super(gameResources);
         this.musicManager = musicManager;
         this.preferencesEntity = preferencesEntity;
@@ -66,7 +66,7 @@ public class BackgroundMusicEntity extends BaseEntity implements EventBus.Subscr
     }
 
     private void playMusic(MusicId soundId) {
-        if (!preferencesEntity.getBoolean(Setting.IS_MUSIC_ENABLED_SETTING_BOOLEAN)) {
+        if (preferencesEntity.getBoolean(Setting.IS_MUSIC_DISABLED_SETTING_BOOLEAN)) {
             return;
         }
         stopCurrentMusic();
@@ -96,8 +96,8 @@ public class BackgroundMusicEntity extends BaseEntity implements EventBus.Subscr
 
     private void onSettingChanged(GameSettingChangedEventPayload payload) {
         String key = payload.settingKey;
-        if (key.equals(Setting.IS_MUSIC_ENABLED_SETTING_BOOLEAN)) {
-            boolean isMusicEnabled = preferencesEntity.getBoolean(payload.settingKey);
+        if (key.equals(Setting.IS_MUSIC_DISABLED_SETTING_BOOLEAN)) {
+            boolean isMusicEnabled = !preferencesEntity.getBoolean(payload.settingKey);
             if (isMusicEnabled) {
                 resume();
             } else {

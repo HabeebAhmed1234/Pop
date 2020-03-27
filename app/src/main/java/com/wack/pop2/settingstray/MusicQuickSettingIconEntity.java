@@ -5,7 +5,7 @@ import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.eventbus.GameSettingChangedEventPayload;
-import com.wack.pop2.gamesettings.GamePreferencesEntity;
+import com.wack.pop2.gamesettings.GamePreferences;
 import com.wack.pop2.gamesettings.Setting;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
@@ -28,10 +28,10 @@ public class MusicQuickSettingIconEntity extends BaseQuickSettingsIconEntity imp
         }
     };
 
-    GamePreferencesEntity preferencesEntity;
+    GamePreferences preferencesEntity;
 
     public MusicQuickSettingIconEntity(
-            GamePreferencesEntity preferencesEntity,
+            GamePreferences preferencesEntity,
             GameQuickSettingsHostTrayEntity quickSettingsTrayEntity,
             GameTexturesManager gameTexturesManager,
             GameResources gameResources) {
@@ -55,7 +55,7 @@ public class MusicQuickSettingIconEntity extends BaseQuickSettingsIconEntity imp
     public void onEvent(GameEvent event, EventPayload payload) {
         if (event == SETTING_CHANGED) {
             GameSettingChangedEventPayload settingChangedPayload = (GameSettingChangedEventPayload) payload;
-            if (settingChangedPayload.settingKey.equals(Setting.IS_MUSIC_ENABLED_SETTING_BOOLEAN)) {
+            if (settingChangedPayload.settingKey.equals(Setting.IS_MUSIC_DISABLED_SETTING_BOOLEAN)) {
                 setIconColor(getSettingIconColor());
             }
         }
@@ -82,10 +82,10 @@ public class MusicQuickSettingIconEntity extends BaseQuickSettingsIconEntity imp
     }
 
     private void toggleMusicSetting() {
-        preferencesEntity.set(Setting.IS_MUSIC_ENABLED_SETTING_BOOLEAN, !preferencesEntity.getBoolean(Setting.IS_MUSIC_ENABLED_SETTING_BOOLEAN));
+        preferencesEntity.set(Setting.IS_MUSIC_DISABLED_SETTING_BOOLEAN, !preferencesEntity.getBoolean(Setting.IS_MUSIC_DISABLED_SETTING_BOOLEAN));
     }
 
     private AndengineColor getSettingIconColor() {
-        return preferencesEntity.getBoolean(Setting.IS_MUSIC_ENABLED_SETTING_BOOLEAN) ? AndengineColor.GREEN : AndengineColor.RED;
+        return preferencesEntity.getBoolean(Setting.IS_MUSIC_DISABLED_SETTING_BOOLEAN) ? AndengineColor.RED : AndengineColor.GREEN;
     }
 }

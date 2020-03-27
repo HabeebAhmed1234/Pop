@@ -7,4 +7,5 @@ public enum FontId {
     TURRET_ICON_FONT,
     COUNT_DOWN_FONT,
     NEON_FONT,
+    TOOLTIP_TEXT_FONT,
 }

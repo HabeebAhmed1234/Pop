@@ -7,6 +7,7 @@ import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.resources.textures.GameTexturesManager;
+import com.wack.pop2.tooltips.GameTooltipsEntity;
 
 /**
  * Manages the ball and chain tool that
@@ -27,6 +28,7 @@ public class BallAndChainManagerEntity extends BaseEntity {
     private BallAndChain ballAndChain;
 
     public BallAndChainManagerEntity(
+            GameTooltipsEntity gameTooltips,
             GameTexturesManager texturesManager,
             GameSceneTouchListenerEntity gameSceneTouchListenerEntity,
             GameIconsHostTrayEntity gameIconsTrayEntity,
@@ -37,7 +39,7 @@ public class BallAndChainManagerEntity extends BaseEntity {
         this.ballAndChainCreatorEntity = new BallAndChainCreatorEntity(texturesManager, gameResources);
         this.ballAndChainCollisionManagerEntity = new BallAndChainCollisionManagerEntity(ballAndChainStateMachine, bubblePopperEntity, gamePhysicsContactsEntity, gameResources);
         this.ballAndChainHandleEntity = new BallAndChainHandleEntity(ballAndChainStateMachine, gameSceneTouchListenerEntity, gameResources);
-        this.ballAndChainIconEntity = new BallAndChainIconEntity(ballAndChainStateMachine, gameIconsTrayEntity, texturesManager, gameResources);
+        this.ballAndChainIconEntity = new BallAndChainIconEntity(ballAndChainStateMachine, gameIconsTrayEntity, gameTooltips, texturesManager, gameResources);
         this.ballAndChainDurabilityEntity = new BallAndChainDurabilityEntity(ballAndChainStateMachine, gameResources);
         this.ballAndChainColorEntity = new BallAndChainColorEntity(ballAndChainStateMachine, gameResources);
     }

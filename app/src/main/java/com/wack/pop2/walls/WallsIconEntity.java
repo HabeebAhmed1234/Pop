@@ -14,6 +14,8 @@ import com.wack.pop2.resources.sounds.SoundId;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.statemachine.BaseStateMachine;
+import com.wack.pop2.tooltips.GameTooltipsEntity;
+import com.wack.pop2.tooltips.TooltipId;
 import com.wack.pop2.touchlisteners.ButtonUpTouchListener;
 
 import org.andengine.entity.scene.IOnAreaTouchListener;
@@ -47,10 +49,11 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStat
             WallsStateMachine stateMachine,
             GameIconsHostTrayEntity gameIconsTrayEntity,
             GameSoundsManager gameSoundsManager,
+            GameTooltipsEntity gameTooltips,
             GameTexturesManager gameTexturesManager,
             GameFontsManager fontsManager,
             GameResources gameResources) {
-        super(fontsManager, gameIconsTrayEntity, gameTexturesManager, gameResources);
+        super(fontsManager, gameIconsTrayEntity, gameTooltips, gameTexturesManager, gameResources);
         this.stateMachine = stateMachine;
         this.gameSoundsManager = gameSoundsManager;
     }
@@ -146,6 +149,11 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStat
     @Override
     protected IOnAreaTouchListener getTouchListener() {
         return touchListener;
+    }
+
+    @Override
+    protected TooltipId getIconTooltipId() {
+        return TooltipId.WALLS_ICON_TOOLTIP;
     }
 
     private void toggleOn() {

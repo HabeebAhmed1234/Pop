@@ -5,6 +5,7 @@ import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.resources.fonts.FontId;
 import com.wack.pop2.resources.fonts.GameFontsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
+import com.wack.pop2.tooltips.GameTooltipsEntity;
 
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
@@ -28,9 +29,10 @@ public abstract class BaseInventoryIconEntity extends BaseIconEntity {
     public BaseInventoryIconEntity(
             GameFontsManager fontsManager,
             GameIconsHostTrayEntity gameIconsTrayEntity,
+            GameTooltipsEntity gameTooltips,
             GameTexturesManager gameTexturesManager,
             GameResources gameResources) {
-        super(gameIconsTrayEntity, gameTexturesManager, gameResources);
+        super(gameIconsTrayEntity, gameTooltips, gameTexturesManager, gameResources);
         this.fontsManager = fontsManager;
     }
 

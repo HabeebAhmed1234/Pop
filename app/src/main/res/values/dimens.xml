@@ -4,4 +4,9 @@
     <dimen name="between_btn_padding">16dp</dimen>
     <dimen name="title_margin_bottom">40dp</dimen>
     <dimen name="menu_btn_padding_vertical">12dp</dimen>
+
+    <dimen name="ttlm_default_padding">20dp</dimen>
+    <dimen name="ttlm_default_corner_radius">6dp</dimen>
+    <dimen name="ttlm_default_stroke_weight">4dp</dimen>
+    <dimen name="ttlm_default_elevation">2dp</dimen>
 </resources>

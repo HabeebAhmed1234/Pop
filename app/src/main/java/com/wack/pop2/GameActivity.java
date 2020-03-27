@@ -13,7 +13,7 @@ import com.wack.pop2.bubblespawn.BubbleSpawnerEntity;
 import com.wack.pop2.bubbletimeout.BubblesLifecycleManagerEntity;
 import com.wack.pop2.difficulty.GameDifficultyEntity;
 import com.wack.pop2.eventbus.EventBus;
-import com.wack.pop2.gamesettings.GamePreferencesEntity;
+import com.wack.pop2.gamesettings.GamePreferences;
 import com.wack.pop2.hudentities.InteractionScoreHudEntity;
 import com.wack.pop2.hudentities.ScoreHudEntity;
 import com.wack.pop2.hudentities.TimerHudEntity;
@@ -28,6 +28,7 @@ import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.settingstray.GamePauseQuickSettingsIconEntity;
 import com.wack.pop2.settingstray.GameQuickSettingsHostTrayEntity;
 import com.wack.pop2.settingstray.MusicQuickSettingIconEntity;
+import com.wack.pop2.tooltips.GameTooltipsEntity;
 import com.wack.pop2.turret.TurretsManagerEntity;
 import com.wack.pop2.utils.ScreenUtils;
 import com.wack.pop2.walls.WallsManagerEntity;
@@ -87,7 +88,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 		// Initialize game resource managers
 		GameFontsManager gameFontsManager = new GameFontsManager(getFontManager(), getTextureManager(), getAssets(), mGameResources);
-		GamePreferencesEntity preferencesEntity = new GamePreferencesEntity(this, mGameResources);
+		GamePreferences preferencesEntity = new GamePreferences(this);
 		GameTexturesManager gameTexturesManager = new GameTexturesManager(this, getTextureManager(), mGameResources);
 		GameMusicResourceManagerEntity gameMusicResourceManagerEntity = new GameMusicResourceManagerEntity(this, getMusicManager(), mGameResources);
 		GameAnimationManager gameAnimationManager = new GameAnimationManager(mGameResources);
@@ -96,6 +97,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		GameSceneTouchListenerEntity gameSceneTouchListenerEntity = new GameSceneTouchListenerEntity(interactionCounter, mGameResources);
 		GameIconsHostTrayEntity gameIconsTrayEntity = new GameIconsHostTrayEntity(gameTexturesManager, mGameSoundsManager, mGameResources);
 		GameQuickSettingsHostTrayEntity gameQuickSettingsHostTrayEntity = new GameQuickSettingsHostTrayEntity(gameTexturesManager, mGameSoundsManager, mGameResources);
+		GameTooltipsEntity tooltipsEntity = new GameTooltipsEntity(preferencesEntity, mGameResources);
 
 		// Settings icons
 		MusicQuickSettingIconEntity musicQuickSettingIconEntity = new MusicQuickSettingIconEntity(preferencesEntity, gameQuickSettingsHostTrayEntity, gameTexturesManager, mGameResources);
@@ -124,17 +126,17 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		mBubbleLossDetectorEntity = new BubbleLossDetectorEntity(gameFontsManager, gameAnimationManager, gamePhysicsContactsEntity, mGameResources);
 		mBubbleCleanerEntity = new BubbleCleanerEntity(mGameResources);
 		mBufferedBubblePopperEntity = new BufferedBubblePopperEntity(mBubblePopperEntity, mGameResources);
-		mBallAndChainManagerEntity = new BallAndChainManagerEntity(gameTexturesManager, gameSceneTouchListenerEntity, gameIconsTrayEntity, gamePhysicsContactsEntity, mBubblePopperEntity, mGameResources);
-		mTurrentsManagerEntity = new TurretsManagerEntity(mBubblePopperEntity, gameTexturesManager, gameIconsTrayEntity, gamePhysicsContactsEntity, gameFontsManager,  gameSceneTouchListenerEntity, gameTexturesManager, mGameSoundsManager, mGameResources);
-		mWallsManagerEntity = new WallsManagerEntity(gameIconsTrayEntity, gameSceneTouchListenerEntity, mGameSoundsManager, gameTexturesManager, gameFontsManager, mGameResources);
-		mNukeManagerEntityEntity = new NukeManagerEntity(mBufferedBubblePopperEntity, mGameSoundsManager, gameIconsTrayEntity, gameTexturesManager, mGameResources);
+		mBallAndChainManagerEntity = new BallAndChainManagerEntity(tooltipsEntity, gameTexturesManager, gameSceneTouchListenerEntity, gameIconsTrayEntity, gamePhysicsContactsEntity, mBubblePopperEntity, mGameResources);
+		mTurrentsManagerEntity = new TurretsManagerEntity(mBubblePopperEntity, tooltipsEntity, gameTexturesManager, gameIconsTrayEntity, gamePhysicsContactsEntity, gameFontsManager,  gameSceneTouchListenerEntity, gameTexturesManager, mGameSoundsManager, mGameResources);
+		mWallsManagerEntity = new WallsManagerEntity(gameIconsTrayEntity, gameSceneTouchListenerEntity, mGameSoundsManager, tooltipsEntity, gameTexturesManager, gameFontsManager, mGameResources);
+		mNukeManagerEntityEntity = new NukeManagerEntity(mBufferedBubblePopperEntity, mGameSoundsManager, gameIconsTrayEntity, tooltipsEntity, gameTexturesManager, mGameResources);
 
 		// Debug
 		//mDebugSandboxEntity = new DebugSandboxEntity(gameTexturesManager, gameSceneTouchListenerEntity, mGameResources);
 	}
 
 	@Override
-	public void pauseGame() {
+	public void pauseGameWithPauseScreen() {
 		mGameSoundsManager.getSound(SoundId.PAUSE).play();
 		startActivityForResult(GamePauseActivity.newIntent(this), PAUSE_ACTIVITY_REQUEST_CODE);
 	}
