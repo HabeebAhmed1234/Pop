@@ -80,8 +80,10 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
                 onGameProgressChanged(progressEventPayload.percentProgress);
                 break;
             case GAME_ICONS_TRAY_OPENED:
-                float[] tooltipAnchor = getIconTooltipAnchor();
-                tooltipsEntity.maybeShowTooltip(getIconTooltipId(), tooltipAnchor[0], tooltipAnchor[1]);
+                if (isUnlocked()) {
+                    float[] tooltipAnchor = getIconTooltipAnchor();
+                    tooltipsEntity.maybeShowTooltip(getIconTooltipId(), tooltipAnchor[0], tooltipAnchor[1]);
+                }
                 break;
         }
     }
@@ -107,8 +109,8 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
     private float[] getIconTooltipAnchor() {
         float[] anchor = new float[2];
         Transformation transformation = iconSprite.getLocalToSceneTransformation();
-        anchor[0] = iconSprite.getX() - ScreenUtils.dpToPx(TOOLTIP_LEFT_PADDING_DP, hostActivity.getActivityContext());
-        anchor[1] = iconSprite.getY() + iconSprite.getHeightScaled() / 2;
+        anchor[0] = - ScreenUtils.dpToPx(TOOLTIP_LEFT_PADDING_DP, hostActivity.getActivityContext());
+        anchor[1] = iconSprite.getHeightScaled() / 2;
         transformation.transform(anchor);
         return anchor;
     }

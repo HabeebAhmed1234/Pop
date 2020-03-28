@@ -16,15 +16,15 @@ class TooltipPreferences {
 
     public void clearDebug() {
         for (TooltipId tooltipId : TooltipId.values()) {
+            cache.clear();
             preferencesEntity.set(tooltipId.toString(), false);
         }
     }
 
     public boolean shouldShowTooltip(TooltipId id) {
-        if (cache.containsKey(id)) {
-            return !cache.get(id);
+        if (!cache.containsKey(id)) {
+            cache.put(id, preferencesEntity.getBoolean(id.toString()));
         }
-        cache.put(id, preferencesEntity.getBoolean(id.toString()));
         return !cache.get(id);
     }
 

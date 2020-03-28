@@ -52,7 +52,7 @@
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textColorLink">?android:attr/textColorPrimaryInverse</item>
-        <item name="android:gravity">start|top</item>
+        <item name="android:gravity">center</item>
         <item name="android:elevation" tools:ignore="NewApi">@dimen/ttlm_default_elevation</item>
         <item name="android:translationZ" tools:ignore="NewApi">@dimen/ttlm_default_elevation</item>
     </style>

@@ -1,17 +1,13 @@
 package com.wack.pop2.tooltips;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
@@ -39,6 +35,7 @@ public class GameTooltipActivity extends Activity {
         Intent intent = new Intent(context, GameTooltipActivity.class);
         intent.putExtra(EXTRA_TEXT, text);
         intent.putExtra(EXTRA_IS_ANCHORED, true);
+        Log.d("asdasd", "showing tooltip with anchor at " + x + ", "+y);
         intent.putExtra(EXTRA_ANCHOR_X, x);
         intent.putExtra(EXTRA_ANCHOR_Y, y);
         return intent;
@@ -59,9 +56,13 @@ public class GameTooltipActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_tooltip_activity);
 
+        showTooltip(getIntent());
+    }
+
+    private void showTooltip(Intent intent) {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(10, 10);
 
-        Bundle extras = getIntent().getExtras();
+        Bundle extras = intent.getExtras();
         if (extras.getBoolean(EXTRA_IS_ANCHORED)) {
             params.leftMargin = extras.getInt(EXTRA_ANCHOR_X);
             params.topMargin = extras.getInt(EXTRA_ANCHOR_Y);
@@ -81,7 +82,7 @@ public class GameTooltipActivity extends Activity {
                 .typeface(ResourcesCompat.getFont(this, R.font.neon))
                 .maxWidth((int)(getResources().getDisplayMetrics().widthPixels * 0.8f))
                 .arrow(true)
-                .closePolicy(new ClosePolicy.Builder().inside(true).outside(true).consume(true).build())
+                .closePolicy(new ClosePolicy.Builder().inside(true).outside(false).consume(true).build())
                 .showDuration(SHOW_DURATION)
                 .overlay(true)
                 .create();
