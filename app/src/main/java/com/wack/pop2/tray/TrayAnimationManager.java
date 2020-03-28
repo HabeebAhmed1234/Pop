@@ -1,5 +1,9 @@
 package com.wack.pop2.tray;
 
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.SettableFuture;
+
+import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.util.modifier.IModifier;
@@ -8,6 +12,7 @@ class TrayAnimationManager {
 
     private TrayStateMachine stateMachine;
     private HostTrayCallback hostTrayCallback;
+    private SettableFuture currentAnimationFuture;
     private IEntityModifier currentAnimation;
     private final float openCloseAnimatinoDuration;
 
@@ -19,10 +24,10 @@ class TrayAnimationManager {
         this.openCloseAnimatinoDuration = openCloseAnimationDuration;
     }
 
-    public void openTray() {
+    public ListenableFuture openTray() {
         stopCurrentAnimation();
         stateMachine.transitionState(TrayStateMachine.State.EXPANDING);
-        startAnimation(getOpenTrayEntityModifier(), new IModifier.IModifierListener() {
+        return startAnimation(getOpenTrayEntityModifier(), new IModifier.IModifierListener() {
 
             @Override
             public void onModifierStarted(IModifier pModifier, Object pItem) {}
@@ -34,10 +39,10 @@ class TrayAnimationManager {
         });
     }
 
-    public void closeTray() {
+    public ListenableFuture closeTray() {
         stopCurrentAnimation();
         stateMachine.transitionState(TrayStateMachine.State.CLOSING);
-        startAnimation(getCloseTrayEntityModifier(), new IModifier.IModifierListener() {
+        return startAnimation(getCloseTrayEntityModifier(), new IModifier.IModifierListener() {
 
             @Override
             public void onModifierStarted(IModifier pModifier, Object pItem) {}
@@ -49,10 +54,26 @@ class TrayAnimationManager {
         });
     }
 
-    private void startAnimation(IEntityModifier entityModifier, IModifier.IModifierListener listener) {
+    private ListenableFuture startAnimation(IEntityModifier entityModifier, final IModifier.IModifierListener listener) {
         currentAnimation = entityModifier;
+        if (currentAnimationFuture != null) {
+            currentAnimationFuture.cancel(true);
+        }
+        currentAnimationFuture = SettableFuture.create();
         hostTrayCallback.getTrayIconsHolderRectangle().registerEntityModifier(currentAnimation);
-        currentAnimation.addModifierListener(listener);
+        currentAnimation.addModifierListener(new IModifier.IModifierListener<IEntity>() {
+            @Override
+            public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
+                listener.onModifierStarted(pModifier, pItem);
+            }
+
+            @Override
+            public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+                listener.onModifierFinished(pModifier, pItem);
+                currentAnimationFuture.set(null);
+            }
+        });
+        return currentAnimationFuture;
     }
 
     private void stopCurrentAnimation() {

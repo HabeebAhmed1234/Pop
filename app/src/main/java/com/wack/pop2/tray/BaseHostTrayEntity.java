@@ -3,7 +3,10 @@ package com.wack.pop2.tray;
 import android.content.Context;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.eventbus.EventBus;
@@ -16,6 +19,9 @@ import com.wack.pop2.utils.ScreenUtils;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.sprite.Sprite;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+
+import java.util.concurrent.Executor;
 
 public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implements HostTrayCallback {
 
@@ -70,8 +76,8 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
     protected abstract BaseTrayIconsHolderEntity getTrayIconsHolderEntity(GameResources gameResources);
     protected abstract SoundId getOpenSound();
     protected abstract SoundId getCloseSound();
-    protected abstract GameEvent getTrayOpenEvent();
-    protected abstract GameEvent getTrayCloseEvent();
+    protected abstract GameEvent getTrayOpenedEvent();
+    protected abstract GameEvent getTrayClosedEvent();
 
     @Override
     public void onCreateScene() {
@@ -89,6 +95,8 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
         }
         if (stateMachine.canOpen() && shouldExpandWhenIconAdded()) {
             openTray();
+        } else if (stateMachine.getCurrentState() == TrayStateMachine.State.EXPANDED) {
+            EventBus.get().sendEvent(getTrayOpenedEvent());
         }
     }
 
@@ -101,8 +109,20 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
     public void openTray() {
         if (trayAnimationManager != null && stateMachine.canOpen()) {
             soundsManager.getSound(getOpenSound()).play();
-            trayAnimationManager.openTray();
-            EventBus.get().sendEvent(getTrayOpenEvent());
+            Futures.addCallback(
+                    trayAnimationManager.openTray(),
+                    new FutureCallback() {
+                        @Override
+                        public void onSuccess(@NullableDecl Object result) {
+                            EventBus.get().sendEvent(getTrayOpenedEvent());
+                        }
+
+                        @Override
+                        public void onFailure(Throwable t) {
+
+                        }
+                    },
+                    ContextCompat.getMainExecutor(hostActivity.getActivityContext()));
         }
     }
 
@@ -110,8 +130,20 @@ public abstract class BaseHostTrayEntity<IconIdType> extends BaseEntity implemen
     public void closeTray() {
         if (trayAnimationManager != null && stateMachine.canClose()) {
             soundsManager.getSound(getCloseSound()).play();
-            trayAnimationManager.closeTray();
-            EventBus.get().sendEvent(getTrayCloseEvent());
+            Futures.addCallback(
+                    trayAnimationManager.closeTray(),
+                    new FutureCallback() {
+                        @Override
+                        public void onSuccess(@NullableDecl Object result) {
+                            EventBus.get().sendEvent(getTrayClosedEvent());
+                        }
+
+                        @Override
+                        public void onFailure(Throwable t) {
+
+                        }
+                    },
+                    ContextCompat.getMainExecutor(hostActivity.getActivityContext()));
         }
     }
 

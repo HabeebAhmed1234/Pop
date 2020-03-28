@@ -63,12 +63,12 @@ public class GameQuickSettingsHostTrayEntity extends BaseHostTrayEntity<GameQuic
     }
 
     @Override
-    protected GameEvent getTrayOpenEvent() {
+    protected GameEvent getTrayOpenedEvent() {
         return GameEvent.QUICK_SETTINGS_TRAY_OPEN;
     }
 
     @Override
-    protected GameEvent getTrayCloseEvent() {
+    protected GameEvent getTrayClosedEvent() {
         return GameEvent.QUICK_SETTINGS_TRAY_CLOSE;
     }
 }

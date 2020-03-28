@@ -1,5 +1,7 @@
 package com.wack.pop2.icons;
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 import com.wack.pop2.BaseEntity;
@@ -57,12 +59,16 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
     @Override
     public void onCreateScene() {
         createIcon();
-        EventBus.get().subscribe(GameEvent.GAME_PROGRESS_CHANGED, this, true);
+        EventBus.get()
+                .subscribe(GameEvent.GAME_PROGRESS_CHANGED, this, true)
+                .subscribe(GameEvent.GAME_ICONS_TRAY_OPENED, this, true);
     }
 
     @Override
     public void onDestroy() {
-        EventBus.get().unSubscribe(GameEvent.GAME_PROGRESS_CHANGED, this);
+        EventBus.get()
+                .unSubscribe(GameEvent.GAME_PROGRESS_CHANGED, this)
+                .unSubscribe(GameEvent.GAME_ICONS_TRAY_OPENED, this);
         iconSprite.removeOnAreaTouchListener();
     }
 
@@ -72,6 +78,10 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
             case GAME_PROGRESS_CHANGED:
                 GameProgressEventPayload progressEventPayload = (GameProgressEventPayload) payload;
                 onGameProgressChanged(progressEventPayload.percentProgress);
+                break;
+            case GAME_ICONS_TRAY_OPENED:
+                float[] tooltipAnchor = getIconTooltipAnchor();
+                tooltipsEntity.maybeShowTooltip(getIconTooltipId(), tooltipAnchor[0], tooltipAnchor[1]);
                 break;
         }
     }
@@ -91,8 +101,6 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
             setIconColor(getUnlockedColor());
             addIconToTray();
             onIconUnlocked();
-            float[] tooltipAnchor = getIconTooltipAnchor();
-            tooltipsEntity.maybeShowTooltip(getIconTooltipId(), tooltipAnchor[0], tooltipAnchor[1]);
         }
     }
 

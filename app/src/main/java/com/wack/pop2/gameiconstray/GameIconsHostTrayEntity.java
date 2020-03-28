@@ -88,12 +88,12 @@ public class GameIconsHostTrayEntity extends BaseHostTrayEntity<GameIconsHostTra
     }
 
     @Override
-    protected GameEvent getTrayOpenEvent() {
+    protected GameEvent getTrayOpenedEvent() {
         return GameEvent.GAME_ICONS_TRAY_OPENED;
     }
 
     @Override
-    protected GameEvent getTrayCloseEvent() {
+    protected GameEvent getTrayClosedEvent() {
         return GameEvent.GAME_ICONS_TRAY_CLOSED;
     }
 }

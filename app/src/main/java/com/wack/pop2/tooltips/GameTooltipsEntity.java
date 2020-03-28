@@ -17,16 +17,19 @@ public class GameTooltipsEntity extends BaseEntity {
         super(gameResources);
         this.tooltipTexts = new TooltipTexts();
         this.tooltipPreferences = new TooltipPreferences(gamePreferencesEntity);
+        tooltipPreferences.clearDebug();
     }
 
     public void maybeShowTooltip(TooltipId id) {
         if (tooltipPreferences.shouldShowTooltip(id)) {
+            tooltipPreferences.tooltipShown(id);
             showTooltip(id);
         }
     }
 
     public void maybeShowTooltip(TooltipId id, float anchorX, float anchorY) {
         if (tooltipPreferences.shouldShowTooltip(id)) {
+            tooltipPreferences.tooltipShown(id);
             showAnchoredTooltip(id, anchorX, anchorY);
         }
     }

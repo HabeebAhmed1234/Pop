@@ -42,7 +42,7 @@ public class GamePreferences {
     private void runMutation(Mutation mutation) {
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         mutation.mutate(editor);
-        editor.commit();
+        editor.apply();
     }
 
     private SharedPreferences getSharedPreferences() {
