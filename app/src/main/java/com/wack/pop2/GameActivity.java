@@ -55,7 +55,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	private LevelEntity mLevelEntity;
 	private BackgroundMusicEntity mBackgroundMusicEntity;
 	private GameDifficultyEntity mGameDifficultyEntity;
-	private InteractionScoreHudEntity mInteractionScoreHudEntity;
+	// private InteractionScoreHudEntity mInteractionScoreHudEntity;
 	private ScoreHudEntity mScoreHudEntity;
 	private TimerHudEntity mTimerHudEntity;
 	private GameOverSequenceEntity mGameOverSequenceEntity;
@@ -106,7 +106,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		// Create game entities
 		mLevelEntity = new LevelEntity(gameTexturesManager, mGameResources);
 		mBackgroundMusicEntity = new BackgroundMusicEntity(gameMusicResourceManagerEntity, preferencesEntity, mGameResources);
-		mInteractionScoreHudEntity = new InteractionScoreHudEntity(gameFontsManager, mGameResources);
+		// mInteractionScoreHudEntity = new InteractionScoreHudEntity(gameFontsManager, mGameResources);
 		mScoreHudEntity = new ScoreHudEntity(gameFontsManager, mGameResources);
 		mScoreHudEntity = new ScoreHudEntity(gameFontsManager, mGameResources);
 		mGameDifficultyEntity = new GameDifficultyEntity(mGameResources);
