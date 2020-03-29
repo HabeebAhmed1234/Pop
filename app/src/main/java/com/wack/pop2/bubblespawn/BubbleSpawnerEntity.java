@@ -1,13 +1,14 @@
 package com.wack.pop2.bubblespawn;
 
+import android.content.Context;
 import android.hardware.SensorManager;
-import android.util.Log;
 import android.util.Pair;
 
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameFixtureDefs;
-import com.wack.pop2.GameResources;
 import com.wack.pop2.TouchPopperFactoryEntity;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.collision.CollisionFilters;
 import com.wack.pop2.entitymatchers.BubblesEntityMatcher;
 import com.wack.pop2.eventbus.BubbleSpawnedEventPayload;
@@ -84,8 +85,6 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         }
     }
 
-    private TouchPopperFactoryEntity touchPopperFactory;
-    private GameTexturesManager texturesManager;
     private float bubbleSpawnInterval = 5;
     private TimerHandler bubbleSpawnTimerHandler = new TimerHandler(
             bubbleSpawnInterval,
@@ -97,7 +96,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
                         int numBubbles = (int) (Math.random() * MAX_BUBBLES_PER_SPAWN);
                         List<Pair<Float, Float>> startingBubblePositions = BubblePacker.getSpawnBubblesLocations(
                                 numBubbles,
-                                ScreenUtils.dpToPx(BubbleSize.LARGE.sizeDp, hostActivity.getActivityContext()));
+                                ScreenUtils.dpToPx(BubbleSize.LARGE.sizeDp, get(Context.class)));
                         for (Pair<Float, Float> position : startingBubblePositions) {
                             spawnStartingBubble(position.first, position.second);
                         }
@@ -106,15 +105,9 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
                 }
             });
 
-    public BubbleSpawnerEntity(
-            TouchPopperFactoryEntity touchPopperFactory,
-            GameTexturesManager texturesManager,
-            GameResources gameResources) {
-        super(gameResources);
-        this.touchPopperFactory = touchPopperFactory;
-        this.texturesManager = texturesManager;
+    public BubbleSpawnerEntity(BinderEnity parent) {
+        super(parent);
     }
-
     @Override
     public void onCreateScene() {
         EventBus.get().subscribe(GameEvent.SPAWN_INTERVAL_CHANGED, this, true);
@@ -154,7 +147,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         colorBubble(bubbleType, bubbleSprite);
         final BaseEntityUserData userData = getBubbleUserData(bubbleSprite, bubbleType, bubbleSize);
         bubbleSprite.setUserData(userData);
-        float bubbleSizePx = ScreenUtils.dpToPx(bubbleSize.sizeDp, hostActivity.getActivityContext());
+        float bubbleSizePx = ScreenUtils.dpToPx(bubbleSize.sizeDp, get(Context.class));
         bubbleSprite.setWidth(bubbleSizePx);
         bubbleSprite.setHeight(bubbleSizePx);
 
@@ -167,7 +160,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         bubbleFixtureDef.setUserData(userData);
         final Body body = PhysicsFactory.createCircleBody(physicsWorld, bubbleSprite, BodyType.DYNAMIC, bubbleFixtureDef);
         body.setGravityScale(BUBBLE_GRAVITY_SCALE);
-        addToSceneWithTouch(bubbleSprite, body, touchPopperFactory.getNewTouchBubblePopper());
+        addToSceneWithTouch(bubbleSprite, body, get(TouchPopperFactoryEntity.class).getNewTouchBubblePopper());
         notifyBubbleSpawned(bubbleSprite);
         return body;
     }
@@ -191,7 +184,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
             case RED:
             case GREEN:
             case BLUE:
-                return texturesManager.getTextureRegion(TextureId.BALL);
+                return get(GameTexturesManager.class).getTextureRegion(TextureId.BALL);
             default:
                 throw new IllegalStateException("there is no bubble texture for bubbleType = " + bubbleType);
 

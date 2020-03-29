@@ -1,9 +1,9 @@
 package com.wack.pop2.nuke;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.GameResources;
-import com.wack.pop2.bubblepopper.BubblePopper;
-import com.wack.pop2.bubblepopper.BufferedBubblePopperEntity;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
+import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.entitymatchers.BubblesEntityMatcher;
 import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
@@ -26,10 +26,6 @@ import static com.wack.pop2.nuke.NukeConstants.NUKE_INTERVAL_SECONDS;
 public class NukerEntity extends BaseEntity {
 
     private TimerHandler nuke;
-    private BubblePopper bubblePopperEntity;
-    private NukeStateMachine nukeStateMachine;
-
-    private GameSoundsManager soundsManager;
 
     /**
      * If a bubble has been queued up to be popped by the nuker then we add it here.
@@ -54,7 +50,7 @@ public class NukerEntity extends BaseEntity {
             } else {
                 bubbleNukeMutex.clear();
                 engine.unregisterUpdateHandler(nuke);
-                nukeStateMachine.transitionState(NukeStateMachine.State.COOLDOWN);
+                get(NukeStateMachine.class).transitionState(NukeStateMachine.State.COOLDOWN);
             }
         }
 
@@ -63,7 +59,7 @@ public class NukerEntity extends BaseEntity {
             for (IEntity bubble : bubbles) {
                 if (!bubbleNukeMutex.contains(bubble.hashCode())) {
                     BubbleEntityUserData bubbleEntityUserData = (BubbleEntityUserData) bubble.getUserData();
-                    bubblePopperEntity.popBubble(bubbleEntityUserData.bubbleSprite, bubbleEntityUserData.size, bubbleEntityUserData.bubbleType);
+                    get(BubblePopperEntity.class).popBubble(bubbleEntityUserData.bubbleSprite, bubbleEntityUserData.size, bubbleEntityUserData.bubbleType);
                     bubbleNukeMutex.add(bubble.hashCode());
                 }
             }
@@ -74,20 +70,18 @@ public class NukerEntity extends BaseEntity {
         }
     }
 
-    public NukerEntity(
-            NukeStateMachine nukeStateMachine,
-            BufferedBubblePopperEntity bubblePopperEntity,
-            GameSoundsManager soundsManager,
-            GameResources gameResources) {
-        super(gameResources);
-        this.nukeStateMachine =  nukeStateMachine;
-        this.bubblePopperEntity = bubblePopperEntity;
-        this.soundsManager = soundsManager;
+    public NukerEntity(BinderEnity parent) {
+        super(parent);
+    }
+
+    @Override
+    protected void createBindings(Binder binder) {
+
     }
 
     public void startNuke() {
-        soundsManager.getSound(SoundId.NUKE_START).play();
-        nukeStateMachine.transitionState(NukeStateMachine.State.NUKING);
+        get(GameSoundsManager.class).getSound(SoundId.NUKE_START).play();
+        get(NukeStateMachine.class).transitionState(NukeStateMachine.State.NUKING);
         nuke = new TimerHandler(NUKE_INTERVAL_SECONDS, new NukeWaveTimerHandler(NUKE_DURATION_INTERVALS));
         engine.registerUpdateHandler(nuke);
     }

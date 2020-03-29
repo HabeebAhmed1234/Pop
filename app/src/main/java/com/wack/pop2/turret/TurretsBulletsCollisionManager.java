@@ -1,34 +1,30 @@
 package com.wack.pop2.turret;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.GamePhysicsContactsEntity;
-import com.wack.pop2.GameResources;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
+import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.TurretBulletPoppedBubbleEventPayload;
 import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
 import com.wack.pop2.fixturedefdata.FixtureDefDataUtil;
 import com.wack.pop2.fixturedefdata.TurretBulletUserData;
-import com.wack.pop2.utils.CoordinateConversionUtil;
 
-import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
 
 import static com.wack.pop2.eventbus.GameEvent.TURRET_BULLET_POPPED_BUBBLE;
 
 public class TurretsBulletsCollisionManager extends BaseEntity implements GamePhysicsContactsEntity.GameContactListener {
 
-    private BubblePopperEntity bubblePopperEntity;
-    private GamePhysicsContactsEntity gamePhysicsContactsEntity;
-
-    public TurretsBulletsCollisionManager(
-            BubblePopperEntity bubblePopperEntity,
-            GamePhysicsContactsEntity gamePhysicsContactsEntity,
-            GameResources gameResources) {
-        super(gameResources);
-        this.bubblePopperEntity = bubblePopperEntity;
-        this.gamePhysicsContactsEntity = gamePhysicsContactsEntity;
+    public TurretsBulletsCollisionManager(BinderEnity parent) {
+        super(parent);
         addContactListener();
+    }
+
+    @Override
+    protected void createBindings(Binder binder) {
+
     }
 
     @Override
@@ -38,7 +34,7 @@ public class TurretsBulletsCollisionManager extends BaseEntity implements GamePh
 
     @Override
     public void onDestroy() {
-        gamePhysicsContactsEntity.removeContactListener(TurretBulletUserData.class, BubbleEntityUserData.class, this);
+        get(GamePhysicsContactsEntity.class).removeContactListener(TurretBulletUserData.class, BubbleEntityUserData.class, this);
     }
 
     @Override
@@ -48,7 +44,7 @@ public class TurretsBulletsCollisionManager extends BaseEntity implements GamePh
         if (!bubbleEntityUserData.isPoppable()) {
             return;
         }
-        bubblePopperEntity.popBubble(
+        get(BubblePopperEntity.class).popBubble(
                 bubbleEntityUserData.bubbleSprite,
                 bubbleEntityUserData.size,
                 bubbleEntityUserData.bubbleType);
@@ -62,6 +58,7 @@ public class TurretsBulletsCollisionManager extends BaseEntity implements GamePh
     public void onEndContact(Fixture fixture1, Fixture fixture2) {}
 
     private void addContactListener() {
+        GamePhysicsContactsEntity gamePhysicsContactsEntity = get(GamePhysicsContactsEntity.class);
         if (!gamePhysicsContactsEntity.containsContactListener(TurretBulletUserData.class, BubbleEntityUserData.class, this)) {
             gamePhysicsContactsEntity.addContactListener(TurretBulletUserData.class, BubbleEntityUserData.class, this);
         }

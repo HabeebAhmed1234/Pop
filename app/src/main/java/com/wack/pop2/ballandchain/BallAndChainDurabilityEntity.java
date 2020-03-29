@@ -1,7 +1,8 @@
 package com.wack.pop2.ballandchain;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.GameResources;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
@@ -24,7 +25,6 @@ class BallAndChainDurabilityEntity extends BaseEntity implements EventBus.Subscr
     private static final float BALL_AND_CHAIN_CHARGE_INCREMENT = 0.1f;
     private static final float BALL_AND_CHAIN_DISCHARGE_DECREMENT = 0.1f;
 
-    private BallAndChainStateMachine stateMachine;
 
     private float ballAndChainChargePercent = 1.0f;
     private boolean isCharging = false;
@@ -40,23 +40,20 @@ class BallAndChainDurabilityEntity extends BaseEntity implements EventBus.Subscr
                 }
             });
 
-    public BallAndChainDurabilityEntity(
-            BallAndChainStateMachine stateMachine,
-            GameResources gameResources) {
-        super(gameResources);
-        this.stateMachine = stateMachine;
+    public BallAndChainDurabilityEntity(BinderEnity parent) {
+        super(parent);
     }
 
     @Override
     public void onCreateScene() {
-        stateMachine.addTransitionListener(BallAndChainStateMachine.State.UNLOCKED_DISCHARGED, this)
+        get(BallAndChainStateMachine.class).addTransitionListener(BallAndChainStateMachine.State.UNLOCKED_DISCHARGED, this)
                 .addTransitionListener(BallAndChainStateMachine.State.IN_USE_DISCHARGED, this);
         EventBus.get().subscribe(GameEvent.BALL_AND_CHAIN_POPPED_BUBBLE, this);
     }
 
     @Override
     public void onDestroy() {
-        stateMachine.removeTransitionListener(BallAndChainStateMachine.State.UNLOCKED_DISCHARGED, this)
+        get(BallAndChainStateMachine.class).removeTransitionListener(BallAndChainStateMachine.State.UNLOCKED_DISCHARGED, this)
                 .removeTransitionListener(BallAndChainStateMachine.State.IN_USE_DISCHARGED, this);
         EventBus.get().unSubscribe(GameEvent.BALL_AND_CHAIN_POPPED_BUBBLE, this);
     }
@@ -86,6 +83,7 @@ class BallAndChainDurabilityEntity extends BaseEntity implements EventBus.Subscr
             ballAndChainChargePercent = 0;
         }
 
+        BallAndChainStateMachine stateMachine = get(BallAndChainStateMachine.class);
         if (ballAndChainChargePercent == 0) {
             if (stateMachine.getCurrentState() == BallAndChainStateMachine.State.IN_USE_CHARGED) {
                 stateMachine.transitionState(BallAndChainStateMachine.State.IN_USE_DISCHARGED);
@@ -114,6 +112,7 @@ class BallAndChainDurabilityEntity extends BaseEntity implements EventBus.Subscr
 
     private void onBallAndChainCharged() {
         isCharging = false;
+        BallAndChainStateMachine stateMachine = get(BallAndChainStateMachine.class);
         if (stateMachine.getCurrentState() == BallAndChainStateMachine.State.IN_USE_DISCHARGED) {
             stateMachine.transitionState(BallAndChainStateMachine.State.IN_USE_CHARGED);
         } else if (stateMachine.getCurrentState() == BallAndChainStateMachine.State.UNLOCKED_DISCHARGED) {

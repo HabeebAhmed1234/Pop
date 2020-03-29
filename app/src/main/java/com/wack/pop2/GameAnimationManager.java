@@ -1,5 +1,8 @@
 package com.wack.pop2;
 
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
+
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
@@ -16,9 +19,10 @@ public class GameAnimationManager extends BaseEntity {
         void onFinished();
     }
 
-    public GameAnimationManager(GameResources gameResources) {
-        super(gameResources);
+    public GameAnimationManager(BinderEnity parent) {
+        super(parent);
     }
+
 
     public void startModifier(final IEntity entity, final IEntityModifier modifier) {
         startModifier(entity, modifier, new AnimationListener() {

@@ -1,12 +1,17 @@
 package com.wack.pop2.turret;
 
+import android.content.Context;
+
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
+import com.wack.pop2.tooltips.GameTooltipsEntity;
 import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.entity.sprite.Sprite;
@@ -22,33 +27,12 @@ public class TurretEntityCreator extends BaseEntity {
     private static final int TURRET_CANNON_HEIGHT_DP = 12;
     private static final int TURRET_CANNON_LENGTH_DP = 32;
 
-    private GameResources gameResources;
-    private BulletExplosionsEntity bulletExplosionsEntity;
-    private GameTexturesManager texturesManager;
-    private GameSceneTouchListenerEntity gameSceneTouchListener;
-    private GameIconsHostTrayEntity gameIconsTray;
-    private GameSoundsManager soundsManager;
-    private TurretsMutex mutex;
-
-    public TurretEntityCreator(
-            BulletExplosionsEntity bulletExplosionsEntity,
-            GameTexturesManager texturesManager,
-            GameIconsHostTrayEntity gameIconsTray,
-            GameSceneTouchListenerEntity gameSceneTouchListener,
-            GameSoundsManager soundsManager,
-            TurretsMutex mutex,
-            GameResources gameResources) {
-        super(gameResources);
-        this.gameResources = gameResources;
-        this.bulletExplosionsEntity = bulletExplosionsEntity;
-        this.texturesManager = texturesManager;
-        this.gameSceneTouchListener = gameSceneTouchListener;
-        this.gameIconsTray = gameIconsTray;
-        this.soundsManager = soundsManager;
-        this.mutex = mutex;
+    public TurretEntityCreator(BinderEnity parent) {
+        super(parent);
     }
 
-    public TurretEntity createTurret(int centerX, int centerY) {
+    public TurretBaseEntity createTurret(int centerX, int centerY) {
+        GameTexturesManager texturesManager = get(GameTexturesManager.class);
         ITextureRegion turretBodyTexture = texturesManager.getTextureRegion(TextureId.BALL);
         ITextureRegion turretCannonTexture = texturesManager.getTextureRegion(TextureId.LINE);
 
@@ -58,7 +42,7 @@ public class TurretEntityCreator extends BaseEntity {
                 turretBodyTexture,
                 vertexBufferObjectManager);
 
-        initSpriteDimensCenterPos(hostActivity.getActivityContext(), turretBodySprite, centerX, centerY, TURRET_BODY_SIZE_DP);
+        initSpriteDimensCenterPos(get(Context.class), turretBodySprite, centerX, centerY, TURRET_BODY_SIZE_DP);
 
         addToScene(turretBodySprite);
 
@@ -68,18 +52,18 @@ public class TurretEntityCreator extends BaseEntity {
                 turretCannonTexture,
                 vertexBufferObjectManager);
 
-        int cannonHeightPx = ScreenUtils.dpToPx(TURRET_CANNON_HEIGHT_DP, hostActivity.getActivityContext());
+        int cannonHeightPx = ScreenUtils.dpToPx(TURRET_CANNON_HEIGHT_DP, get(Context.class));
 
         initSpriteDimens(
                 turretCannonSprite,
                 (int) turretBodySprite.getWidth() / 2,
                 (int) turretBodySprite.getHeight() / 2 - cannonHeightPx / 2,
-                ScreenUtils.dpToPx(TURRET_CANNON_LENGTH_DP, hostActivity.getActivityContext()),
+                ScreenUtils.dpToPx(TURRET_CANNON_LENGTH_DP, get(Context.class)),
                 cannonHeightPx);
 
         turretBodySprite.attachChild(turretCannonSprite);
         turretCannonSprite.setRotationCenter(0f, cannonHeightPx / 2);
 
-        return new TurretEntity(turretBodySprite, turretCannonSprite, mutex, bulletExplosionsEntity, texturesManager, gameIconsTray, gameSceneTouchListener, soundsManager, gameResources);
+        return new TurretBaseEntity(turretBodySprite, turretCannonSprite, this);
     }
 }

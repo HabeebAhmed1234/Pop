@@ -2,8 +2,11 @@ package com.wack.pop2.ballandchain;
 
 import android.util.Pair;
 
+import androidx.annotation.Nullable;
+
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.GameResources;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.collision.CollisionFilters;
 import com.wack.pop2.fixturedefdata.ChainLinkEntityUserData;
 import com.wack.pop2.fixturedefdata.WreckingBallEntityUserData;
@@ -28,8 +31,6 @@ import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import java.util.HashSet;
 import java.util.Set;
 
-import androidx.annotation.Nullable;
-
 import static com.wack.pop2.GameFixtureDefs.BASE_CHAIN_LINK_FIXTURE_DEF;
 import static com.wack.pop2.GameFixtureDefs.BASE_WRECKING_BALL_DEF;
 import static com.wack.pop2.ballandchain.BallAndChainHandleEntity.OFF_SCREEN_HANDLE_POSITION;
@@ -46,11 +47,9 @@ class BallAndChainCreatorEntity extends BaseEntity {
     private static final float MOUSE_JOINT_MAX_FORCE_MULTIPLIER = 8000.0f;
 
     private Pair<Sprite, Body> lastChainLink;
-    private GameTexturesManager texturesManager;
 
-    public BallAndChainCreatorEntity(GameTexturesManager texturesManager, GameResources gameResources) {
-        super(gameResources);
-        this.texturesManager = texturesManager;
+    public BallAndChainCreatorEntity(BinderEnity parent) {
+        super(parent);
     }
 
     public BallAndChain createBallAndChain() {
@@ -77,7 +76,7 @@ class BallAndChainCreatorEntity extends BaseEntity {
 
     private Pair<Sprite, Body> createBall(final Vec2 position) {
         ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
-        ITextureRegion ballTexture = texturesManager.getTextureRegion(TextureId.BALL);
+        ITextureRegion ballTexture = get(GameTexturesManager.class).getTextureRegion(TextureId.BALL);
         float x = 0;
         float y = screenSize.heightPx / 2;
         WreckingBallEntityUserData wreckingBallEntityUserData = new WreckingBallEntityUserData();
@@ -109,7 +108,7 @@ class BallAndChainCreatorEntity extends BaseEntity {
             @Nullable Sprite previousChainLinkSprite,
             @Nullable Body previousChainLinkBody) {
 
-        ITextureRegion chainLinkTexture = texturesManager.getTextureRegion(TextureId.CHAIN_LINK);
+        ITextureRegion chainLinkTexture = get(GameTexturesManager.class).getTextureRegion(TextureId.CHAIN_LINK);
         ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
         float previousChainLinkX = previousChainLinkSprite != null ? previousChainLinkSprite.getX() : screenSize.widthPx / 2 - chainLinkTexture.getWidth() / 2;
         float previousChainLinkY = previousChainLinkSprite != null ? previousChainLinkSprite.getY() : screenSize.heightPx / 2 - chainLinkTexture.getHeight() / 2;

@@ -3,9 +3,10 @@ package com.wack.pop2.bubblepopper;
 import android.opengl.GLES20;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.bubblespawn.BubbleSpawnerEntity;
 import com.wack.pop2.GameAnimationManager;
-import com.wack.pop2.GameResources;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
+import com.wack.pop2.bubblespawn.BubbleSpawnerEntity;
 import com.wack.pop2.eventbus.BubbleTouchedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
@@ -32,22 +33,8 @@ public class BubblePopperEntity extends BaseEntity implements BubblePopper, Even
     public static final int SCORE_INCREMENT_PER_BUBBLE_POP = 10;
     public static final int MAX_SCORE_INCREASE_PER_NEW_SPAWNED_BUBBLE = 70; // Since there are three bubble sizes a total of 7 bubbles can be popped from one spawned bubble
 
-    private GameFontsManager fontManager;
-    private GameSoundsManager soundsManager;
-    private GameAnimationManager gameAnimationManager;
-    private BubbleSpawnerEntity bubbleSpawnerEntity;
-
-    public BubblePopperEntity(
-            GameFontsManager fontManager,
-            GameSoundsManager soundsManager,
-            GameAnimationManager gameAnimationManager,
-            BubbleSpawnerEntity bubbleSpawnerEntity,
-            GameResources gameResources) {
-        super(gameResources);
-        this.fontManager = fontManager;
-        this.soundsManager = soundsManager;
-        this.gameAnimationManager = gameAnimationManager;
-        this.bubbleSpawnerEntity = bubbleSpawnerEntity;
+    public BubblePopperEntity(BinderEnity parent) {
+        super(parent);
     }
 
     @Override
@@ -84,6 +71,7 @@ public class BubblePopperEntity extends BaseEntity implements BubblePopper, Even
      * Spawns 2 new bubbles in the place where the old bubble was
      */
     private void spawnPoppedBubbles(BubbleSpawnerEntity.BubbleSize oldBubbleSize, Vec2 oldBubbleScenePosition, BubbleSpawnerEntity.BubbleType bubbleType) {
+        BubbleSpawnerEntity bubbleSpawnerEntity = get(BubbleSpawnerEntity.class);
         Body leftBubble = bubbleSpawnerEntity.spawnBubble(
                 bubbleType,
                 oldBubbleScenePosition.x,
@@ -107,12 +95,12 @@ public class BubblePopperEntity extends BaseEntity implements BubblePopper, Even
     }
 
     private void showScoretickerText(float sceneX, float sceneY) {
-        final Text scorePlus10Text = new Text(sceneX, sceneY, fontManager.getFont(FontId.SCORE_TICKER_FONT), "+10!", vertexBufferObjectManager);
+        final Text scorePlus10Text = new Text(sceneX, sceneY, get(GameFontsManager.class).getFont(FontId.SCORE_TICKER_FONT), "+10!", vertexBufferObjectManager);
         scorePlus10Text.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
         scorePlus10Text.setColor(0, 1, 0);
         addToScene(scorePlus10Text);
 
-        gameAnimationManager.startModifier(
+        get(GameAnimationManager.class).startModifier(
                 scorePlus10Text,
                 new ParallelEntityModifier(
                     new ScaleModifier(0.75f, 0.1f, 1.1f),
@@ -121,6 +109,7 @@ public class BubblePopperEntity extends BaseEntity implements BubblePopper, Even
 
     private Sound getRandomPopSound() {
         int random=(int) (Math.random()*4);
+        GameSoundsManager soundsManager = get(GameSoundsManager.class);
         switch (random) {
             case 0:
                 return soundsManager.getSound(SoundId.POP_1);

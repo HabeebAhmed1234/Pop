@@ -1,7 +1,8 @@
 package com.wack.pop2.turret;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.GameResources;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -16,15 +17,11 @@ public class TurretCannonRotationManagerEntity extends BaseEntity implements ITi
     private static final float ROTATION_SPEED_PER_INTERVAL = 20.0f;
     private static final float POINTING_AT_TARGET_ANGLE_TOLERANCE = ROTATION_SPEED_PER_INTERVAL;
 
-    private Sprite turretCannon;
-
-    private float targetRotation;
+    private float targetRotation = 0;
     private final TimerHandler smoothRotationUpdater = new TimerHandler(ROTATION_UPDATE_INTERVAL_SECONDS, true, this);
 
-    public TurretCannonRotationManagerEntity(Sprite turretCannon, GameResources gameResources) {
-        super(gameResources);
-        this.turretCannon = turretCannon;
-        targetRotation = turretCannon.getRotation();
+    public TurretCannonRotationManagerEntity(BinderEnity parent) {
+        super(parent);
         init();
     }
 
@@ -44,12 +41,14 @@ public class TurretCannonRotationManagerEntity extends BaseEntity implements ITi
 
     @Override
     public void onTimePassed(TimerHandler pTimerHandler) {
+        Sprite turretCannon = get(HostTurretCallback.class).getTurretCannonSprite();
         if (turretCannon != null && !isAtTargetAngleRotation()) {
             turretCannon.setRotation(turretCannon.getRotation() + getRotationIncrement());
         }
     }
 
     private float getRotationIncrement() {
+        Sprite turretCannon = get(HostTurretCallback.class).getTurretCannonSprite();
         float remainingRotation = targetRotation - turretCannon.getRotation();
         if (Math.abs(remainingRotation) < ROTATION_SPEED_PER_INTERVAL) {
             return remainingRotation;
@@ -59,10 +58,12 @@ public class TurretCannonRotationManagerEntity extends BaseEntity implements ITi
     }
 
     private boolean isAtTargetAngleRotation() {
+        Sprite turretCannon = get(HostTurretCallback.class).getTurretCannonSprite();
         return turretCannon != null && turretCannon.getRotation() == targetRotation;
     }
 
     private boolean isAtTargetAngleRotation(float tolerance) {
+        Sprite turretCannon = get(HostTurretCallback.class).getTurretCannonSprite();
         return turretCannon != null
             && turretCannon.getRotation() >= (targetRotation - tolerance)
             && turretCannon.getRotation() <= (targetRotation + tolerance);

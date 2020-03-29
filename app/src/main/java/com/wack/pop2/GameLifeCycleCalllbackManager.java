@@ -1,8 +1,5 @@
 package com.wack.pop2;
 
-import android.os.Handler;
-import android.os.Looper;
-
 import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;

@@ -1,5 +1,7 @@
 package com.wack.pop2;
 
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.eventbus.BubbleTouchedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;
@@ -15,8 +17,8 @@ import org.andengine.input.touch.TouchEvent;
  */
 public class TouchPopperFactoryEntity extends BaseEntity {
 
-    public TouchPopperFactoryEntity(GameResources gameResources) {
-        super(gameResources);
+    public TouchPopperFactoryEntity(BinderEnity parent) {
+        super(parent);
     }
 
     public TouchBubblePopper getNewTouchBubblePopper() {

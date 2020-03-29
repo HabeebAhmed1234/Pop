@@ -1,11 +1,12 @@
 package com.wack.pop2.ballandchain;
 
+import androidx.annotation.Nullable;
+
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.GameResources;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 
 import org.andengine.util.color.AndengineColor;
-
-import androidx.annotation.Nullable;
 
 /**
  * Sets the color of the ball and chain given the current state.
@@ -15,14 +16,10 @@ class BallAndChainColorEntity extends BaseEntity implements BallAndChainStateMac
     private static final AndengineColor CHARGED_COLOR = AndengineColor.GREEN;
     private static final AndengineColor DISCHARGED_COLOR = AndengineColor.RED;
 
-    private BallAndChainStateMachine stateMachine;
     @Nullable private BallAndChain ballAndChain;
 
-    public BallAndChainColorEntity(
-            BallAndChainStateMachine stateMachine,
-            GameResources gameResources) {
-        super(gameResources);
-        this.stateMachine = stateMachine;
+    public BallAndChainColorEntity(BinderEnity parent) {
+        super(parent);
     }
 
     public void setBallAndChain(BallAndChain ballAndChain) {
@@ -31,12 +28,12 @@ class BallAndChainColorEntity extends BaseEntity implements BallAndChainStateMac
 
     @Override
     public void onCreateScene() {
-        stateMachine.addAllStateTransitionListener(this);
+        get(BallAndChainStateMachine.class).addAllStateTransitionListener(this);
     }
 
     @Override
     public void onDestroy() {
-        stateMachine.removeAllStateTransitionListener(this);
+        get(BallAndChainStateMachine.class).removeAllStateTransitionListener(this);
     }
 
     @Override

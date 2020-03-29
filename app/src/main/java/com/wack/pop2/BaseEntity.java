@@ -1,5 +1,6 @@
 package com.wack.pop2;
 
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.physics.PhysicsConnector;
 import com.wack.pop2.physics.PhysicsWorld;
 import com.wack.pop2.utils.ScreenUtils;
@@ -11,7 +12,6 @@ import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.shape.IAreaShape;
 import org.andengine.entity.shape.IShape;
-import org.andengine.entity.shape.Shape;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.jbox2d.dynamics.Body;
@@ -24,7 +24,7 @@ import org.jbox2d.dynamics.Body;
  *
  * All data is stored within these entity objects that extends this BaseEntity
  */
-public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCallback {
+public abstract class BaseEntity extends BinderEnity implements GameLifeCycleCalllbackManager.GameCallback {
 
     protected final Scene scene;
     protected final PhysicsWorld physicsWorld;
@@ -34,7 +34,9 @@ public abstract class BaseEntity implements GameLifeCycleCalllbackManager.GameCa
     protected final int levelWidth;
     protected final int levelHeight;
 
-    public BaseEntity(GameResources gameResources) {
+    public BaseEntity(BinderEnity parent) {
+        super(parent);
+        GameResources gameResources = get(GameResources.class);
         this.scene = gameResources.scene;
         this.physicsWorld = gameResources.physicsWorld;
         this.vertexBufferObjectManager = gameResources.vertexBufferObjectManager;

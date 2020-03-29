@@ -1,13 +1,13 @@
 package com.wack.pop2.resources.textures;
 
 import android.content.Context;
-import android.media.Image;
 import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.GameResources;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.texturepacker.RectanglePacker;
 
 import org.andengine.opengl.texture.TextureManager;
@@ -76,16 +76,11 @@ public class GameTexturesManager extends BaseEntity {
     private static final int MAX_TEXTURE_ATLAS_WIDTH = 1024;
     private static final int MAX_TEXTURE_ATLAS_HEIGHT = 1024;
 
-
-    private final Context context;
-    private final TextureManager textureManager;
     private final Map<TextureId, ITextureRegion> mTextureRegions = new HashMap();
     private List<BitmapTextureAtlas> atlases = new ArrayList<>();
 
-    public GameTexturesManager(Context context, TextureManager textureManager, GameResources gameResources) {
-        super(gameResources);
-        this.context = context;
-        this.textureManager = textureManager;
+    public GameTexturesManager(BinderEnity parent) {
+        super(parent);
     }
 
     public ITextureRegion getTextureRegion(TextureId textureId) {
@@ -128,7 +123,7 @@ public class GameTexturesManager extends BaseEntity {
     }
 
     private BitmapTextureAtlas createNewAtlas() {
-        BitmapTextureAtlas atlas = new BitmapTextureAtlas(textureManager, MAX_TEXTURE_ATLAS_WIDTH, MAX_TEXTURE_ATLAS_HEIGHT, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        BitmapTextureAtlas atlas = new BitmapTextureAtlas(get(TextureManager.class), MAX_TEXTURE_ATLAS_WIDTH, MAX_TEXTURE_ATLAS_HEIGHT, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
         atlases.add(atlas);
         return atlas;
     }
@@ -151,7 +146,7 @@ public class GameTexturesManager extends BaseEntity {
                 resource.isTiled
                         ? BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
                                 textureAtlas,
-                                context,
+                                get(Context.class),
                                 "explosion.png",
                                 packedLocation.x,
                                 packedLocation.y,
@@ -159,7 +154,7 @@ public class GameTexturesManager extends BaseEntity {
                                 resource.tilesSize.second)
                         : BitmapTextureAtlasTextureRegionFactory.createFromAsset(
                                 textureAtlas,
-                                context,
+                                get(Context.class),
                                 resource.filename,
                                 packedLocation.x,
                                 packedLocation.y));

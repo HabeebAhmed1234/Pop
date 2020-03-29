@@ -1,35 +1,37 @@
 package com.wack.pop2.tooltips;
 
-import com.wack.pop2.gamesettings.GamePreferences;
+import com.wack.pop2.BaseEntity;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
+import com.wack.pop2.gamesettings.GamePreferencesEntity;
 
 import java.util.HashMap;
 import java.util.Map;
 
-class TooltipPreferences {
+class TooltipPreferences extends BaseEntity {
 
-    private final GamePreferences preferencesEntity;
     private Map<TooltipId, Boolean> cache = new HashMap<>();
 
-    public TooltipPreferences(GamePreferences preferencesEntity) {
-        this.preferencesEntity = preferencesEntity;
+    public TooltipPreferences(BinderEnity parent) {
+        super(parent);
     }
 
     public void clearDebug() {
         for (TooltipId tooltipId : TooltipId.values()) {
             cache.clear();
-            preferencesEntity.set(tooltipId.toString(), false);
+            get(GamePreferencesEntity.class).set(tooltipId.toString(), false);
         }
     }
 
     public boolean shouldShowTooltip(TooltipId id) {
         if (!cache.containsKey(id)) {
-            cache.put(id, preferencesEntity.getBoolean(id.toString()));
+            cache.put(id, get(GamePreferencesEntity.class).getBoolean(id.toString()));
         }
         return !cache.get(id);
     }
 
     public void tooltipShown(TooltipId id) {
         cache.put(id, true);
-        preferencesEntity.set(id.toString(), true);
+        get(GamePreferencesEntity.class).set(id.toString(), true);
     }
 }

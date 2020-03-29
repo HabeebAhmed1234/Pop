@@ -1,8 +1,11 @@
 package com.wack.pop2.ballandchain;
 
+import androidx.annotation.Nullable;
+
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.physics.util.Vec2Pool;
 import com.wack.pop2.utils.CoordinateConversionUtil;
 import com.wack.pop2.utils.ScreenUtils;
@@ -11,8 +14,6 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.input.touch.TouchEvent;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.joints.MouseJoint;
-
-import androidx.annotation.Nullable;
 
 /**
  * Manages the handle of the ball and chain based off of the current state of the ball and chain
@@ -26,16 +27,9 @@ class BallAndChainHandleEntity extends BaseEntity implements BallAndChainStateMa
                             ScreenUtils.getSreenSize().heightPx * 1.1f));
 
     @Nullable private MouseJoint handleJoint;
-    private GameSceneTouchListenerEntity sceneTouchListenerEntity;
-    private BallAndChainStateMachine stateMachine;
 
-    public BallAndChainHandleEntity(
-            BallAndChainStateMachine stateMachine,
-            GameSceneTouchListenerEntity sceneTouchListenerEntity,
-            GameResources gameResources) {
-        super(gameResources);
-        this.sceneTouchListenerEntity = sceneTouchListenerEntity;
-        this.stateMachine = stateMachine;
+    public BallAndChainHandleEntity(BinderEnity parent) {
+        super(parent);
     }
 
     public void setHandleJoint(MouseJoint handleJoint) {
@@ -43,7 +37,7 @@ class BallAndChainHandleEntity extends BaseEntity implements BallAndChainStateMa
 
         this.handleJoint = handleJoint;
         // start listening to state when the handle is set
-        stateMachine.addAllStateTransitionListener(this);
+        get(BallAndChainStateMachine.class).addAllStateTransitionListener(this);
     }
 
     @Override
@@ -51,7 +45,7 @@ class BallAndChainHandleEntity extends BaseEntity implements BallAndChainStateMa
 
     @Override
     public void onDestroy() {
-        stateMachine.removeAllStateTransitionListener(this);
+        get(BallAndChainStateMachine.class).removeAllStateTransitionListener(this);
     }
 
     @Override
@@ -76,13 +70,13 @@ class BallAndChainHandleEntity extends BaseEntity implements BallAndChainStateMa
     }
 
     private void startTouchTracking() {
-        sceneTouchListenerEntity.addSceneTouchListener(this);
+        get(GameSceneTouchListenerEntity.class).addSceneTouchListener(this);
     }
 
     private void stopTouchTracking() {
         // Snap the handle out of the screen and stop tracking touch dragging the handle
         setHandlePositionTarget(OFF_SCREEN_HANDLE_POSITION);
-        sceneTouchListenerEntity.removeSceneTouchListener(this);
+        get(GameSceneTouchListenerEntity.class).removeSceneTouchListener(this);
     }
 
     @Override
@@ -100,6 +94,7 @@ class BallAndChainHandleEntity extends BaseEntity implements BallAndChainStateMa
     }
 
     private void releaseHandle() {
+        BallAndChainStateMachine stateMachine = get(BallAndChainStateMachine.class);
         if (BallAndChainStateClassifier.isBallAndChainInUse(stateMachine.getCurrentState())) {
             stateMachine.transitionState(
                     stateMachine.getCurrentState() == BallAndChainStateMachine.State.IN_USE_CHARGED
@@ -110,7 +105,7 @@ class BallAndChainHandleEntity extends BaseEntity implements BallAndChainStateMa
     }
 
     private void setHandlePositionTarget(TouchEvent touchEvent) {
-        if (BallAndChainStateClassifier.isChainHandleDraggingPermitted(stateMachine.getCurrentState()))
+        if (BallAndChainStateClassifier.isChainHandleDraggingPermitted(get(BallAndChainStateMachine.class).getCurrentState()))
         setHandlePositionTarget(
                 CoordinateConversionUtil.sceneToPhysicsWorld(
                         Vec2Pool.obtain(
@@ -121,5 +116,10 @@ class BallAndChainHandleEntity extends BaseEntity implements BallAndChainStateMa
     private void setHandlePositionTarget(Vec2 position) {
         if (handleJoint == null) return;
         handleJoint.setTarget(position);
+    }
+
+    @Override
+    protected void createBindings(Binder binder) {
+
     }
 }

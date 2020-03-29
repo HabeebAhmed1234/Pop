@@ -14,8 +14,8 @@ public class GameConstants {
     public static final float MIN_SPAWN_INTERVAL = 1f;
 
     // Unlocks
-    public static final float BALL_AND_CHAIN_DIFFICULTY_UNLOCK_THRESHOLD = 0.25f;
-    public static final float TURRETS_DIFFICULTY_UNLOCK_THRESHOLD = 0;
+    public static final float BALL_AND_CHAIN_DIFFICULTY_UNLOCK_THRESHOLD = 0.1f;
+    public static final float TURRETS_DIFFICULTY_UNLOCK_THRESHOLD = 0.5f;
     public static final float WALLS_DIFFICULTY_UNLOCK_THRESHOLD = 0.75f;
     public static final float NUKE_UNLOCK_THRESHOLD = 1f;
 }

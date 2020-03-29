@@ -1,13 +1,15 @@
 package com.wack.pop2.turret;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
-import com.wack.pop2.GameResources;
 import com.wack.pop2.GameSceneTouchListenerEntity;
 import com.wack.pop2.LongPressGesture;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.eventbus.EventBus;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
 import com.wack.pop2.statemachine.BaseStateMachine;
@@ -26,33 +28,15 @@ public class TurretDraggingManager extends BaseEntity implements GameSceneTouchL
 
     private static final float DRAGGING_OFFSET_DISTANCE_DP = 20;
 
-    private GameIconsHostTrayEntity iconsTrayEntity;
-    private GameSceneTouchListenerEntity touchListenerEntity;
-    private GameSoundsManager soundsManager;
-    private TurretsMutex mutex;
-    private TurretStateMachine stateMachine;
-    private LongPressGesture longPressGesture;
-    private HostTurretCallback hostTurretCallback;
-
-    public TurretDraggingManager(
-            GameIconsHostTrayEntity iconsTrayEntity,
-            GameSceneTouchListenerEntity touchListenerEntity,
-            GameSoundsManager soundsManager,
-            TurretsMutex mutex,
-            TurretStateMachine stateMachine,
-            HostTurretCallback hostTurretCallback,
-            GameResources gameResources) {
-        super(gameResources);
-        this.iconsTrayEntity = iconsTrayEntity;
-        this.soundsManager = soundsManager;
-        this.touchListenerEntity = touchListenerEntity;
-        this.mutex = mutex;
-        this.stateMachine = stateMachine;
-        this.hostTurretCallback = hostTurretCallback;
-        this.longPressGesture = new LongPressGesture(this, hostTurretCallback.getTurretBodySprite(), engine);
-
+    public TurretDraggingManager(BinderEnity parent) {
+        super(parent);
         init();
-        stateMachine.addAllStateTransitionListener(this);
+        get(TurretStateMachine.class).addAllStateTransitionListener(this);
+    }
+
+    @Override
+    protected void createBindings(Binder binder) {
+        binder.bind(LongPressGesture.class, new LongPressGesture(this, this));
     }
 
     @Override
@@ -61,9 +45,11 @@ public class TurretDraggingManager extends BaseEntity implements GameSceneTouchL
     }
 
     private void init() {
+        GameSceneTouchListenerEntity touchListenerEntity = get(GameSceneTouchListenerEntity.class);
         if (!touchListenerEntity.hasSceneTouchListener(this)) {
             touchListenerEntity.addSceneTouchListener(this);
         }
+        LongPressGesture longPressGesture = get(LongPressGesture.class);
         if (!touchListenerEntity.hasSceneTouchListener(longPressGesture)) {
             touchListenerEntity.addSceneTouchListener(longPressGesture);
         }
@@ -71,12 +57,14 @@ public class TurretDraggingManager extends BaseEntity implements GameSceneTouchL
 
     @Override
     public void onDestroy() {
+        GameSceneTouchListenerEntity touchListenerEntity = get(GameSceneTouchListenerEntity.class);
         touchListenerEntity.removeSceneTouchListener(this);
-        touchListenerEntity.removeSceneTouchListener(longPressGesture);
+        touchListenerEntity.removeSceneTouchListener(get(LongPressGesture.class));
     }
 
     @Override
     public void onEnterState(TurretStateMachine.State newState) {
+        TurretsMutex mutex = get(TurretsMutex.class);
         if (newState == TurretStateMachine.State.DRAGGING) {
             mutex.setIsDragging(true);
         } else {
@@ -86,7 +74,7 @@ public class TurretDraggingManager extends BaseEntity implements GameSceneTouchL
 
     @Override
     public boolean onSceneTouchEvent(Scene scene, TouchEvent touchEvent) {
-        if (stateMachine.getCurrentState() == TurretStateMachine.State.DRAGGING){
+        if (get(TurretStateMachine.class).getCurrentState() == TurretStateMachine.State.DRAGGING){
             // If we are dragging then set the position of the turret to the touch event
             trackTurretToPointerOnDrag(touchEvent.getX(), touchEvent.getY());
 
@@ -102,13 +90,13 @@ public class TurretDraggingManager extends BaseEntity implements GameSceneTouchL
      * Force the turret to start dragging without the prerequisite long press.
      */
     public void forceStartDragging(float pointerX, float pointerY) {
-        stateMachine.transitionState(TurretStateMachine.State.DRAGGING);
+        get(TurretStateMachine.class).transitionState(TurretStateMachine.State.DRAGGING);
         trackTurretToPointerOnDrag(pointerX, pointerY);
     }
 
     @Override
     public void onLongPress(float touchX, float touchY) {
-        if (stateMachine.getCurrentState() != TurretStateMachine.State.DRAGGING) {
+        if (get(TurretStateMachine.class).getCurrentState() != TurretStateMachine.State.DRAGGING) {
             pickUpTurret(touchX, touchY);
         } else {
             Log.e("TurretDragginManager", "Long press registered while we are dragging the turret!");
@@ -116,21 +104,21 @@ public class TurretDraggingManager extends BaseEntity implements GameSceneTouchL
     }
 
     private void pickUpTurret(float touchX, float touchY) {
-        soundsManager.getSound(SoundId.CLICK_UP).play();
-        stateMachine.transitionState(TurretStateMachine.State.DRAGGING);
+        get(GameSoundsManager.class).getSound(SoundId.CLICK_UP).play();
+        get(TurretStateMachine.class).transitionState(TurretStateMachine.State.DRAGGING);
         trackTurretToPointerOnDrag(touchX, touchY);
         EventBus.get().sendEvent(OPEN_GAME_ICONS_TRAY);
     }
 
     private void dropTurret(TouchEvent touchEvent) {
-        soundsManager.getSound(SoundId.CLICK_DOWN).play();
-        stateMachine.transitionState(TurretStateMachine.State.TARGETING);
-        hostTurretCallback.setTurretPosition(touchEvent.getX(), touchEvent.getY());
+        get(GameSoundsManager.class).getSound(SoundId.CLICK_DOWN).play();
+        get(TurretStateMachine.class).transitionState(TurretStateMachine.State.TARGETING);
+        get(HostTurretCallback.class).setTurretPosition(touchEvent.getX(), touchEvent.getY());
     }
 
     private void trackTurretToPointerOnDrag(float x, float y) {
-        int offsetPx = ScreenUtils.dpToPx(DRAGGING_OFFSET_DISTANCE_DP, hostActivity.getActivityContext());
-        hostTurretCallback.setTurretPosition(x - offsetPx, y - offsetPx);
+        int offsetPx = ScreenUtils.dpToPx(DRAGGING_OFFSET_DISTANCE_DP, get(Context.class));
+        get(HostTurretCallback.class).setTurretPosition(x - offsetPx, y - offsetPx);
     }
 
     /**
@@ -142,7 +130,7 @@ public class TurretDraggingManager extends BaseEntity implements GameSceneTouchL
         // If the user is dragging over the dock and releases the turret then we must dock it back
         // Into the icon
         if (touchEvent.isActionUp() && isTouchOverTurretsIcon(touchEvent)) {
-            stateMachine.transitionState(TurretStateMachine.State.DOCKED);
+            get(TurretStateMachine.class).transitionState(TurretStateMachine.State.DOCKED);
             EventBus.get().sendEvent(TURRET_DOCKED);
             return true;
         }
@@ -150,6 +138,6 @@ public class TurretDraggingManager extends BaseEntity implements GameSceneTouchL
     }
 
     private boolean isTouchOverTurretsIcon(TouchEvent touchEvent) {
-        return iconsTrayEntity.getIcon(GameIconsHostTrayEntity.IconId.TURRETS_ICON).contains(touchEvent.getX(), touchEvent.getY());
+        return get(GameIconsHostTrayEntity.class).getIcon(GameIconsHostTrayEntity.IconId.TURRETS_ICON).contains(touchEvent.getX(), touchEvent.getY());
     }
 }

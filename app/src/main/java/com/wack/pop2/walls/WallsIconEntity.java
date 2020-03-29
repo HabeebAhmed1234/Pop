@@ -2,19 +2,17 @@ package com.wack.pop2.walls;
 
 import androidx.annotation.Nullable;
 
-import com.wack.pop2.GameResources;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
-import com.wack.pop2.icons.BaseInventoryIconEntity;
-import com.wack.pop2.resources.fonts.GameFontsManager;
+import com.wack.pop2.icons.InventoryIconBaseEntity;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
-import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.statemachine.BaseStateMachine;
-import com.wack.pop2.tooltips.GameTooltipsEntity;
 import com.wack.pop2.tooltips.TooltipId;
 import com.wack.pop2.touchlisteners.ButtonUpTouchListener;
 
@@ -26,51 +24,31 @@ import org.andengine.util.color.AndengineColor;
 import static com.wack.pop2.GameConstants.WALLS_DIFFICULTY_UNLOCK_THRESHOLD;
 import static com.wack.pop2.walls.WallsConstants.MAX_WALLS_INVENTORY;
 
-public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStateMachine.Listener<WallsStateMachine.State> {
+public class WallsIconEntity extends InventoryIconBaseEntity implements BaseStateMachine.Listener<WallsStateMachine.State> {
 
-    private final ButtonUpTouchListener touchListener = new ButtonUpTouchListener() {
-        @Override
-        protected boolean onButtonPressed(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-            if (stateMachine.getCurrentState() == WallsStateMachine.State.UNLOCKED_TOGGLED_OFF) {
-                toggleOn();
-                return true;
-            } else if (stateMachine.getCurrentState() == WallsStateMachine.State.TOGGLED_ON) {
-                toggleOff();
-                return true;
-            }
-            return false;
-        }
-    };
+    public WallsIconEntity(BinderEnity parent) {
+        super(parent);
+    }
 
-    private WallsStateMachine stateMachine;
-    private GameSoundsManager gameSoundsManager;
+    @Override
+    protected void createBindings(Binder binder) {
 
-    public WallsIconEntity(
-            WallsStateMachine stateMachine,
-            GameIconsHostTrayEntity gameIconsTrayEntity,
-            GameSoundsManager gameSoundsManager,
-            GameTooltipsEntity gameTooltips,
-            GameTexturesManager gameTexturesManager,
-            GameFontsManager fontsManager,
-            GameResources gameResources) {
-        super(fontsManager, gameIconsTrayEntity, gameTooltips, gameTexturesManager, gameResources);
-        this.stateMachine = stateMachine;
-        this.gameSoundsManager = gameSoundsManager;
     }
 
     @Override
     public void onEnterState(WallsStateMachine.State newState) {
         AndengineColor color = AndengineColor.WHITE;
+        GameSoundsManager soundsManager = get(GameSoundsManager.class);
         switch (newState) {
             case LOCKED:
                 color = AndengineColor.TRANSPARENT;
                 break;
             case UNLOCKED_TOGGLED_OFF:
-                gameSoundsManager.getSound(SoundId.CLICK_DOWN).play();
+                soundsManager.getSound(SoundId.CLICK_DOWN).play();
                 color = AndengineColor.WHITE;
                 break;
             case TOGGLED_ON:
-                gameSoundsManager.getSound(SoundId.CLICK_UP).play();
+                soundsManager.getSound(SoundId.CLICK_UP).play();
                 color = AndengineColor.GREEN;
                 break;
         }
@@ -85,7 +63,8 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStat
     @Override
     public void onCreateScene() {
         super.onCreateScene();
-        stateMachine.addAllStateTransitionListener(this);
+
+        get(WallsStateMachine.class).addAllStateTransitionListener(this);
 
         EventBus.get()
                 .subscribe(GameEvent.WALL_PLACED, this)
@@ -95,7 +74,7 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStat
 
     @Override
     public void onDestroy() {
-        stateMachine.removeAllStateTransitionListener(this);
+        get(WallsStateMachine.class).removeAllStateTransitionListener(this);
 
         EventBus.get()
                 .unSubscribe(GameEvent.WALL_PLACED, this)
@@ -137,7 +116,7 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStat
 
     @Override
     protected void onIconUnlocked() {
-        stateMachine.transitionState(WallsStateMachine.State.UNLOCKED_TOGGLED_OFF);
+        get(WallsStateMachine.class).transitionState(WallsStateMachine.State.UNLOCKED_TOGGLED_OFF);
     }
 
     @Override
@@ -148,7 +127,20 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStat
     @Nullable
     @Override
     protected IOnAreaTouchListener getTouchListener() {
-        return touchListener;
+        return new ButtonUpTouchListener() {
+            @Override
+            protected boolean onButtonPressed(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                WallsStateMachine stateMachine = get(WallsStateMachine.class);
+                if (stateMachine.getCurrentState() == WallsStateMachine.State.UNLOCKED_TOGGLED_OFF) {
+                    toggleOn();
+                    return true;
+                } else if (stateMachine.getCurrentState() == WallsStateMachine.State.TOGGLED_ON) {
+                    toggleOff();
+                    return true;
+                }
+                return false;
+            }
+        };
     }
 
     @Override
@@ -157,12 +149,14 @@ public class WallsIconEntity extends BaseInventoryIconEntity implements BaseStat
     }
 
     private void toggleOn() {
+        WallsStateMachine stateMachine = get(WallsStateMachine.class);
         if (stateMachine.getCurrentState() == WallsStateMachine.State.UNLOCKED_TOGGLED_OFF) {
             stateMachine.transitionState(WallsStateMachine.State.TOGGLED_ON);
         }
     }
 
     private void toggleOff() {
+        WallsStateMachine stateMachine = get(WallsStateMachine.class);
         if (stateMachine.getCurrentState() == WallsStateMachine.State.TOGGLED_ON) {
             stateMachine.transitionState(WallsStateMachine.State.UNLOCKED_TOGGLED_OFF);
         }

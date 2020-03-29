@@ -2,30 +2,28 @@ package com.wack.pop2.tray;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
+import com.wack.pop2.BaseEntity;
+import com.wack.pop2.binder.BinderEnity;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.util.modifier.IModifier;
 
-class TrayAnimationManager {
+class TrayAnimationManager extends BaseEntity {
 
-    private TrayStateMachine stateMachine;
-    private HostTrayCallback hostTrayCallback;
     private SettableFuture currentAnimationFuture;
     private IEntityModifier currentAnimation;
     private final float openCloseAnimatinoDuration;
 
-    public TrayAnimationManager(float openCloseAnimationDuration,
-                                HostTrayCallback hostTrayCallback,
-                                TrayStateMachine stateMachine) {
-        this.hostTrayCallback = hostTrayCallback;
-        this.stateMachine = stateMachine;
+    public TrayAnimationManager(float openCloseAnimationDuration, BinderEnity parent) {
+        super(parent);
         this.openCloseAnimatinoDuration = openCloseAnimationDuration;
     }
 
     public ListenableFuture openTray() {
         stopCurrentAnimation();
+        final TrayStateMachine stateMachine = get(TrayStateMachine.class);
         stateMachine.transitionState(TrayStateMachine.State.EXPANDING);
         return startAnimation(getOpenTrayEntityModifier(), new IModifier.IModifierListener() {
 
@@ -41,6 +39,7 @@ class TrayAnimationManager {
 
     public ListenableFuture closeTray() {
         stopCurrentAnimation();
+        final TrayStateMachine stateMachine = get(TrayStateMachine.class);
         stateMachine.transitionState(TrayStateMachine.State.CLOSING);
         return startAnimation(getCloseTrayEntityModifier(), new IModifier.IModifierListener() {
 
@@ -60,7 +59,7 @@ class TrayAnimationManager {
             currentAnimationFuture.cancel(true);
         }
         currentAnimationFuture = SettableFuture.create();
-        hostTrayCallback.getTrayIconsHolderRectangle().registerEntityModifier(currentAnimation);
+        get(HostTrayCallback.class).getTrayIconsHolderRectangle().registerEntityModifier(currentAnimation);
         currentAnimation.addModifierListener(new IModifier.IModifierListener<IEntity>() {
             @Override
             public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
@@ -78,11 +77,12 @@ class TrayAnimationManager {
 
     private void stopCurrentAnimation() {
         if (currentAnimation != null) {
-            hostTrayCallback.getTrayIconsHolderRectangle().unregisterEntityModifier(currentAnimation);
+            get(HostTrayCallback.class).getTrayIconsHolderRectangle().unregisterEntityModifier(currentAnimation);
         }
     }
 
     private int[] getOpenPositionPx() {
+        HostTrayCallback hostTrayCallback = get(HostTrayCallback.class);
         int[] anchor = hostTrayCallback.getAnchorPx();
         int trayWidth = (int) hostTrayCallback.getTrayIconsHolderRectangle().getWidthScaled();
         int trayHeight = (int) hostTrayCallback.getTrayIconsHolderRectangle().getHeightScaled();
@@ -90,6 +90,7 @@ class TrayAnimationManager {
     }
 
     private int[] getClosedPositionPx() {
+        HostTrayCallback hostTrayCallback = get(HostTrayCallback.class);
         int[] anchor = hostTrayCallback.getAnchorPx();
         float trayHeight = hostTrayCallback.getTrayIconsHolderRectangle().getHeightScaled();
         return new int[]{anchor[0], anchor[1] - ((int)trayHeight)/2};
@@ -104,6 +105,7 @@ class TrayAnimationManager {
     }
 
     private IEntityModifier getTrayEntityModifier(int[] destinationPostition, int[] oppositePosition) {
+        HostTrayCallback hostTrayCallback = get(HostTrayCallback.class);
         return new MoveModifier(
                 getAnimationDuration(
                         destinationPostition[0],

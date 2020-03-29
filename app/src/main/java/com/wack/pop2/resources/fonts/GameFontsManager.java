@@ -5,7 +5,8 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.GameResources;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
@@ -19,21 +20,10 @@ import java.util.Map;
 
 public class GameFontsManager extends BaseEntity {
 
-    private final FontManager fontManager;
-    private final TextureManager textureManager;
-    private final AssetManager assetManager;
-
     private final Map<FontId, Font> mFonts = new HashMap();
 
-    public GameFontsManager(
-            FontManager fontManager,
-            TextureManager textureManager,
-            AssetManager assetManager,
-            GameResources gameResources) {
-        super(gameResources);
-        this.fontManager = fontManager;
-        this.textureManager = textureManager;
-        this.assetManager = assetManager;
+    public GameFontsManager(BinderEnity parent) {
+        super(parent);
     }
 
     public Font getFont(FontId fontId) {
@@ -45,6 +35,10 @@ public class GameFontsManager extends BaseEntity {
 
     @Override
     public void onCreateResources() {
+        FontManager fontManager = get(FontManager.class);
+        TextureManager textureManager = get(TextureManager.class);
+        AssetManager assetManager= get(AssetManager.class);
+
         mFonts.put(
                 FontId.MAIN_FONT,
                 FontFactory.create(fontManager, textureManager, 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 48,true, Color.WHITE));
@@ -60,7 +54,7 @@ public class GameFontsManager extends BaseEntity {
                 FontId.TIMER_TICKER_FONT,
                 FontFactory.createFromAsset(fontManager, new BitmapTextureAtlas(textureManager,256,256), assetManager,"neon.ttf",80f,true, Color.WHITE));
         mFonts.put(
-                FontId.TURRET_ICON_FONT,
+                FontId.INVENTORY_ICON_FONT,
                 FontFactory.createFromAsset(fontManager, new BitmapTextureAtlas(textureManager,256,256), assetManager,"neon.ttf",60f,true, Color.WHITE));
         mFonts.put(
                 FontId.TOOLTIP_TEXT_FONT,

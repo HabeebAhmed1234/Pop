@@ -2,6 +2,8 @@ package com.wack.pop2;
 
 import android.util.Log;
 
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.interaction.InteractionCounter;
 
 import org.andengine.entity.scene.IOnSceneTouchListener;
@@ -27,12 +29,15 @@ public class GameSceneTouchListenerEntity extends BaseEntity implements IOnScene
     private static final String TAG = "TouchListener";
 
     private Queue<SceneTouchListener> sceneTouchlisteners = new ConcurrentLinkedQueue<>();
-    private InteractionCounter interactionCounter;
 
-    public GameSceneTouchListenerEntity(InteractionCounter interactionCounter, GameResources gameResources) {
-        super(gameResources);
-        this.interactionCounter = interactionCounter;
+    public GameSceneTouchListenerEntity(BinderEnity parent) {
+        super(parent);
         scene.setOnSceneTouchListener(this);
+    }
+
+    @Override
+    protected void createBindings(Binder binder) {
+
     }
 
     public boolean hasSceneTouchListener(SceneTouchListener listener) {
@@ -63,7 +68,7 @@ public class GameSceneTouchListenerEntity extends BaseEntity implements IOnScene
             }
         }
         if (handled) {
-            interactionCounter.onInteraction(InteractionCounter.TOUCH_INSTANCE_INTERACTION_WEIGHT);
+            get(InteractionCounter.class).onInteraction(InteractionCounter.TOUCH_INSTANCE_INTERACTION_WEIGHT);
         }
         return handled;
     }

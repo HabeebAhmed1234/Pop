@@ -1,22 +1,25 @@
 package com.wack.pop2.gameiconstray;
 
-import com.wack.pop2.GameResources;
-import com.wack.pop2.resources.textures.TextureId;
-import com.wack.pop2.tray.BaseTrayOpenCloseButtonEntity;
-import com.wack.pop2.tray.HostTrayCallback;
+import android.content.Context;
 
-class GameIconsTrayOpenCloseButton extends BaseTrayOpenCloseButtonEntity {
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
+import com.wack.pop2.resources.textures.TextureId;
+import com.wack.pop2.tray.HostTrayCallback;
+import com.wack.pop2.tray.TrayOpenCloseButtonBaseEntity;
+
+class GameIconsTrayOpenCloseButton extends TrayOpenCloseButtonBaseEntity {
 
     public GameIconsTrayOpenCloseButton(
             HostTrayCallback trayOpenCloseControlCallback,
-            GameResources gameResources) {
-        super(trayOpenCloseControlCallback, gameResources);
+            BinderEnity parent) {
+        super(trayOpenCloseControlCallback, parent);
     }
 
     @Override
     protected ButtonSpec getButtonSpec() {
         return new ButtonSpec(
-                hostActivity.getActivityContext(),
+                get(Context.class),
                 64,
                 4);
     }

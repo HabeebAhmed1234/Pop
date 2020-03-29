@@ -1,11 +1,10 @@
 package com.wack.pop2.ballandchain;
 
-import com.wack.pop2.GameResources;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
-import com.wack.pop2.icons.BaseIconEntity;
-import com.wack.pop2.resources.textures.GameTexturesManager;
+import com.wack.pop2.icons.IconBaseEntity;
 import com.wack.pop2.resources.textures.TextureId;
-import com.wack.pop2.tooltips.GameTooltipsEntity;
 import com.wack.pop2.tooltips.TooltipId;
 
 import org.andengine.entity.scene.IOnAreaTouchListener;
@@ -19,11 +18,12 @@ import static com.wack.pop2.GameConstants.BALL_AND_CHAIN_DIFFICULTY_UNLOCK_THRES
  * Appears when the ball and chain tool is unlocked. The user can tap and hold the icon to start
  * using the ball and chain.
  */
-class BallAndChainIconEntity extends BaseIconEntity implements BallAndChainStateMachine.Listener<BallAndChainStateMachine.State> {
+class BallAndChainIconEntity extends IconBaseEntity implements BallAndChainStateMachine.Listener<BallAndChainStateMachine.State> {
 
     private final IOnAreaTouchListener touchListener = new IOnAreaTouchListener() {
         @Override
         public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+            BallAndChainStateMachine stateMachine = get(BallAndChainStateMachine.class);
             if (pSceneTouchEvent.isActionDown() && stateMachine.getCurrentState() == BallAndChainStateMachine.State.UNLOCKED_CHARGED) {
                 stateMachine.transitionState(BallAndChainStateMachine.State.IN_USE_CHARGED);
                 return true;
@@ -32,28 +32,20 @@ class BallAndChainIconEntity extends BaseIconEntity implements BallAndChainState
         }
     };
 
-    private BallAndChainStateMachine stateMachine;
-
-    public BallAndChainIconEntity(
-            BallAndChainStateMachine stateMachine,
-            GameIconsHostTrayEntity gameIconsTrayEntity,
-            GameTooltipsEntity gameTooltips,
-            GameTexturesManager gameTexturesManager,
-            GameResources gameResources) {
-        super(gameIconsTrayEntity, gameTooltips, gameTexturesManager, gameResources);
-        this.stateMachine = stateMachine;
+    public BallAndChainIconEntity(BinderEnity parent) {
+        super(parent);
     }
 
     @Override
     public void onCreateScene() {
         super.onCreateScene();
-        stateMachine.addAllStateTransitionListener(this);
+        get(BallAndChainStateMachine.class).addAllStateTransitionListener(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        stateMachine.removeAllStateTransitionListener(this);
+        get(BallAndChainStateMachine.class).removeAllStateTransitionListener(this);
     }
 
     @Override
@@ -73,7 +65,7 @@ class BallAndChainIconEntity extends BaseIconEntity implements BallAndChainState
 
     @Override
     protected void onIconUnlocked() {
-        stateMachine.transitionState(BallAndChainStateMachine.State.UNLOCKED_CHARGED);
+        get(BallAndChainStateMachine.class).transitionState(BallAndChainStateMachine.State.UNLOCKED_CHARGED);
     }
 
     @Override

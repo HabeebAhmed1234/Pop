@@ -1,7 +1,8 @@
 package com.wack.pop2.hudentities;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.GameResources;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.resources.fonts.FontId;
 import com.wack.pop2.resources.fonts.GameFontsManager;
 
@@ -20,24 +21,19 @@ public class TimerHudEntity extends BaseEntity {
 
     private static final int MAX_TIMER_TEXT_LENGTH = 20;
 
-    private GameFontsManager fontsManager;
-
     private TimerHandler timerHandler;
 
     private Text timerText;
     private int timerValue = TIMER_STARTING_VALUE_SECONDS;
 
-    public TimerHudEntity(
-            GameFontsManager fontsManager,
-            GameResources gameResources) {
-        super(gameResources);
-        this.fontsManager = fontsManager;
-        registerTimerUpdater();
+    public TimerHudEntity(BinderEnity parent) {
+        super(parent);
     }
 
     @Override
     public void onCreateScene() {
-        timerText = new Text(20,20, fontsManager.getFont(FontId.SCORE_TICKER_FONT), getFormattedTimerText(), MAX_TIMER_TEXT_LENGTH, vertexBufferObjectManager);
+        registerTimerUpdater();
+        timerText = new Text(20,20, get(GameFontsManager.class).getFont(FontId.SCORE_TICKER_FONT), getFormattedTimerText(), MAX_TIMER_TEXT_LENGTH, vertexBufferObjectManager);
         timerText.setColor(AndengineColor.TRANSPARENT);
         scene.attachChild(timerText);
     }

@@ -1,7 +1,8 @@
 package com.wack.pop2.interaction;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.GameResources;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.eventbus.InteractionScoreEventPayload;
@@ -26,8 +27,8 @@ public class InteractionCounter extends BaseEntity {
                 }
             });
 
-    public InteractionCounter(GameResources gameResources) {
-        super(gameResources);
+    public InteractionCounter(BinderEnity parent) {
+        super(parent);
     }
 
     @Override

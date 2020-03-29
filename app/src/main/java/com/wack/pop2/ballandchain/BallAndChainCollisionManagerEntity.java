@@ -1,42 +1,30 @@
 package com.wack.pop2.ballandchain;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.GamePhysicsContactsEntity;
-import com.wack.pop2.GameResources;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
+import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.fixturedefdata.BubbleEntityUserData;
 import com.wack.pop2.fixturedefdata.ChainLinkEntityUserData;
 import com.wack.pop2.fixturedefdata.FixtureDefDataUtil;
 import com.wack.pop2.fixturedefdata.WreckingBallEntityUserData;
-import com.wack.pop2.utils.CoordinateConversionUtil;
 
-import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
 
 import static com.wack.pop2.eventbus.GameEvent.BALL_AND_CHAIN_POPPED_BUBBLE;
 
 class BallAndChainCollisionManagerEntity extends BaseEntity implements GamePhysicsContactsEntity.GameContactListener {
 
-    private BallAndChainStateMachine stateMachine;
-    private GamePhysicsContactsEntity gamePhysicsContactsEntity;
-    private BubblePopperEntity bubblePopperEntity;
-
-    public BallAndChainCollisionManagerEntity(
-            BallAndChainStateMachine stateMachine,
-            BubblePopperEntity bubblePopperEntity,
-            GamePhysicsContactsEntity gamePhysicsContactsEntity,
-            GameResources gameResources) {
-        super(gameResources);
-        this.stateMachine = stateMachine;
-        this.bubblePopperEntity = bubblePopperEntity;
-        this.gamePhysicsContactsEntity = gamePhysicsContactsEntity;
+    public BallAndChainCollisionManagerEntity(BinderEnity parent) {
+        super(parent);
     }
-
     @Override
     public void onCreateScene() {
         super.onCreateScene();
 
+        GamePhysicsContactsEntity gamePhysicsContactsEntity = get(GamePhysicsContactsEntity.class);
         // Set up collision detection between the ball and chain and the bubbles on the stage
         gamePhysicsContactsEntity.addContactListener(ChainLinkEntityUserData.class, BubbleEntityUserData.class, this);
         gamePhysicsContactsEntity.addContactListener(WreckingBallEntityUserData.class, BubbleEntityUserData.class, this);
@@ -44,13 +32,14 @@ class BallAndChainCollisionManagerEntity extends BaseEntity implements GamePhysi
 
     @Override
     public void onDestroy() {
+        GamePhysicsContactsEntity gamePhysicsContactsEntity = get(GamePhysicsContactsEntity.class);
         gamePhysicsContactsEntity.removeContactListener(ChainLinkEntityUserData.class, BubbleEntityUserData.class, this);
         gamePhysicsContactsEntity.removeContactListener(WreckingBallEntityUserData.class, BubbleEntityUserData.class, this);
     }
 
     @Override
     public void onBeginContact(Fixture fixture1, Fixture fixture2) {
-        if (!shouldBallAndChainPop(stateMachine.getCurrentState())) {
+        if (!shouldBallAndChainPop(get(BallAndChainStateMachine.class).getCurrentState())) {
             return;
         }
         Fixture bubbleFixture = FixtureDefDataUtil.getBubbleFixture(fixture1, fixture2);
@@ -58,7 +47,7 @@ class BallAndChainCollisionManagerEntity extends BaseEntity implements GamePhysi
         if (!bubbleEntityUserData.isPoppable()) {
             return;
         }
-        bubblePopperEntity.popBubble(
+        get(BubblePopperEntity.class).popBubble(
                 bubbleEntityUserData.bubbleSprite,
                 bubbleEntityUserData.size,
                 bubbleEntityUserData.bubbleType);

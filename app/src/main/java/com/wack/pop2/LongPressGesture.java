@@ -1,6 +1,9 @@
 package com.wack.pop2;
 
-import org.andengine.engine.Engine;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
+import com.wack.pop2.turret.HostTurretCallback;
+
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.scene.Scene;
@@ -16,7 +19,7 @@ import static org.andengine.input.touch.TouchEvent.ACTION_UP;
 /**
  * Checks for long press on a given sprite bounds. Must be delivered the touch events for the scene
  */
-public class LongPressGesture implements GameSceneTouchListenerEntity.SceneTouchListener {
+public class LongPressGesture extends BaseEntity implements GameSceneTouchListenerEntity.SceneTouchListener {
 
     public interface LongPressCallback {
         void onLongPress(float touchX, float touchY);
@@ -25,8 +28,6 @@ public class LongPressGesture implements GameSceneTouchListenerEntity.SceneTouch
     private static final float LONG_PRESS_THRESHOLD_SECONDS = 0.6f;
 
     private final LongPressCallback callback;
-    private final Engine engine;
-    private final Sprite sprite;
 
     private final TimerHandler longPressCheck = new TimerHandler(
             LONG_PRESS_THRESHOLD_SECONDS,
@@ -39,10 +40,9 @@ public class LongPressGesture implements GameSceneTouchListenerEntity.SceneTouch
 
     private float[] lastTouchEventPosition = new float[2];
 
-    public LongPressGesture(LongPressCallback callback, Sprite sprite, Engine engine) {
+    public LongPressGesture(LongPressCallback callback, BinderEnity parent) {
+        super(parent);
         this.callback = callback;
-        this.engine = engine;
-        this.sprite = sprite;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class LongPressGesture implements GameSceneTouchListenerEntity.SceneTouch
     }
 
     private boolean isPointerInBounds(TouchEvent touchEvent) {
-        return sprite.contains(touchEvent.getX(), touchEvent.getY());
+        return get(HostTurretCallback.class).getTurretBodySprite().contains(touchEvent.getX(), touchEvent.getY());
     }
 
     private void startLongPressCheck() {

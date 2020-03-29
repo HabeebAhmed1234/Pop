@@ -1,6 +1,7 @@
 package com.wack.pop2.hudentities;
 
-import com.wack.pop2.GameResources;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.eventbus.DecrementScoreEventPayload;
 import com.wack.pop2.eventbus.EventBus;
@@ -9,23 +10,21 @@ import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.eventbus.IncrementScoreEventPayload;
 import com.wack.pop2.eventbus.ScoreChangeEventPayload;
 import com.wack.pop2.eventbus.StartingBubbleSpawnedEventPayload;
-import com.wack.pop2.resources.fonts.GameFontsManager;
-import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.util.color.AndengineColor;
 
 /**
  * Entity that contains score hud panel
  */
-public class ScoreHudEntity extends BaseHudTextEntity implements EventBus.Subscriber {
+public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscriber {
 
     private static final String SCORE_TEXT_PREFIX = "Score: ";
 
     private int scoreValue = 0;
     private int maxScoreValue = 0;
 
-    public ScoreHudEntity(GameFontsManager fontsManager, GameResources gameResources) {
-        super(fontsManager, gameResources);
+    public ScoreHudEntity(BinderEnity parent) {
+        super(parent);
     }
 
     @Override

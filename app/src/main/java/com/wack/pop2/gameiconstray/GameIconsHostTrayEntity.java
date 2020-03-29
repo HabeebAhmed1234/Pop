@@ -1,21 +1,23 @@
 package com.wack.pop2.gameiconstray;
 
-import com.wack.pop2.GameResources;
+import android.content.Context;
+import android.util.Log;
+
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
-import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
-import com.wack.pop2.resources.textures.GameTexturesManager;
-import com.wack.pop2.tray.BaseHostTrayEntity;
-import com.wack.pop2.tray.BaseTrayIconsHolderEntity;
-import com.wack.pop2.tray.BaseTrayOpenCloseButtonEntity;
+import com.wack.pop2.tray.HostTrayBaseEntity;
+import com.wack.pop2.tray.TrayIconsHolderBaseEntity;
+import com.wack.pop2.tray.TrayOpenCloseButtonBaseEntity;
 import com.wack.pop2.utils.ScreenUtils;
 
 /**
  * Single entity used to manage the icons for different tools in the game.
  */
-public class GameIconsHostTrayEntity extends BaseHostTrayEntity<GameIconsHostTrayEntity.IconId> {
+public class GameIconsHostTrayEntity extends HostTrayBaseEntity<GameIconsHostTrayEntity.IconId> {
 
     public enum IconId {
         BALL_AND_CHAIN_ICON,
@@ -33,11 +35,8 @@ public class GameIconsHostTrayEntity extends BaseHostTrayEntity<GameIconsHostTra
         }
     };
 
-    public GameIconsHostTrayEntity(
-            GameTexturesManager textureManager,
-            GameSoundsManager soundsManager,
-            GameResources gameResources) {
-        super(textureManager, soundsManager, gameResources);
+    public GameIconsHostTrayEntity(BinderEnity parent) {
+        super(parent);
     }
 
     @Override
@@ -55,7 +54,7 @@ public class GameIconsHostTrayEntity extends BaseHostTrayEntity<GameIconsHostTra
     @Override
     protected Spec getSpec() {
         return new Spec(
-                hostActivity.getActivityContext(),
+                get(Context.class),
                 4,
                 ScreenUtils.getSreenSize().heightDp / 2,
                 ScreenUtils.getSreenSize().widthDp,
@@ -68,13 +67,13 @@ public class GameIconsHostTrayEntity extends BaseHostTrayEntity<GameIconsHostTra
     }
 
     @Override
-    protected BaseTrayOpenCloseButtonEntity getOpenCloseButtonEntity(GameResources gameResources) {
-        return new GameIconsTrayOpenCloseButton(this, gameResources);
+    protected TrayOpenCloseButtonBaseEntity getOpenCloseButtonEntity(BinderEnity parent) {
+        return new GameIconsTrayOpenCloseButton(this, parent);
     }
 
     @Override
-    protected BaseTrayIconsHolderEntity getTrayIconsHolderEntity(GameResources gameResources) {
-        return new GameTrayIconsHolderEntity(this, gameResources);
+    protected TrayIconsHolderBaseEntity getTrayIconsHolderEntity(BinderEnity parent) {
+        return new GameTrayIconsHolderBaseEntity(this, parent);
     }
 
     @Override

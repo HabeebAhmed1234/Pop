@@ -1,12 +1,11 @@
 package com.wack.pop2.turret;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.GameResources;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
-import com.wack.pop2.resources.textures.GameTexturesManager;
 
-import org.andengine.audio.sound.Sound;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.sprite.Sprite;
@@ -20,34 +19,15 @@ import static com.wack.pop2.turret.TurretsConstants.TURRETS_FIRING_DELAY_SECONDS
  */
 public class TurretFiringEntity extends BaseEntity {
 
-    private final HostTurretCallback hostTurretCallback;
-    private final TurretStateMachine stateMachine;
-    private final BulletExplosionsEntity bulletExplosionsEntity;
-    private final GameTexturesManager texturesManager;
-    private final GameSoundsManager soundsManager;
-    private final GameResources gameResources;
-
     private boolean isReadyToFire = true;
 
-    public TurretFiringEntity(
-            HostTurretCallback hostTurretCallback,
-            TurretStateMachine stateMachine,
-            BulletExplosionsEntity bulletExplosionsEntity,
-            GameTexturesManager texturesManager,
-            GameSoundsManager soundsManager,
-            GameResources gameResources) {
-        super(gameResources);
-        this.hostTurretCallback = hostTurretCallback;
-        this.stateMachine = stateMachine;
-        this.bulletExplosionsEntity = bulletExplosionsEntity;
-        this.texturesManager = texturesManager;
-        this.soundsManager = soundsManager;
-        this.gameResources = gameResources;
+    public TurretFiringEntity(BinderEnity parent) {
+        super(parent);
         init();
     }
 
     private void init() {
-        soundsManager.getSound(SoundId.LAZER_BURST).setVolume(0.1f);
+        get(GameSoundsManager.class).getSound(SoundId.LAZER_BURST).setVolume(0.1f);
     }
 
     public boolean isReadyToFire() {
@@ -56,10 +36,12 @@ public class TurretFiringEntity extends BaseEntity {
 
     public void fire(Sprite target) {
         isReadyToFire = false;
+
+        TurretStateMachine stateMachine = get(TurretStateMachine.class);
         stateMachine.transitionState(TurretStateMachine.State.FIRING);
 
         // Fire the bullet
-        TurretBulletEntity bulletEntity = new TurretBulletEntity(target, hostTurretCallback, bulletExplosionsEntity, texturesManager, gameResources);
+        TurretBulletBaseEntity bulletEntity = new TurretBulletBaseEntity(target, this);
         // Set timer to enable us to fire again after a delay
         engine.registerUpdateHandler(
                 new TimerHandler(TURRETS_FIRING_DELAY_SECONDS,
@@ -71,6 +53,6 @@ public class TurretFiringEntity extends BaseEntity {
                             }
                         }));
         stateMachine.transitionState(TurretStateMachine.State.TARGETING);
-        soundsManager.getSound(SoundId.LAZER_BURST).play();
+        get(GameSoundsManager.class).getSound(SoundId.LAZER_BURST).play();
     }
 }

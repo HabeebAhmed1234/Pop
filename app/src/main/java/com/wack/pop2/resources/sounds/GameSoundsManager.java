@@ -3,7 +3,8 @@ package com.wack.pop2.resources.sounds;
 import android.content.Context;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.GameResources;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 
 import org.andengine.audio.sound.Sound;
 import org.andengine.audio.sound.SoundFactory;
@@ -16,14 +17,10 @@ import java.util.Map;
 
 public class GameSoundsManager extends BaseEntity {
 
-    private final Context context;
-    private final SoundManager soundManager;
     private final Map<SoundId, Sound> mSounds = new HashMap();
 
-    public GameSoundsManager(Context context, SoundManager soundManager, GameResources gameResources) {
-        super(gameResources);
-        this.context = context;
-        this.soundManager = soundManager;
+    public GameSoundsManager(BinderEnity parent) {
+        super(parent);
     }
 
     @Override
@@ -56,10 +53,15 @@ public class GameSoundsManager extends BaseEntity {
     }
 
     private void loadSound(SoundId soundId, String path) throws IOException {
-        mSounds.put(soundId, SoundFactory.createSoundFromAsset(soundManager, context, path));
+        mSounds.put(soundId, SoundFactory.createSoundFromAsset(get(SoundManager.class), get(Context.class), path));
     }
 
     public Sound getSound(SoundId soundId) {
         return mSounds.get(soundId);
+    }
+
+    @Override
+    protected void createBindings(Binder binder) {
+
     }
 }

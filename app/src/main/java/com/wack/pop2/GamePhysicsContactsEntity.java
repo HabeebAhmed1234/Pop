@@ -2,6 +2,8 @@ package com.wack.pop2;
 
 import android.util.Log;
 
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.physics.PhysicsWorld;
 
@@ -72,8 +74,8 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
     private List<Contact> pendingBeginContacts = new ArrayList<>();
     private List<Contact> pendingEndContacts = new ArrayList<>();
 
-    public GamePhysicsContactsEntity(GameResources gameResources) {
-        super(gameResources);
+    public GamePhysicsContactsEntity(BinderEnity parent) {
+        super(parent);
     }
 
     @Override

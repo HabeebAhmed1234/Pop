@@ -1,7 +1,8 @@
 package com.wack.pop2.walls;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.GameResources;
+import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.fixturedefdata.WallDeleteIconUserData;
@@ -19,13 +20,8 @@ import org.andengine.input.touch.TouchEvent;
  */
 public class WallsDeletionHandlerFactoryEntity extends BaseEntity {
 
-    private GameSoundsManager soundsManager;
-
-    public WallsDeletionHandlerFactoryEntity(
-            GameSoundsManager soundsManager,
-            GameResources gameResources) {
-        super(gameResources);
-        this.soundsManager = soundsManager;
+    public WallsDeletionHandlerFactoryEntity(BinderEnity parent) {
+        super(parent);
     }
 
     public WallDeletionHandler getWallDeletionHandler() {
@@ -44,7 +40,7 @@ public class WallsDeletionHandlerFactoryEntity extends BaseEntity {
 
             EventBus.get().sendEvent(GameEvent.WALL_DELETED);
 
-            soundsManager.getSound(SoundId.SCRAP).play();
+            get(GameSoundsManager.class).getSound(SoundId.SCRAP).play();
         }
 
         @Override
