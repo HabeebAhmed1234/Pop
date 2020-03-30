@@ -94,7 +94,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 						.bind(GameSceneTouchListenerEntity.class, new GameSceneTouchListenerEntity(this))
 
 						.bind(GameTooltipsEntity.class, new GameTooltipsEntity(this))
-						.bind(GameIconsHostTrayEntity.class, new GameIconsHostTrayEntity(this))
+						.bind(GameStartTooltipEntity.class, new GameStartTooltipEntity(this))
 
 						.bind(GameQuickSettingsHostTrayBaseEntity.class, new GameQuickSettingsHostTrayBaseEntity(this))
 						.bind(MusicQuickSettingIconBaseEntity.class, new MusicQuickSettingIconBaseEntity(this))
@@ -104,17 +104,17 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 						.bind(TimerHudEntity.class, new TimerHudEntity(this))
 
 						.bind(GameDifficultyBaseEntity.class, new GameDifficultyBaseEntity(this))
-
 						.bind(GameOverSequenceEntity.class, new GameOverSequenceEntity(this))
 						.bind(BubblesLifecycleManagerEntity.class, new BubblesLifecycleManagerEntity(this))
-						.bind(TouchPopperFactoryEntity.class, new TouchPopperFactoryEntity(this))
-						.bind(BubbleSpawnerEntity.class, new BubbleSpawnerEntity(this))
 
+						.bind(BubbleSpawnerEntity.class, new BubbleSpawnerEntity(this))
 						.bind(BubbleCleanerBaseEntity.class, new BubbleCleanerBaseEntity(this))
-						.bind(BubblePopperEntity.class, new BubblePopperEntity(this))
 						.bind(BubbleLossDetectorBaseEntity.class, new BubbleLossDetectorBaseEntity(this))
+						.bind(BubblePopperEntity.class, new BubblePopperEntity(this))
+						.bind(TouchPopperFactoryEntity.class, new TouchPopperFactoryEntity(this))
 						.bind(BufferedBubblePopperBaseEntity.class, new BufferedBubblePopperBaseEntity(this))
 
+						.bind(GameIconsHostTrayEntity.class, new GameIconsHostTrayEntity(this))
 						.bind(BallAndChainManagerBaseEntity.class, new BallAndChainManagerBaseEntity(this))
 						.bind(TurretsManagerBaseEntity.class, new TurretsManagerBaseEntity(this))
 						.bind(WallsManagerBaseEntity.class, new WallsManagerBaseEntity(this))
