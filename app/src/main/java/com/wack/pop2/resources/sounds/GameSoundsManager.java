@@ -32,7 +32,7 @@ public class GameSoundsManager extends BaseEntity {
             loadSound(SoundId.POP_3,"pop3.wav");
             loadSound(SoundId.POP_4,"pop4.wav");
             loadSound(SoundId.POP_5,"pop5.wav");
-            loadSound(SoundId.EXPOSION,"explosion.ogg");
+            loadSound(SoundId.EXPOSION,"explosion.wav", 1.2f);
             loadSound(SoundId.NEON_BUZZ,"neon_buzz.wav");
             loadSound(SoundId.LAZER_BURST,"lazer_burst.mp3");
             loadSound(SoundId.OPEN,"open.wav");
@@ -44,7 +44,7 @@ public class GameSoundsManager extends BaseEntity {
             loadSound(SoundId.HAMMER_DOWN,"hammer_down.wav", 0.5f);
             loadSound(SoundId.SCRAP,"scrap.wav");
             loadSound(SoundId.NUKE_START,"nuke_start.wav");
-            loadSound(SoundId.BEEP,"beep.wav");
+            loadSound(SoundId.BEEP,"beep.wav", 0.7f);
             loadSound(SoundId.PAUSE,"pause.wav");
             loadSound(SoundId.UNPAUSE,"unpause.wav");
         } catch (final IOException e) {

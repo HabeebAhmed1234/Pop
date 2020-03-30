@@ -1,12 +1,10 @@
 package com.wack.pop2.resources.textures;
 
 import android.content.Context;
-import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.binder.Binder;
 import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.texturepacker.RectanglePacker;
 
@@ -36,27 +34,16 @@ public class GameTexturesManager extends BaseEntity {
         private final int widthPx;
         private final int heightPx;
 
-        private boolean isTiled;
-        @Nullable private Pair<Integer, Integer> tilesSize;
-
         ImageResource(TextureId textureId, final String filename, int widthPx, int heightPx) {
-            this(textureId, filename, widthPx, heightPx, false, null);
-        }
-
-        ImageResource(TextureId textureId, final String filename, int widthPx, int heightPx, boolean isTiled, Pair<Integer, Integer> tilesSize) {
             this.textureId = textureId;
             this.filename = filename;
             this.widthPx = widthPx;
             this.heightPx = heightPx;
-            this.isTiled = isTiled;
-            this.tilesSize = tilesSize;
         }
     }
 
     private static final List<ImageResource> IMAGE_RESOURCES = Arrays.asList(
-            new ImageResource(TextureId.EXPLOSION, "explosion.png", 850, 950, true, new Pair<>(3, 4)),
             new ImageResource(TextureId.BALL, "ball.png", 300, 300),
-            new ImageResource(TextureId.GAME_OVER, "gameover_fade.png", 100, 100),
             new ImageResource(TextureId.CHAIN_LINK, "chain_link.png", 150, 75),
             new ImageResource(TextureId.BALL_AND_CHAIN_ICON, "ball_and_chain_icon.png",300, 300),
             new ImageResource(TextureId.LINE, "line.png", 110, 30),
@@ -143,21 +130,12 @@ public class GameTexturesManager extends BaseEntity {
     private void addToAtlas(RectanglePacker.Rectangle packedLocation, BitmapTextureAtlas textureAtlas, ImageResource resource) {
         mTextureRegions.put(
                 resource.textureId,
-                resource.isTiled
-                        ? BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
-                                textureAtlas,
-                                get(Context.class),
-                                "explosion.png",
-                                packedLocation.x,
-                                packedLocation.y,
-                                resource.tilesSize.first,
-                                resource.tilesSize.second)
-                        : BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-                                textureAtlas,
-                                get(Context.class),
-                                resource.filename,
-                                packedLocation.x,
-                                packedLocation.y));
+                BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+                        textureAtlas,
+                        get(Context.class),
+                        resource.filename,
+                        packedLocation.x,
+                        packedLocation.y));
     }
 
     private void loadAtlases() {

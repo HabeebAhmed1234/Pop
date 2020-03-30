@@ -7,10 +7,7 @@ package com.wack.pop2.resources.textures;
 public enum TextureId {
     WHITE_PIXEL,
     BACKGROUND,
-    EXPLOSION,
     BALL,
-    SKULL_BALL,
-    GAME_OVER,
     CHAIN_LINK,
     LINE,
     BULLET,

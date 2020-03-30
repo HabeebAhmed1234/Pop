@@ -52,12 +52,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	private static final int PAUSE_ACTIVITY_REQUEST_CODE = 1;
 
 	private ShakeCamera camera;
-
 	BinderEnity mRootBinder;
-
-	//Debug
-	//private DebugSandboxEntity mDebugSandboxEntity;
-	// private InteractionScoreHudEntity mInteractionScoreHudEntity;
 
 	public static Intent newIntent(Context context) {
 		return new Intent(context, GameActivity.class);
@@ -110,7 +105,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 						.bind(GameDifficultyBaseEntity.class, new GameDifficultyBaseEntity(this))
 
-						.bind(GameOverSequenceBaseEntity.class, new GameOverSequenceBaseEntity(this))
+						.bind(GameOverSequenceEntity.class, new GameOverSequenceEntity(this))
 						.bind(BubblesLifecycleManagerEntity.class, new BubblesLifecycleManagerEntity(this))
 						.bind(TouchPopperFactoryEntity.class, new TouchPopperFactoryEntity(this))
 						.bind(BubbleSpawnerEntity.class, new BubbleSpawnerEntity(this))
@@ -128,10 +123,6 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 				;
 			}
 		};
-
-		// Debug
-		// mInteractionScoreHudEntity = new InteractionScoreHudEntity(gameFontsManager, mGameResources);
-		//mDebugSandboxEntity = new DebugSandboxEntity(gameTexturesManager, gameSceneTouchListenerEntity, mGameResources);
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package com.wack.pop2.bubbletimeout;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.binder.Binder;
 import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.eventbus.BubbleSpawnedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
@@ -50,9 +49,14 @@ public class BubblesLifecycleManagerEntity extends BaseEntity implements EventBu
             bubbleSprite.addOnDetachedListener(new OnDetachedListener() {
                 @Override
                 public void onDetached(IEntity entity) {
-                    BubbleLifecycleControllersManager controller = controllersManagerMap.get(bubbleSprite);
-                    controller.onDestroy();
                     bubbleSprite.removeOnDetachedListener(this);
+                    scene.postRunnable(new Runnable() {
+                       @Override
+                       public void run() {
+                           BubbleLifecycleControllersManager controller = controllersManagerMap.get(bubbleSprite);
+                           controller.onDestroy();
+                       }
+                   });
                 }
             });
         }

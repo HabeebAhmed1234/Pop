@@ -7,7 +7,6 @@ import android.util.Pair;
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameFixtureDefs;
 import com.wack.pop2.TouchPopperFactoryEntity;
-import com.wack.pop2.binder.Binder;
 import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.collision.CollisionFilters;
 import com.wack.pop2.entitymatchers.BubblesEntityMatcher;
@@ -41,6 +40,7 @@ import java.util.Random;
 
 import static com.wack.pop2.GameConstants.MAX_BUBBLES_ON_SCREEN;
 import static com.wack.pop2.GameConstants.MAX_BUBBLES_PER_SPAWN;
+import static com.wack.pop2.GameConstants.MAX_SPAWN_INTERVAL;
 
 public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscriber {
 
@@ -85,7 +85,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         }
     }
 
-    private float bubbleSpawnInterval = 5;
+    private float bubbleSpawnInterval = MAX_SPAWN_INTERVAL;
     private TimerHandler bubbleSpawnTimerHandler = new TimerHandler(
             bubbleSpawnInterval,
             false,
@@ -102,7 +102,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
                             spawnStartingBubble(position.first, position.second);
                         }
                     }
-                    //engine.registerUpdateHandler(new TimerHandler(bubbleSpawnInterval, false, this));
+                    engine.registerUpdateHandler(new TimerHandler(bubbleSpawnInterval, false, this));
                 }
             });
 

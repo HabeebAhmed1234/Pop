@@ -2,6 +2,7 @@ package org.andengine.entity.particle.modifier;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.particle.Particle;
+import org.andengine.util.color.AndengineColor;
 import org.andengine.util.modifier.ease.EaseLinear;
 import org.andengine.util.modifier.ease.IEaseFunction;
 
@@ -24,6 +25,10 @@ public class ColorParticleModifier<T extends IEntity> extends BaseTripleValueSpa
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+
+	public ColorParticleModifier(final float pFromTime, final float pToTime, AndengineColor fromColor, AndengineColor toColor) {
+		this(pFromTime, pToTime, fromColor.getRed(), toColor.getRed(), fromColor.getGreen(), toColor.getGreen(), fromColor.getBlue(), toColor.getBlue(), EaseLinear.getInstance());
+	}
 
 	public ColorParticleModifier(final float pFromTime, final float pToTime, final float pFromRed, final float pToRed, final float pFromGreen, final float pToGreen, final float pFromBlue, final float pToBlue) {
 		this(pFromTime, pToTime, pFromRed, pToRed, pFromGreen, pToGreen, pFromBlue, pToBlue, EaseLinear.getInstance());
