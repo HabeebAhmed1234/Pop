@@ -42,7 +42,7 @@ import static org.andengine.input.touch.TouchEvent.ACTION_UP;
 /**
  * Depending on if walls are toggled on allows for the creation of walls on the screen
  */
-public class WallsCreatorBaseEntity extends BaseEntity implements GameSceneTouchListenerEntity.SceneTouchListener {
+public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchListenerEntity.SceneTouchListener {
 
     private static final float WALL_HEIGHT_PX = 30;
     private static final float MAX_WALL_WIDTH = 500;
@@ -54,7 +54,7 @@ public class WallsCreatorBaseEntity extends BaseEntity implements GameSceneTouch
     private WallEntityUserData userData;
     private Line wallSprite;
 
-    public WallsCreatorBaseEntity(BinderEnity parent) {
+    public WallsCreatorEntity(BinderEnity parent) {
         super(parent);
     }
 

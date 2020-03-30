@@ -5,47 +5,71 @@ import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.modifier.BaseDurationModifier;
 
+import javax.annotation.Nullable;
 import javax.microedition.khronos.opengles.GL10;
 
-import androidx.core.util.Preconditions;
-
 /**
- * Blinks the given entity on and off (alpha 1 or 0) for a specified duration.
+ * Splines between the given alpha values for the specified duration with an equal amount of time
+ * between each transition.
  */
 class BlinkerModifier extends BaseDurationModifier<IEntity> implements IEntityModifier{
 
-    private float blinkInterval;
-    private float blinkSpan;
+    /**
+     * Callback everytime we start a new segment. First callback is at 1 last callback is
+     * at alphas.length
+     */
+    public interface NewSegmentCallback {
+        void onNewSegment(int segment);
+    }
 
-    private float lastOffEventTime = 0;
+    private float[] alphas;
+
+    private float segmentLength = 0;
+    private int nextAlphaIndex = 1;
+
+    @Nullable private NewSegmentCallback newSegmentCallback;
 
     /**
-     * @param blinkInterval the ammount of time between the start of each blink
-     * @param blinkSpan the duration of each blink
+     * @param alphas the alpha values to spline between
      * @param blinkingDuration the total duration we should be binking the entity for
      */
-    public BlinkerModifier(float blinkInterval, float blinkSpan, float blinkingDuration) {
+    public BlinkerModifier(float[] alphas, float blinkingDuration, NewSegmentCallback newSegmentCallback) {
         super(blinkingDuration);
-        Preconditions.checkArgument(blinkInterval > blinkSpan);
-        this.blinkInterval = blinkInterval;
-        this.blinkSpan = blinkSpan;
+        this.alphas = alphas;
+        this.newSegmentCallback = newSegmentCallback;
     }
 
     public BlinkerModifier(BlinkerModifier other) {
         super(other.mDuration);
-        this.blinkInterval = other.blinkInterval;
-        this.blinkSpan = other.blinkSpan;
+        this.alphas = other.alphas;
+        this.newSegmentCallback = other.newSegmentCallback;
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        segmentLength = 0;
+        nextAlphaIndex = 1;
     }
 
     @Override
     protected void onManagedUpdate(float secondsElapsed, IEntity item) {
         final float elapsed = getSecondsElapsed();
-        float timeSinceLastOffEvent = elapsed - lastOffEventTime;
-        if (timeSinceLastOffEvent > blinkSpan && item.getAlpha() == 0) {
-            item.setAlpha(1);
-        } else  if (timeSinceLastOffEvent > blinkInterval && item.getAlpha() == 1) {
-            item.setAlpha(0);
-            lastOffEventTime = elapsed;
+
+        float elapsedSinceLastAlpha = elapsed - (nextAlphaIndex - 1) * segmentLength;
+
+        float percentDoneCurrentSegment = elapsedSinceLastAlpha / segmentLength;
+        float lastAlpha = alphas[nextAlphaIndex - 1];
+        float currentAlphaRange = nextAlphaIndex >= alphas.length ? 0 : alphas[nextAlphaIndex] - alphas[nextAlphaIndex - 1];
+
+        float currentAlpha = lastAlpha + currentAlphaRange * percentDoneCurrentSegment;
+
+        item.setAlpha(currentAlpha);
+        if (elapsedSinceLastAlpha > segmentLength) {
+            if (newSegmentCallback != null) {
+                newSegmentCallback.onNewSegment(nextAlphaIndex);
+            }
+            nextAlphaIndex ++;
         }
     }
 
@@ -53,7 +77,13 @@ class BlinkerModifier extends BaseDurationModifier<IEntity> implements IEntityMo
     protected void onManagedInitialize(IEntity item) {
         Sprite itemSprite = (Sprite) item;
         itemSprite.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-        itemSprite.setAlpha(1);
+        itemSprite.setAlpha(alphas[0]);
+        segmentLength = getDuration() / alphas.length;
+    }
+
+    @Override
+    protected void onModifierFinished(IEntity pItem) {
+        super.onModifierFinished(pItem);
     }
 
     @Override

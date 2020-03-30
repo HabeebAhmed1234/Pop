@@ -13,7 +13,7 @@ import com.wack.pop2.binder.Binder;
 import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.bubblepopper.BufferedBubblePopperBaseEntity;
 import com.wack.pop2.bubblespawn.BubbleSpawnerEntity;
-import com.wack.pop2.bubbletimeout.BubblesLifecycleManagerBaseEntity;
+import com.wack.pop2.bubbletimeout.BubblesLifecycleManagerEntity;
 import com.wack.pop2.difficulty.GameDifficultyBaseEntity;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.gamesettings.GamePreferencesEntity;
@@ -111,7 +111,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 						.bind(GameDifficultyBaseEntity.class, new GameDifficultyBaseEntity(this))
 
 						.bind(GameOverSequenceBaseEntity.class, new GameOverSequenceBaseEntity(this))
-						.bind(BubblesLifecycleManagerBaseEntity.class, new BubblesLifecycleManagerBaseEntity(this))
+						.bind(BubblesLifecycleManagerEntity.class, new BubblesLifecycleManagerEntity(this))
 						.bind(TouchPopperFactoryEntity.class, new TouchPopperFactoryEntity(this))
 						.bind(BubbleSpawnerEntity.class, new BubbleSpawnerEntity(this))
 

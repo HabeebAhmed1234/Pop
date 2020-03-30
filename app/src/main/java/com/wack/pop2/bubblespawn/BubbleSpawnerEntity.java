@@ -94,6 +94,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
                 public void onTimePassed(TimerHandler pTimerHandler) {
                     if (!isBubbleLimitReached()) {
                         int numBubbles = (int) (Math.random() * MAX_BUBBLES_PER_SPAWN);
+                        if (numBubbles == 0) numBubbles = 1;
                         List<Pair<Float, Float>> startingBubblePositions = BubblePacker.getSpawnBubblesLocations(
                                 numBubbles,
                                 ScreenUtils.dpToPx(BubbleSize.LARGE.sizeDp, get(Context.class)));
@@ -101,7 +102,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
                             spawnStartingBubble(position.first, position.second);
                         }
                     }
-                    engine.registerUpdateHandler(new TimerHandler(bubbleSpawnInterval, false, this));
+                    //engine.registerUpdateHandler(new TimerHandler(bubbleSpawnInterval, false, this));
                 }
             });
 

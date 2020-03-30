@@ -16,11 +16,11 @@ import org.andengine.entity.sprite.Sprite;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BubblesLifecycleManagerBaseEntity extends BaseEntity implements EventBus.Subscriber {
+public class BubblesLifecycleManagerEntity extends BaseEntity implements EventBus.Subscriber {
 
     private Map<Sprite, BubbleLifecycleControllersManager> controllersManagerMap = new HashMap<>();
 
-    public BubblesLifecycleManagerBaseEntity(BinderEnity parent) {
+    public BubblesLifecycleManagerEntity(BinderEnity parent) {
         super(parent);
     }
 

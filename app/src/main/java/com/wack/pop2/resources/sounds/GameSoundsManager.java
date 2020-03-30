@@ -40,8 +40,8 @@ public class GameSoundsManager extends BaseEntity {
             loadSound(SoundId.PUFF,"puff.wav");
             loadSound(SoundId.CLICK_UP,"click_up.wav");
             loadSound(SoundId.CLICK_DOWN,"click_down.wav");
-            loadSound(SoundId.HAMMER_UP,"hammer_up.wav");
-            loadSound(SoundId.HAMMER_DOWN,"hammer_down.wav");
+            loadSound(SoundId.HAMMER_UP,"hammer_up.wav", 0.5f);
+            loadSound(SoundId.HAMMER_DOWN,"hammer_down.wav", 0.5f);
             loadSound(SoundId.SCRAP,"scrap.wav");
             loadSound(SoundId.NUKE_START,"nuke_start.wav");
             loadSound(SoundId.BEEP,"beep.wav");
@@ -53,7 +53,13 @@ public class GameSoundsManager extends BaseEntity {
     }
 
     private void loadSound(SoundId soundId, String path) throws IOException {
-        mSounds.put(soundId, SoundFactory.createSoundFromAsset(get(SoundManager.class), get(Context.class), path));
+        loadSound(soundId, path, 1.0f);
+    }
+
+    private void loadSound(SoundId soundId, String path, float volume) throws IOException {
+        Sound sound = SoundFactory.createSoundFromAsset(get(SoundManager.class), get(Context.class), path);
+        sound.setVolume(volume);
+        mSounds.put(soundId, sound);
     }
 
     public Sound getSound(SoundId soundId) {
