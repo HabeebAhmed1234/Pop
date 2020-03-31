@@ -1,16 +1,19 @@
 package com.wack.pop2.bubbletimeout;
 
 import com.wack.pop2.statemachine.BaseStateMachine;
+import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
+import org.andengine.entity.sprite.Sprite;
 
 import static com.wack.pop2.bubbletimeout.BubbleLifeCycleStateMachine.State.BLINKING_FAST;
 import static com.wack.pop2.bubbletimeout.BubbleLifeCycleStateMachine.State.BLINKING_IMMINENT;
 import static com.wack.pop2.bubbletimeout.BubbleLifeCycleStateMachine.State.BLINKING_SLOWLY;
 import static com.wack.pop2.bubbletimeout.BubbleLifeCycleStateMachine.State.EXPLODING;
+import static com.wack.pop2.bubbletimeout.BubbleLifeCycleStateMachine.State.STABLE;
 
 /**
  * Responsible for transitioning the bubble's state machine through its lifecycle
@@ -19,10 +22,12 @@ class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, Base
 
     private final Engine engine;
     private final BubbleLifeCycleStateMachine stateMachine;
+    private final Sprite bubbleSprite;
 
     private IUpdateHandler currentStateTransition;
 
-    BubbleLifecycleTransitionDriver(Engine engine, BubbleLifeCycleStateMachine stateMachine) {
+    BubbleLifecycleTransitionDriver(Sprite bubbleSprite, Engine engine, BubbleLifeCycleStateMachine stateMachine) {
+        this.bubbleSprite = bubbleSprite;
         this.engine = engine;
         this.stateMachine = stateMachine;
         addListeners();
@@ -65,7 +70,17 @@ class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, Base
                 break;
         }
         if (nextState != null) {
-            currentStateTransition = new TimerHandler(newState.duration, new NextStateDriver(nextState));
+            float[] bubbleCenter = bubbleSprite.getCenter();
+            if (nextState == BLINKING_SLOWLY && !ScreenUtils.getScreenRect().contains(bubbleCenter[0], bubbleCenter[1])) {
+                // Only transition to BLINKING_SLOWLY if the bubble is on the screen.
+                currentStateTransition = new TimerHandler(STABLE.duration, new NextStateDriver(STABLE));
+            } else if (nextState == EXPLODING && bubbleSprite.getY() > ScreenUtils.getSreenSize().heightPx) {
+                // If the bubble has already passed the bottom of the screen it shouldn't explode
+                // Should just disappear
+                return;
+            } else {
+                currentStateTransition = new TimerHandler(newState.duration, new NextStateDriver(nextState));
+            }
             engine.registerUpdateHandler(currentStateTransition);
         }
     }

@@ -33,7 +33,7 @@ class BubbleLifecycleControllersManager {
     private void initControllers(GameSoundsManager soundsManager, Engine engine, Sprite bubbleSprite) {
         BubbleLifeCycleStateMachine stateMachine = new BubbleLifeCycleStateMachine();
         lifecycleControllers.add(new BubbleBlinkAnimationManager(bubbleSprite, stateMachine, soundsManager));
-        lifecycleControllers.add(new BubbleLifecycleTransitionDriver(engine, stateMachine));
+        lifecycleControllers.add(new BubbleLifecycleTransitionDriver(bubbleSprite, engine, stateMachine));
         lifecycleControllers.add(new BubbleLifecycleGameOverEntity(bubbleSprite, stateMachine));
     }
 }

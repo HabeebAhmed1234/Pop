@@ -14,6 +14,7 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 
+import android.graphics.RectF;
 import android.opengl.GLES20;
 
 /**
@@ -114,6 +115,10 @@ public class Sprite extends RectangularShape {
 		this.onUpdateVertices();
 		this.onUpdateColor();
 		this.onUpdateTextureCoordinates();
+	}
+
+	public float[] getCenter() {
+		return new float[] {getX() + getWidthScaled() / 2, getY() + getHeightScaled() / 2};
 	}
 
 	// ===========================================================

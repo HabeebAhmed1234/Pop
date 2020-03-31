@@ -79,7 +79,7 @@ public abstract class IconBaseEntity extends BaseEntity implements EventBus.Subs
 
     private void createIcon() {
         iconSprite = new Sprite(
-                0,
+                -1000,
                 0,
                 get(GameTexturesManager.class).getTextureRegion(getIconTextureId()),
                 vertexBufferObjectManager);
