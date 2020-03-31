@@ -40,8 +40,8 @@ public class GameSoundsManager extends BaseEntity {
             loadSound(SoundId.PUFF,"puff.wav");
             loadSound(SoundId.CLICK_UP,"click_up.wav");
             loadSound(SoundId.CLICK_DOWN,"click_down.wav");
-            loadSound(SoundId.HAMMER_UP,"hammer_up.wav", 0.5f);
-            loadSound(SoundId.HAMMER_DOWN,"hammer_down.wav", 0.5f);
+            loadSound(SoundId.HAMMER_UP,"hammer_up.wav", 0.25f);
+            loadSound(SoundId.HAMMER_DOWN,"hammer_down.wav", 0.25f);
             loadSound(SoundId.SCRAP,"scrap.wav");
             loadSound(SoundId.NUKE_START,"nuke_start.wav");
             loadSound(SoundId.BEEP,"beep.wav", 0.7f);

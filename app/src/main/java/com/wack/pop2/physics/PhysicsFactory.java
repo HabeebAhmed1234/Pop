@@ -140,15 +140,24 @@ public class PhysicsFactory {
 		return boxBody;
 	}
 
+	public static Body createCircleBody(final PhysicsWorld pPhysicsWorld, final IAreaShape pAreaShape, final float radiusScaleFactor, final BodyType pBodyType, final FixtureDef pFixtureDef) {
+		return PhysicsFactory.createCircleBody(pPhysicsWorld, pAreaShape, radiusScaleFactor, pBodyType, pFixtureDef, PIXEL_TO_METER_RATIO_DEFAULT);
+	}
+
+
 	public static Body createCircleBody(final PhysicsWorld pPhysicsWorld, final IAreaShape pAreaShape, final BodyType pBodyType, final FixtureDef pFixtureDef) {
 		return PhysicsFactory.createCircleBody(pPhysicsWorld, pAreaShape, pBodyType, pFixtureDef, PIXEL_TO_METER_RATIO_DEFAULT);
 	}
 
 	public static Body createCircleBody(final PhysicsWorld pPhysicsWorld, final IAreaShape pAreaShape, final BodyType pBodyType, final FixtureDef pFixtureDef, final float pPixelToMeterRatio) {
+		return createCircleBody(pPhysicsWorld, pAreaShape, 1, pBodyType, pFixtureDef, pPixelToMeterRatio);
+	}
+
+	public static Body createCircleBody(final PhysicsWorld pPhysicsWorld, final IAreaShape pAreaShape, final float radiusScaleFactor, final BodyType pBodyType, final FixtureDef pFixtureDef, final float pPixelToMeterRatio) {
 		final float[] sceneCenterCoordinates = pAreaShape.getSceneCenterCoordinates();
 		final float centerX = sceneCenterCoordinates[Constants.VERTEX_INDEX_X];
 		final float centerY = sceneCenterCoordinates[Constants.VERTEX_INDEX_Y];
-		return PhysicsFactory.createCircleBody(pPhysicsWorld, centerX, centerY, pAreaShape.getWidthScaled() * 0.5f, pAreaShape.getRotation(), pBodyType, pFixtureDef, pPixelToMeterRatio);
+		return PhysicsFactory.createCircleBody(pPhysicsWorld, centerX, centerY, pAreaShape.getWidthScaled() * 0.5f * radiusScaleFactor, pAreaShape.getRotation(), pBodyType, pFixtureDef, pPixelToMeterRatio);
 	}
 
 	public static Body createCircleBody(final PhysicsWorld pPhysicsWorld, final float pCenterX, final float pCenterY, final float pRadius, final BodyType pBodyType, final FixtureDef pFixtureDef) {

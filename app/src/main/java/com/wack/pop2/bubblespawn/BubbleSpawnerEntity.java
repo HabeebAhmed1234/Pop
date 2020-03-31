@@ -45,6 +45,8 @@ import static com.wack.pop2.GameConstants.MAX_SPAWN_INTERVAL;
 public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscriber {
 
     private static final float BUBBLE_GRAVITY_SCALE = 0.5f;
+    // Value to define how much smaller as a percentage the bubble physics circle will be from the sprite
+    private static final float BUBBLE_PHYSICS_BODY_SCALE_FACTOR = 0.8f;
 
     public enum BubbleType {
         RED,
@@ -149,8 +151,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         final BaseEntityUserData userData = getBubbleUserData(bubbleSprite, bubbleType, bubbleSize);
         bubbleSprite.setUserData(userData);
         float bubbleSizePx = ScreenUtils.dpToPx(bubbleSize.sizeDp, get(Context.class));
-        bubbleSprite.setWidth(bubbleSizePx);
-        bubbleSprite.setHeight(bubbleSizePx);
+        bubbleSprite.setScale(bubbleSizePx / bubbleSprite.getWidthScaled());
 
         // If the bubble's right or left edge will clip outside of the screen horizontal bounds
         // We need to adjust the bubble position
@@ -159,7 +160,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         final FixtureDef bubbleFixtureDef = GameFixtureDefs.BASE_BUBBLE_FIXTURE_DEF;
         bubbleFixtureDef.setFilter(CollisionFilters.BUBBLE_FILTER);
         bubbleFixtureDef.setUserData(userData);
-        final Body body = PhysicsFactory.createCircleBody(physicsWorld, bubbleSprite, BodyType.DYNAMIC, bubbleFixtureDef);
+        final Body body = PhysicsFactory.createCircleBody(physicsWorld, bubbleSprite, 0.8f, BodyType.DYNAMIC, bubbleFixtureDef);
         body.setGravityScale(BUBBLE_GRAVITY_SCALE);
         addToSceneWithTouch(bubbleSprite, body, get(TouchPopperFactoryEntity.class).getNewTouchBubblePopper());
         notifyBubbleSpawned(bubbleSprite);
