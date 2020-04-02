@@ -35,7 +35,7 @@ import org.jbox2d.dynamics.joints.MouseJointDef;
 import static com.wack.pop2.eventbus.GameEvent.TURRET_BULLET_POPPED_BUBBLE;
 import static com.wack.pop2.utils.GeometryUtils.getAngleOfCenters;
 
-public class TurretBulletBaseEntity extends BaseEntity implements EventBus.Subscriber {
+public class TurretBulletEntity extends BaseEntity implements EventBus.Subscriber {
 
     private static final float MOUSE_JOINT_DAMPING_RATIO = 0f;
     private static final float MOUSE_JOINT_FREQUENCY = 100;
@@ -76,7 +76,7 @@ public class TurretBulletBaseEntity extends BaseEntity implements EventBus.Subsc
         }
     });
 
-    public TurretBulletBaseEntity(Sprite targetBubble, BinderEnity parent) {
+    public TurretBulletEntity(Sprite targetBubble, BinderEnity parent) {
         super(parent);
         this.targetBubble = targetBubble;
         targetBubble.addOnDetachedListener(targetBubbleOnDetachedListener);

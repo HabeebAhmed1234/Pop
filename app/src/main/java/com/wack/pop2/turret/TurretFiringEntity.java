@@ -1,7 +1,6 @@
 package com.wack.pop2.turret;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.binder.Binder;
 import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
@@ -41,7 +40,7 @@ public class TurretFiringEntity extends BaseEntity {
         stateMachine.transitionState(TurretStateMachine.State.FIRING);
 
         // Fire the bullet
-        TurretBulletBaseEntity bulletEntity = new TurretBulletBaseEntity(target, this);
+        TurretBulletEntity bulletEntity = new TurretBulletEntity(target, this);
         // Set timer to enable us to fire again after a delay
         engine.registerUpdateHandler(
                 new TimerHandler(TURRETS_FIRING_DELAY_SECONDS,
