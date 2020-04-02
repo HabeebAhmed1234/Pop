@@ -51,9 +51,6 @@ public class BubblePopperEntity extends BaseEntity implements BubblePopper, Even
 
     @Override
     public void popBubble(IShape previousBubble, BubbleSpawnerEntity.BubbleSize oldBubbleSize, BubbleSpawnerEntity.BubbleType bubbleType) {
-        // Remove the popped bubble
-        removeFromScene(previousBubble);
-
         // Play the pop sound
         getRandomPopSound().play();
 
@@ -65,6 +62,9 @@ public class BubblePopperEntity extends BaseEntity implements BubblePopper, Even
 
         // Increment the score
         increaseScore(oldBubbleScenePosition.x, oldBubbleScenePosition.y);
+
+        // Remove the popped bubble
+        removeFromScene(previousBubble);
     }
 
     /**

@@ -52,6 +52,8 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	private static final int PAUSE_ACTIVITY_REQUEST_CODE = 1;
 
 	private ShakeCamera camera;
+	private GameLifeCycleCalllbackManager gameLifeCycleCalllbackManager;
+
 	BinderEnity mRootBinder;
 
 	public static Intent newIntent(Context context) {
@@ -62,7 +64,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	protected void onCreate(Bundle pSavedInstanceState) {
 		super.onCreate(pSavedInstanceState);
 		EventBus.init();
-		GameLifeCycleCalllbackManager.init();
+		gameLifeCycleCalllbackManager = new GameLifeCycleCalllbackManager();
 
 		// The root binder
 		mRootBinder = new BinderEnity(null) {
@@ -70,6 +72,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 			@Override
 			protected void createBindings(Binder binder) {
 				binder
+						.bind(GameLifeCycleCalllbackManager.class, gameLifeCycleCalllbackManager)
 						.bind(GameResources.class, GameResources.createNew(GameActivity.this, GameActivity.this))
 						.bind(FontManager.class, getFontManager())
 						.bind(TextureManager.class, getTextureManager())
@@ -163,13 +166,13 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	@Override
 	public void onCreateResources() {
 		ScreenUtils.onCreateResources(getVertexBufferObjectManager());
-		GameLifeCycleCalllbackManager.getInstance().onCreateResources();
+		gameLifeCycleCalllbackManager.onCreateResources();
 		onPauseGame();
 	}
 
 	@Override
 	public Scene onCreateScene() {
-		GameLifeCycleCalllbackManager.getInstance().onCreateScene();
+		gameLifeCycleCalllbackManager.onCreateScene();
 		return mRootBinder.get(GameResources.class).scene;
 	}
 
@@ -198,9 +201,9 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		GameLifeCycleCalllbackManager.getInstance().onDestroy();
+		gameLifeCycleCalllbackManager.onDestroy();
 		EventBus.destroy();
-		GameLifeCycleCalllbackManager.destroy();
+		gameLifeCycleCalllbackManager = null;
 	}
 
 	@Override

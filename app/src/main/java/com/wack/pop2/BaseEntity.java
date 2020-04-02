@@ -1,6 +1,7 @@
 package com.wack.pop2;
 
 import com.wack.pop2.binder.BinderEnity;
+import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.physics.PhysicsConnector;
 import com.wack.pop2.physics.PhysicsWorld;
 import com.wack.pop2.utils.ScreenUtils;
@@ -44,7 +45,7 @@ public abstract class BaseEntity extends BinderEnity implements GameLifeCycleCal
         this.hostActivity = gameResources.hostActivity;
         this.levelWidth = ScreenUtils.getSreenSize().widthPx;
         this.levelHeight = ScreenUtils.getSreenSize().heightPx;
-        GameLifeCycleCalllbackManager.getInstance().registerGameEntity(this);
+        get(GameLifeCycleCalllbackManager.class).registerGameEntity(this);
     }
 
     /**
@@ -57,7 +58,9 @@ public abstract class BaseEntity extends BinderEnity implements GameLifeCycleCal
     public void onCreateScene() {}
 
     @Override
-    public void onDestroy() {}
+    public void onDestroy() {
+        get(GameLifeCycleCalllbackManager.class).unRegisterGameEntity(this);
+    }
 
     protected void addToSceneWithTouch(IEntity parentEntity, IAreaShape childSprite, IOnAreaTouchListener areaTouchListener) {
         setUpTouch(childSprite, areaTouchListener);
@@ -123,6 +126,11 @@ public abstract class BaseEntity extends BinderEnity implements GameLifeCycleCal
             scene.unregisterTouchArea((ITouchArea) entity);
         }
         scene.detachChild(entity);
+        Object userData = entity.getUserData();
+        if (userData instanceof BaseEntityUserData) {
+            ((BaseEntityUserData)userData).reset();
+        }
+        entity.setUserData(null);
     }
 
     private void setUpTouch(IAreaShape shape, IOnAreaTouchListener areaTouchListener) {

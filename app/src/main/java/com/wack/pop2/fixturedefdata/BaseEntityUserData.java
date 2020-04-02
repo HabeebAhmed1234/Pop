@@ -17,4 +17,8 @@ public abstract class BaseEntityUserData {
     public int getId() {
         return id;
     }
+
+    public void reset() {
+        id = 0;
+    }
 }

@@ -85,7 +85,6 @@ public class GameOverSequenceEntity extends BaseEntity {
 
         get(GameSoundsManager.class).getSound(SoundId.EXPOSION).play();
         get(ShakeCamera.class).shake(3, 4);
-        removeFromScene(bubble);
 
         scene.registerUpdateHandler(new TimerHandler(EXPLOSION_DURATION_SECONDS, new ITimerCallback() {
             @Override
@@ -94,6 +93,8 @@ public class GameOverSequenceEntity extends BaseEntity {
                 onGameover();
             }
         }));
+
+        removeFromScene(bubble);
     }
 
     private void onGameover() {

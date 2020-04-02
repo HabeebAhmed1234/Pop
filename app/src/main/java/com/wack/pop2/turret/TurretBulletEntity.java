@@ -180,10 +180,17 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
         unregisterUpdateHandlers();
         if (targetBubble != null) {
             targetBubble.removeOnDetachedListener(targetBubbleOnDetachedListener);
+            targetBubble = null;
         }
         get(BulletExplosionsBaseEntity.class).explode(
                 bulletSprite.getX() + bulletSprite.getWidthScaled() / 2,
                 bulletSprite.getY() + bulletSprite.getHeightScaled() / 2);
         removeFromScene(bulletBody);
+
+        physicsWorld.destroyBody(targetingMouseJoint.getBodyA());
+        physicsWorld.destroyBody(targetingMouseJoint.getBodyB());
+        physicsWorld.destroyJoint(targetingMouseJoint);
+        bulletSprite = null;
+        bulletBody = null;
     }
 }

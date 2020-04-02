@@ -33,35 +33,14 @@ public class GameLifeCycleCalllbackManager {
 
     private final Queue<BaseEntity> gameEntities = new ConcurrentLinkedQueue<>();
 
-    private static GameLifeCycleCalllbackManager sInstance;
-
-    private GameLifeCycleCalllbackManager() {}
-
-    /**
-     * Called when the game scene is first created
-     */
-    public static void init() {
-        sInstance = new GameLifeCycleCalllbackManager();
-
-    }
-
-    public static GameLifeCycleCalllbackManager getInstance() {
-        if (sInstance == null) {
-            throw new IllegalStateException("Cannot retrieve instance of GameLifeCycleCalllbackManager before init is called!");
-        }
-        return sInstance;
-    }
-
-    public static void destroy() {
-        if (sInstance == null) {
-            throw new IllegalStateException("Cannot destroy GameLifeCycleCalllbackManager if it doesn't exist. Make a new one first");
-        }
-        sInstance = null;
-
-    }
+    public GameLifeCycleCalllbackManager() {}
 
     public void registerGameEntity(BaseEntity baseEntity) {
         gameEntities.add(baseEntity);
+    }
+
+    public void unRegisterGameEntity(BaseEntity baseEntity) {
+        gameEntities.remove(baseEntity);
     }
 
     public void onCreateResources() {

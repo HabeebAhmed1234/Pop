@@ -10,10 +10,10 @@ import androidx.annotation.Nullable;
 
 public class BubbleEntityUserData extends BaseEntityUserData {
 
-    public final boolean isScoreLossBubble;
-    public final BubbleSpawnerEntity.BubbleSize size;
-    public final BubbleType bubbleType;
-    public final IShape bubbleSprite;
+    public boolean isScoreLossBubble;
+    public BubbleSpawnerEntity.BubbleSize size;
+    public BubbleType bubbleType;
+    public IShape bubbleSprite;
 
     public boolean isTargeted;
 
@@ -46,5 +46,14 @@ public class BubbleEntityUserData extends BaseEntityUserData {
                 ((BubbleEntityUserData) userdata).isTargeted = isTargeted;
             }
         }
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        isScoreLossBubble = false;
+        size = null;
+        bubbleType = null;
+        bubbleSprite = null;
     }
 }
