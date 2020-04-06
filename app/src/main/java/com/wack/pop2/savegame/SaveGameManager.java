@@ -18,7 +18,7 @@ public class SaveGameManager {
     public static ListenableFuture<SaveGame> loadGame(Context context) {
         String saveGameJson = GamePreferencesManager.getString(context, LOCAL_SAVE_GAME_DEBUG_KEY);
         if (TextUtils.isEmpty(saveGameJson)) {
-            return null;
+            return Futures.immediateFuture(null);
         }
         return Futures.immediateFuture(new Gson().fromJson(saveGameJson, SaveGame.class));
     }

@@ -22,7 +22,7 @@ public class GameTooltipsEntity extends BaseEntity {
     @Override
     public void onCreateScene() {
         super.onCreateScene();
-        get(TooltipPreferences.class).clearDebug();
+        //get(TooltipPreferences.class).clearDebug();
     }
 
     public void maybeShowTooltip(TooltipId id) {

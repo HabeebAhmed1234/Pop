@@ -7,8 +7,6 @@ import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.eventbus.GameSettingChangedEventPayload;
 
-import java.security.Key;
-
 import static android.content.Context.MODE_PRIVATE;
 
 public class GamePreferencesManager {
@@ -44,7 +42,7 @@ public class GamePreferencesManager {
     }
 
     public static String getString(Context context, final String key) {
-        getSharedPreferences(context).getString(key, "");
+        return getSharedPreferences(context).getString(key, "");
     }
 
     public static boolean getBoolean(Context context, final String key) {
