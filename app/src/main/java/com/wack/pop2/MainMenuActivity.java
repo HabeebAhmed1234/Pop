@@ -7,10 +7,20 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.wack.pop2.savegame.SaveGame;
+import com.wack.pop2.savegame.SaveGameManager;
+
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -31,7 +41,6 @@ public class MainMenuActivity extends AppCompatActivity {
                 startNewGame();
             }
         });
-
         findViewById(R.id.quit_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,11 +48,41 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         });
 
+        setUpLoadGameBtn();
         animateLogo();
     }
 
     private void startNewGame() {
         startActivity(GameActivity.newIntent(this));
+        this.finish();
+    }
+
+    private void setUpLoadGameBtn() {
+        ListenableFuture<SaveGame> saveGameListenableFuture = SaveGameManager.loadGame(this);
+        Futures.addCallback(saveGameListenableFuture, new FutureCallback<SaveGame>() {
+            @Override
+            public void onSuccess(@NullableDecl final SaveGame saveGame) {
+                if (saveGame != null) {
+                    View btn = findViewById(R.id.load_game_btn);
+                    btn.setVisibility(View.VISIBLE);
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startLoadGame(saveGame);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e("MainMenuActivity", "Error loading save game", t);
+            }
+        }, ContextCompat.getMainExecutor(this));
+    }
+
+    private void startLoadGame(SaveGame saveGame) {
+        startActivity(GameActivity.newIntent(saveGame, this));
         this.finish();
     }
 

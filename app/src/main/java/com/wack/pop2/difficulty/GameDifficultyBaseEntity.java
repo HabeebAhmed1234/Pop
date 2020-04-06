@@ -3,8 +3,6 @@ package com.wack.pop2.difficulty;
 import android.util.Log;
 
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.GameResources;
-import com.wack.pop2.binder.Binder;
 import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.eventbus.DifficultyChangedEventPayload;
 import com.wack.pop2.eventbus.EventBus;
@@ -42,7 +40,7 @@ public class GameDifficultyBaseEntity extends BaseEntity {
     @Override
     public void onCreateScene() {
         super.onCreateScene();
-        initialUpdateInterval();
+        initUpdateInterval();
         engine.registerUpdateHandler(updateIntervalUpdater);
     }
 
@@ -52,7 +50,7 @@ public class GameDifficultyBaseEntity extends BaseEntity {
         engine.unregisterUpdateHandler(updateIntervalUpdater);
     }
 
-    public void initialUpdateInterval() {
+    public void initUpdateInterval() {
         EventBus.get().sendEvent(GameEvent.SPAWN_INTERVAL_CHANGED, new DifficultyChangedEventPayload(0));
         EventBus.get().sendEvent(GameEvent.GAME_PROGRESS_CHANGED, new GameProgressEventPayload(0));
     }

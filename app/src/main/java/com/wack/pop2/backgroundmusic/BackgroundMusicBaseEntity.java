@@ -1,13 +1,14 @@
 package com.wack.pop2.backgroundmusic;
 
+import android.content.Context;
+
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.binder.Binder;
 import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.eventbus.GameSettingChangedEventPayload;
-import com.wack.pop2.gamesettings.GamePreferencesEntity;
+import com.wack.pop2.gamesettings.GamePreferencesManager;
 import com.wack.pop2.gamesettings.Setting;
 import com.wack.pop2.resources.music.GameMusicResourceManagerBaseEntity;
 import com.wack.pop2.resources.music.MusicId;
@@ -62,7 +63,7 @@ public class BackgroundMusicBaseEntity extends BaseEntity implements EventBus.Su
     }
 
     private void playMusic(MusicId soundId) {
-        if (get(GamePreferencesEntity.class).getBoolean(Setting.IS_MUSIC_DISABLED_SETTING_BOOLEAN)) {
+        if (GamePreferencesManager.getBoolean(get(Context.class), Setting.IS_MUSIC_DISABLED_SETTING_BOOLEAN)) {
             return;
         }
         stopCurrentMusic();
@@ -93,7 +94,7 @@ public class BackgroundMusicBaseEntity extends BaseEntity implements EventBus.Su
     private void onSettingChanged(GameSettingChangedEventPayload payload) {
         String key = payload.settingKey;
         if (key.equals(Setting.IS_MUSIC_DISABLED_SETTING_BOOLEAN)) {
-            boolean isMusicEnabled = !get(GamePreferencesEntity.class).getBoolean(payload.settingKey);
+            boolean isMusicEnabled = !GamePreferencesManager.getBoolean(get(Context.class), payload.settingKey);
             if (isMusicEnabled) {
                 resume();
             } else {

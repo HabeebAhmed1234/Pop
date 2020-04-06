@@ -8,18 +8,17 @@ import android.view.KeyEvent;
 
 import com.wack.pop2.backgroundmusic.BackgroundMusicBaseEntity;
 import com.wack.pop2.ballandchain.BallAndChainManagerBaseEntity;
-import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.binder.Binder;
+import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.bubblepopper.BufferedBubblePopperBaseEntity;
 import com.wack.pop2.bubblespawn.BubbleSpawnerEntity;
 import com.wack.pop2.bubbletimeout.BubblesLifecycleManagerEntity;
 import com.wack.pop2.difficulty.GameDifficultyBaseEntity;
 import com.wack.pop2.eventbus.EventBus;
-import com.wack.pop2.gamesettings.GamePreferencesEntity;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.hudentities.ScoreHudEntity;
 import com.wack.pop2.hudentities.TimerHudEntity;
-import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.interaction.InteractionCounter;
 import com.wack.pop2.nuke.NukeManagerBaseEntity;
 import com.wack.pop2.resources.fonts.GameFontsManager;
@@ -27,6 +26,8 @@ import com.wack.pop2.resources.music.GameMusicResourceManagerBaseEntity;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
 import com.wack.pop2.resources.textures.GameTexturesManager;
+import com.wack.pop2.savegame.SaveGame;
+import com.wack.pop2.savegame.SaveGameManager;
 import com.wack.pop2.settingstray.GamePauseQuickSettingsIconBaseEntity;
 import com.wack.pop2.settingstray.GameQuickSettingsHostTrayBaseEntity;
 import com.wack.pop2.settingstray.MusicQuickSettingIconBaseEntity;
@@ -49,6 +50,7 @@ import org.andengine.ui.activity.SimpleBaseGameActivity;
 
 public class GameActivity extends SimpleBaseGameActivity implements HostActivityInterface, IAccelerationListener, GamePauser {
 
+	public static final String SAVE_GAME_EXTRA = "save_game";
 	private static final int PAUSE_ACTIVITY_REQUEST_CODE = 1;
 
 	private ShakeCamera camera;
@@ -56,6 +58,11 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 	BinderEnity mRootBinder;
 
+	public static Intent newIntent(SaveGame saveGame, Context context) {
+		Intent intent = new Intent(context, GameActivity.class);
+		intent.putExtra(SAVE_GAME_EXTRA, saveGame.toJson());
+		return new Intent(context, GameActivity.class);
+	}
 	public static Intent newIntent(Context context) {
 		return new Intent(context, GameActivity.class);
 	}
@@ -88,7 +95,6 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 						.bind(GameMusicResourceManagerBaseEntity.class, new GameMusicResourceManagerBaseEntity(this))
 						.bind(BackgroundMusicBaseEntity.class, new BackgroundMusicBaseEntity(this))
 						.bind(GameFontsManager.class, new GameFontsManager(this))
-						.bind(GamePreferencesEntity.class, new GamePreferencesEntity(this))
 						.bind(GameAnimationManager.class, new GameAnimationManager(this))
 						.bind(LevelBaseEntity.class, new LevelBaseEntity(this))
 
@@ -167,12 +173,15 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	public void onCreateResources() {
 		ScreenUtils.onCreateResources(getVertexBufferObjectManager());
 		gameLifeCycleCalllbackManager.onCreateResources();
-		onPauseGame();
 	}
 
 	@Override
 	public Scene onCreateScene() {
 		gameLifeCycleCalllbackManager.onCreateScene();
+		SaveGame saveGame = getSaveGameFromIntent();
+		if (saveGame != null) {
+			gameLifeCycleCalllbackManager.onLoadGame(saveGame);
+		}
 		return mRootBinder.get(GameResources.class).scene;
 	}
 
@@ -201,6 +210,13 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+
+		// Save the game
+		SaveGame newSaveGame = new SaveGame();
+		gameLifeCycleCalllbackManager.onSaveGame(newSaveGame);
+		SaveGameManager.saveGame(this, newSaveGame);
+
+		// Destroy the game
 		gameLifeCycleCalllbackManager.onDestroy();
 		EventBus.destroy();
 		gameLifeCycleCalllbackManager = null;
@@ -211,4 +227,10 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 	@Override
 	public void onAccelerationChanged(AccelerationData pAccelerationData) {}
+
+	private SaveGame getSaveGameFromIntent() {
+		String saveGameJson = getIntent().getStringExtra(SAVE_GAME_EXTRA);
+		SaveGame saveGame = SaveGame.fromJson(saveGameJson);
+		return saveGame;
+	}
 }

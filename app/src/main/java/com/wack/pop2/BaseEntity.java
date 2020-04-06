@@ -4,6 +4,7 @@ import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.fixturedefdata.BaseEntityUserData;
 import com.wack.pop2.physics.PhysicsConnector;
 import com.wack.pop2.physics.PhysicsWorld;
+import com.wack.pop2.savegame.SaveGame;
 import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.engine.Engine;
@@ -53,6 +54,12 @@ public abstract class BaseEntity extends BinderEnity implements GameLifeCycleCal
      */
     @Override
     public void onCreateResources() {}
+
+    @Override
+    public void onSaveGame(SaveGame saveGame) {}
+
+    @Override
+    public void onLoadGame(SaveGame saveGame) {}
 
     @Override
     public void onCreateScene() {}

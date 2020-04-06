@@ -1,9 +1,10 @@
 package com.wack.pop2.tooltips;
 
+import android.content.Context;
+
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.binder.Binder;
 import com.wack.pop2.binder.BinderEnity;
-import com.wack.pop2.gamesettings.GamePreferencesEntity;
+import com.wack.pop2.gamesettings.GamePreferencesManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,19 +20,19 @@ class TooltipPreferences extends BaseEntity {
     public void clearDebug() {
         for (TooltipId tooltipId : TooltipId.values()) {
             cache.clear();
-            get(GamePreferencesEntity.class).set(tooltipId.toString(), false);
+            GamePreferencesManager.set(get(Context.class), tooltipId.toString(), false);
         }
     }
 
     public boolean shouldShowTooltip(TooltipId id) {
         if (!cache.containsKey(id)) {
-            cache.put(id, get(GamePreferencesEntity.class).getBoolean(id.toString()));
+            cache.put(id, GamePreferencesManager.getBoolean(get(Context.class), id.toString()));
         }
         return !cache.get(id);
     }
 
     public void tooltipShown(TooltipId id) {
         cache.put(id, true);
-        get(GamePreferencesEntity.class).set(id.toString(), true);
+        GamePreferencesManager.set(get(Context.class), id.toString(), true);
     }
 }

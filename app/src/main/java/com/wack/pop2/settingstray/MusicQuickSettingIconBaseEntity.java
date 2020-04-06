@@ -1,12 +1,14 @@
 package com.wack.pop2.settingstray;
 
+import android.content.Context;
+
 import com.wack.pop2.binder.Binder;
 import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.eventbus.GameSettingChangedEventPayload;
-import com.wack.pop2.gamesettings.GamePreferencesEntity;
+import com.wack.pop2.gamesettings.GamePreferencesManager;
 import com.wack.pop2.gamesettings.Setting;
 import com.wack.pop2.resources.textures.TextureId;
 import com.wack.pop2.touchlisteners.ButtonUpTouchListener;
@@ -80,11 +82,18 @@ public class MusicQuickSettingIconBaseEntity extends QuickSettingsIconBaseEntity
     }
 
     private void toggleMusicSetting() {
-        GamePreferencesEntity preferencesEntity = get(GamePreferencesEntity.class);
-        preferencesEntity.set(Setting.IS_MUSIC_DISABLED_SETTING_BOOLEAN, !preferencesEntity.getBoolean(Setting.IS_MUSIC_DISABLED_SETTING_BOOLEAN));
+        GamePreferencesManager.set(
+                get(Context.class),
+                Setting.IS_MUSIC_DISABLED_SETTING_BOOLEAN,
+                !GamePreferencesManager.getBoolean(
+                        get(Context.class),
+                        Setting.IS_MUSIC_DISABLED_SETTING_BOOLEAN));
     }
 
     private AndengineColor getSettingIconColor() {
-        return get(GamePreferencesEntity.class).getBoolean(Setting.IS_MUSIC_DISABLED_SETTING_BOOLEAN) ? AndengineColor.RED : AndengineColor.GREEN;
+        return GamePreferencesManager.getBoolean(
+                get(Context.class),
+                Setting.IS_MUSIC_DISABLED_SETTING_BOOLEAN) ?
+                AndengineColor.RED : AndengineColor.GREEN;
     }
 }

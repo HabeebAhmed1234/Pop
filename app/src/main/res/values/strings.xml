@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Pop</string>
     <string name="new_game_text">New Game</string>
+    <string name="load_game_text">Resume Game</string>
     <string name="game_over_text">Game Over</string>
     <string name="options_text">Options</string>
     <string name="quit_text">Quit</string>
