@@ -7,9 +7,9 @@ import com.wack.pop2.binder.BinderEnity;
 /**
  * Holds all the mixins for turret management.
  */
-public class TurretsManagerBaseEntity extends BaseEntity {
+public class TurretsManagerEntity extends BaseEntity {
 
-    public TurretsManagerBaseEntity(BinderEnity parent) {
+    public TurretsManagerEntity(BinderEnity parent) {
         super(parent);
     }
 

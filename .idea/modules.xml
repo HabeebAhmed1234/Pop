@@ -2,6 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Desktop-Pop2.iml" filepath="$PROJECT_DIR$/Desktop-Pop2.iml" group="Pop2" />
+      <module fileurl="file://$PROJECT_DIR$/andengine/Pop-andengine.iml" filepath="$PROJECT_DIR$/andengine/Pop-andengine.iml" group="Pop2/andengine" />
+      <module fileurl="file://$PROJECT_DIR$/app/Pop-app.iml" filepath="$PROJECT_DIR$/app/Pop-app.iml" group="Pop2/app" />
+      <module fileurl="file://$PROJECT_DIR$/jbox2d/Pop-jbox2d.iml" filepath="$PROJECT_DIR$/jbox2d/Pop-jbox2d.iml" group="Pop2/jbox2d" />
       <module fileurl="file://$PROJECT_DIR$/Pop2.iml" filepath="$PROJECT_DIR$/Pop2.iml" />
       <module fileurl="file://$PROJECT_DIR$/andengine/andengine.iml" filepath="$PROJECT_DIR$/andengine/andengine.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />

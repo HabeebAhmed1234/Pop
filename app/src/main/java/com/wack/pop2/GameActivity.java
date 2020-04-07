@@ -14,7 +14,7 @@ import com.wack.pop2.bubblepopper.BubblePopperEntity;
 import com.wack.pop2.bubblepopper.BufferedBubblePopperBaseEntity;
 import com.wack.pop2.bubblespawn.BubbleSpawnerEntity;
 import com.wack.pop2.bubbletimeout.BubblesLifecycleManagerEntity;
-import com.wack.pop2.difficulty.GameDifficultyBaseEntity;
+import com.wack.pop2.difficulty.GameDifficultyEntity;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.hudentities.ScoreHudEntity;
@@ -32,7 +32,7 @@ import com.wack.pop2.settingstray.GamePauseQuickSettingsIconBaseEntity;
 import com.wack.pop2.settingstray.GameQuickSettingsHostTrayBaseEntity;
 import com.wack.pop2.settingstray.MusicQuickSettingIconBaseEntity;
 import com.wack.pop2.tooltips.GameTooltipsEntity;
-import com.wack.pop2.turret.TurretsManagerBaseEntity;
+import com.wack.pop2.turret.TurretsManagerEntity;
 import com.wack.pop2.utils.ScreenUtils;
 import com.wack.pop2.walls.WallsManagerBaseEntity;
 
@@ -61,7 +61,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	public static Intent newIntent(SaveGame saveGame, Context context) {
 		Intent intent = new Intent(context, GameActivity.class);
 		intent.putExtra(SAVE_GAME_EXTRA, saveGame.toJson());
-		return new Intent(context, GameActivity.class);
+		return intent;
 	}
 	public static Intent newIntent(Context context) {
 		return new Intent(context, GameActivity.class);
@@ -112,7 +112,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 						.bind(ScoreHudEntity.class, new ScoreHudEntity(this))
 						.bind(TimerHudEntity.class, new TimerHudEntity(this))
 
-						.bind(GameDifficultyBaseEntity.class, new GameDifficultyBaseEntity(this))
+						.bind(GameDifficultyEntity.class, new GameDifficultyEntity(this))
 						.bind(GameOverSequenceEntity.class, new GameOverSequenceEntity(this))
 						.bind(BubblesLifecycleManagerEntity.class, new BubblesLifecycleManagerEntity(this))
 
@@ -125,7 +125,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 						.bind(GameIconsHostTrayEntity.class, new GameIconsHostTrayEntity(this))
 						.bind(BallAndChainManagerBaseEntity.class, new BallAndChainManagerBaseEntity(this))
-						.bind(TurretsManagerBaseEntity.class, new TurretsManagerBaseEntity(this))
+						.bind(TurretsManagerEntity.class, new TurretsManagerEntity(this))
 						.bind(WallsManagerBaseEntity.class, new WallsManagerBaseEntity(this))
 						.bind(NukeManagerBaseEntity.class, new NukeManagerBaseEntity(this))
 
@@ -205,16 +205,15 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	public void onPauseGame() {
 		super.onPauseGame();
 		this.disableAccelerationSensor();
+		// Save the game
+		SaveGame newSaveGame = new SaveGame();
+		gameLifeCycleCalllbackManager.onSaveGame(newSaveGame);
+		SaveGameManager.saveGame(this, newSaveGame);
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-
-		// Save the game
-		SaveGame newSaveGame = new SaveGame();
-		gameLifeCycleCalllbackManager.onSaveGame(newSaveGame);
-		SaveGameManager.saveGame(this, newSaveGame);
 
 		// Destroy the game
 		gameLifeCycleCalllbackManager.onDestroy();

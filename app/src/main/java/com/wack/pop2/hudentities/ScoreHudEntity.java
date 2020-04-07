@@ -33,6 +33,12 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
     }
 
     @Override
+    public void onSaveGame(SaveGame saveGame) {
+        super.onSaveGame(saveGame);
+        saveGame.score = scoreValue;
+    }
+
+    @Override
     public void onLoadGame(SaveGame saveGame) {
         super.onLoadGame(saveGame);
         setScoreOnLoadGame(saveGame.score);

@@ -12,7 +12,7 @@ import java.util.List;
 public class SaveGame {
 
     public int score;
-    public float difficulty;
+    public float spawnInterval;
     public List<Pair<Float, Float>> turretPostitions;
     public List<Pair<Pair<Float, Float>, Pair<Float, Float>>> wallPositions;
 

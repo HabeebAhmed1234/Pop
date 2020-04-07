@@ -9,6 +9,7 @@ import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.GameEvent;
 import com.wack.pop2.eventbus.GameProgressEventPayload;
 
+import com.wack.pop2.savegame.SaveGame;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 
@@ -20,7 +21,7 @@ import static com.wack.pop2.difficulty.DifficultyConstants.SPAWN_INTERVAL_UPDATE
 /**
  * Controls the game difficulty
  */
-public class GameDifficultyBaseEntity extends BaseEntity {
+public class GameDifficultyEntity extends BaseEntity {
 
     private float currentSpawnInterval = MAX_SPAWN_INTERVAL;
 
@@ -33,7 +34,7 @@ public class GameDifficultyBaseEntity extends BaseEntity {
                 }
             });
 
-    public GameDifficultyBaseEntity(BinderEnity parent) {
+    public GameDifficultyEntity(BinderEnity parent) {
         super(parent);
     }
 
@@ -42,6 +43,18 @@ public class GameDifficultyBaseEntity extends BaseEntity {
         super.onCreateScene();
         initUpdateInterval();
         engine.registerUpdateHandler(updateIntervalUpdater);
+    }
+
+    @Override
+    public void onSaveGame(SaveGame saveGame) {
+        super.onSaveGame(saveGame);
+        saveGame.spawnInterval = currentSpawnInterval;
+    }
+
+    @Override
+    public void onLoadGame(SaveGame saveGame) {
+        super.onLoadGame(saveGame);
+        setCurrentSpawnInterval(saveGame.spawnInterval);
     }
 
     @Override
@@ -56,13 +69,16 @@ public class GameDifficultyBaseEntity extends BaseEntity {
     }
 
     public void updateInterval() {
-        currentSpawnInterval -= SPAWN_INTERVAL_DECREASE_SPEED;
+        setCurrentSpawnInterval(currentSpawnInterval - SPAWN_INTERVAL_DECREASE_SPEED);
+    }
+
+    private void setCurrentSpawnInterval(float newInterval) {
+        currentSpawnInterval = newInterval;
         if (currentSpawnInterval < MIN_SPAWN_INTERVAL) {
             currentSpawnInterval = MIN_SPAWN_INTERVAL;
         }
-        Log.d("state", "currentSpawnInterval = " + currentSpawnInterval);
+        Log.d("GameDifficultyEntity", "currentSpawnInterval = " + currentSpawnInterval);
         EventBus.get().sendEvent(GameEvent.SPAWN_INTERVAL_CHANGED, new DifficultyChangedEventPayload(currentSpawnInterval));
-
         EventBus.get().sendEvent(GameEvent.GAME_PROGRESS_CHANGED, new GameProgressEventPayload(getGameProgress()));
     }
 
