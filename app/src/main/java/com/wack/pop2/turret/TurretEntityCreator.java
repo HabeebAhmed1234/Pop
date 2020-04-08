@@ -2,16 +2,12 @@ package com.wack.pop2.turret;
 
 import android.content.Context;
 
+import android.util.Pair;
 import com.wack.pop2.BaseEntity;
-import com.wack.pop2.GameResources;
-import com.wack.pop2.GameSceneTouchListenerEntity;
-import com.wack.pop2.binder.Binder;
 import com.wack.pop2.binder.BinderEnity;
-import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
-import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.textures.GameTexturesManager;
 import com.wack.pop2.resources.textures.TextureId;
-import com.wack.pop2.tooltips.GameTooltipsEntity;
+import com.wack.pop2.savegame.SaveGame;
 import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.entity.sprite.Sprite;
@@ -31,7 +27,18 @@ public class TurretEntityCreator extends BaseEntity {
         super(parent);
     }
 
-    public TurretBaseEntity createTurret(int centerX, int centerY) {
+    @Override
+    public void onLoadGame(SaveGame saveGame) {
+        super.onLoadGame(saveGame);
+        if (saveGame.turretPostitions != null) {
+            for (Pair<Float, Float> position : saveGame.turretPostitions) {
+                TurretEntity turretEntity = createTurret(position.first, position.second);
+                turretEntity.forceDrop();
+            }
+        }
+    }
+
+    public TurretEntity createTurret(float centerX, float centerY) {
         GameTexturesManager texturesManager = get(GameTexturesManager.class);
         ITextureRegion turretBodyTexture = texturesManager.getTextureRegion(TextureId.BALL);
         ITextureRegion turretCannonTexture = texturesManager.getTextureRegion(TextureId.LINE);
@@ -64,6 +71,6 @@ public class TurretEntityCreator extends BaseEntity {
         turretBodySprite.attachChild(turretCannonSprite);
         turretCannonSprite.setRotationCenter(0f, cannonHeightPx / 2);
 
-        return new TurretBaseEntity(turretBodySprite, turretCannonSprite, this);
+        return new TurretEntity(turretBodySprite, turretCannonSprite, this);
     }
 }

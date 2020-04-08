@@ -7,7 +7,9 @@ import android.util.Pair;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity.IconId;
 import java.util.List;
+import java.util.Map;
 
 public class SaveGame {
 
@@ -15,6 +17,8 @@ public class SaveGame {
     public float spawnInterval;
     public List<Pair<Float, Float>> turretPostitions;
     public List<Pair<Pair<Float, Float>, Pair<Float, Float>>> wallPositions;
+
+    public Map<IconId, Integer> gameIconInventories;
 
     public static SaveGame fromJson(String json) {
         if (TextUtils.isEmpty(json)) {

@@ -1,10 +1,14 @@
 package com.wack.pop2.turret;
 
+import android.util.Pair;
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.binder.Binder;
 import com.wack.pop2.binder.BinderEnity;
+import com.wack.pop2.savegame.SaveGame;
 import com.wack.pop2.statemachine.BaseStateMachine;
 
+import com.wack.pop2.turret.TurretStateMachine.State;
+import java.util.ArrayList;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.color.AndengineColor;
 
@@ -15,12 +19,12 @@ import static com.wack.pop2.turret.TurretsConstants.TURRET_DRAGGING_SCALE_MULTIP
  * turret.
  * Each turret contains a state machine
  */
-public class TurretBaseEntity extends BaseEntity implements HostTurretCallback, BaseStateMachine.Listener<TurretStateMachine.State> {
+public class TurretEntity extends BaseEntity implements HostTurretCallback, BaseStateMachine.Listener<TurretStateMachine.State> {
 
     private Sprite turretBodySprite;
     private Sprite turretCannonSprite;
 
-    public TurretBaseEntity(Sprite turretBodySprite,
+    public TurretEntity(Sprite turretBodySprite,
                             Sprite turretCannonSprite,
                             BinderEnity parent) {
         super(parent);
@@ -64,6 +68,10 @@ public class TurretBaseEntity extends BaseEntity implements HostTurretCallback, 
         get(TurretDraggingManager.class).forceStartDragging(pointerX, pointerY);
     }
 
+    public void forceDrop() {
+        get(TurretStateMachine.class).transitionState(TurretStateMachine.State.TARGETING);
+    }
+
     private void init() {
         get(TurretStateMachine.class).addAllStateTransitionListener(this);
     }
@@ -90,6 +98,19 @@ public class TurretBaseEntity extends BaseEntity implements HostTurretCallback, 
         turretCannonSprite.setColor(color);
 
         updateScale(newState);
+    }
+
+    @Override
+    public void onSaveGame(SaveGame saveGame) {
+        super.onSaveGame(saveGame);
+        if (get(TurretStateMachine.class).getCurrentState() == State.DOCKED) {
+            return;
+        }
+        if (saveGame.turretPostitions == null) {
+            saveGame.turretPostitions = new ArrayList<>();
+        }
+        Pair position  = new Pair<>(turretBodySprite.getX() + turretBodySprite.getWidthScaled() / 2, turretBodySprite.getY() + turretBodySprite.getHeightScaled() / 2);
+        saveGame.turretPostitions.add(position);
     }
 
     private void updateScale(TurretStateMachine.State state) {

@@ -25,7 +25,7 @@ import org.andengine.util.adt.transformation.Transformation;
 import org.andengine.util.color.AndengineColor;
 
 /**
- * The base class for all unlockable tool icons in the game.
+ * The base class for all unlockable {@link GameIconsHostTrayEntity} icons in the game.
  */
 public abstract class IconBaseEntity extends BaseEntity implements EventBus.Subscriber {
 

@@ -1,9 +1,12 @@
 package com.wack.pop2.icons;
 
 import com.wack.pop2.binder.BinderEnity;
+import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity.IconId;
 import com.wack.pop2.resources.fonts.FontId;
 import com.wack.pop2.resources.fonts.GameFontsManager;
 
+import com.wack.pop2.savegame.SaveGame;
+import java.util.HashMap;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.util.color.AndengineColor;
@@ -28,8 +31,24 @@ public abstract class InventoryIconBaseEntity extends IconBaseEntity {
     protected abstract int getMaxInventoryCount();
 
     @Override
-    public void onCreateScene() {
-        super.onCreateScene();
+    public void onLoadGame(SaveGame saveGame) {
+        super.onLoadGame(saveGame);
+        if (saveGame.gameIconInventories == null) {
+            return;
+        }
+        IconId id = getIconId();
+        if (saveGame.gameIconInventories.containsKey(id)) {
+            setInventoryCount(saveGame.gameIconInventories.get(id));
+        }
+    }
+
+    @Override
+    public void onSaveGame(SaveGame saveGame) {
+        super.onSaveGame(saveGame);
+        if (saveGame.gameIconInventories == null) {
+            saveGame.gameIconInventories = new HashMap<>();
+        }
+        saveGame.gameIconInventories.put(getIconId(), inventoryCount);
     }
 
     public boolean hasInventory() {
@@ -74,5 +93,10 @@ public abstract class InventoryIconBaseEntity extends IconBaseEntity {
 
     protected int getInventoryCount() {
         return inventoryCount;
+    }
+
+    private void setInventoryCount(int count) {
+        inventoryCount = count;
+        onInventoryChanged();
     }
 }

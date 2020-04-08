@@ -35,7 +35,7 @@ class TurretStateMachine extends BaseStateMachine<TurretStateMachine.State> {
     @Override
     protected Map<State, Set<State>> getAllValidStateTransitions() {
         Map<State, Set<State>> transitions = new HashMap<>();
-        transitions.put(DOCKED, new HashSet<>(Arrays.asList(DRAGGING)));
+        transitions.put(DOCKED, new HashSet<>(Arrays.asList(DRAGGING, TARGETING)));
         transitions.put(DRAGGING, new HashSet<>(Arrays.asList(TARGETING, DOCKED)));
         transitions.put(TARGETING, new HashSet<>(Arrays.asList(DRAGGING, FIRING)));
         transitions.put(FIRING, new HashSet<>(Arrays.asList(TARGETING)));

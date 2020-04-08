@@ -1,7 +1,6 @@
 package com.wack.pop2.turret;
 
 import com.wack.pop2.GameSceneTouchListenerEntity;
-import com.wack.pop2.binder.Binder;
 import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.eventbus.EventBus;
 import com.wack.pop2.eventbus.EventPayload;
@@ -103,7 +102,7 @@ class TurretsIconEntity extends InventoryIconBaseEntity implements EventBus.Subs
             // play the sound for undocking a turret
             get(GameSoundsManager.class).getSound(SoundId.PUFF).play();
             // Create a turret and set it to be dragging
-            TurretBaseEntity turretEntity = get(TurretEntityCreator.class).createTurret((int) touchEvent.getX(), (int) touchEvent.getY());
+            TurretEntity turretEntity = get(TurretEntityCreator.class).createTurret((int) touchEvent.getX(), (int) touchEvent.getY());
             turretEntity.forceStartDragging(touchEvent.getX(), touchEvent.getY());
 
             decreaseInventory();
