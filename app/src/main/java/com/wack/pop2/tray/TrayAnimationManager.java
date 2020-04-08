@@ -26,14 +26,15 @@ class TrayAnimationManager extends BaseEntity {
 
     public ListenableFuture openTray(SoundId openSound) {
         final TrayStateMachine stateMachine = get(TrayStateMachine.class);
-        if (stateMachine.getCurrentState() == State.EMPTY) {
-            return Futures.immediateFailedFuture(new IllegalStateException("Cannot open an empty tray"));
+        State currentState = stateMachine.getCurrentState();
+        if (currentState == State.EMPTY || currentState == State.EXPANDED) {
+            return Futures.immediateFailedFuture(new IllegalStateException("Cannot open tray in state " + currentState));
+        }
+        if (stateMachine.getCurrentState() != State.EXPANDING) {
+            stateMachine.transitionState(TrayStateMachine.State.EXPANDING);
         }
         stopCurrentAnimation();
-        if (stateMachine.getCurrentState() != State.EXPANDING && stateMachine.getCurrentState() != State.EXPANDED) {
-            stateMachine.transitionState(TrayStateMachine.State.EXPANDING);
-            get(GameSoundsManager.class).getSound(openSound).play();
-        }
+        get(GameSoundsManager.class).getSound(openSound).play();
         return startAnimation(getOpenTrayEntityModifier(), new IModifier.IModifierListener() {
 
             @Override
@@ -50,14 +51,15 @@ class TrayAnimationManager extends BaseEntity {
 
     public ListenableFuture closeTray(SoundId closeSound) {
         final TrayStateMachine stateMachine = get(TrayStateMachine.class);
-        if (stateMachine.getCurrentState() == State.EMPTY) {
+        State currentState = stateMachine.getCurrentState();
+        if (currentState == State.EMPTY || currentState == State.CLOSED) {
             return Futures.immediateFailedFuture(new IllegalStateException("Cannot close an empty tray"));
         }
-        stopCurrentAnimation();
-        if (stateMachine.getCurrentState() != State.CLOSING && stateMachine.getCurrentState() != State.CLOSED) {
+        if (stateMachine.getCurrentState() != State.CLOSING) {
             stateMachine.transitionState(TrayStateMachine.State.CLOSING);
-            get(GameSoundsManager.class).getSound(closeSound).play();
         }
+        stopCurrentAnimation();
+        get(GameSoundsManager.class).getSound(closeSound).play();
         return startAnimation(getCloseTrayEntityModifier(), new IModifier.IModifierListener() {
 
             @Override

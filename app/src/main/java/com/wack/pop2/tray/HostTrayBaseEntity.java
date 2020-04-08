@@ -114,7 +114,7 @@ public abstract class HostTrayBaseEntity<IconIdType> extends BaseEntity implemen
     @Override
     public void closeTray() {
         TrayAnimationManager trayAnimationManager = get(TrayAnimationManager.class);
-        if (trayAnimationManager != null && get(TrayStateMachine.class).canClose()) {
+        if (trayAnimationManager != null) {
             Futures.addCallback(
                     trayAnimationManager.closeTray(getCloseSound()),
                     new FutureCallback() {
