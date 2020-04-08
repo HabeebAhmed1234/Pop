@@ -2,6 +2,7 @@ package com.wack.pop2.tray;
 
 import android.content.Context;
 
+import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
@@ -77,7 +78,7 @@ public abstract class HostTrayBaseEntity<IconIdType> extends BaseEntity implemen
         if (stateMachine.getCurrentState() == TrayStateMachine.State.EMPTY) {
             stateMachine.transitionState(TrayStateMachine.State.CLOSED);
         }
-        if (stateMachine.canOpen() && shouldExpandWhenIconAdded()) {
+        if (shouldExpandWhenIconAdded()) {
             openTray();
         } else if (stateMachine.getCurrentState() == TrayStateMachine.State.EXPANDED) {
             EventBus.get().sendEvent(getTrayOpenedEvent());
@@ -91,12 +92,10 @@ public abstract class HostTrayBaseEntity<IconIdType> extends BaseEntity implemen
 
     @Override
     public void openTray() {
-        TrayStateMachine stateMachine = get(TrayStateMachine.class);
         TrayAnimationManager trayAnimationManager = get(TrayAnimationManager.class);
-        if (trayAnimationManager != null && stateMachine.canOpen()) {
-            get(GameSoundsManager.class).getSound(getOpenSound()).play();
+        if (trayAnimationManager != null) {
             Futures.addCallback(
-                    trayAnimationManager.openTray(),
+                    trayAnimationManager.openTray(getOpenSound()),
                     new FutureCallback() {
                         @Override
                         public void onSuccess(@NullableDecl Object result) {
@@ -105,7 +104,7 @@ public abstract class HostTrayBaseEntity<IconIdType> extends BaseEntity implemen
 
                         @Override
                         public void onFailure(Throwable t) {
-
+                            Log.e("HostTrayBaseEntity", "Error opening tray ", t);
                         }
                     },
                     ContextCompat.getMainExecutor(get(Context.class)));
@@ -116,9 +115,8 @@ public abstract class HostTrayBaseEntity<IconIdType> extends BaseEntity implemen
     public void closeTray() {
         TrayAnimationManager trayAnimationManager = get(TrayAnimationManager.class);
         if (trayAnimationManager != null && get(TrayStateMachine.class).canClose()) {
-            get(GameSoundsManager.class).getSound(getCloseSound()).play();
             Futures.addCallback(
-                    trayAnimationManager.closeTray(),
+                    trayAnimationManager.closeTray(getCloseSound()),
                     new FutureCallback() {
                         @Override
                         public void onSuccess(@NullableDecl Object result) {
@@ -127,7 +125,7 @@ public abstract class HostTrayBaseEntity<IconIdType> extends BaseEntity implemen
 
                         @Override
                         public void onFailure(Throwable t) {
-
+                            Log.e("HostTrayBaseEntity", "Error closing tray ", t);
                         }
                     },
                     ContextCompat.getMainExecutor(get(Context.class)));
@@ -154,6 +152,16 @@ public abstract class HostTrayBaseEntity<IconIdType> extends BaseEntity implemen
     @Override
     public Rectangle getTrayIconsHolderRectangle() {
         return get(TrayIconsHolderBaseEntity.class).getTrayIconsHolderRectangle();
+    }
+
+    @Override
+    public int[] getOpenPosition() {
+        return get(TrayIconsHolderBaseEntity.class).getOpenPosition();
+    }
+
+    @Override
+    public int[] getClosedPosition() {
+        return get(TrayIconsHolderBaseEntity.class).getClosedPosition();
     }
 
     @Override

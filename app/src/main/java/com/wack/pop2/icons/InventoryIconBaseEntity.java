@@ -56,29 +56,25 @@ public abstract class InventoryIconBaseEntity extends IconBaseEntity {
     }
 
     @Override
-    protected void addIconToTray() {
-        super.addIconToTray();
-        createInventoryText();
-    }
+    public void onCreateScene() {
+        super.onCreateScene();
 
-    private void createInventoryText() {
         Sprite iconSprite = getIconSprite();
         inventoryText = new Text(
-                iconSprite.getWidthScaled() / 2 - INVENTORY_TEXT_MAX_WIDTH_PX,
-                - INVENTORY_TEXT_MAX_HEIGHT_PX,
-                get(GameFontsManager.class).getFont(FontId.INVENTORY_ICON_FONT),
-                Integer.toString(inventoryCount),
-                (Integer.toString(MAX_TURRET_INVENTORY)).length(),
-                vertexBufferObjectManager);
+            iconSprite.getWidthScaled() / 2 - INVENTORY_TEXT_MAX_WIDTH_PX,
+            - INVENTORY_TEXT_MAX_HEIGHT_PX,
+            get(GameFontsManager.class).getFont(FontId.INVENTORY_ICON_FONT),
+            Integer.toString(inventoryCount),
+            (Integer.toString(MAX_TURRET_INVENTORY)).length(),
+            vertexBufferObjectManager);
         iconSprite.attachChild(inventoryText);
 
         onInventoryChanged();
-
     }
 
     private void onInventoryChanged() {
         inventoryText.setText(Integer.toString(inventoryCount));
-        inventoryText.setColor(isUnlocked() ? getUnlockedColor() : AndengineColor.TRANSPARENT);
+        inventoryText.setColor(isUnlocked() ? getUnlockedIconColor() : AndengineColor.TRANSPARENT);
     }
 
     protected void increaseInventory() {

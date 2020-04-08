@@ -31,11 +31,6 @@ public class WallsIconEntity extends InventoryIconBaseEntity implements BaseStat
     }
 
     @Override
-    protected void createBindings(Binder binder) {
-
-    }
-
-    @Override
     public void onEnterState(WallsStateMachine.State newState) {
         AndengineColor color = AndengineColor.WHITE;
         GameSoundsManager soundsManager = get(GameSoundsManager.class);
@@ -120,7 +115,7 @@ public class WallsIconEntity extends InventoryIconBaseEntity implements BaseStat
     }
 
     @Override
-    protected AndengineColor getUnlockedColor() {
+    protected AndengineColor getUnlockedIconColor() {
         return AndengineColor.GREEN;
     }
 

@@ -148,7 +148,7 @@ class TurretsIconEntity extends InventoryIconBaseEntity implements EventBus.Subs
     protected void onIconUnlocked() {}
 
     @Override
-    protected AndengineColor getUnlockedColor() {
+    protected AndengineColor getUnlockedIconColor() {
         return AndengineColor.GREEN;
     }
 

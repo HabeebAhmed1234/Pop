@@ -19,6 +19,6 @@ public class WallsManagerBaseEntity extends BaseEntity {
         binder.bind(WallsIconEntity.class, new WallsIconEntity(this));
         binder.bind(WallsDeletionHandlerFactoryEntity.class, new WallsDeletionHandlerFactoryEntity(this));
         binder.bind(WallsCreatorEntity.class, new WallsCreatorEntity(this));
-        binder.bind(WallsDeleteIconsManagerBaseEntity.class, new WallsDeleteIconsManagerBaseEntity(this));
+        binder.bind(WallsDeleteIconsManagerEntity.class, new WallsDeleteIconsManagerEntity(this));
     }
 }

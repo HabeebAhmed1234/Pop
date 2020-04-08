@@ -2,9 +2,9 @@ package com.wack.pop2.walls;
 
 import android.content.Context;
 
+import android.util.Pair;
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameFixtureDefs;
-import com.wack.pop2.binder.Binder;
 import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity;
 import com.wack.pop2.GameSceneTouchListenerEntity;
@@ -18,8 +18,11 @@ import com.wack.pop2.physics.util.Vec2Pool;
 import com.wack.pop2.resources.sounds.GameSoundsManager;
 import com.wack.pop2.resources.sounds.SoundId;
 import com.wack.pop2.resources.textures.GameTexturesManager;
+import com.wack.pop2.savegame.SaveGame;
+import com.wack.pop2.savegame.SaveGame.WallCoord;
 import com.wack.pop2.utils.GeometryUtils;
 
+import java.util.ArrayList;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.primitive.Line;
 import org.andengine.entity.scene.Scene;
@@ -51,8 +54,7 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
 
     private Vec2 initialPoint;
 
-    private WallEntityUserData userData;
-    private Line wallSprite;
+    private Pair<Line, WallEntityUserData> pendingWallData;
 
     public WallsCreatorEntity(BinderEnity parent) {
         super(parent);
@@ -61,6 +63,32 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
     @Override
     public void onCreateScene() {
         get(GameSceneTouchListenerEntity.class).addSceneTouchListener(this);
+    }
+
+    @Override
+    public void onSaveGame(SaveGame saveGame) {
+        super.onSaveGame(saveGame);
+        List<IEntity> lines = scene.query(new WallsEntityMatcher());
+        if (!lines.isEmpty() && saveGame.wallCoords == null) {
+            saveGame.wallCoords = new ArrayList<>();
+        }
+        for (IEntity lineEntity : lines) {
+            Line line = (Line) lineEntity;
+            saveGame.wallCoords.add(new WallCoord(line.getX1(), line.getY1(), line.getX2(), line.getY2()));
+        }
+    }
+
+    @Override
+    public void onLoadGame(SaveGame saveGame) {
+        super.onLoadGame(saveGame);
+        if (saveGame.wallCoords == null) {
+            return;
+        }
+
+        for (WallCoord wallCoord : saveGame.wallCoords) {
+            Pair<Line, WallEntityUserData> loadedWall = createWall(wallCoord.x1, wallCoord.y1, wallCoord.x2, wallCoord.y2);
+            bakeWall(loadedWall.first, loadedWall.second, false, false);
+        }
     }
 
     @Override
@@ -107,14 +135,14 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
     }
 
     private boolean isWallBeingPlaced() {
-        return userData != null && wallSprite != null && initialPoint != null;
+        return pendingWallData != null && initialPoint != null;
     }
 
     private boolean onActionDown(TouchEvent touchEvent) {
         if (shouldStartPlacingWall(touchEvent)) {
             get(GameSoundsManager.class).getSound(SoundId.HAMMER_UP).play();
             initialPoint = Vec2Pool.obtain(touchEvent.getX(), touchEvent.getY());
-            createWall();
+            pendingWallData = createWall();
             spanWall(touchEvent);
             return true;
         }
@@ -137,10 +165,9 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
         get(GameSoundsManager.class).getSound(SoundId.HAMMER_DOWN).play();
 
         spanWall(touchEvent);
-        bakeWall();
+        bakeWall(pendingWallData.first, pendingWallData.second, true, true);
 
-        userData = null;
-        wallSprite = null;
+        pendingWallData = null;
         initialPoint = null;
 
         return true;
@@ -149,15 +176,18 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
     /**
      * Once the wall position and size is decided we can bake in the physics body
      */
-    private void bakeWall() {
+    private void bakeWall(Line wallLine, WallEntityUserData wallUserData, boolean isVisible, boolean notifyWallPlaced) {
         final FixtureDef wallFixtureDef = GameFixtureDefs.WALL_FIXTURE_DEF;
         wallFixtureDef.setFilter(CollisionFilters.WALL_FILTER);
-        wallFixtureDef.setUserData(userData);
-        Body wallBody = PhysicsFactory.createLineBody( physicsWorld, wallSprite, BodyType.STATIC, wallFixtureDef);
-        userData.wallDeleteIcon = WallDeleteIconFactory.getWallDeletionSprite(get(Context.class), wallSprite, wallBody, get(GameTexturesManager.class), vertexBufferObjectManager);
-        addToSceneWithTouch(userData.wallDeleteIcon, get(WallsDeletionHandlerFactoryEntity.class).getWallDeletionHandler());
+        wallFixtureDef.setUserData(wallUserData);
+        Body wallBody = PhysicsFactory.createLineBody( physicsWorld, wallLine, BodyType.STATIC, wallFixtureDef);
+        wallUserData.wallDeleteIcon = WallDeleteIconFactory.getWallDeletionSprite(get(Context.class), wallLine, wallBody, get(GameTexturesManager.class), vertexBufferObjectManager);
+        addToSceneWithTouch(wallUserData.wallDeleteIcon, get(WallsDeletionHandlerFactoryEntity.class).getWallDeletionHandler());
+        wallUserData.wallDeleteIcon.setVisible(isVisible);
 
-        EventBus.get().sendEvent(GameEvent.WALL_PLACED);
+        if (notifyWallPlaced) {
+            EventBus.get().sendEvent(GameEvent.WALL_PLACED);
+        }
     }
 
     private void spanWall(TouchEvent touchEvent) {
@@ -166,14 +196,19 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
         }
     }
 
-    private void createWall() {
-        userData = new WallEntityUserData();
-        wallSprite = new Line(0, 0, 0, 0, vertexBufferObjectManager);
-        wallSprite.setUserData(userData);
-        wallSprite.setLineWidth(WALL_HEIGHT_PX);
-        wallSprite.setColor(AndengineColor.WHITE);
+    private Pair<Line, WallEntityUserData> createWall() {
+        return createWall(0, 0, 0, 0);
+    }
 
-        addToScene(wallSprite);
+    private Pair<Line, WallEntityUserData> createWall(float x1, float y1, float x2, float y2) {
+        WallEntityUserData userData = new WallEntityUserData();
+        Line wallLine = new Line(x1, y1, x2, y2, vertexBufferObjectManager);
+        wallLine.setUserData(userData);
+        wallLine.setLineWidth(WALL_HEIGHT_PX);
+        wallLine.setColor(AndengineColor.WHITE);
+
+        addToScene(wallLine);
+        return new Pair<>(wallLine, userData);
     }
 
     private float clipWallLength(float wallLength) {
@@ -191,6 +226,6 @@ public class WallsCreatorEntity extends BaseEntity implements GameSceneTouchList
         float angle = (float) Math.toRadians(GeometryUtils.getAngle(x1, y1, x2, y2));
         float xComponent = (float) Math.cos(angle) * wallLength;
         float yComponent = (float) Math.sin(angle) * wallLength;
-        wallSprite.setPosition(x1, y1, x1 + xComponent, y1 + yComponent);
+        pendingWallData.first.setPosition(x1, y1, x1 + xComponent, y1 + yComponent);
     }
 }

@@ -14,9 +14,9 @@ import java.util.List;
 /**
  * Manages the creation and visibility of all the wall delete icons on the map
  */
-public class WallsDeleteIconsManagerBaseEntity extends BaseEntity implements BaseStateMachine.Listener<WallsStateMachine.State> {
+public class WallsDeleteIconsManagerEntity extends BaseEntity implements BaseStateMachine.Listener<WallsStateMachine.State> {
 
-    public WallsDeleteIconsManagerBaseEntity(BinderEnity parent) {
+    public WallsDeleteIconsManagerEntity(BinderEnity parent) {
         super(parent);
     }
 

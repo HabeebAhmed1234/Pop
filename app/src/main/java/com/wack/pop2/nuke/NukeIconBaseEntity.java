@@ -96,7 +96,7 @@ public class NukeIconBaseEntity extends IconBaseEntity implements BaseStateMachi
     }
 
     @Override
-    protected AndengineColor getUnlockedColor() {
+    protected AndengineColor getUnlockedIconColor() {
         return AndengineColor.GREEN;
     }
 

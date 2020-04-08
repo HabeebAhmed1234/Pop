@@ -10,6 +10,8 @@ import com.wack.pop2.gamesettings.GamePreferencesManager;
 
 /**
  * Serializes and deserializes the {@link SaveGame}
+ *
+ * TODO: add versioning system
  */
 public class SaveGameManager {
 

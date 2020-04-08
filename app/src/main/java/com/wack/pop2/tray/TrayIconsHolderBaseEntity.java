@@ -1,6 +1,7 @@
 package com.wack.pop2.tray;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.Pair;
 
 import androidx.annotation.Nullable;
@@ -8,6 +9,7 @@ import androidx.annotation.Nullable;
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.GameResources;
 import com.wack.pop2.binder.BinderEnity;
+import com.wack.pop2.tray.TrayStateMachine.State;
 import com.wack.pop2.utils.ScreenUtils;
 
 import org.andengine.entity.primitive.Rectangle;
@@ -73,6 +75,16 @@ public abstract class TrayIconsHolderBaseEntity<IconIdType> extends BaseEntity {
         return iconsTray;
     }
 
+    public int[] getOpenPosition() {
+        int[] anchor = hostTrayCallback.getAnchorPx();
+        return new int[]{ anchor[0] - getTrayWidthPx(), anchor[1] - getTrayHeightPx() / 2 };
+    }
+
+    public int[] getClosedPosition() {
+        int[] anchor = hostTrayCallback.getAnchorPx();
+        return new int[]{ anchor[0], anchor[1] - getTrayHeightPx() / 2 };
+    }
+
     @Override
     public void onCreateScene() {
         super.onCreateScene();
@@ -119,16 +131,16 @@ public abstract class TrayIconsHolderBaseEntity<IconIdType> extends BaseEntity {
         int[] anchor = hostTrayCallback.getAnchorPx();
         TrayStateMachine.State currentState = hostTrayCallback.getStateMachine().getCurrentState();
         if (iconsTray != null) {
-            int xPx = 0;
+            int[] position = null;
             if (currentState == TrayStateMachine.State.CLOSED || currentState == TrayStateMachine.State.EMPTY) {
-                xPx = anchor[0];
-            } else if (currentState == TrayStateMachine.State.EXPANDED) {
-                xPx = anchor[0] - getTrayWidthPx();
+                position = getClosedPosition();
+            } else if (currentState == State.EXPANDED) {
+                position = getOpenPosition();
             }
-            if (xPx != 0) {
-                iconsTray.setX(xPx);
+            if (position != null) {
+                iconsTray.setX(position[0]);
+                iconsTray.setY(position[1]);
             }
-            iconsTray.setY(anchor[1] - getTrayHeightPx() / 2);
         }
     }
 

@@ -47,7 +47,13 @@ public abstract class IconBaseEntity extends BaseEntity implements EventBus.Subs
 
     @Override
     public void onCreateScene() {
-        createIcon();
+        iconSprite = new Sprite(
+            -1000,
+            0,
+            get(GameTexturesManager.class).getTextureRegion(getIconTextureId()),
+            vertexBufferObjectManager);
+        setIconColor(AndengineColor.TRANSPARENT);
+
         EventBus.get()
                 .subscribe(GameEvent.GAME_PROGRESS_CHANGED, this, true)
                 .subscribe(GameEvent.GAME_ICONS_TRAY_OPENED, this, true);
@@ -77,19 +83,10 @@ public abstract class IconBaseEntity extends BaseEntity implements EventBus.Subs
         }
     }
 
-    private void createIcon() {
-        iconSprite = new Sprite(
-                -1000,
-                0,
-                get(GameTexturesManager.class).getTextureRegion(getIconTextureId()),
-                vertexBufferObjectManager);
-        setIconColor(AndengineColor.TRANSPARENT);
-    }
-
     private void onGameProgressChanged(float newProgressPercentage) {
         if (newProgressPercentage >= getGameProgressPercentageUnlockThreshold() && !isUnlocked) {
             isUnlocked = true;
-            setIconColor(getUnlockedColor());
+            setIconColor(getUnlockedIconColor());
             addIconToTray();
             onIconUnlocked();
         }
@@ -129,7 +126,7 @@ public abstract class IconBaseEntity extends BaseEntity implements EventBus.Subs
 
     protected abstract void onIconUnlocked();
 
-    protected abstract AndengineColor getUnlockedColor();
+    protected abstract AndengineColor getUnlockedIconColor();
 
     @Nullable
     protected abstract IOnAreaTouchListener getTouchListener();

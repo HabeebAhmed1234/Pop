@@ -1,10 +1,13 @@
 package com.wack.pop2.tray;
 
+import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.wack.pop2.BaseEntity;
 import com.wack.pop2.binder.BinderEnity;
-
+import com.wack.pop2.resources.sounds.GameSoundsManager;
+import com.wack.pop2.resources.sounds.SoundId;
+import com.wack.pop2.tray.TrayStateMachine.State;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.modifier.MoveModifier;
@@ -14,17 +17,23 @@ class TrayAnimationManager extends BaseEntity {
 
     private SettableFuture currentAnimationFuture;
     private IEntityModifier currentAnimation;
-    private final float openCloseAnimatinoDuration;
+    private final float openCloseAnimationDuration;
 
     public TrayAnimationManager(float openCloseAnimationDuration, BinderEnity parent) {
         super(parent);
-        this.openCloseAnimatinoDuration = openCloseAnimationDuration;
+        this.openCloseAnimationDuration = openCloseAnimationDuration;
     }
 
-    public ListenableFuture openTray() {
-        stopCurrentAnimation();
+    public ListenableFuture openTray(SoundId openSound) {
         final TrayStateMachine stateMachine = get(TrayStateMachine.class);
-        stateMachine.transitionState(TrayStateMachine.State.EXPANDING);
+        if (stateMachine.getCurrentState() == State.EMPTY) {
+            return Futures.immediateFailedFuture(new IllegalStateException("Cannot open an empty tray"));
+        }
+        stopCurrentAnimation();
+        if (stateMachine.getCurrentState() != State.EXPANDING && stateMachine.getCurrentState() != State.EXPANDED) {
+            stateMachine.transitionState(TrayStateMachine.State.EXPANDING);
+            get(GameSoundsManager.class).getSound(openSound).play();
+        }
         return startAnimation(getOpenTrayEntityModifier(), new IModifier.IModifierListener() {
 
             @Override
@@ -32,15 +41,23 @@ class TrayAnimationManager extends BaseEntity {
 
             @Override
             public void onModifierFinished(IModifier pModifier, Object pItem) {
-                stateMachine.transitionState(TrayStateMachine.State.EXPANDED);
+                if (stateMachine.getCurrentState() != State.EXPANDED) {
+                    stateMachine.transitionState(TrayStateMachine.State.EXPANDED);
+                }
             }
         });
     }
 
-    public ListenableFuture closeTray() {
-        stopCurrentAnimation();
+    public ListenableFuture closeTray(SoundId closeSound) {
         final TrayStateMachine stateMachine = get(TrayStateMachine.class);
-        stateMachine.transitionState(TrayStateMachine.State.CLOSING);
+        if (stateMachine.getCurrentState() == State.EMPTY) {
+            return Futures.immediateFailedFuture(new IllegalStateException("Cannot close an empty tray"));
+        }
+        stopCurrentAnimation();
+        if (stateMachine.getCurrentState() != State.CLOSING && stateMachine.getCurrentState() != State.CLOSED) {
+            stateMachine.transitionState(TrayStateMachine.State.CLOSING);
+            get(GameSoundsManager.class).getSound(closeSound).play();
+        }
         return startAnimation(getCloseTrayEntityModifier(), new IModifier.IModifierListener() {
 
             @Override
@@ -48,7 +65,9 @@ class TrayAnimationManager extends BaseEntity {
 
             @Override
             public void onModifierFinished(IModifier pModifier, Object pItem) {
-                stateMachine.transitionState(TrayStateMachine.State.CLOSED);
+                if (stateMachine.getCurrentState() != State.CLOSED) {
+                    stateMachine.transitionState(TrayStateMachine.State.CLOSED);
+                }
             }
         });
     }
@@ -81,27 +100,14 @@ class TrayAnimationManager extends BaseEntity {
         }
     }
 
-    private int[] getOpenPositionPx() {
-        HostTrayCallback hostTrayCallback = get(HostTrayCallback.class);
-        int[] anchor = hostTrayCallback.getAnchorPx();
-        int trayWidth = (int) hostTrayCallback.getTrayIconsHolderRectangle().getWidthScaled();
-        int trayHeight = (int) hostTrayCallback.getTrayIconsHolderRectangle().getHeightScaled();
-        return new int[]{anchor[0] - trayWidth, anchor[1] - trayHeight/2};
-    }
-
-    private int[] getClosedPositionPx() {
-        HostTrayCallback hostTrayCallback = get(HostTrayCallback.class);
-        int[] anchor = hostTrayCallback.getAnchorPx();
-        float trayHeight = hostTrayCallback.getTrayIconsHolderRectangle().getHeightScaled();
-        return new int[]{anchor[0], anchor[1] - ((int)trayHeight)/2};
-    }
-
     private IEntityModifier getOpenTrayEntityModifier() {
-        return getTrayEntityModifier(getOpenPositionPx(), getClosedPositionPx());
+        HostTrayCallback hostTray = get(HostTrayCallback.class);
+        return getTrayEntityModifier(hostTray.getOpenPosition(), hostTray.getClosedPosition());
     }
 
     private IEntityModifier getCloseTrayEntityModifier() {
-        return getTrayEntityModifier(getClosedPositionPx(), getOpenPositionPx());
+        HostTrayCallback hostTray = get(HostTrayCallback.class);
+        return getTrayEntityModifier(hostTray.getClosedPosition(), hostTray.getOpenPosition());
     }
 
     private IEntityModifier getTrayEntityModifier(int[] destinationPostition, int[] oppositePosition) {
@@ -117,6 +123,6 @@ class TrayAnimationManager extends BaseEntity {
     }
 
     private float getAnimationDuration(float destinationPosition, float currentPosition, float totalDelta) {
-        return Math.abs(destinationPosition - currentPosition) / Math.abs(totalDelta) * openCloseAnimatinoDuration;
+        return Math.abs(destinationPosition - currentPosition) / Math.abs(totalDelta) * openCloseAnimationDuration;
     }
 }

@@ -10,6 +10,8 @@ public interface HostTrayCallback {
     void closeTray();
 
     int[] getAnchorPx();
+    int[] getOpenPosition();
+    int[] getClosedPosition();
 
     TrayStateMachine getStateMachine();
     GameTexturesManager getTextureManager();
