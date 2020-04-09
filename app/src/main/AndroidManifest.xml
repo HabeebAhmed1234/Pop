@@ -30,9 +30,14 @@
 
         <activity
             android:name=".GamePauseActivity"
-            android:theme="@style/Theme.Pause"
+            android:theme="@style/Theme.Dialog"
             android:screenOrientation="portrait" >
+        </activity>
 
+        <activity
+            android:name=".savegame.UpdateGameDialogActivity"
+            android:theme="@style/Theme.Dialog"
+            android:screenOrientation="portrait" >
         </activity>
 
         <activity

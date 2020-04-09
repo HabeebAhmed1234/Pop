@@ -27,6 +27,7 @@ public class SaveGame {
         }
     }
 
+    public int saveGameVersionCode;
     public int score;
     public float spawnInterval;
     public List<Pair<Float, Float>> turretPostitions;

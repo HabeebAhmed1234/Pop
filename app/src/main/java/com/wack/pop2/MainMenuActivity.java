@@ -20,6 +20,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.wack.pop2.savegame.SaveGame;
 import com.wack.pop2.savegame.SaveGameManager;
 
+import com.wack.pop2.savegame.UpdateGameDialogActivity;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 public class MainMenuActivity extends AppCompatActivity {
@@ -82,8 +83,16 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     private void startLoadGame(SaveGame saveGame) {
-        startActivity(GameActivity.newIntent(saveGame, this));
-        this.finish();
+        boolean started = SaveGameManager.startLoadedGame(saveGame, this);
+        if (started) {
+            this.finish();
+        } else {
+            showUpdateDialog();
+        }
+    }
+
+    private void showUpdateDialog() {
+        startActivity(UpdateGameDialogActivity.newIntent(this));
     }
 
     private void  quitGame() {

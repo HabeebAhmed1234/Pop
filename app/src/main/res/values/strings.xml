@@ -8,6 +8,9 @@
     <string name="quit_text">Quit</string>
     <string name="your_score_title">Your score:</string>
     <string name="game_paused_text">Paused</string>
+    <string name="game_update_text">The save you are trying to load was saved on a newer version of the game. Please update your game.</string>
     <string name="resume_btn_text">Resume</string>
     <string name="quit_btn_text">Quit</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="update_btn_text">Update</string>
 </resources>

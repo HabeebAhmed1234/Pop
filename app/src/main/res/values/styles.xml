@@ -28,7 +28,7 @@
     <style name="Theme.Tooltip" parent="Theme.Transparent">
     </style>
 
-    <style name="Theme.Pause" parent="Theme.Transparent">
+    <style name="Theme.Dialog" parent="Theme.Transparent">
         <item name="android:windowIsFloating">true</item>
     </style>
 
