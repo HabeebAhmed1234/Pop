@@ -30,6 +30,6 @@ public class GameTrayIconsHolderBaseEntity<IconIdType> extends TrayIconsHolderBa
 
     @Override
     protected AndengineColor getTrayBackgroundColor() {
-        return AndengineColor.WHITE;
+        return AndengineColor.TRANSPARENT;
     }
 }

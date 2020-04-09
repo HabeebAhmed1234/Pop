@@ -1,11 +1,13 @@
 package com.wack.pop2.icons;
 
+import android.content.Context;
 import com.wack.pop2.binder.BinderEnity;
 import com.wack.pop2.gameiconstray.GameIconsHostTrayEntity.IconId;
 import com.wack.pop2.resources.fonts.FontId;
 import com.wack.pop2.resources.fonts.GameFontsManager;
 
 import com.wack.pop2.savegame.SaveGame;
+import com.wack.pop2.utils.ScreenUtils;
 import java.util.HashMap;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
@@ -18,8 +20,8 @@ import static com.wack.pop2.turret.TurretsConstants.MAX_TURRET_INVENTORY;
  */
 public abstract class InventoryIconBaseEntity extends IconBaseEntity {
 
-    private static final float INVENTORY_TEXT_MAX_WIDTH_PX = 20;
-    private static final float INVENTORY_TEXT_MAX_HEIGHT_PX = 50;
+    private static final float INVENTORY_TEXT_MAX_WIDTH_DP = 8;
+    private static final float INVENTORY_TEXT_MAX_HEIGHT_DP = 16;
 
     private Text inventoryText;
     private int inventoryCount = getMaxInventoryCount();
@@ -61,8 +63,8 @@ public abstract class InventoryIconBaseEntity extends IconBaseEntity {
 
         Sprite iconSprite = getIconSprite();
         inventoryText = new Text(
-            iconSprite.getWidthScaled() / 2 - INVENTORY_TEXT_MAX_WIDTH_PX,
-            - INVENTORY_TEXT_MAX_HEIGHT_PX,
+            0,
+            0,
             get(GameFontsManager.class).getFont(FontId.INVENTORY_ICON_FONT),
             Integer.toString(inventoryCount),
             (Integer.toString(MAX_TURRET_INVENTORY)).length(),
@@ -70,6 +72,19 @@ public abstract class InventoryIconBaseEntity extends IconBaseEntity {
         iconSprite.attachChild(inventoryText);
 
         onInventoryChanged();
+    }
+
+    @Override
+    protected void addIconToTray() {
+        super.addIconToTray();
+
+        // The icon size has now been set so we can correctly set the position of the inventory tex
+        // In the icon
+        Sprite iconSprite = getIconSprite();
+        inventoryText.setX(
+            iconSprite.getWidthScaled() / 2 -
+                ScreenUtils.dpToPx(INVENTORY_TEXT_MAX_WIDTH_DP, get(Context.class)));
+        inventoryText.setY(-ScreenUtils.dpToPx(INVENTORY_TEXT_MAX_HEIGHT_DP, get(Context.class)));
     }
 
     private void onInventoryChanged() {
