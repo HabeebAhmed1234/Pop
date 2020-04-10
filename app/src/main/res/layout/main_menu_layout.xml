@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -23,7 +24,7 @@
         android:layout_gravity="center_vertical"
         android:clipChildren="false">
 
-        <com.wack.pop2.androidui.GameMenuText
+        <com.stupidfungames.pop.androidui.GameMenuText
             android:id="@+id/logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,7 +38,7 @@
             app:glow_color="@color/menu_button_color"
             app:glow_strength="80"
             />
-        <com.wack.pop2.androidui.GameMenuButton
+        <com.stupidfungames.pop.androidui.GameMenuButton
             android:id="@+id/new_game_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,7 +52,7 @@
             app:pressed_glow_color = "@color/menu_button_pressed_color"
             app:glow_strength="80"/>
 
-        <com.wack.pop2.androidui.GameMenuButton
+        <com.stupidfungames.pop.androidui.GameMenuButton
             android:id="@+id/load_game_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,7 +67,7 @@
             app:pressed_glow_color = "@color/menu_button_pressed_color"
             app:glow_strength="80"/>
 
-        <com.wack.pop2.androidui.GameMenuButton
+        <com.stupidfungames.pop.androidui.GameMenuButton
             android:id="@+id/quit_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

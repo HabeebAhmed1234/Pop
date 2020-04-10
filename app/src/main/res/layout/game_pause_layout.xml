@@ -16,7 +16,7 @@
         android:background="@drawable/rounded_border"
         >
 
-        <com.wack.pop2.androidui.GameMenuText
+        <com.stupidfungames.pop.androidui.GameMenuText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/game_paused_text"
@@ -31,7 +31,7 @@
             app:glow_strength="80"
             />
 
-        <com.wack.pop2.androidui.GameMenuButton
+        <com.stupidfungames.pop.androidui.GameMenuButton
             android:id="@+id/resume_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
             app:pressed_glow_color = "@color/menu_button_pressed_color"
             app:glow_strength="80"/>
 
-        <com.wack.pop2.androidui.GameMenuButton
+        <com.stupidfungames.pop.androidui.GameMenuButton
             android:id="@+id/quit_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

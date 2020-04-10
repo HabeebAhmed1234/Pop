@@ -17,7 +17,7 @@
         android:gravity="center"
         android:layout_gravity="center">
 
-        <com.wack.pop2.androidui.GameMenuText
+        <com.stupidfungames.pop.androidui.GameMenuText
             android:id="@+id/game_over_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             app:glow_strength="80"
             />
 
-        <com.wack.pop2.androidui.GameMenuText
+        <com.stupidfungames.pop.androidui.GameMenuText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="30sp"
@@ -45,7 +45,7 @@
             app:glow_color="@color/menu_button_color"
             app:glow_strength="80"/>
 
-        <com.wack.pop2.androidui.GameMenuText
+        <com.stupidfungames.pop.androidui.GameMenuText
             android:id="@+id/score_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             app:glow_color="@color/menu_button_color"
             app:glow_strength="80"/>
 
-        <com.wack.pop2.androidui.GameMenuButton
+        <com.stupidfungames.pop.androidui.GameMenuButton
             android:id="@+id/new_game_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
             app:pressed_glow_color = "@color/menu_button_pressed_color"
             app:glow_strength="80"/>
 
-        <com.wack.pop2.androidui.GameMenuButton
+        <com.stupidfungames.pop.androidui.GameMenuButton
             android:id="@+id/quit_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
