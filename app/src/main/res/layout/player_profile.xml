@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/main_menu_player_profile_view_height"
+    android:background="@android:color/black">
+
+  <TextView
+    android:id="@+id/username"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+
+  <com.google.android.gms.common.SignInButton
+      android:id="@+id/sign_in_btn"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent" />
+
+  <com.stupidfungames.pop.androidui.GameMenuButton
+      android:id="@+id/sign_out_btn"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_gravity="center"
+      android:gravity="center"
+      android:textSize="20sp"
+      app:glow_color="@color/menu_button_color"
+      app:pressed_glow_color = "@color/menu_button_pressed_color"
+      app:glow_strength="80"
+      android:text="@string/sign_out"/>
+</LinearLayout>

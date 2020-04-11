@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import androidx.core.content.res.ResourcesCompat;
 import com.stupidfungames.pop.R;
 
 import static android.view.MotionEvent.ACTION_DOWN;
@@ -26,30 +27,32 @@ public class GameMenuButton extends TextView {
 
     public GameMenuButton(Context context) {
         super(context);
-        initShadow(context, null);
+        init(context, null);
     }
 
     public GameMenuButton(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        initShadow(context, attrs);
+        init(context, attrs);
     }
 
     public GameMenuButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initShadow(context, attrs);
+        init(context, attrs);
     }
 
     public GameMenuButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        initShadow(context, attrs);
+        init(context, attrs);
     }
 
     private void init(Context context, AttributeSet attrs) {
-        initShadow(context, attrs);
+        initResources(context, attrs);
+        setTypeface(ResourcesCompat.getFont(getContext(), R.font.neon));
         setClipToOutline(false);
+        setTextColor(getResources().getColor(android.R.color.white));
     }
 
-    private void initShadow(Context context, @Nullable AttributeSet attrs) {
+    private void initResources(Context context, @Nullable AttributeSet attrs) {
         if (attrs == null) {
             setShadowLayer(DEFAULT_GLOW_RADIUS, 0,0, DEFAULT_COLOR);
             return;

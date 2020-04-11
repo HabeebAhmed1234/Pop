@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import androidx.core.content.res.ResourcesCompat;
 import com.stupidfungames.pop.R;
 
 public class GameMenuText extends TextView {
@@ -20,27 +21,29 @@ public class GameMenuText extends TextView {
 
     public GameMenuText(Context context) {
         super(context);
-        initShadow(context, null);
+        init(context, null);
     }
 
     public GameMenuText(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        initShadow(context, attrs);
+        init(context, attrs);
     }
 
     public GameMenuText(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initShadow(context, attrs);
+        init(context, attrs);
     }
 
     public GameMenuText(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        initShadow(context, attrs);
+        init(context, attrs);
     }
 
     private void init(Context context, AttributeSet attrs) {
         initShadow(context, attrs);
+        setTypeface(ResourcesCompat.getFont(getContext(), R.font.neon));
         setClipToOutline(false);
+        setTextColor(getResources().getColor(android.R.color.white));
     }
 
     private void initShadow(Context context, @Nullable AttributeSet attrs) {
