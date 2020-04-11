@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_id">120569614320</string>
     <string name="app_name">Pop</string>
     <string name="new_game_text">New Game</string>
     <string name="load_game_text">Resume Game</string>
