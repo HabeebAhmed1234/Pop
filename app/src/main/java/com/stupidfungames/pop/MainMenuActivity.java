@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 
+import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -38,6 +39,7 @@ public class MainMenuActivity extends AppCompatActivity {
     private ValueAnimator logoAnimator;
     private GooglePlayServicesAuthManager googlePlayServicesAuthManager =
         new GooglePlayServicesAuthManager(this);
+    private PlayerProfileView playerProfileView;
 
     @Override
     protected void onResume() {
@@ -45,7 +47,7 @@ public class MainMenuActivity extends AppCompatActivity {
         Futures.addCallback(googlePlayServicesAuthManager.getAccount(),
             new FutureCallback<GoogleSignInAccount>() {
                 @Override
-                public void onSuccess(@NullableDecl GoogleSignInAccount result) {
+                public void onSuccess(GoogleSignInAccount result) {
                     GamesClient gamesClient= Games.getGamesClient(MainMenuActivity.this, result);
                     gamesClient.setViewForPopups(findViewById(R.id.root_view));
                     gamesClient.setGravityForPopups(Gravity.TOP);
@@ -74,6 +76,8 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         });
 
+        playerProfileView = new PlayerProfileView(
+            googlePlayServicesAuthManager, (ViewGroup) findViewById(R.id.player_profile_view));
         setUpLoadGameBtn();
         animateLogo();
     }

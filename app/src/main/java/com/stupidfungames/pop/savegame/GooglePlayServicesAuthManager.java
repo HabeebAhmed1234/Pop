@@ -57,10 +57,14 @@ public class GooglePlayServicesAuthManager {
     if (GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
       // Already signed in.
       // The signed in account is stored in the 'account' variable.
-      signInAccountFuture.set(account);
+      if (account != null) {
+        signInAccountFuture.set(account);
+      } else {
+        signInAccountFuture.setException(new IllegalStateException("Null account?"));
+      }
     } else {
       // Haven't been signed-in before. Try the silent sign-in first.
-      GoogleSignInClient signInClient = GoogleSignIn.getClient(activity, signInOptions);
+      GoogleSignInClient signInClient = getSignInClient();
       signInClient
           .silentSignIn()
           .addOnCompleteListener(
@@ -68,8 +72,8 @@ public class GooglePlayServicesAuthManager {
               new OnCompleteListener<GoogleSignInAccount>() {
                 @Override
                 public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
-                  if (task.isSuccessful()) {
-                    // The signed in account is stored in the task's result.
+                  GoogleSignInAccount signedInAccount = task.getResult();
+                  if (task.isSuccessful() && signedInAccount != null) {
                     signInAccountFuture.set(task.getResult());
                   } else {
                     performExplicitSignIn();
@@ -81,10 +85,15 @@ public class GooglePlayServicesAuthManager {
     return signInAccountFuture;
   }
 
+  public Task<Void> logout() {
+    GoogleSignInClient signInClient = getSignInClient();
+    return signInClient.signOut();
+  }
+
   public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     if (requestCode == RC_SIGN_IN) {
       GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-      if (result.isSuccess()) {
+      if (result != null && result.isSuccess() && result.getSignInAccount() != null) {
         // The signed in account is stored in the result.
         signInAccountFuture.set(result.getSignInAccount());
       } else {
@@ -103,8 +112,12 @@ public class GooglePlayServicesAuthManager {
    * Performs a sign in by the user via UI
    */
   private void performExplicitSignIn() {
-    GoogleSignInClient signInClient = GoogleSignIn.getClient(activity, signInOptions);
+    GoogleSignInClient signInClient = getSignInClient();
     Intent intent = signInClient.getSignInIntent();
     activity.startActivityForResult(intent, RC_SIGN_IN);
+  }
+
+  private GoogleSignInClient getSignInClient() {
+    return GoogleSignIn.getClient(activity, signInOptions);
   }
 }

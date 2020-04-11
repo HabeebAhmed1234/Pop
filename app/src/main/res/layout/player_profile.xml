@@ -1,31 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/player_profile_view"
     android:orientation="horizontal"
-    android:gravity="center_horizontal"
+    android:gravity="center"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/main_menu_player_profile_view_height"
-    android:background="@android:color/black">
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/between_btn_padding" >
 
-  <TextView
+  <com.stupidfungames.pop.androidui.GameMenuText
     android:id="@+id/username"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    app:glow_color="@color/menu_button_color"
+    app:glow_strength="80"
+    android:layout_marginRight="@dimen/between_btn_padding" />
 
   <com.google.android.gms.common.SignInButton
-      android:id="@+id/sign_in_btn"
-      android:layout_width="wrap_content"
-      android:layout_height="match_parent" />
+    android:id="@+id/sign_in_btn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+      android:visibility="gone"
+    android:layout_marginRight="@dimen/between_btn_padding" />
 
   <com.stupidfungames.pop.androidui.GameMenuButton
-      android:id="@+id/sign_out_btn"
-      android:layout_width="wrap_content"
-      android:layout_height="match_parent"
-      android:layout_gravity="center"
-      android:gravity="center"
-      android:textSize="20sp"
-      app:glow_color="@color/menu_button_color"
-      app:pressed_glow_color = "@color/menu_button_pressed_color"
-      app:glow_strength="80"
-      android:text="@string/sign_out"/>
+    android:id="@+id/sign_out_btn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+      android:visibility="gone"
+    android:textSize="20sp"
+    app:glow_color="@color/menu_button_color"
+    app:pressed_glow_color = "@color/menu_button_pressed_color"
+    app:glow_strength="80"
+    android:text="@string/sign_out"/>
 </LinearLayout>
