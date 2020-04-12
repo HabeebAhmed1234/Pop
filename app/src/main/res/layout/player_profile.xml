@@ -12,6 +12,7 @@
     android:id="@+id/username"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:visibility="gone"
     app:glow_color="@color/menu_button_color"
     app:glow_strength="80"
     android:layout_marginRight="@dimen/between_btn_padding" />
@@ -20,12 +21,14 @@
     android:id="@+id/sign_in_btn"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:visibility="gone"
     android:layout_marginRight="@dimen/between_btn_padding" />
 
   <com.stupidfungames.pop.androidui.GameMenuButton
     android:id="@+id/sign_out_btn"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:visibility="gone"
     android:textSize="20sp"
     app:glow_color="@color/menu_button_color"
     app:pressed_glow_color = "@color/menu_button_pressed_color"

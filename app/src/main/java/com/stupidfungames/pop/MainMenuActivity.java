@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 
 import android.view.ViewGroup;
@@ -16,47 +15,26 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.games.Games;
-import com.google.android.gms.games.Games.GamesOptions;
-import com.google.android.gms.games.GamesClient;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.stupidfungames.pop.savegame.GooglePlayServicesAuthManager;
+import com.stupidfungames.pop.savegame.GooglePlayServicesAuthManager.HostActivity;
 import com.stupidfungames.pop.savegame.SaveGame;
 import com.stupidfungames.pop.savegame.SaveGameManager;
 
 import com.stupidfungames.pop.savegame.UpdateGameDialogActivity;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-public class MainMenuActivity extends AppCompatActivity {
+public class MainMenuActivity extends AppCompatActivity implements HostActivity {
 
     public static Intent newIntent(Context context) {
         return new Intent(context, MainMenuActivity.class);
     }
 
     private ValueAnimator logoAnimator;
-    private GooglePlayServicesAuthManager googlePlayServicesAuthManager =
-        new GooglePlayServicesAuthManager(this);
+    private GooglePlayServicesAuthManager googlePlayServicesAuthManager;
     private PlayerProfileView playerProfileView;
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Futures.addCallback(googlePlayServicesAuthManager.getAccount(),
-            new FutureCallback<GoogleSignInAccount>() {
-                @Override
-                public void onSuccess(GoogleSignInAccount result) {
-                    GamesClient gamesClient= Games.getGamesClient(MainMenuActivity.this, result);
-                    gamesClient.setViewForPopups(findViewById(R.id.root_view));
-                    gamesClient.setGravityForPopups(Gravity.TOP);
-                }
-
-                @Override
-                public void onFailure(Throwable t) {}
-            }, ContextCompat.getMainExecutor(this));
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,8 +54,11 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         });
 
+        googlePlayServicesAuthManager =
+            new GooglePlayServicesAuthManager(findViewById(R.id.root_view), this, this);
         playerProfileView = new PlayerProfileView(
             googlePlayServicesAuthManager, (ViewGroup) findViewById(R.id.player_profile_view));
+
         setUpLoadGameBtn();
         animateLogo();
     }

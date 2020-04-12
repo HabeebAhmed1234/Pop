@@ -7,9 +7,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -19,17 +22,26 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.drive.Drive;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
+import com.stupidfungames.pop.MainMenuActivity;
 import com.stupidfungames.pop.R;
 import java.util.Arrays;
 
 public class GooglePlayServicesAuthManager {
+
+  public interface HostActivity {
+    void startActivityForResult(Intent intent, int rc);
+  }
 
   private static final int RC_SIGN_IN = 1;
   private static final Scope[] REQUIRED_PERMISSIONS =
@@ -41,11 +53,20 @@ public class GooglePlayServicesAuthManager {
               Arrays.copyOfRange(REQUIRED_PERMISSIONS, 1, REQUIRED_PERMISSIONS.length))
           .build();
 
-  private Activity activity;
+  @Nullable private View rootView;
+  private HostActivity hostActivity;
+  private Context context;
   private SettableFuture<GoogleSignInAccount> signInAccountFuture;
 
-  public GooglePlayServicesAuthManager(Activity activity) {
-    this.activity = activity;
+  public GooglePlayServicesAuthManager(HostActivity hostActivity, Context context) {
+    this(null, hostActivity, context);
+  }
+
+  public GooglePlayServicesAuthManager(
+      @Nullable View rootView, HostActivity hostActivity, Context context) {
+    this.rootView = rootView;
+    this.hostActivity = hostActivity;
+    this.context = context;
   }
 
   public ListenableFuture<GoogleSignInAccount> getAccount() {
@@ -53,7 +74,7 @@ public class GooglePlayServicesAuthManager {
       return signInAccountFuture;
     }
 
-    GoogleSignInAccount account =  GoogleSignIn.getLastSignedInAccount(activity);
+    GoogleSignInAccount account =  GoogleSignIn.getLastSignedInAccount(context);
     signInAccountFuture = SettableFuture.create();
     if (GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
       // Already signed in.
@@ -69,7 +90,7 @@ public class GooglePlayServicesAuthManager {
       signInClient
           .silentSignIn()
           .addOnCompleteListener(
-              activity,
+              ContextCompat.getMainExecutor(context),
               new OnCompleteListener<GoogleSignInAccount>() {
                 @Override
                 public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
@@ -87,6 +108,8 @@ public class GooglePlayServicesAuthManager {
                 }
               });
     }
+
+    addSignInListener(signInAccountFuture);
 
     return signInAccountFuture;
   }
@@ -106,10 +129,10 @@ public class GooglePlayServicesAuthManager {
       } else {
         String message = result.getStatus().getStatusMessage();
         if (message == null || message.isEmpty()) {
-          message = activity.getString(R.string.signin_other_error);
+          message = context.getString(R.string.signin_other_error);
         }
         // TODO make this our own UI
-        new AlertDialog.Builder(activity).setMessage(message)
+        new AlertDialog.Builder(context).setMessage(message)
             .setNeutralButton(android.R.string.ok, null).show();
       }
     }
@@ -121,10 +144,29 @@ public class GooglePlayServicesAuthManager {
   private void performExplicitSignIn() {
     GoogleSignInClient signInClient = getSignInClient();
     Intent intent = signInClient.getSignInIntent();
-    activity.startActivityForResult(intent, RC_SIGN_IN);
+    hostActivity.startActivityForResult(intent, RC_SIGN_IN);
   }
 
   private GoogleSignInClient getSignInClient() {
-    return GoogleSignIn.getClient(activity, signInOptions);
+    return GoogleSignIn.getClient(context, signInOptions);
+  }
+
+  /**
+   * This is where we add anything we need to do as soon as the user is signed in
+   */
+  private void addSignInListener(ListenableFuture future) {
+    if (rootView == null) return;
+    Futures.addCallback(future,
+        new FutureCallback<GoogleSignInAccount>() {
+          @Override
+          public void onSuccess(GoogleSignInAccount result) {
+            GamesClient gamesClient= Games.getGamesClient(context, result);
+            gamesClient.setViewForPopups(rootView);
+            gamesClient.setGravityForPopups(Gravity.TOP);
+          }
+
+          @Override
+          public void onFailure(Throwable t) {}
+        }, ContextCompat.getMainExecutor(context));
   }
 }
