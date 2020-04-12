@@ -13,7 +13,7 @@ import com.stupidfungames.pop.R;
 
 public class GameMenuText extends TextView {
 
-    private static final float DEFAULT_GLOW_RADIUS = 50;
+    private static final float DEFAULT_GLOW_RADIUS = 80;
     private static final int DEFAULT_COLOR = R.color.menu_button_color;
 
     private float shadowRadius;

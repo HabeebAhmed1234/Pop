@@ -15,7 +15,6 @@
     android:textSize="20sp"
     android:visibility="gone"
     app:glow_color="@color/menu_button_color"
-    app:glow_strength="80"
     android:layout_marginRight="@dimen/between_btn_padding" />
 
   <com.google.android.gms.common.SignInButton
@@ -33,6 +32,5 @@
     android:textSize="20sp"
     app:glow_color="@color/menu_button_color"
     app:pressed_glow_color = "@color/menu_button_pressed_color"
-    app:glow_strength="80"
     android:text="@string/sign_out"/>
 </LinearLayout>

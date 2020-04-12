@@ -7,24 +7,12 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.stupidfungames.pop.savegame.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.savegame.GooglePlayServicesAuthManager.HostActivity;
-import com.stupidfungames.pop.savegame.SaveGame;
-import com.stupidfungames.pop.savegame.SaveGameManager;
-
-import com.stupidfungames.pop.savegame.UpdateGameDialogActivity;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 public class MainMenuActivity extends AppCompatActivity implements HostActivity {
 
@@ -35,6 +23,7 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
     private ValueAnimator logoAnimator;
     private GooglePlayServicesAuthManager googlePlayServicesAuthManager;
     private PlayerProfileView playerProfileView;
+    private LoadGameBtnView loadGameBtnView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,53 +47,15 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
             new GooglePlayServicesAuthManager(findViewById(R.id.root_view), this, this);
         playerProfileView = new PlayerProfileView(
             googlePlayServicesAuthManager, (ViewGroup) findViewById(R.id.player_profile_view));
+        loadGameBtnView = new LoadGameBtnView(googlePlayServicesAuthManager, findViewById(R.id.load_game_btn));
 
-        googlePlayServicesAuthManager.maybeLoginOnAppStart();
-
-        setUpLoadGameBtn();
         animateLogo();
+        googlePlayServicesAuthManager.maybeLoginOnAppStart();
     }
 
     private void startNewGame() {
         startActivity(GameActivity.newIntent(this));
         this.finish();
-    }
-
-    private void setUpLoadGameBtn() {
-        ListenableFuture<SaveGame> saveGameListenableFuture = SaveGameManager.loadGame(this);
-        Futures.addCallback(saveGameListenableFuture, new FutureCallback<SaveGame>() {
-            @Override
-            public void onSuccess(@NullableDecl final SaveGame saveGame) {
-                if (saveGame != null) {
-                    View btn = findViewById(R.id.load_game_btn);
-                    btn.setVisibility(View.VISIBLE);
-                    btn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startLoadGame(saveGame);
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                Log.e("MainMenuActivity", "Error loading save game", t);
-            }
-        }, ContextCompat.getMainExecutor(this));
-    }
-
-    private void startLoadGame(SaveGame saveGame) {
-        boolean started = SaveGameManager.startLoadedGame(saveGame, this);
-        if (started) {
-            this.finish();
-        } else {
-            showUpdateDialog();
-        }
-    }
-
-    private void showUpdateDialog() {
-        startActivity(UpdateGameDialogActivity.newIntent(this));
     }
 
     private void  quitGame() {
