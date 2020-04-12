@@ -8,7 +8,6 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-// TODO: make this threadsafe
 public class EventBus {
 
     public interface Subscriber {
@@ -21,25 +20,13 @@ public class EventBus {
     private Map<GameEvent, ConcurrentLinkedQueue<Subscriber>> mEventSubscribers = new ConcurrentHashMap<>();
     private Map<GameEvent, EventPayload> mLastEventPayloads = new ConcurrentHashMap<>();
 
-    public static void init() {
-        if (sEventBus != null) {
-            throw new IllegalStateException(
-                    "Cannot initialize a new event bus when on already exists. You must destroy the existing event bus first");
-        }
-        sEventBus = new EventBus();
-    }
-
     public static void destroy() {
-        if (sEventBus == null) {
-            throw new IllegalStateException(
-                    "Cannot destroy event bus when it doesn't exist. Create a new one first");
-        }
         sEventBus = null;
     }
 
     public static EventBus get() {
         if (sEventBus == null) {
-            throw new IllegalStateException("Cannot get an instance of event bus. No event bus initialized");
+            sEventBus = new EventBus();
         }
         return sEventBus;
     }

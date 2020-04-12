@@ -59,6 +59,8 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
         playerProfileView = new PlayerProfileView(
             googlePlayServicesAuthManager, (ViewGroup) findViewById(R.id.player_profile_view));
 
+        googlePlayServicesAuthManager.maybeLoginOnAppStart();
+
         setUpLoadGameBtn();
         animateLogo();
     }

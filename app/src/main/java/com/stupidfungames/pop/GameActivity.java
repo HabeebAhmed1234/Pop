@@ -70,7 +70,6 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	@Override
 	protected void onCreate(Bundle pSavedInstanceState) {
 		super.onCreate(pSavedInstanceState);
-		EventBus.init();
 		gameLifeCycleCalllbackManager = new GameLifeCycleCalllbackManager();
 
 		// The root binder

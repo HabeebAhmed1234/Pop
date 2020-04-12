@@ -6,12 +6,13 @@
     android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/between_btn_padding" >
+    android:paddingTop="@dimen/player_profile_top_padding" >
 
   <com.stupidfungames.pop.androidui.GameMenuText
     android:id="@+id/username"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:textSize="20sp"
     android:visibility="gone"
     app:glow_color="@color/menu_button_color"
     app:glow_strength="80"

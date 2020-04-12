@@ -16,9 +16,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.stupidfungames.pop.savegame.GooglePlayServicesAuthManager;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import com.stupidfungames.pop.savegame.GooglePlayServicesAuthManager.LoginListener;
 
-public class PlayerProfileView {
+public class PlayerProfileView implements LoginListener {
 
   private Context context;
 
@@ -31,19 +31,14 @@ public class PlayerProfileView {
   private OnClickListener signInBtnClickListener = new OnClickListener() {
     @Override
     public void onClick(View v) {
-      initiateLogin();
+      authManager.initiateLogin();
     }
   };
 
   private OnClickListener signOutBtnClickListener = new OnClickListener() {
     @Override
     public void onClick(View v) {
-      authManager.logout().addOnCompleteListener(new OnCompleteListener<Void>() {
-        @Override
-        public void onComplete(@NonNull Task<Void> task) {
-          renderLoggedOutState();
-        }
-      });
+      authManager.logout();
     }
   };
 
@@ -54,26 +49,33 @@ public class PlayerProfileView {
     signInBtn = viewGroup.findViewById(R.id.sign_in_btn);
     signOutBtn = viewGroup.findViewById(R.id.sign_out_btn);
 
-    initiateLogin();
+    authManager.addListener(this);
+
+    if (authManager.isLoggedIn()) {
+      renderLoggedInState(authManager.getLoggedInAccount());
+    } else {
+      renderLoggedOutState();
+    }
   }
 
-  private void initiateLogin() {
-    Futures.addCallback(authManager.getAccount(), new FutureCallback<GoogleSignInAccount>() {
-      @Override
-      public void onSuccess(GoogleSignInAccount account) {
-        // The user was logged in. Show their username and the sign out button
-        PlayersClient client = Games.getPlayersClient(context, account);
-        renderLoggedInState(client);
-      }
-
-      @Override
-      public void onFailure(Throwable t) {
-        renderLoggedOutState();
-      }
-    }, ContextCompat.getMainExecutor(context));
+  @Override
+  public void onLoggedIn(GoogleSignInAccount account) {
+    renderLoggedInState(account);
   }
 
-  private void renderLoggedInState(PlayersClient client) {
+  @Override
+  public void onLoggedOut() {
+    renderLoggedOutState();
+  }
+
+  @Override
+  public void onLoginFailed(Exception e) {
+    renderLoggedOutState();
+  }
+
+  private void renderLoggedInState(GoogleSignInAccount account) {
+    // The user was logged in. Show their username and the sign out button
+    PlayersClient client = Games.getPlayersClient(context, account);
     client.getCurrentPlayer().addOnCompleteListener(new OnCompleteListener<Player>() {
       @Override
       public void onComplete(@NonNull Task<Player> task) {

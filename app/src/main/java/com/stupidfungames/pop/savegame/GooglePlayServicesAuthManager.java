@@ -1,5 +1,6 @@
 package com.stupidfungames.pop.savegame;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static com.google.android.gms.common.api.CommonStatusCodes.SIGN_IN_REQUIRED;
 import static com.google.android.gms.games.Games.SCOPE_GAMES_LITE;
 
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LifecycleObserver;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -35,17 +37,29 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.stupidfungames.pop.MainMenuActivity;
 import com.stupidfungames.pop.R;
+import com.stupidfungames.pop.gamesettings.GamePreferencesManager;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GooglePlayServicesAuthManager {
+
+  public interface LoginListener {
+    void onLoggedIn(GoogleSignInAccount account);
+    void onLoggedOut();
+    void onLoginFailed(Exception e);
+  }
 
   public interface HostActivity {
     void startActivityForResult(Intent intent, int rc);
   }
 
+  private static final String PLAYER_REJECTED_LOGIN_PREFERENCE = "player_rejected_login";
+
   private static final int RC_SIGN_IN = 1;
   private static final Scope[] REQUIRED_PERMISSIONS =
       new Scope[] {Drive.SCOPE_APPFOLDER, SCOPE_GAMES_LITE};
+
   GoogleSignInOptions  signInOptions =
       new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
           .requestScopes(
@@ -53,10 +67,14 @@ public class GooglePlayServicesAuthManager {
               Arrays.copyOfRange(REQUIRED_PERMISSIONS, 1, REQUIRED_PERMISSIONS.length))
           .build();
 
-  @Nullable private View rootView;
-  private HostActivity hostActivity;
-  private Context context;
-  private SettableFuture<GoogleSignInAccount> signInAccountFuture;
+  @Nullable private final View rootView;
+  private final HostActivity hostActivity;
+  private final Context context;
+
+  private boolean isLoggingIn = false;
+  @Nullable private GoogleSignInAccount loggedInAccount;
+
+  private Set<LoginListener> listeners = new HashSet<>();
 
   public GooglePlayServicesAuthManager(HostActivity hostActivity, Context context) {
     this(null, hostActivity, context);
@@ -69,20 +87,50 @@ public class GooglePlayServicesAuthManager {
     this.context = context;
   }
 
-  public ListenableFuture<GoogleSignInAccount> getAccount() {
-    if (signInAccountFuture != null) {
-      return signInAccountFuture;
+  @Nullable
+  public GoogleSignInAccount getLoggedInAccount() {
+    return loggedInAccount;
+  }
+
+  public boolean isLoggedIn() {
+    return loggedInAccount != null;
+  }
+
+  // Starts a login on app launch if the user has not already declined to login
+  public void maybeLoginOnAppStart() {
+    if (!GamePreferencesManager.getBoolean(context, PLAYER_REJECTED_LOGIN_PREFERENCE)) {
+      initiateLogin();
+    }
+  }
+
+  public void initiateLogin() {
+    initiateLogin(null);
+  }
+
+  /**
+   * Starts the login flow
+   * @param listener the listener to add to the set of listeners
+   */
+  public void initiateLogin(@Nullable LoginListener listener) {
+    if (isLoggingIn) return;
+    if (loggedInAccount != null && listener != null) {
+      listener.onLoggedIn(loggedInAccount);
+      return;
+    }
+    isLoggingIn = true;
+
+    if (listener != null) {
+      listeners.add(listener);
     }
 
     GoogleSignInAccount account =  GoogleSignIn.getLastSignedInAccount(context);
-    signInAccountFuture = SettableFuture.create();
     if (GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
       // Already signed in.
       // The signed in account is stored in the 'account' variable.
       if (account != null) {
-        signInAccountFuture.set(account);
+        onLogin(account);
       } else {
-        signInAccountFuture.setException(new IllegalStateException("Null account?"));
+        onLoginFailed(new IllegalStateException("Null account?"));
       }
     } else {
       // Haven't been signed-in before. Try the silent sign-in first.
@@ -103,29 +151,28 @@ public class GooglePlayServicesAuthManager {
                   if (signedInAccount == null) {
                     performExplicitSignIn();
                   } else {
-                    signInAccountFuture.set(signedInAccount);
+                    onLogin(signedInAccount);
                   }
                 }
               });
     }
-
-    addSignInListener(signInAccountFuture);
-
-    return signInAccountFuture;
   }
 
-  public Task<Void> logout() {
-    signInAccountFuture = null;
-    GoogleSignInClient signInClient = getSignInClient();
-    return signInClient.signOut();
+  public void logout() {
+    getSignInClient().signOut();
+    onLoggedOut();
   }
 
   public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     if (requestCode == RC_SIGN_IN) {
+      if (resultCode == RESULT_CANCELED) {
+        GamePreferencesManager.set(context, PLAYER_REJECTED_LOGIN_PREFERENCE, true);
+       return;
+      }
       GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
       if (result != null && result.isSuccess() && result.getSignInAccount() != null) {
         // The signed in account is stored in the result.
-        signInAccountFuture.set(result.getSignInAccount());
+        onLogin(result.getSignInAccount());
       } else {
         String message = result.getStatus().getStatusMessage();
         if (message == null || message.isEmpty()) {
@@ -151,22 +198,43 @@ public class GooglePlayServicesAuthManager {
     return GoogleSignIn.getClient(context, signInOptions);
   }
 
-  /**
-   * This is where we add anything we need to do as soon as the user is signed in
-   */
-  private void addSignInListener(ListenableFuture future) {
+  private void showPopup(GoogleSignInAccount account) {
     if (rootView == null) return;
-    Futures.addCallback(future,
-        new FutureCallback<GoogleSignInAccount>() {
-          @Override
-          public void onSuccess(GoogleSignInAccount result) {
-            GamesClient gamesClient= Games.getGamesClient(context, result);
-            gamesClient.setViewForPopups(rootView);
-            gamesClient.setGravityForPopups(Gravity.TOP);
-          }
-
-          @Override
-          public void onFailure(Throwable t) {}
-        }, ContextCompat.getMainExecutor(context));
+    GamesClient gamesClient= Games.getGamesClient(context, account);
+    gamesClient.setViewForPopups(rootView);
+    gamesClient.setGravityForPopups(Gravity.TOP);
   }
+
+  public void addListener(LoginListener listener) {
+    if (loggedInAccount != null) {
+      listener.onLoggedIn(loggedInAccount);
+    }
+    listeners.add(listener);
+  }
+
+  private void onLogin(GoogleSignInAccount account) {
+    isLoggingIn = false;
+    loggedInAccount = account;
+    for (LoginListener listener : listeners) {
+      listener.onLoggedIn(account);
+    }
+    showPopup(account);
+  }
+
+  private void onLoggedOut() {
+    isLoggingIn = false;
+    loggedInAccount = null;
+    for (LoginListener listener : listeners) {
+      listener.onLoggedOut();
+    }
+  }
+
+  private void onLoginFailed(Exception e) {
+    isLoggingIn = false;
+    loggedInAccount = null;
+    for (LoginListener listener : listeners) {
+      listener.onLoginFailed(e);
+    }
+  }
+
 }
