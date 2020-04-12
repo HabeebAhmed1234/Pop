@@ -5,9 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<include
-    layout="@layout/player_profile"/>
-
 <ImageView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -77,4 +74,6 @@
             app:glow_strength="80"/>
     </LinearLayout>
 </ScrollView>
+
+<include layout="@layout/player_profile"/>
 </FrameLayout>

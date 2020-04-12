@@ -6,6 +6,7 @@ import static com.google.android.gms.games.Games.SCOPE_GAMES_LITE;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -72,11 +73,16 @@ public class GooglePlayServicesAuthManager {
               new OnCompleteListener<GoogleSignInAccount>() {
                 @Override
                 public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
-                  GoogleSignInAccount signedInAccount = task.getResult();
-                  if (task.isSuccessful() && signedInAccount != null) {
-                    signInAccountFuture.set(task.getResult());
-                  } else {
+                  GoogleSignInAccount signedInAccount = null;
+                  try {
+                    signedInAccount = task.getResult(ApiException.class);
+                  } catch (ApiException e) {
+                    Log.e("AuthManager", "error logging in", e);
+                  }
+                  if (signedInAccount == null) {
                     performExplicitSignIn();
+                  } else {
+                    signInAccountFuture.set(signedInAccount);
                   }
                 }
               });
@@ -86,6 +92,7 @@ public class GooglePlayServicesAuthManager {
   }
 
   public Task<Void> logout() {
+    signInAccountFuture = null;
     GoogleSignInClient signInClient = getSignInClient();
     return signInClient.signOut();
   }
