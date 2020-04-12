@@ -14,7 +14,18 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
+    signingConfigs {
+        debug {
+            storeFile file('pop_keystore')
+            keyAlias 'key0'
+            keyPassword 'Ghostly_1234'
+            storePassword 'Ghostly_1234'
+        }
+    }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

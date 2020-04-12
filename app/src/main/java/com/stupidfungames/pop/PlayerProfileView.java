@@ -81,6 +81,7 @@ public class PlayerProfileView {
           Player player = task.getResult();
           if (player != null) {
             playerUserName.setText(player.getDisplayName());
+            playerUserName.setVisibility(View.VISIBLE);
             signInBtn.setVisibility(View.GONE);
             signOutBtn.setVisibility(View.VISIBLE);
             setClickListeners(true);
