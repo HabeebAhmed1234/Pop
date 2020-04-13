@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.games.AnnotatedData;
 import com.google.android.gms.games.Games;
@@ -37,7 +38,41 @@ public class GooglePlayServicesSaveGameManager {
   }
 
   public void saveGame() {
+    SnapshotsClient snapshotsClient =
+        Games.getSnapshotsClient(context, GoogleSignIn.getLastSignedInAccount(context));
 
+    // In the case of a conflict, the most recently modified version of this snapshot will be used.
+    int conflictResolutionPolicy = SnapshotsClient.RESOLUTION_POLICY_MOST_RECENTLY_MODIFIED;
+
+    // Open the saved game using its name.
+    snapshotsClient.open("kekw", true, conflictResolutionPolicy)
+        .addOnFailureListener(new OnFailureListener() {
+          @Override
+          public void onFailure(@NonNull Exception e) {
+            Log.e(TAG, "Error while opening Snapshot.", e);
+          }
+        }).continueWith(new Continuation<SnapshotsClient.DataOrConflict<Snapshot>, byte[]>() {
+          @Override
+          public byte[] then(@NonNull Task<SnapshotsClient.DataOrConflict<Snapshot>> task) throws Exception {
+            Snapshot snapshot = task.getResult().getData();
+
+            // Opening the snapshot was a success and any conflicts have been resolved.
+            try {
+              // Extract the raw data from the snapshot.
+              return snapshot.getSnapshotContents().readFully();
+            } catch (IOException e) {
+              Log.e(TAG, "Error while reading Snapshot.", e);
+            }
+
+            return null;
+          }
+        }).addOnCompleteListener(new OnCompleteListener<byte[]>() {
+          @Override
+          public void onComplete(@NonNull Task<byte[]> task) {
+            // Dismiss progress dialog and reflect the changes in the UI when complete.
+            // ...
+          }
+        });
   }
 
   public ListenableFuture<SaveGame> load(final GoogleSignInAccount account) {

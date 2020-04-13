@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:background="@android:color/transparent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_border" >
+
+            <com.stupidfungames.pop.androidui.GameMenuText
+                android:id="@+id/neon_dialog_title_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/neon_dialog_title_text_size"
+                android:paddingVertical="@dimen/menu_btn_padding_vertical"
+                android:paddingHorizontal="@dimen/menu_btn_padding_vertical"
+                android:gravity="center"
+                android:clipToPadding="false"
+                app:glow_color="@color/menu_button_color" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:isScrollContainer="true">
+
+                <LinearLayout
+                    android:id="@+id/neon_dialog_buttons_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+</FrameLayout>

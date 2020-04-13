@@ -26,7 +26,7 @@
         </activity>
 
         <activity
-            android:name="com.stupidfungames.pop.GameActivityGame"
+            android:name="com.stupidfungames.pop.GameActivity"
             android:screenOrientation="portrait"></activity>
 
         <activity

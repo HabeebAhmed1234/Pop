@@ -47,7 +47,7 @@ import org.andengine.opengl.font.FontManager;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
-public class GameActivityGame extends SimpleBaseGameActivity implements HostActivity, IAccelerationListener, GamePauser {
+public class GameActivity extends SimpleBaseGameActivity implements HostActivity, IAccelerationListener, GamePauser {
 
 	public static final String SAVE_GAME_EXTRA = "save_game";
 	private static final int PAUSE_ACTIVITY_REQUEST_CODE = 1;
@@ -58,12 +58,12 @@ public class GameActivityGame extends SimpleBaseGameActivity implements HostActi
 	BinderEnity mRootBinder;
 
 	public static Intent newIntent(SaveGame saveGame, Context context) {
-		Intent intent = new Intent(context, GameActivityGame.class);
+		Intent intent = new Intent(context, GameActivity.class);
 		intent.putExtra(SAVE_GAME_EXTRA, saveGame.toJson());
 		return intent;
 	}
 	public static Intent newIntent(Context context) {
-		return new Intent(context, GameActivityGame.class);
+		return new Intent(context, GameActivity.class);
 	}
 
 	@Override
@@ -78,15 +78,15 @@ public class GameActivityGame extends SimpleBaseGameActivity implements HostActi
 			protected void createBindings(Binder binder) {
 				binder
 						.bind(GameLifeCycleCalllbackManager.class, gameLifeCycleCalllbackManager)
-						.bind(GameResources.class, GameResources.createNew(GameActivityGame.this, GameActivityGame.this))
+						.bind(GameResources.class, GameResources.createNew(GameActivity.this, GameActivity.this))
 						.bind(FontManager.class, getFontManager())
 						.bind(TextureManager.class, getTextureManager())
 						.bind(AssetManager.class, getAssets())
-						.bind(Context.class, GameActivityGame.this)
+						.bind(Context.class, GameActivity.this)
 						.bind(SoundManager.class, getSoundManager())
 						.bind(MusicManager.class, getMusicManager())
 						.bind(ShakeCamera.class, camera)
-						.bind(GamePauser.class, GameActivityGame.this)
+						.bind(GamePauser.class, GameActivity.this)
 
 						.bind(GameTexturesManager.class, new GameTexturesManager(this))
 						.bind(GameSoundsManager.class, new GameSoundsManager(this))
@@ -212,6 +212,11 @@ public class GameActivityGame extends SimpleBaseGameActivity implements HostActi
 						this,
 						this),
 				this).saveGame(this, newSaveGame);
+	}
+
+	@Override
+	public void onBackPressed() {
+
 	}
 
 	@Override

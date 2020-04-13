@@ -47,12 +47,6 @@ public class PlayerProfileView implements LoginListener {
     signOutBtn = viewGroup.findViewById(R.id.sign_out_btn);
 
     authManager.addListener(this);
-
-    if (authManager.isLoggedIn()) {
-      renderLoggedInState(authManager.getLoggedInAccount());
-    } else {
-      renderLoggedOutState();
-    }
   }
 
   @Override

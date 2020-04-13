@@ -28,7 +28,7 @@ public class GameSoundsManager extends BaseEntity {
         SoundFactory.setAssetBasePath("mfx/");
         try {
             loadSound(SoundId.POP_1,"pop1.wav");
-            loadSound(SoundId.POP_2,"pop.wav");
+            loadSound(SoundId.POP_2,"pop2.wav");
             loadSound(SoundId.POP_3,"pop3.wav");
             loadSound(SoundId.POP_4,"pop4.wav");
             loadSound(SoundId.POP_5,"pop5.wav");

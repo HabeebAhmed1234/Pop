@@ -65,7 +65,7 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
     }
 
     private void startNewGame() {
-        startActivity(GameActivityGame.newIntent(this));
+        startActivity(GameActivity.newIntent(this));
         this.finish();
     }
 

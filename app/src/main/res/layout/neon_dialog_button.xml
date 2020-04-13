@@ -1,0 +1,12 @@
+<com.stupidfungames.pop.androidui.GameMenuButton
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/neon_dialog_button"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:gravity="center"
+  android:textSize="@dimen/neon_dialog_button_text_size"
+  android:paddingVertical="@dimen/menu_btn_padding_vertical"
+  android:paddingHorizontal="@dimen/menu_btn_padding_vertical"
+  app:glow_color="@color/menu_button_color"
+  app:pressed_glow_color = "@color/menu_button_pressed_color" />

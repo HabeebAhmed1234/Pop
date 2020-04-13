@@ -7,7 +7,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.stupidfungames.pop.GameActivityGame;
+import com.stupidfungames.pop.GameActivity;
 import com.stupidfungames.pop.HostActivity;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager.LoginListener;
@@ -73,7 +73,6 @@ public class SaveGameManager implements LoginListener {
 
     @Override
     public void onLoggedIn(GoogleSignInAccount account) {
-        LocalSaveGameManager.clear(context);
         loadGame(account);
     }
 
@@ -176,7 +175,7 @@ public class SaveGameManager implements LoginListener {
             return false;
         }
 
-        context.startActivity(GameActivityGame.newIntent(saveGame, context));
+        context.startActivity(GameActivity.newIntent(saveGame, context));
         return true;
     }
 }
