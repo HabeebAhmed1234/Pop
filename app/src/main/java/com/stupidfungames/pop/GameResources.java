@@ -1,9 +1,7 @@
 package com.stupidfungames.pop;
 
 import android.hardware.SensorManager;
-
 import com.stupidfungames.pop.physics.PhysicsWorld;
-
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
@@ -20,14 +18,14 @@ public class GameResources {
     public final PhysicsWorld physicsWorld;
     public final VertexBufferObjectManager vertexBufferObjectManager;
     public final Engine engine;
-    public final HostActivityInterface hostActivity;
+    public final HostActivity hostActivity;
 
     public GameResources(
             Scene scene,
             PhysicsWorld physicsWorld,
             VertexBufferObjectManager vertexBufferObjectManager,
             Engine engine,
-            HostActivityInterface hostActivity) {
+            HostActivity hostActivity) {
         this.scene = scene;
         this.physicsWorld = physicsWorld;
         this.vertexBufferObjectManager = vertexBufferObjectManager;
@@ -39,7 +37,7 @@ public class GameResources {
      * Initializes the game resources given their dependencies and returns a new instance.
      * @return
      */
-    public static GameResources createNew(BaseGameActivity baseGameActivity, HostActivityInterface hostActivity) {
+    public static GameResources createNew(BaseGameActivity baseGameActivity, HostActivity hostActivity) {
         Scene scene = new Scene();
         PhysicsWorld physicsWorld = new PhysicsWorld(new Vec2(0, SensorManager.GRAVITY_EARTH * 5), false);
         scene.registerUpdateHandler(physicsWorld);

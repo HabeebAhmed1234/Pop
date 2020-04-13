@@ -36,6 +36,10 @@ public class GooglePlayServicesSaveGameManager {
     this.hostActivity = hostActivity;
   }
 
+  public void saveGame() {
+
+  }
+
   public ListenableFuture<SaveGame> load(final GoogleSignInAccount account) {
     SnapshotsClient snapshotsClient = Games.getSnapshotsClient(context, account);
     final SettableFuture<SaveGame> future = SettableFuture.create();

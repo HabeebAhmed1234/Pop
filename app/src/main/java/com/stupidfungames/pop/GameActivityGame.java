@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
-
+import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.backgroundmusic.BackgroundMusicBaseEntity;
 import com.stupidfungames.pop.ballandchain.BallAndChainManagerBaseEntity;
 import com.stupidfungames.pop.binder.Binder;
@@ -35,7 +35,6 @@ import com.stupidfungames.pop.tooltips.GameTooltipsEntity;
 import com.stupidfungames.pop.turret.TurretsManagerEntity;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import com.stupidfungames.pop.walls.WallsManagerBaseEntity;
-
 import org.andengine.audio.music.MusicManager;
 import org.andengine.audio.sound.SoundManager;
 import org.andengine.engine.options.EngineOptions;
@@ -48,7 +47,7 @@ import org.andengine.opengl.font.FontManager;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
-public class GameActivity extends SimpleBaseGameActivity implements HostActivityInterface, IAccelerationListener, GamePauser {
+public class GameActivityGame extends SimpleBaseGameActivity implements HostActivity, IAccelerationListener, GamePauser {
 
 	public static final String SAVE_GAME_EXTRA = "save_game";
 	private static final int PAUSE_ACTIVITY_REQUEST_CODE = 1;
@@ -59,12 +58,12 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	BinderEnity mRootBinder;
 
 	public static Intent newIntent(SaveGame saveGame, Context context) {
-		Intent intent = new Intent(context, GameActivity.class);
+		Intent intent = new Intent(context, GameActivityGame.class);
 		intent.putExtra(SAVE_GAME_EXTRA, saveGame.toJson());
 		return intent;
 	}
 	public static Intent newIntent(Context context) {
-		return new Intent(context, GameActivity.class);
+		return new Intent(context, GameActivityGame.class);
 	}
 
 	@Override
@@ -79,15 +78,15 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 			protected void createBindings(Binder binder) {
 				binder
 						.bind(GameLifeCycleCalllbackManager.class, gameLifeCycleCalllbackManager)
-						.bind(GameResources.class, GameResources.createNew(GameActivity.this, GameActivity.this))
+						.bind(GameResources.class, GameResources.createNew(GameActivityGame.this, GameActivityGame.this))
 						.bind(FontManager.class, getFontManager())
 						.bind(TextureManager.class, getTextureManager())
 						.bind(AssetManager.class, getAssets())
-						.bind(Context.class, GameActivity.this)
+						.bind(Context.class, GameActivityGame.this)
 						.bind(SoundManager.class, getSoundManager())
 						.bind(MusicManager.class, getMusicManager())
 						.bind(ShakeCamera.class, camera)
-						.bind(GamePauser.class, GameActivity.this)
+						.bind(GamePauser.class, GameActivityGame.this)
 
 						.bind(GameTexturesManager.class, new GameTexturesManager(this))
 						.bind(GameSoundsManager.class, new GameSoundsManager(this))
@@ -207,7 +206,12 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		// Save the game
 		SaveGame newSaveGame = new SaveGame();
 		gameLifeCycleCalllbackManager.onSaveGame(newSaveGame);
-		SaveGameManager.saveGame(this, newSaveGame);
+		SaveGameManager.get(
+				this,
+				GooglePlayServicesAuthManager.get(
+						this,
+						this),
+				this).saveGame(this, newSaveGame);
 	}
 
 	@Override

@@ -11,11 +11,11 @@ public class LocalSaveGameManager {
 
   private static final String LOCAL_SAVE_GAME_DEBUG_KEY = "local_save_game";
 
-  public void clear() {
-
+  public static void clear(Context context) {
+    GamePreferencesManager.set(context, LOCAL_SAVE_GAME_DEBUG_KEY, null);
   }
-  
-  public ListenableFuture<SaveGame> loadGame(Context context) {
+
+  public static ListenableFuture<SaveGame> loadGame(Context context) {
     String saveGameJson = GamePreferencesManager.getString(context, LOCAL_SAVE_GAME_DEBUG_KEY);
     if (TextUtils.isEmpty(saveGameJson)) {
       return Futures.immediateFuture(null);

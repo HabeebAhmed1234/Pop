@@ -1,87 +1,138 @@
 package com.stupidfungames.pop;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.stupidfungames.pop.androidui.GameMenuButton;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager.LoginListener;
 import com.stupidfungames.pop.savegame.SaveGame;
 import com.stupidfungames.pop.savegame.SaveGameManager;
+import com.stupidfungames.pop.savegame.SaveGameManager.Listener;
 import com.stupidfungames.pop.savegame.UpdateGameDialogActivity;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-public class LoadGameBtnView implements LoginListener {
+public class LoadGameBtnView implements Listener, LoginListener {
 
   private final Context context;
   private final GooglePlayServicesAuthManager authManager;
+  private final SaveGameManager saveGameManager;
   private final GameMenuButton loadGameBtn;
   private final HostActivity hostActivity;
 
   public LoadGameBtnView(
       final GooglePlayServicesAuthManager authManager,
+      final SaveGameManager saveGameManager,
       final GameMenuButton loadGameBtn,
       final HostActivity hostActivity) {
     this.context = loadGameBtn.getContext();
     this.authManager = authManager;
     this.loadGameBtn = loadGameBtn;
     this.hostActivity = hostActivity;
+    this.saveGameManager = saveGameManager;
 
-    SaveGameManager.get();
     updateButtonColor(false);
+    saveGameManager.addListener(this);
     authManager.addListener(this);
+
+    if (!authManager.isLoggedIn()) {
+      updateButtonColor(false);
+      setupButtonToPromptLoad();
+    }
+  }
+
+  @Override
+  public void onSaveSameLoaded(SaveGame saveGame) {
+    setupButtonForLoadedGame(saveGame);
+  }
+
+  @Override
+  public void onNoSaveGames() {
+    setUpButtonForNoSaveGame();
   }
 
   @Override
   public void onLoggedIn(GoogleSignInAccount account) {
-    getSaveGame();
+    /** Do nothing, wait for save game to load **/
   }
 
   @Override
   public void onLoggedOut() {
-    updateButtonColor(false);
+    // Change the button to prompt login
+    setupButtonToPromptLoad();
   }
 
   @Override
   public void onLoginFailed(Exception e) {
+    // Change the button to prompt login
+    setupButtonToPromptLoad();
+  }
+
+  @Override
+  public void onLoginCanceled() {
+    // Change the button to prompt login
+    setupButtonToPromptLoad();
+  }
+
+  /**
+   * If the user is not yet logged in and there is no save game data loaded then we must login the
+   * user if they tap on the resume button. The user can then tap again to load the game.
+   */
+  private void setupButtonToPromptLoad() {
     updateButtonColor(false);
+    loadGameBtn.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        authManager.initiateLogin();
+      }
+    });
   }
 
-  private void getSaveGame() {
-    ListenableFuture<SaveGame> saveGameListenableFuture = SaveGameManager.loadGame(context);
-    Futures.addCallback(saveGameListenableFuture, new FutureCallback<SaveGame>() {
+  /**
+   * Sets an onclick listener to the resume button such that when it is pressed the new save game
+   * launches
+   */
+  private void setupButtonForLoadedGame(final SaveGame saveGame) {
+    updateButtonColor(true);
+    loadGameBtn.setOnClickListener(new OnClickListener() {
       @Override
-      public void onSuccess(@NullableDecl final SaveGame saveGame) {
-        if (saveGame != null) {
-          loadGameBtn.setVisibility(View.VISIBLE);
-          loadGameBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              startLoadGame(saveGame);
-            }
-          });
-        }
+      public void onClick(View v) {
+        startLoadedGame(saveGame);
       }
-
-      @Override
-      public void onFailure(Throwable t) {
-        Log.e("MainMenuActivity", "Error loading save game", t);
-      }
-    }, ContextCompat.getMainExecutor(context));
+    });
   }
 
-  private void startLoadGame(SaveGame saveGame) {
+  /**
+   * Sets an onclick listener to let the user know there are no save games if they click on the load
+   * btn
+   */
+  private void setUpButtonForNoSaveGame() {
+    updateButtonColor(false);
+    loadGameBtn.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        showNoSaveGameToast();
+      }
+    });
+  }
+
+  private void startLoadedGame(SaveGame saveGame) {
     boolean started = SaveGameManager.startLoadedGame(saveGame, context);
     if (started) {
       hostActivity.finish();
     } else {
       showUpdateDialog();
     }
+  }
+
+  private void showNoSaveGameToast() {
+    Toast.makeText(
+        context,
+        context.getString(R.string.no_save_game_available),
+        Toast.LENGTH_LONG)
+        .show();
   }
 
   private void showUpdateDialog() {

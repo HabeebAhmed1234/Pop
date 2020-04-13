@@ -51,7 +51,7 @@ public class GameOverActivity extends AppCompatActivity {
 	}
 
 	private void startNewGame() {
-		startActivity(GameActivity.newIntent(this));
+		startActivity(GameActivityGame.newIntent(this));
 		finish();
 	}
 

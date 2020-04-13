@@ -32,7 +32,7 @@ public abstract class BaseEntity extends BinderEnity implements GameLifeCycleCal
     protected final PhysicsWorld physicsWorld;
     protected final VertexBufferObjectManager vertexBufferObjectManager;
     protected final Engine engine;
-    protected final HostActivityInterface hostActivity;
+    protected final HostActivity hostActivity;
     protected final int levelWidth;
     protected final int levelHeight;
 

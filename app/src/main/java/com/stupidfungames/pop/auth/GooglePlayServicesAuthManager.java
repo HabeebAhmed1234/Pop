@@ -7,8 +7,6 @@ import static com.google.android.gms.games.Games.SCOPE_GAMES_SNAPSHOTS;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -22,8 +20,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.drive.Drive;
-import com.google.android.gms.games.Games;
-import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.stupidfungames.pop.HostActivity;
@@ -39,6 +35,7 @@ public class GooglePlayServicesAuthManager {
     void onLoggedIn(GoogleSignInAccount account);
     void onLoggedOut();
     void onLoginFailed(Exception e);
+    void onLoginCanceled();
   }
 
   private static final String PLAYER_REJECTED_LOGIN_PREFERENCE = "player_rejected_login";
@@ -54,7 +51,6 @@ public class GooglePlayServicesAuthManager {
               Arrays.copyOfRange(REQUIRED_PERMISSIONS, 1, REQUIRED_PERMISSIONS.length))
           .build();
 
-  @Nullable private final View rootView;
   private final HostActivity hostActivity;
   private final Context context;
 
@@ -63,13 +59,16 @@ public class GooglePlayServicesAuthManager {
 
   private Set<LoginListener> listeners = new HashSet<>();
 
-  public GooglePlayServicesAuthManager(HostActivity hostActivity, Context context) {
-    this(null, hostActivity, context);
+  private static GooglePlayServicesAuthManager sGooglePlayServicesAuthManager;
+
+  public static GooglePlayServicesAuthManager get(HostActivity hostActivity, Context context) {
+    if (sGooglePlayServicesAuthManager == null) {
+      sGooglePlayServicesAuthManager = new GooglePlayServicesAuthManager(hostActivity, context);
+    }
+    return sGooglePlayServicesAuthManager;
   }
 
-  public GooglePlayServicesAuthManager(
-      @Nullable View rootView, HostActivity hostActivity, Context context) {
-    this.rootView = rootView;
+  private GooglePlayServicesAuthManager(HostActivity hostActivity, Context context) {
     this.hostActivity = hostActivity;
     this.context = context;
   }
@@ -154,6 +153,7 @@ public class GooglePlayServicesAuthManager {
     if (requestCode == RC_SIGN_IN) {
       if (resultCode == RESULT_CANCELED) {
         GamePreferencesManager.set(context, PLAYER_REJECTED_LOGIN_PREFERENCE, true);
+        onLoginCancelled();
        return;
       }
       GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
@@ -168,6 +168,7 @@ public class GooglePlayServicesAuthManager {
         // TODO make this our own UI
         new AlertDialog.Builder(context).setMessage(message)
             .setNeutralButton(android.R.string.ok, null).show();
+        onLoginFailed(new RuntimeException("There was a problem logging in"));
       }
     }
   }
@@ -185,13 +186,6 @@ public class GooglePlayServicesAuthManager {
     return GoogleSignIn.getClient(context, signInOptions);
   }
 
-  private void showPopup(GoogleSignInAccount account) {
-    if (rootView == null) return;
-    GamesClient gamesClient= Games.getGamesClient(context, account);
-    gamesClient.setViewForPopups(rootView);
-    gamesClient.setGravityForPopups(Gravity.TOP);
-  }
-
   public void addListener(LoginListener listener) {
     if (loggedInAccount != null) {
       listener.onLoggedIn(loggedInAccount);
@@ -200,12 +194,14 @@ public class GooglePlayServicesAuthManager {
   }
 
   private void onLogin(GoogleSignInAccount account) {
+    // If the user ended up logging in then we want to auto sign them in all subsequent times they
+    // Open the app
+    GamePreferencesManager.set(context, PLAYER_REJECTED_LOGIN_PREFERENCE, false);
     isLoggingIn = false;
     loggedInAccount = account;
     for (LoginListener listener : listeners) {
       listener.onLoggedIn(account);
     }
-    showPopup(account);
   }
 
   private void onLoggedOut() {
@@ -221,6 +217,14 @@ public class GooglePlayServicesAuthManager {
     loggedInAccount = null;
     for (LoginListener listener : listeners) {
       listener.onLoginFailed(e);
+    }
+  }
+
+  private void onLoginCancelled() {
+    isLoggingIn = false;
+    loggedInAccount = null;
+    for (LoginListener listener : listeners) {
+      listener.onLoginCanceled();
     }
   }
 

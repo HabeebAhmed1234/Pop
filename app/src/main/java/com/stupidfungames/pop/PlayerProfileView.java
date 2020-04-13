@@ -70,6 +70,11 @@ public class PlayerProfileView implements LoginListener {
     renderLoggedOutState();
   }
 
+  @Override
+  public void onLoginCanceled() {
+    renderLoggedOutState();
+  }
+
   private void renderLoggedInState(GoogleSignInAccount account) {
     // The user was logged in. Show their username and the sign out button
     PlayersClient client = Games.getPlayersClient(context, account);
