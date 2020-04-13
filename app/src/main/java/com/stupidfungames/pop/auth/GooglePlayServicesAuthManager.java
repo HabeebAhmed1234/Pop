@@ -71,6 +71,11 @@ public class GooglePlayServicesAuthManager {
   private GooglePlayServicesAuthManager(HostActivity hostActivity, Context context) {
     this.hostActivity = hostActivity;
     this.context = context;
+
+    loggedInAccount = GoogleSignIn.getLastSignedInAccount(context);
+    if (loggedInAccount != null) {
+      onLogin(loggedInAccount);
+    }
   }
 
   @Nullable
