@@ -1,10 +1,9 @@
-package com.stupidfungames.pop.savegame;
+package com.stupidfungames.pop.auth;
 
 import static android.app.Activity.RESULT_CANCELED;
-import static com.google.android.gms.common.api.CommonStatusCodes.SIGN_IN_REQUIRED;
 import static com.google.android.gms.games.Games.SCOPE_GAMES_LITE;
+import static com.google.android.gms.games.Games.SCOPE_GAMES_SNAPSHOTS;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -14,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleObserver;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -26,16 +24,9 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesClient;
-import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.SettableFuture;
-import com.stupidfungames.pop.MainMenuActivity;
+import com.stupidfungames.pop.HostActivity;
 import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.gamesettings.GamePreferencesManager;
 import java.util.Arrays;
@@ -50,15 +41,11 @@ public class GooglePlayServicesAuthManager {
     void onLoginFailed(Exception e);
   }
 
-  public interface HostActivity {
-    void startActivityForResult(Intent intent, int rc);
-  }
-
   private static final String PLAYER_REJECTED_LOGIN_PREFERENCE = "player_rejected_login";
 
   private static final int RC_SIGN_IN = 1;
   private static final Scope[] REQUIRED_PERMISSIONS =
-      new Scope[] {Drive.SCOPE_APPFOLDER, SCOPE_GAMES_LITE};
+      new Scope[] {Drive.SCOPE_APPFOLDER, SCOPE_GAMES_LITE, SCOPE_GAMES_SNAPSHOTS};
 
   GoogleSignInOptions  signInOptions =
       new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)

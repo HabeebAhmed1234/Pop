@@ -48,6 +48,7 @@ dependencies {
     implementation('com.google.guava:guava:28.2-android')
     compile 'androidx.core:core-ktx:+'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'org.apache.commons:commons-lang3:3.5'
 
     implementation 'com.android.support:multidex:1.0.3'
 

@@ -8,12 +8,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class SaveGame {
+public class SaveGame implements Serializable {
 
-    public static class WallCoord {
+    public static class WallCoord implements Serializable{
         public float x1;
         public float y1;
         public float x2;

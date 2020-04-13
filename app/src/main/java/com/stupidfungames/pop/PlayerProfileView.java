@@ -6,17 +6,14 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.PlayersClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.stupidfungames.pop.savegame.GooglePlayServicesAuthManager;
-import com.stupidfungames.pop.savegame.GooglePlayServicesAuthManager.LoginListener;
+import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
+import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager.LoginListener;
 
 public class PlayerProfileView implements LoginListener {
 

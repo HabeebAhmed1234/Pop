@@ -11,8 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.stupidfungames.pop.savegame.GooglePlayServicesAuthManager;
-import com.stupidfungames.pop.savegame.GooglePlayServicesAuthManager.HostActivity;
+import com.stupidfungames.pop.androidui.GameMenuButton;
+import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
+import com.stupidfungames.pop.savegame.GooglePlayServicesSaveGameManager;
 
 public class MainMenuActivity extends AppCompatActivity implements HostActivity {
 
@@ -21,7 +22,8 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
     }
 
     private ValueAnimator logoAnimator;
-    private GooglePlayServicesAuthManager googlePlayServicesAuthManager;
+    private GooglePlayServicesAuthManager authManager;
+    private GooglePlayServicesSaveGameManager googlePlayServicesSaveGameManager;
     private PlayerProfileView playerProfileView;
     private LoadGameBtnView loadGameBtnView;
 
@@ -43,14 +45,16 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
             }
         });
 
-        googlePlayServicesAuthManager =
+        authManager =
             new GooglePlayServicesAuthManager(findViewById(R.id.root_view), this, this);
+        googlePlayServicesSaveGameManager = new GooglePlayServicesSaveGameManager(this, this);
         playerProfileView = new PlayerProfileView(
-            googlePlayServicesAuthManager, (ViewGroup) findViewById(R.id.player_profile_view));
-        loadGameBtnView = new LoadGameBtnView(googlePlayServicesAuthManager, findViewById(R.id.load_game_btn));
+            authManager, (ViewGroup) findViewById(R.id.player_profile_view));
+        loadGameBtnView = new LoadGameBtnView(
+            authManager, (GameMenuButton) findViewById(R.id.load_game_btn), this);
 
         animateLogo();
-        googlePlayServicesAuthManager.maybeLoginOnAppStart();
+        authManager.maybeLoginOnAppStart();
     }
 
     private void startNewGame() {
@@ -93,6 +97,7 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        googlePlayServicesAuthManager.onActivityResult(requestCode, resultCode, data);
+        authManager.onActivityResult(requestCode, resultCode, data);
+        googlePlayServicesSaveGameManager.onActivityResult(requestCode, resultCode, data);
     }
 }
