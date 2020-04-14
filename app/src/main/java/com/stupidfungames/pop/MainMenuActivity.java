@@ -21,7 +21,6 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
         return new Intent(context, MainMenuActivity.class);
     }
 
-    private GooglePlayServicesAuthManager authManager;
     private SaveGameManager saveGameManager;
 
     private GoogleAuthPopupView popupView;
@@ -48,20 +47,17 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
             }
         });
 
-        authManager = GooglePlayServicesAuthManager.get( this, this);
-        saveGameManager = SaveGameManager.get(this, authManager, this);
+        saveGameManager = SaveGameManager.get(this, this);
 
-        popupView = new GoogleAuthPopupView(authManager, findViewById(R.id.root_view));
-        playerProfileView = new PlayerProfileView(
-            authManager, (ViewGroup) findViewById(R.id.player_profile_view));
+        popupView = new GoogleAuthPopupView(findViewById(R.id.root_view), this);
+        playerProfileView = new PlayerProfileView((ViewGroup) findViewById(R.id.player_profile_view), this);
         loadGameBtnView = new LoadGameBtnView(
-            authManager,
             saveGameManager,
             (GameMenuButton) findViewById(R.id.load_game_btn),
             this);
 
         animateLogo();
-        authManager.maybeLoginOnAppStart();
+        GooglePlayServicesAuthManager.get( this, this).maybeLoginOnAppStart();
     }
 
     private void startNewGame() {
@@ -104,6 +100,6 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        authManager.onActivityResult(requestCode, resultCode, data);
+        GooglePlayServicesAuthManager.get(this,this).onActivityResult(requestCode, resultCode, data);
     }
 }

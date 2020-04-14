@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.annotation.DimenRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import com.stupidfungames.pop.R;
@@ -31,6 +32,7 @@ public abstract class GameNeonDialogActivity extends Activity {
 
     TextView title = findViewById(R.id.neon_dialog_title_text);
     title.setText(getTitleResId());
+    title.setTextSize(getResources().getDimension(getTitleSize()));
     ViewGroup buttonsContainer = findViewById(R.id.neon_dialog_buttons_container);
     List<ButtonModel> buttons = getButtonModels();
 
@@ -41,6 +43,10 @@ public abstract class GameNeonDialogActivity extends Activity {
       button.setOnClickListener(model.onClickListener);
       buttonsContainer.addView(button);
     }
+  }
+
+  protected @DimenRes int getTitleSize() {
+    return R.dimen.neon_dialog_title_text_size;
   }
 
   protected abstract @StringRes int getTitleResId();

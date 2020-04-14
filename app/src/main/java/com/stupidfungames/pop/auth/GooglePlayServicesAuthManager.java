@@ -61,16 +61,16 @@ public class GooglePlayServicesAuthManager {
 
   private static GooglePlayServicesAuthManager sGooglePlayServicesAuthManager;
 
-  public static GooglePlayServicesAuthManager get(HostActivity hostActivity, Context context) {
+  public static GooglePlayServicesAuthManager get(Context context, HostActivity hostActivity) {
     if (sGooglePlayServicesAuthManager == null) {
-      sGooglePlayServicesAuthManager = new GooglePlayServicesAuthManager(hostActivity, context);
+      sGooglePlayServicesAuthManager = new GooglePlayServicesAuthManager(context, hostActivity);
     }
     return sGooglePlayServicesAuthManager;
   }
 
-  private GooglePlayServicesAuthManager(HostActivity hostActivity, Context context) {
-    this.hostActivity = hostActivity;
+  private GooglePlayServicesAuthManager(Context context, HostActivity hostActivity) {
     this.context = context;
+    this.hostActivity = hostActivity;
 
     loggedInAccount = GoogleSignIn.getLastSignedInAccount(context);
     if (loggedInAccount != null) {

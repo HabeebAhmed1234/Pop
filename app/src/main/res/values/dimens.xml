@@ -11,6 +11,8 @@
     <dimen name="neon_dialog_title_text_size">60sp</dimen>
     <dimen name="neon_dialog_button_text_size">26sp</dimen>
 
+    <dimen name="toast_dialog_title_size">12sp</dimen>
+
     <dimen name="ttlm_default_padding">20dp</dimen>
     <dimen name="ttlm_default_corner_radius">6dp</dimen>
     <dimen name="ttlm_default_stroke_weight">4dp</dimen>

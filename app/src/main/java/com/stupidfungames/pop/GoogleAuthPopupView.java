@@ -10,24 +10,25 @@ import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager.LoginListener;
 
 public class GoogleAuthPopupView {
 
-  public GoogleAuthPopupView(final GooglePlayServicesAuthManager authManager, final View rootView) {
+  public GoogleAuthPopupView(final View rootView, HostActivity hostActivity) {
 
-    authManager.addListener(new LoginListener() {
-      @Override
-      public void onLoggedIn(GoogleSignInAccount account) {
-        showPopup(rootView, account);
+    GooglePlayServicesAuthManager.get(rootView.getContext(), hostActivity)
+        .addListener(new LoginListener() {
+          @Override
+          public void onLoggedIn(GoogleSignInAccount account) {
+            showPopup(rootView, account);
+          }
+
+          @Override
+          public void onLoggedOut() { }
+
+          @Override
+          public void onLoginFailed(Exception e) {}
+
+          @Override
+          public void onLoginCanceled() {}
+        });
       }
-
-      @Override
-      public void onLoggedOut() { }
-
-      @Override
-      public void onLoginFailed(Exception e) {}
-
-      @Override
-      public void onLoginCanceled() {}
-    });
-  }
 
   private void showPopup(View rootView, GoogleSignInAccount account) {
     GamesClient gamesClient= Games.getGamesClient(rootView.getContext(), account);

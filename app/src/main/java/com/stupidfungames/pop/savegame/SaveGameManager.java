@@ -46,23 +46,24 @@ public class SaveGameManager implements LoginListener {
     private final Context context;
     private final Set<Listener> listeners = new HashSet<>();
     private final GooglePlayServicesSaveGameManager playServicesSaveGameManager;
+    private final GooglePlayServicesAuthManager authManager;
 
     public static SaveGameManager get(
         Context context,
-        GooglePlayServicesAuthManager authManager,
         HostActivity hostActivity) {
         if (sSaveGameManager == null) {
-            sSaveGameManager = new SaveGameManager(context, authManager, hostActivity);
+            sSaveGameManager = new SaveGameManager(context, hostActivity);
         }
         return sSaveGameManager;
     }
 
     private SaveGameManager(
         Context context,
-        GooglePlayServicesAuthManager authManager,
         HostActivity hostActivity){
         this.context = context;
-        this.playServicesSaveGameManager = new GooglePlayServicesSaveGameManager(context, hostActivity);;
+        this.playServicesSaveGameManager = new GooglePlayServicesSaveGameManager(context, hostActivity);
+        this.authManager = GooglePlayServicesAuthManager.get(context, hostActivity);
+
         authManager.addListener(this);
 
         if (!authManager.isLoggedIn()) {

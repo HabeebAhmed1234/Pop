@@ -9,6 +9,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.stupidfungames.pop.androidui.GameMenuButton;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager.LoginListener;
+import com.stupidfungames.pop.dialog.ToastDialogActivity;
 import com.stupidfungames.pop.savegame.SaveGame;
 import com.stupidfungames.pop.savegame.SaveGameManager;
 import com.stupidfungames.pop.savegame.SaveGameManager.Listener;
@@ -23,12 +24,11 @@ public class LoadGameBtnView implements Listener, LoginListener {
   private final HostActivity hostActivity;
 
   public LoadGameBtnView(
-      final GooglePlayServicesAuthManager authManager,
       final SaveGameManager saveGameManager,
       final GameMenuButton loadGameBtn,
       final HostActivity hostActivity) {
     this.context = loadGameBtn.getContext();
-    this.authManager = authManager;
+    this.authManager = GooglePlayServicesAuthManager.get(context, hostActivity);
     this.loadGameBtn = loadGameBtn;
     this.hostActivity = hostActivity;
     this.saveGameManager = saveGameManager;
@@ -128,11 +128,7 @@ public class LoadGameBtnView implements Listener, LoginListener {
   }
 
   private void showNoSaveGameToast() {
-    Toast.makeText(
-        context,
-        context.getString(R.string.no_save_game_available),
-        Toast.LENGTH_LONG)
-        .show();
+    ToastDialogActivity.start(R.string.no_save_game_available, context);
   }
 
   private void showUpdateDialog() {

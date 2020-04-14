@@ -51,6 +51,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 	public static final String SAVE_GAME_EXTRA = "save_game";
 	private static final int PAUSE_ACTIVITY_REQUEST_CODE = 1;
+	private static final int SAVE_GAME_FLOW_REQUEST_CODE = 2;
 
 	private ShakeCamera camera;
 	private GameLifeCycleCalllbackManager gameLifeCycleCalllbackManager;
@@ -203,20 +204,22 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	public void onPauseGame() {
 		super.onPauseGame();
 		this.disableAccelerationSensor();
-		// Save the game
-		SaveGame newSaveGame = new SaveGame();
-		gameLifeCycleCalllbackManager.onSaveGame(newSaveGame);
-		SaveGameManager.get(
-				this,
-				GooglePlayServicesAuthManager.get(
-						this,
-						this),
-				this).saveGame(this, newSaveGame);
+
+		// if we are already logged in then just save the game
+		if (GooglePlayServicesAuthManager.get(this, this).isLoggedIn()) {
+			SaveGame newSaveGame = new SaveGame();
+			gameLifeCycleCalllbackManager.onSaveGame(newSaveGame);
+			SaveGameManager.get(this, this).saveGame(this, newSaveGame);
+		}
 	}
 
 	@Override
 	public void onBackPressed() {
+		// If we are not logged in then we must launch a prompt for the user to log in to save their
+		// game
+		if (!GooglePlayServicesAuthManager.get(this, this).isLoggedIn()) {
 
+		}
 	}
 
 	@Override

@@ -39,9 +39,9 @@ public class PlayerProfileView implements LoginListener {
     }
   };
 
-  public PlayerProfileView(GooglePlayServicesAuthManager authManager, final ViewGroup viewGroup) {
+  public PlayerProfileView(final ViewGroup viewGroup, HostActivity hostActivity) {
     this.context = viewGroup.getContext();
-    this.authManager = authManager;
+    this.authManager = GooglePlayServicesAuthManager.get(viewGroup.getContext(), hostActivity);
     playerUserName = viewGroup.findViewById(R.id.username);
     signInBtn = viewGroup.findViewById(R.id.sign_in_btn);
     signOutBtn = viewGroup.findViewById(R.id.sign_out_btn);
