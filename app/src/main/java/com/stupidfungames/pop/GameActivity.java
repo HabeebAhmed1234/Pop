@@ -5,6 +5,12 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.ActivityResultRegistry;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.backgroundmusic.BackgroundMusicBaseEntity;
 import com.stupidfungames.pop.ballandchain.BallAndChainManagerBaseEntity;
@@ -27,6 +33,7 @@ import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import com.stupidfungames.pop.resources.sounds.SoundId;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.savegame.SaveGame;
+import com.stupidfungames.pop.savegame.SaveGameFlowDialog;
 import com.stupidfungames.pop.savegame.SaveGameManager;
 import com.stupidfungames.pop.settingstray.GamePauseQuickSettingsIconBaseEntity;
 import com.stupidfungames.pop.settingstray.GameQuickSettingsHostTrayBaseEntity;
@@ -148,6 +155,12 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 				startActivity(MainMenuActivity.newIntent(this));
 				finish();
 			}
+		} else if (requestCode == SAVE_GAME_FLOW_REQUEST_CODE) {
+			if (resultCode == SaveGameFlowDialog.RESULT_SUCCESS
+					|| resultCode == SaveGameFlowDialog.RESULT_DECLINED
+					|| resultCode == SaveGameFlowDialog.RESULT_DECLINED_PERMANENT) {
+				goBackToMainMenu();
+			}
 		}
 	}
 
@@ -185,16 +198,6 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	}
 
 	@Override
-	public boolean onKeyDown(final int pKeyCode, final KeyEvent pEvent) {
-		if(pKeyCode == KeyEvent.KEYCODE_BACK && pEvent.getAction() == KeyEvent.ACTION_DOWN) {
-			startActivity(MainMenuActivity.newIntent(this));
-			finish();
-			return true;
-		}
-		return super.onKeyDown(pKeyCode, pEvent);
-	}
-
-	@Override
 	public void onResumeGame() {
 		super.onResumeGame();
 		this.enableAccelerationSensor(this);
@@ -207,19 +210,39 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 		// if we are already logged in then just save the game
 		if (GooglePlayServicesAuthManager.get(this, this).isLoggedIn()) {
-			SaveGame newSaveGame = new SaveGame();
-			gameLifeCycleCalllbackManager.onSaveGame(newSaveGame);
-			SaveGameManager.get(this, this).saveGame(this, newSaveGame);
+			SaveGameManager.get(this, this).saveGame(this, fabricateSaveGame());
 		}
 	}
 
 	@Override
-	public void onBackPressed() {
-		// If we are not logged in then we must launch a prompt for the user to log in to save their
-		// game
-		if (!GooglePlayServicesAuthManager.get(this, this).isLoggedIn()) {
-
+	public boolean onKeyDown(int keyCode, KeyEvent event)  {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			// If we are not logged in then we must launch a prompt for the user to log in to save their
+			// game
+			if (!GooglePlayServicesAuthManager.get(this, this).isLoggedIn()) {
+				// try launching the save game flow
+				@Nullable Intent saveGameFlowIntent = SaveGameFlowDialog.getIntent(fabricateSaveGame(), this);
+				if (saveGameFlowIntent != null) {
+					startActivityForResult(saveGameFlowIntent, SAVE_GAME_FLOW_REQUEST_CODE);
+					return true;
+				}
+			}
+			// The save game flow cannot be not launched. proceed to exit the game
+			goBackToMainMenu();
+			return true;
 		}
+		return false;
+	}
+
+	private void goBackToMainMenu() {
+		startActivity(MainMenuActivity.newIntent(this));
+		finish();
+	}
+
+	private SaveGame fabricateSaveGame() {
+		SaveGame newSaveGame = new SaveGame();
+		gameLifeCycleCalllbackManager.onSaveGame(newSaveGame);
+		return newSaveGame;
 	}
 
 	@Override

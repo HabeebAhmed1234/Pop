@@ -1,39 +1,40 @@
 package com.stupidfungames.pop.savegame;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.view.View;
-import androidx.annotation.Nullable;
 import com.stupidfungames.pop.R;
+import com.stupidfungames.pop.dialog.GameNeonDialogActivity;
+import java.util.Arrays;
+import java.util.List;
 
-public class UpdateGameDialogActivity extends Activity {
+public class UpdateGameDialogActivity extends GameNeonDialogActivity {
 
   public static Intent newIntent(Context context) {
     return new Intent(context, UpdateGameDialogActivity.class);
   }
 
   @Override
-  protected void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.update_game_dialog_layout);
+  protected int getTitleResId() {
+    return R.string.game_update_text;
+  }
 
-    findViewById(R.id.update_btn).setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        launchPlayStore();
-        finish();
-      }
-    });
-
-    findViewById(R.id.dismiss_btn).setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        finish();
-      }
-    });
+  @Override
+  protected List<ButtonModel> getButtonModels() {
+    return Arrays.asList(
+        new ButtonModel(R.string.update_btn_text, new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            launchPlayStore();
+            finish();
+          }
+        }),new ButtonModel(R.string.dismiss, new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            finish();
+          }
+        }));
   }
 
   private void launchPlayStore() {

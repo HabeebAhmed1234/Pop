@@ -96,10 +96,4 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
         super.onDestroy();
         logoAnimator.end();
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        GooglePlayServicesAuthManager.get(this,this).onActivityResult(requestCode, resultCode, data);
-    }
 }

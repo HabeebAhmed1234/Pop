@@ -20,5 +20,8 @@
     <string name="save_game_flow_title">Would you like to sign in to save your progress?</string>
     <string name="sign_in">Sign In</string>
     <string name="no">No</string>
+    <string name="no_permanent">No, don\'t show this again.</string>
     <string name="ok">Ok</string>
+    <string name="generic_error">Something went wrong. Please try again later</string>
+    <string name="login_to_save">You must login to save your game</string>
 </resources>

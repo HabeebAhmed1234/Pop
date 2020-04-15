@@ -4,9 +4,14 @@ import static android.app.Activity.RESULT_CANCELED;
 import static com.google.android.gms.games.Games.SCOPE_GAMES_LITE;
 import static com.google.android.gms.games.Games.SCOPE_GAMES_SNAPSHOTS;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -24,6 +29,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.stupidfungames.pop.HostActivity;
 import com.stupidfungames.pop.R;
+import com.stupidfungames.pop.dialog.ToastDialogActivity;
 import com.stupidfungames.pop.gamesettings.GamePreferencesManager;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -34,13 +40,11 @@ public class GooglePlayServicesAuthManager {
   public interface LoginListener {
     void onLoggedIn(GoogleSignInAccount account);
     void onLoggedOut();
-    void onLoginFailed(Exception e);
     void onLoginCanceled();
+    void onLoginFailed(Exception e);
   }
 
   private static final String PLAYER_REJECTED_LOGIN_PREFERENCE = "player_rejected_login";
-
-  private static final int RC_SIGN_IN = 1;
   private static final Scope[] REQUIRED_PERMISSIONS =
       new Scope[] {Drive.SCOPE_APPFOLDER, SCOPE_GAMES_LITE, SCOPE_GAMES_SNAPSHOTS};
 
@@ -108,6 +112,7 @@ public class GooglePlayServicesAuthManager {
       listener.onLoggedIn(loggedInAccount);
       return;
     }
+    Log.d("asdasd", "initiateLogin isLoggingIn = true");
     isLoggingIn = true;
 
     if (listener != null) {
@@ -154,38 +159,36 @@ public class GooglePlayServicesAuthManager {
     onLoggedOut();
   }
 
-  public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-    if (requestCode == RC_SIGN_IN) {
-      if (resultCode == RESULT_CANCELED) {
-        GamePreferencesManager.set(context, PLAYER_REJECTED_LOGIN_PREFERENCE, true);
-        onLoginCancelled();
-       return;
-      }
-      GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-      if (result != null && result.isSuccess() && result.getSignInAccount() != null) {
-        // The signed in account is stored in the result.
-        onLogin(result.getSignInAccount());
-      } else {
-        String message = result.getStatus().getStatusMessage();
-        if (message == null || message.isEmpty()) {
-          message = context.getString(R.string.signin_other_error);
-        }
-        // TODO make this our own UI
-        new AlertDialog.Builder(context).setMessage(message)
-            .setNeutralButton(android.R.string.ok, null).show();
-        onLoginFailed(new RuntimeException("There was a problem logging in"));
-      }
-    }
-  }
-
   /**
    * Performs a sign in by the user via UI
    */
   private void performExplicitSignIn() {
-    GoogleSignInClient signInClient = getSignInClient();
-    Intent intent = signInClient.getSignInIntent();
-    hostActivity.startActivityForResult(intent, RC_SIGN_IN);
+    ActivityResultLauncher <Intent> startSignInForResult = hostActivity.prepareCall(
+        new StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+          @Override
+          public void onActivityResult(ActivityResult result) {
+            GooglePlayServicesAuthManager.this.onActivityResult(result);
+          }
+        });
+    startSignInForResult.launch(getSignInClient().getSignInIntent());
   }
+
+  private void onActivityResult(ActivityResult activityResult) {
+    if (activityResult.getResultCode() == RESULT_CANCELED) {
+      GamePreferencesManager.set(context, PLAYER_REJECTED_LOGIN_PREFERENCE, true);
+      onLoginCancelled();
+      return;
+    }
+    GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(activityResult.getData());
+    if (result != null && result.isSuccess() && result.getSignInAccount() != null) {
+      // The signed in account is stored in the result.
+      onLogin(result.getSignInAccount());
+    } else {
+      ToastDialogActivity.start(R.string.signin_other_error, context);
+      onLoginFailed(new RuntimeException(result.getStatus().getStatusMessage()));
+    }
+  }
+
 
   private GoogleSignInClient getSignInClient() {
     return GoogleSignIn.getClient(context, signInOptions);

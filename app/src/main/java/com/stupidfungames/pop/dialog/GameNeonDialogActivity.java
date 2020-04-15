@@ -1,7 +1,7 @@
 package com.stupidfungames.pop.dialog;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -9,10 +9,11 @@ import android.widget.TextView;
 import androidx.annotation.DimenRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
 import com.stupidfungames.pop.R;
 import java.util.List;
 
-public abstract class GameNeonDialogActivity extends Activity {
+public abstract class GameNeonDialogActivity extends AppCompatActivity {
 
   protected static class ButtonModel {
 
@@ -32,7 +33,7 @@ public abstract class GameNeonDialogActivity extends Activity {
 
     TextView title = findViewById(R.id.neon_dialog_title_text);
     title.setText(getTitleResId());
-    title.setTextSize(getResources().getDimension(getTitleSize()));
+    title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(getTitleSize()));
     ViewGroup buttonsContainer = findViewById(R.id.neon_dialog_buttons_container);
     List<ButtonModel> buttons = getButtonModels();
 

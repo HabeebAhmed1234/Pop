@@ -2,9 +2,6 @@ package org.andengine.util.adt.transformation;
 
 import org.andengine.util.math.MathConstants;
 
-import android.util.FloatMath;
-
-
 /**
  * <p>This class is basically a java-space replacement for the native {@link android.graphics.Matrix} class.</p>
  * 
@@ -39,12 +36,12 @@ public class Transformation {
 	// Fields
 	// ===========================================================
 
-	private float a = 1.0f; /* x scale */
-	private float b = 0.0f; /* y skew */
-	private float c = 0.0f; /* x skew */
-	private float d = 1.0f; /* y scale */
-	private float tx = 0.0f; /* x translation */
-	private float ty = 0.0f; /* y translation */
+	private double a = 1.0f; /* x scale */
+	private double b = 0.0f; /* y skew */
+	private double c = 0.0f; /* x skew */
+	private double d = 1.0f; /* y scale */
+	private double tx = 0.0f; /* x translation */
+	private double ty = 0.0f; /* y translation */
 
 	// ===========================================================
 	// Constructors
@@ -119,13 +116,13 @@ public class Transformation {
 	public final void preRotate(final float pAngle) {
 		final float angleRad = MathConstants.DEG_TO_RAD * pAngle;
 
-		final float sin = FloatMath.sin(angleRad);
-		final float cos = FloatMath.cos(angleRad);
+		final double sin = Math.sin(angleRad);
+		final double cos = Math.cos(angleRad);
 
-		final float a = this.a;
-		final float b = this.b;
-		final float c = this.c;
-		final float d = this.d;
+		final double a = this.a;
+		final double b = this.b;
+		final double c = this.c;
+		final double d = this.d;
 
 		this.a = cos * a + sin * c;
 		this.b = cos * b + sin * d;
@@ -136,15 +133,15 @@ public class Transformation {
 	public final void postRotate(final float pAngle) {
 		final float angleRad = MathConstants.DEG_TO_RAD * pAngle;
 
-		final float sin = FloatMath.sin(angleRad);
-		final float cos = FloatMath.cos(angleRad);
+		final double sin = Math.sin(angleRad);
+		final double cos = Math.cos(angleRad);
 
-		final float a = this.a;
-		final float b = this.b;
-		final float c = this.c;
-		final float d = this.d;
-		final float tx = this.tx;
-		final float ty = this.ty;
+		final double a = this.a;
+		final double b = this.b;
+		final double c = this.c;
+		final double d = this.d;
+		final double tx = this.tx;
+		final double ty = this.ty;
 
 		this.a = a * cos - b * sin;
 		this.b = a * sin + b * cos;
@@ -157,8 +154,8 @@ public class Transformation {
 	public final Transformation setToRotate(final float pAngle) {
 		final float angleRad = MathConstants.DEG_TO_RAD * pAngle;
 
-		final float sin = FloatMath.sin(angleRad);
-		final float cos = FloatMath.cos(angleRad);
+		final double sin = Math.sin(angleRad);
+		final double cos = Math.cos(angleRad);
 
 		this.a = cos;
 		this.b = sin;
@@ -201,12 +198,12 @@ public class Transformation {
 		final float tanX = (float) Math.tan(-MathConstants.DEG_TO_RAD * pSkewX);
 		final float tanY = (float) Math.tan(-MathConstants.DEG_TO_RAD * pSkewY);
 
-		final float a = this.a;
-		final float b = this.b;
-		final float c = this.c;
-		final float d = this.d;
-		final float tx = this.tx;
-		final float ty = this.ty;
+		final double a = this.a;
+		final double b = this.b;
+		final double c = this.c;
+		final double d = this.d;
+		final double tx = this.tx;
+		final double ty = this.ty;
 
 		this.a = a + tanY * c;
 		this.b = b + tanY * d;
@@ -220,12 +217,12 @@ public class Transformation {
 		final float tanX = (float) Math.tan(-MathConstants.DEG_TO_RAD * pSkewX);
 		final float tanY = (float) Math.tan(-MathConstants.DEG_TO_RAD * pSkewY);
 
-		final float a = this.a;
-		final float b = this.b;
-		final float c = this.c;
-		final float d = this.d;
-		final float tx = this.tx;
-		final float ty = this.ty;
+		final double a = this.a;
+		final double b = this.b;
+		final double c = this.c;
+		final double d = this.d;
+		final double tx = this.tx;
+		final double ty = this.ty;
 
 		this.a = a + b * tanX;
 		this.b = a * tanY + b;
@@ -250,13 +247,13 @@ public class Transformation {
 		this.postConcat(pTransformation.a, pTransformation.b, pTransformation.c, pTransformation.d, pTransformation.tx, pTransformation.ty);
 	}
 
-	private void postConcat(final float pA, final float pB, final float pC, final float pD, final float pTX, final float pTY) {
-		final float a = this.a;
-		final float b = this.b;
-		final float c = this.c;
-		final float d = this.d;
-		final float tx = this.tx;
-		final float ty = this.ty;
+	private void postConcat(final double pA, final double pB, final double pC, final double pD, final double pTX, final double pTY) {
+		final double a = this.a;
+		final double b = this.b;
+		final double c = this.c;
+		final double d = this.d;
+		final double tx = this.tx;
+		final double ty = this.ty;
 
 		this.a = a * pA + b * pC;
 		this.b = a * pB + b * pD;
@@ -270,13 +267,13 @@ public class Transformation {
 		this.preConcat(pTransformation.a, pTransformation.b, pTransformation.c, pTransformation.d, pTransformation.tx, pTransformation.ty);
 	}
 
-	private void preConcat(final float pA, final float pB, final float pC, final float pD, final float pTX, final float pTY) {
-		final float a = this.a;
-		final float b = this.b;
-		final float c = this.c;
-		final float d = this.d;
-		final float tx = this.tx;
-		final float ty = this.ty;
+	private void preConcat(final double pA, final double pB, final double pC, final double pD, final double pTX, final double pTY) {
+		final double a = this.a;
+		final double b = this.b;
+		final double c = this.c;
+		final double d = this.d;
+		final double tx = this.tx;
+		final double ty = this.ty;
 
 		this.a = pA * a + pB * c;
 		this.b = pA * b + pB * d;
@@ -291,10 +288,10 @@ public class Transformation {
 		int i = 0;
 		int j = 0;
 		while(--count >= 0) {
-			final float x = pVertices[i++];
-			final float y = pVertices[i++];
-			pVertices[j++] = x * this.a + y * this.c + this.tx;
-			pVertices[j++] = x * this.b + y * this.d + this.ty;
+			final double x = pVertices[i++];
+			final double y = pVertices[i++];
+			pVertices[j++] = (float) (x * this.a + y * this.c + this.tx);
+			pVertices[j++] = (float) (x * this.b + y * this.d + this.ty);
 		}
 	}
 

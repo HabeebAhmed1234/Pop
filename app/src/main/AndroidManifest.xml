@@ -59,6 +59,12 @@
             android:name="com.stupidfungames.pop.dialog.ToastDialogActivity"
             android:theme="@style/Theme.Dialog"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.stupidfungames.pop.savegame.SaveGameFlowDialog"
+            android:theme="@style/Theme.Dialog"
+            android:screenOrientation="portrait" />
+
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

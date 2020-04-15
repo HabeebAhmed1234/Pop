@@ -1,11 +1,10 @@
 package org.andengine.opengl.texture.atlas.bitmap.source.decorator;
 
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.bitmap.source.decorator.shape.IBitmapTextureAtlasSourceDecoratorShape;
 import org.andengine.util.color.AndengineColor;
-
-import android.graphics.AvoidXfermode;
-import android.graphics.AvoidXfermode.Mode;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -67,7 +66,7 @@ public class ColorSwapBitmapTextureAtlasSourceDecorator extends BaseShapeBitmapT
 		this.mColorKeyColorARGBPackedInt = pColorKeyColorARGBPackedInt;
 		this.mTolerance = pTolerance;
 		this.mColorSwapColorARGBPackedInt = pColorSwapColorARGBPackedInt;
-		this.mPaint.setXfermode(new AvoidXfermode(pColorKeyColorARGBPackedInt, pTolerance, Mode.TARGET));
+		this.mPaint.setXfermode(new PorterDuffXfermode(Mode.DST_IN));
 		this.mPaint.setColor(pColorSwapColorARGBPackedInt);
 	}
 
