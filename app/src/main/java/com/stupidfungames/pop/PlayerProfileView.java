@@ -24,11 +24,12 @@ public class PlayerProfileView implements LoginListener {
   private View signOutBtn;
 
   private GooglePlayServicesAuthManager authManager;
+  private HostActivity hostActivity;
 
   private OnClickListener signInBtnClickListener = new OnClickListener() {
     @Override
     public void onClick(View v) {
-      authManager.initiateLogin();
+      authManager.initiateLogin(hostActivity);
     }
   };
 
@@ -39,9 +40,13 @@ public class PlayerProfileView implements LoginListener {
     }
   };
 
-  public PlayerProfileView(final ViewGroup viewGroup, HostActivity hostActivity) {
+  public PlayerProfileView(
+      final ViewGroup viewGroup,
+      final GooglePlayServicesAuthManager authManager,
+      final HostActivity hostActivity) {
     this.context = viewGroup.getContext();
-    this.authManager = GooglePlayServicesAuthManager.get(viewGroup.getContext(), hostActivity);
+    this.authManager = authManager;
+    this.hostActivity = hostActivity;
     playerUserName = viewGroup.findViewById(R.id.username);
     signInBtn = viewGroup.findViewById(R.id.sign_in_btn);
     signOutBtn = viewGroup.findViewById(R.id.sign_out_btn);

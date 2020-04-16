@@ -65,11 +65,6 @@ public class SaveGameManager implements LoginListener {
         this.authManager = GooglePlayServicesAuthManager.get(context, hostActivity);
 
         authManager.addListener(this);
-
-        if (!authManager.isLoggedIn()) {
-            // We should clear the cache if this class is initialized while we are logged out.
-            onLoggedOut();
-        }
     }
 
     @Override

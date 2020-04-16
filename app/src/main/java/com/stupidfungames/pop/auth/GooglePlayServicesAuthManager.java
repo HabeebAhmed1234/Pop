@@ -4,7 +4,6 @@ import static android.app.Activity.RESULT_CANCELED;
 import static com.google.android.gms.games.Games.SCOPE_GAMES_LITE;
 import static com.google.android.gms.games.Games.SCOPE_GAMES_SNAPSHOTS;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -14,7 +13,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -55,7 +53,6 @@ public class GooglePlayServicesAuthManager {
               Arrays.copyOfRange(REQUIRED_PERMISSIONS, 1, REQUIRED_PERMISSIONS.length))
           .build();
 
-  private final HostActivity hostActivity;
   private final Context context;
 
   private boolean isLoggingIn = false;
@@ -63,23 +60,9 @@ public class GooglePlayServicesAuthManager {
 
   private Set<LoginListener> listeners = new HashSet<>();
 
-  private static GooglePlayServicesAuthManager sGooglePlayServicesAuthManager;
-
-  public static GooglePlayServicesAuthManager get(Context context, HostActivity hostActivity) {
-    if (sGooglePlayServicesAuthManager == null) {
-      sGooglePlayServicesAuthManager = new GooglePlayServicesAuthManager(context, hostActivity);
-    }
-    return sGooglePlayServicesAuthManager;
-  }
-
-  private GooglePlayServicesAuthManager(Context context, HostActivity hostActivity) {
+  public GooglePlayServicesAuthManager(Context context) {
     this.context = context;
-    this.hostActivity = hostActivity;
-
     loggedInAccount = GoogleSignIn.getLastSignedInAccount(context);
-    if (loggedInAccount != null) {
-      onLogin(loggedInAccount);
-    }
   }
 
   @Nullable
@@ -92,27 +75,27 @@ public class GooglePlayServicesAuthManager {
   }
 
   // Starts a login on app launch if the user has not already declined to login
-  public void maybeLoginOnAppStart() {
+  public void maybeLoginOnAppStart(HostActivity hostActivity) {
     if (!GamePreferencesManager.getBoolean(context, PLAYER_REJECTED_LOGIN_PREFERENCE)) {
-      initiateLogin();
+      initiateLogin(hostActivity);
     }
   }
 
-  public void initiateLogin() {
-    initiateLogin(null);
+  public void initiateLogin(HostActivity hostActivity) {
+    initiateLogin(hostActivity, null);
   }
 
   /**
    * Starts the login flow
+   * @param hostActivity the activity from which we are calling this login
    * @param listener the listener to add to the set of listeners
    */
-  public void initiateLogin(@Nullable LoginListener listener) {
+  public void initiateLogin(final HostActivity hostActivity, @Nullable LoginListener listener) {
     if (isLoggingIn) return;
     if (loggedInAccount != null && listener != null) {
       listener.onLoggedIn(loggedInAccount);
       return;
     }
-    Log.d("asdasd", "initiateLogin isLoggingIn = true");
     isLoggingIn = true;
 
     if (listener != null) {
@@ -145,7 +128,7 @@ public class GooglePlayServicesAuthManager {
                     Log.e("AuthManager", "error logging in", e);
                   }
                   if (signedInAccount == null) {
-                    performExplicitSignIn();
+                    performExplicitSignIn(hostActivity);
                   } else {
                     onLogin(signedInAccount);
                   }
@@ -159,11 +142,13 @@ public class GooglePlayServicesAuthManager {
     onLoggedOut();
   }
 
+  ActivityResultLauncher <Intent> startSignInForResult;
+
   /**
    * Performs a sign in by the user via UI
    */
-  private void performExplicitSignIn() {
-    ActivityResultLauncher <Intent> startSignInForResult = hostActivity.prepareCall(
+  private void performExplicitSignIn(HostActivity hostActivity) {
+    startSignInForResult = hostActivity.prepareCall(
         new StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
           @Override
           public void onActivityResult(ActivityResult result) {
@@ -197,6 +182,8 @@ public class GooglePlayServicesAuthManager {
   public void addListener(LoginListener listener) {
     if (loggedInAccount != null) {
       listener.onLoggedIn(loggedInAccount);
+    } else {
+      listener.onLoggedOut();
     }
     listeners.add(listener);
   }

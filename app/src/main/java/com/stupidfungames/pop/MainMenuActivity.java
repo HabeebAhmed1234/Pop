@@ -21,6 +21,7 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
         return new Intent(context, MainMenuActivity.class);
     }
 
+    private GooglePlayServicesAuthManager authManager;
     private SaveGameManager saveGameManager;
 
     private GoogleAuthPopupView popupView;
@@ -47,17 +48,20 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
             }
         });
 
+        authManager = new GooglePlayServicesAuthManager(this);
         saveGameManager = SaveGameManager.get(this, this);
 
         popupView = new GoogleAuthPopupView(findViewById(R.id.root_view), this);
-        playerProfileView = new PlayerProfileView((ViewGroup) findViewById(R.id.player_profile_view), this);
+        playerProfileView =
+            new PlayerProfileView(
+                (ViewGroup) findViewById(R.id.player_profile_view), authManager, this);
         loadGameBtnView = new LoadGameBtnView(
             saveGameManager,
             (GameMenuButton) findViewById(R.id.load_game_btn),
             this);
 
         animateLogo();
-        GooglePlayServicesAuthManager.get( this, this).maybeLoginOnAppStart();
+        authManager.maybeLoginOnAppStart(this);
     }
 
     private void startNewGame() {

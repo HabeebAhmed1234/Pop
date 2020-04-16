@@ -44,13 +44,12 @@ public class SaveGameFlowDialog extends GameNeonDialogActivity implements HostAc
     return intent;
   }
 
+  private final GooglePlayServicesAuthManager authManager = new GooglePlayServicesAuthManager(this);
+
   private final OnClickListener signInClickListener = new OnClickListener() {
     @Override
     public void onClick(View v) {
-      GooglePlayServicesAuthManager.get(
-          SaveGameFlowDialog.this,
-          SaveGameFlowDialog.this)
-          .initiateLogin(SaveGameFlowDialog.this);
+      authManager.initiateLogin(SaveGameFlowDialog.this);
     }
   };
 
