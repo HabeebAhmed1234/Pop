@@ -12,7 +12,7 @@ import org.andengine.util.color.AndengineColor;
 
 import static com.stupidfungames.pop.resources.textures.TextureId.PAUSE_BTN;
 
-public class GamePauseQuickSettingsIconBaseEntity extends QuickSettingsIconBaseEntity {
+public class GamePauseQuickSettingsIconEntity extends QuickSettingsIconBaseEntity {
 
     private final ButtonUpTouchListener touchListener = new ButtonUpTouchListener() {
         @Override
@@ -22,7 +22,7 @@ public class GamePauseQuickSettingsIconBaseEntity extends QuickSettingsIconBaseE
         }
     };
 
-    public GamePauseQuickSettingsIconBaseEntity(BinderEnity parent) {
+    public GamePauseQuickSettingsIconEntity(BinderEnity parent) {
         super(parent);
     }
 

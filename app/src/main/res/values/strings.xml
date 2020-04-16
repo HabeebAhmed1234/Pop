@@ -24,4 +24,5 @@
     <string name="ok">Ok</string>
     <string name="generic_error">Something went wrong. Please try again later</string>
     <string name="login_to_save">You must login to save your game</string>
+    <string name="game_saved">Game saved.</string>
 </resources>

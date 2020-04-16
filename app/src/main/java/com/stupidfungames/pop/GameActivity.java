@@ -5,7 +5,12 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.widget.Toast;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.backgroundmusic.BackgroundMusicBaseEntity;
 import com.stupidfungames.pop.ballandchain.BallAndChainManagerBaseEntity;
@@ -15,6 +20,7 @@ import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
 import com.stupidfungames.pop.bubblepopper.BufferedBubblePopperBaseEntity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity;
 import com.stupidfungames.pop.bubbletimeout.BubblesLifecycleManagerEntity;
+import com.stupidfungames.pop.dialog.ToastDialogActivity;
 import com.stupidfungames.pop.difficulty.GameDifficultyEntity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
@@ -30,9 +36,11 @@ import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.savegame.SaveGame;
 import com.stupidfungames.pop.savegame.SaveGameFlowDialog;
 import com.stupidfungames.pop.savegame.SaveGameManager;
-import com.stupidfungames.pop.settingstray.GamePauseQuickSettingsIconBaseEntity;
+import com.stupidfungames.pop.settingstray.GamePauseQuickSettingsIconEntity;
 import com.stupidfungames.pop.settingstray.GameQuickSettingsHostTrayBaseEntity;
-import com.stupidfungames.pop.settingstray.MusicQuickSettingIconBaseEntity;
+import com.stupidfungames.pop.settingstray.MusicQuickSettingIconEntity;
+import com.stupidfungames.pop.settingstray.SaveGameQuickSettingsIconEntity;
+import com.stupidfungames.pop.settingstray.SaveGameQuickSettingsIconEntity.SaveGameButtonCallback;
 import com.stupidfungames.pop.tooltips.GameTooltipsEntity;
 import com.stupidfungames.pop.turret.TurretsManagerEntity;
 import com.stupidfungames.pop.utils.ScreenUtils;
@@ -49,11 +57,11 @@ import org.andengine.opengl.font.FontManager;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
-public class GameActivity extends SimpleBaseGameActivity implements HostActivity, IAccelerationListener, GamePauser {
+public class GameActivity extends SimpleBaseGameActivity implements HostActivity, IAccelerationListener, GamePauser,
+		SaveGameButtonCallback {
 
 	public static final String SAVE_GAME_EXTRA = "save_game";
 	private static final int PAUSE_ACTIVITY_REQUEST_CODE = 1;
-	private static final int SAVE_GAME_FLOW_REQUEST_CODE = 2;
 
 	private ShakeCamera camera;
 
@@ -94,6 +102,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 						.bind(MusicManager.class, getMusicManager())
 						.bind(ShakeCamera.class, camera)
 						.bind(GamePauser.class, GameActivity.this)
+						.bind(SaveGameButtonCallback.class, GameActivity.this)
 
 						.bind(GameTexturesManager.class, new GameTexturesManager(this))
 						.bind(GameSoundsManager.class, new GameSoundsManager(this))
@@ -111,8 +120,9 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 						.bind(GameStartTooltipEntity.class, new GameStartTooltipEntity(this))
 
 						.bind(GameQuickSettingsHostTrayBaseEntity.class, new GameQuickSettingsHostTrayBaseEntity(this))
-						.bind(MusicQuickSettingIconBaseEntity.class, new MusicQuickSettingIconBaseEntity(this))
-						.bind(GamePauseQuickSettingsIconBaseEntity.class, new GamePauseQuickSettingsIconBaseEntity(this))
+						.bind(MusicQuickSettingIconEntity.class, new MusicQuickSettingIconEntity(this))
+						.bind(GamePauseQuickSettingsIconEntity.class, new GamePauseQuickSettingsIconEntity(this))
+						.bind(SaveGameQuickSettingsIconEntity.class, new SaveGameQuickSettingsIconEntity(this))
 
 						.bind(ScoreHudEntity.class, new ScoreHudEntity(this))
 						.bind(TimerHudEntity.class, new TimerHudEntity(this))
@@ -153,12 +163,6 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 			if(resultCode == GamePauseActivity.RESULT_QUIT) {
 				startActivity(MainMenuActivity.newIntent(this));
 				finish();
-			}
-		} else if (requestCode == SAVE_GAME_FLOW_REQUEST_CODE) {
-			if (resultCode == SaveGameFlowDialog.RESULT_SUCCESS
-					|| resultCode == SaveGameFlowDialog.RESULT_DECLINED
-					|| resultCode == SaveGameFlowDialog.RESULT_DECLINED_PERMANENT) {
-				goBackToMainMenu();
 			}
 		}
 	}
@@ -214,15 +218,27 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	}
 
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event)  {
+	public void saveGamePressed() {
+		if (authManager.isLoggedIn()) {
+			ContextCompat.getMainExecutor(this).execute(new Runnable() {
+				@Override
+				public void run() {
+					saveGameManager.saveGame(GameActivity.this, fabricateSaveGame());
+					showGameSavedToast();
+				}
+			});
+		} else {
+			startSaveGameFlow(false, true, false);
+		}
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			// If we are not logged in then we must launch a prompt for the user to log in to save their
 			// game
 			if (!authManager.isLoggedIn()) {
-				// try launching the save game flow
-				@Nullable Intent saveGameFlowIntent = SaveGameFlowDialog.getIntent(fabricateSaveGame(), this);
-				if (saveGameFlowIntent != null) {
-					startActivityForResult(saveGameFlowIntent, SAVE_GAME_FLOW_REQUEST_CODE);
+				if (startSaveGameFlow(true, false, true)) {
 					return true;
 				}
 			}
@@ -231,6 +247,26 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 			return true;
 		}
 		return false;
+	}
+
+	private boolean startSaveGameFlow(final boolean allowForPermanentDismiss, final boolean forceShow, final boolean goToMainMenuAfter) {
+		@Nullable Intent intent =
+				SaveGameFlowDialog.getIntent(fabricateSaveGame(), allowForPermanentDismiss, forceShow, this);
+		if (intent == null) return false;
+		prepareCall(new StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+			@Override
+			public void onActivityResult(ActivityResult result) {
+				if (goToMainMenuAfter) {
+					goBackToMainMenu();
+				}
+				showGameSavedToast();
+			}
+		}).launch(intent);
+		return true;
+	}
+
+	private void showGameSavedToast() {
+		Toast.makeText(GameActivity.this, R.string.game_saved, Toast.LENGTH_SHORT).show();
 	}
 
 	private void goBackToMainMenu() {

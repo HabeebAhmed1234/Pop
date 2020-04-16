@@ -20,7 +20,7 @@ import org.andengine.util.color.AndengineColor;
 
 import static com.stupidfungames.pop.eventbus.GameEvent.SETTING_CHANGED;
 
-public class MusicQuickSettingIconBaseEntity extends QuickSettingsIconBaseEntity implements EventBus.Subscriber {
+public class MusicQuickSettingIconEntity extends QuickSettingsIconBaseEntity implements EventBus.Subscriber {
 
     private final ButtonUpTouchListener touchListener = new ButtonUpTouchListener() {
         @Override
@@ -30,7 +30,7 @@ public class MusicQuickSettingIconBaseEntity extends QuickSettingsIconBaseEntity
         }
     };
 
-    public MusicQuickSettingIconBaseEntity(BinderEnity parent) {
+    public MusicQuickSettingIconEntity(BinderEnity parent) {
         super(parent);
     }
 

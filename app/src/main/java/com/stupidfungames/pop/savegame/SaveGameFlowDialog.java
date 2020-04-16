@@ -24,6 +24,7 @@ public class SaveGameFlowDialog extends GameNeonDialogActivity implements HostAc
   public static final int RESULT_DECLINED_PERMANENT = 2;
   public static final int RESULT_SUCCESS = 3;
 
+  private static final String EXTRA_ALLOW_PERMANENT_DISMISS = "allow_permanent_dismiss";
   private static final String EXTRA_SAVE_GAME = "save_game";
   private static final String DONT_SHOW_SAVE_GAME_FLOW_ON_BACK_PREF = "dont_show_save_game";
 
@@ -31,11 +32,12 @@ public class SaveGameFlowDialog extends GameNeonDialogActivity implements HostAc
    * returns a non null intent if the flow can be started, null otherwise
    */
   @Nullable
-  public static Intent getIntent(SaveGame saveGame, Context context) {
-    if (GamePreferencesManager.getBoolean(context, DONT_SHOW_SAVE_GAME_FLOW_ON_BACK_PREF)) {
+  public static Intent getIntent(SaveGame saveGame, boolean allowForPermanentDismiss, boolean forceShow, Context context) {
+    if (!forceShow && GamePreferencesManager.getBoolean(context, DONT_SHOW_SAVE_GAME_FLOW_ON_BACK_PREF)) {
       return null;
     }
     Intent intent = new Intent(context, SaveGameFlowDialog.class);
+    intent.putExtra(EXTRA_ALLOW_PERMANENT_DISMISS, allowForPermanentDismiss);
     intent.putExtra(EXTRA_SAVE_GAME, saveGame);
     return intent;
   }
@@ -80,10 +82,13 @@ public class SaveGameFlowDialog extends GameNeonDialogActivity implements HostAc
 
   @Override
   protected List<ButtonModel> getButtonModels() {
-    return Arrays.asList(
+    List<ButtonModel> buttonModels = Arrays.asList(
         new ButtonModel(R.string.sign_in, signInClickListener),
-        new ButtonModel(R.string.no, declineClickListener),
-        new ButtonModel(R.string.no_permanent, declinePermanentClickListener));
+        new ButtonModel(R.string.no, declineClickListener));
+    if (getIntent().getBooleanExtra(EXTRA_ALLOW_PERMANENT_DISMISS, true)) {
+      buttonModels.add(new ButtonModel(R.string.no_permanent, declinePermanentClickListener));
+    }
+    return buttonModels;
   }
 
   @Override

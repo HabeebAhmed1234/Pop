@@ -20,4 +20,5 @@ public enum TextureId {
     QUICK_SETTINGS_BTN,
     MUSIC_QUICK_SETTING_ICON,
     PAUSE_BTN,
+    SAVE_BTN,
 }
