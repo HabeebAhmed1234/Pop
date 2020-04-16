@@ -12,7 +12,6 @@ import com.google.android.gms.games.Player;
 import com.google.android.gms.games.PlayersClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager.LoginListener;
 
 public class PlayerProfileView implements LoginListener {
@@ -23,35 +22,32 @@ public class PlayerProfileView implements LoginListener {
   private View signInBtn;
   private View signOutBtn;
 
-  private GooglePlayServicesAuthManager authManager;
   private HostActivity hostActivity;
 
   private OnClickListener signInBtnClickListener = new OnClickListener() {
     @Override
     public void onClick(View v) {
-      authManager.initiateLogin(hostActivity);
+      hostActivity.getAuthManager().initiateLogin(hostActivity);
     }
   };
 
   private OnClickListener signOutBtnClickListener = new OnClickListener() {
     @Override
     public void onClick(View v) {
-      authManager.logout();
+      hostActivity.getAuthManager().logout();
     }
   };
 
   public PlayerProfileView(
       final ViewGroup viewGroup,
-      final GooglePlayServicesAuthManager authManager,
       final HostActivity hostActivity) {
     this.context = viewGroup.getContext();
-    this.authManager = authManager;
     this.hostActivity = hostActivity;
     playerUserName = viewGroup.findViewById(R.id.username);
     signInBtn = viewGroup.findViewById(R.id.sign_in_btn);
     signOutBtn = viewGroup.findViewById(R.id.sign_out_btn);
 
-    authManager.addListener(this);
+    hostActivity.getAuthManager().addListener(this);
   }
 
   @Override

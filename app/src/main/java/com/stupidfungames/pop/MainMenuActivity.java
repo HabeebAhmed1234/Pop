@@ -33,6 +33,9 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        authManager = new GooglePlayServicesAuthManager(this);
+        saveGameManager = new SaveGameManager(this, this);
+
         setContentView(R.layout.main_menu_layout);
 
         findViewById(R.id.new_game_btn).setOnClickListener(new View.OnClickListener() {
@@ -48,13 +51,10 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
             }
         });
 
-        authManager = new GooglePlayServicesAuthManager(this);
-        saveGameManager = SaveGameManager.get(this, this);
-
         popupView = new GoogleAuthPopupView(findViewById(R.id.root_view), this);
         playerProfileView =
             new PlayerProfileView(
-                (ViewGroup) findViewById(R.id.player_profile_view), authManager, this);
+                (ViewGroup) findViewById(R.id.player_profile_view), this);
         loadGameBtnView = new LoadGameBtnView(
             saveGameManager,
             (GameMenuButton) findViewById(R.id.load_game_btn),
@@ -99,5 +99,10 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
     protected void onDestroy() {
         super.onDestroy();
         logoAnimator.end();
+    }
+
+    @Override
+    public GooglePlayServicesAuthManager getAuthManager() {
+        return authManager;
     }
 }

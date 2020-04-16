@@ -2,14 +2,10 @@ package com.stupidfungames.pop.savegame;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.ActivityResultRegistry;
-import androidx.activity.result.contract.ActivityResultContract;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.stupidfungames.pop.HostActivity;
@@ -44,7 +40,8 @@ public class SaveGameFlowDialog extends GameNeonDialogActivity implements HostAc
     return intent;
   }
 
-  private final GooglePlayServicesAuthManager authManager = new GooglePlayServicesAuthManager(this);
+  private GooglePlayServicesAuthManager authManager;
+  private SaveGameManager saveGameManager;
 
   private final OnClickListener signInClickListener = new OnClickListener() {
     @Override
@@ -68,6 +65,15 @@ public class SaveGameFlowDialog extends GameNeonDialogActivity implements HostAc
   };
 
   @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    authManager = new GooglePlayServicesAuthManager(this);
+    saveGameManager = new SaveGameManager(this, this);
+
+    authManager.addListener(this);
+  }
+
+  @Override
   protected int getTitleResId() {
     return R.string.save_game_flow_title;
   }
@@ -87,7 +93,7 @@ public class SaveGameFlowDialog extends GameNeonDialogActivity implements HostAc
       showGenericError();
       return;
     }
-    SaveGameManager.get(this, this).saveGame(this, saveGame);
+    saveGameManager.saveGame(this, saveGame);
     onSuccess();
   }
 
@@ -124,5 +130,10 @@ public class SaveGameFlowDialog extends GameNeonDialogActivity implements HostAc
   private void onSuccess() {
     setResult(RESULT_SUCCESS);
     finish();
+  }
+
+  @Override
+  public GooglePlayServicesAuthManager getAuthManager() {
+    return authManager;
   }
 }

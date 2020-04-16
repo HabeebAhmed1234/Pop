@@ -5,11 +5,6 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.ActivityResultRegistry;
-import androidx.activity.result.contract.ActivityResultContract;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.backgroundmusic.BackgroundMusicBaseEntity;
@@ -61,7 +56,10 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	private static final int SAVE_GAME_FLOW_REQUEST_CODE = 2;
 
 	private ShakeCamera camera;
-	private GameLifeCycleCalllbackManager gameLifeCycleCalllbackManager;
+
+	private GameLifeCycleCalllbackManager gameLifeCycleCalllbackManager = new GameLifeCycleCalllbackManager();
+	private GooglePlayServicesAuthManager authManager;
+	private SaveGameManager saveGameManager;
 
 	BinderEnity mRootBinder;
 
@@ -77,7 +75,8 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	@Override
 	protected void onCreate(Bundle pSavedInstanceState) {
 		super.onCreate(pSavedInstanceState);
-		gameLifeCycleCalllbackManager = new GameLifeCycleCalllbackManager();
+		authManager = new GooglePlayServicesAuthManager(this);
+		saveGameManager = new SaveGameManager(this, this);
 
 		// The root binder
 		mRootBinder = new BinderEnity(null) {
@@ -209,8 +208,8 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		this.disableAccelerationSensor();
 
 		// if we are already logged in then just save the game
-		if (GooglePlayServicesAuthManager.get(this, this).isLoggedIn()) {
-			SaveGameManager.get(this, this).saveGame(this, fabricateSaveGame());
+		if (authManager.isLoggedIn()) {
+			saveGameManager.saveGame(this, fabricateSaveGame());
 		}
 	}
 
@@ -219,7 +218,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			// If we are not logged in then we must launch a prompt for the user to log in to save their
 			// game
-			if (!GooglePlayServicesAuthManager.get(this, this).isLoggedIn()) {
+			if (!authManager.isLoggedIn()) {
 				// try launching the save game flow
 				@Nullable Intent saveGameFlowIntent = SaveGameFlowDialog.getIntent(fabricateSaveGame(), this);
 				if (saveGameFlowIntent != null) {
@@ -265,5 +264,10 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 		String saveGameJson = getIntent().getStringExtra(SAVE_GAME_EXTRA);
 		SaveGame saveGame = SaveGame.fromJson(saveGameJson);
 		return saveGame;
+	}
+
+	@Override
+	public GooglePlayServicesAuthManager getAuthManager() {
+		return authManager;
 	}
 }

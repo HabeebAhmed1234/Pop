@@ -5,14 +5,13 @@ import android.view.View;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesClient;
-import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager.LoginListener;
 
 public class GoogleAuthPopupView {
 
   public GoogleAuthPopupView(final View rootView, HostActivity hostActivity) {
 
-    GooglePlayServicesAuthManager.get(rootView.getContext(), hostActivity)
+    hostActivity.getAuthManager()
         .addListener(new LoginListener() {
           @Override
           public void onLoggedIn(GoogleSignInAccount account) {

@@ -3,7 +3,6 @@ package com.stupidfungames.pop;
 import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.stupidfungames.pop.androidui.GameMenuButton;
@@ -18,7 +17,6 @@ import com.stupidfungames.pop.savegame.UpdateGameDialogActivity;
 public class LoadGameBtnView implements Listener, LoginListener {
 
   private final Context context;
-  private final GooglePlayServicesAuthManager authManager;
   private final SaveGameManager saveGameManager;
   private final GameMenuButton loadGameBtn;
   private final HostActivity hostActivity;
@@ -28,13 +26,14 @@ public class LoadGameBtnView implements Listener, LoginListener {
       final GameMenuButton loadGameBtn,
       final HostActivity hostActivity) {
     this.context = loadGameBtn.getContext();
-    this.authManager = GooglePlayServicesAuthManager.get(context, hostActivity);
     this.loadGameBtn = loadGameBtn;
     this.hostActivity = hostActivity;
     this.saveGameManager = saveGameManager;
 
     updateButtonColor(false);
     saveGameManager.addListener(this);
+
+    GooglePlayServicesAuthManager authManager = hostActivity.getAuthManager();
     authManager.addListener(this);
 
     if (!authManager.isLoggedIn()) {
@@ -85,7 +84,7 @@ public class LoadGameBtnView implements Listener, LoginListener {
     loadGameBtn.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        authManager.initiateLogin();
+        hostActivity.getAuthManager().initiateLogin(hostActivity);
       }
     });
   }

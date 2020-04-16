@@ -54,24 +54,21 @@ public class GooglePlayServicesAuthManager {
           .build();
 
   private final Context context;
-
+  private final Set<LoginListener> listeners = new HashSet<>();
   private boolean isLoggingIn = false;
-  @Nullable private GoogleSignInAccount loggedInAccount;
-
-  private Set<LoginListener> listeners = new HashSet<>();
+  private ActivityResultLauncher <Intent> startSignInForResult;
 
   public GooglePlayServicesAuthManager(Context context) {
     this.context = context;
-    loggedInAccount = GoogleSignIn.getLastSignedInAccount(context);
   }
 
   @Nullable
   public GoogleSignInAccount getLoggedInAccount() {
-    return loggedInAccount;
+    return GoogleSignIn.getLastSignedInAccount(context);
   }
 
   public boolean isLoggedIn() {
-    return loggedInAccount != null;
+    return getLoggedInAccount() != null;
   }
 
   // Starts a login on app launch if the user has not already declined to login
@@ -92,10 +89,6 @@ public class GooglePlayServicesAuthManager {
    */
   public void initiateLogin(final HostActivity hostActivity, @Nullable LoginListener listener) {
     if (isLoggingIn) return;
-    if (loggedInAccount != null && listener != null) {
-      listener.onLoggedIn(loggedInAccount);
-      return;
-    }
     isLoggingIn = true;
 
     if (listener != null) {
@@ -142,8 +135,6 @@ public class GooglePlayServicesAuthManager {
     onLoggedOut();
   }
 
-  ActivityResultLauncher <Intent> startSignInForResult;
-
   /**
    * Performs a sign in by the user via UI
    */
@@ -180,8 +171,8 @@ public class GooglePlayServicesAuthManager {
   }
 
   public void addListener(LoginListener listener) {
-    if (loggedInAccount != null) {
-      listener.onLoggedIn(loggedInAccount);
+    if (isLoggedIn()) {
+      listener.onLoggedIn(getLoggedInAccount());
     } else {
       listener.onLoggedOut();
     }
@@ -193,7 +184,6 @@ public class GooglePlayServicesAuthManager {
     // Open the app
     GamePreferencesManager.set(context, PLAYER_REJECTED_LOGIN_PREFERENCE, false);
     isLoggingIn = false;
-    loggedInAccount = account;
     for (LoginListener listener : listeners) {
       listener.onLoggedIn(account);
     }
@@ -201,7 +191,6 @@ public class GooglePlayServicesAuthManager {
 
   private void onLoggedOut() {
     isLoggingIn = false;
-    loggedInAccount = null;
     for (LoginListener listener : listeners) {
       listener.onLoggedOut();
     }
@@ -209,7 +198,6 @@ public class GooglePlayServicesAuthManager {
 
   private void onLoginFailed(Exception e) {
     isLoggingIn = false;
-    loggedInAccount = null;
     for (LoginListener listener : listeners) {
       listener.onLoginFailed(e);
     }
@@ -217,7 +205,6 @@ public class GooglePlayServicesAuthManager {
 
   private void onLoginCancelled() {
     isLoggingIn = false;
-    loggedInAccount = null;
     for (LoginListener listener : listeners) {
       listener.onLoginCanceled();
     }
