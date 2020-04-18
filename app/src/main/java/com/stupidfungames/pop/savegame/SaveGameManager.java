@@ -92,13 +92,17 @@ public class SaveGameManager implements LoginListener {
     }
 
     public void saveGame(Context context, SaveGame newSaveGame) {
+        if (!authManager.isLoggedIn()) {
+            Log.e(TAG, "Cannot save game when logged out");
+            return;
+        }
         newSaveGame.saveGameVersionCode = SAVE_GAME_VERSION_NUMER;
 
         // Save to local shared preferences
         LocalSaveGameManager.saveGame(context, newSaveGame);
 
         // Save to google
-        playServicesSaveGameManager.saveGame();
+        playServicesSaveGameManager.saveGame(newSaveGame);
     }
 
     public void loadGame(GoogleSignInAccount account) {

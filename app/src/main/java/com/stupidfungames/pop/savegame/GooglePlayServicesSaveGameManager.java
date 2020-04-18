@@ -8,10 +8,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.games.AnnotatedData;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.Player;
+import com.google.android.gms.games.PlayersClient;
 import com.google.android.gms.games.SnapshotsClient;
 import com.google.android.gms.games.SnapshotsClient.DataOrConflict;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataBuffer;
+import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -28,6 +31,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 public class GooglePlayServicesSaveGameManager {
 
   private static final String TAG = "GooglePlayServicesSave";
+  private static final String SAVE_GAME_NAME = "save_game";
 
   private final Context context;
   private final HostActivity hostActivity;
@@ -37,15 +41,15 @@ public class GooglePlayServicesSaveGameManager {
     this.hostActivity = hostActivity;
   }
 
-  public void saveGame() {
-    SnapshotsClient snapshotsClient =
+  public void saveGame(final SaveGame saveGame) {
+    final SnapshotsClient snapshotsClient =
         Games.getSnapshotsClient(context, GoogleSignIn.getLastSignedInAccount(context));
 
     // In the case of a conflict, the most recently modified version of this snapshot will be used.
     int conflictResolutionPolicy = SnapshotsClient.RESOLUTION_POLICY_MOST_RECENTLY_MODIFIED;
 
     // Open the saved game using its name.
-    snapshotsClient.open("kekw", true, conflictResolutionPolicy)
+    snapshotsClient.open(SAVE_GAME_NAME, true, conflictResolutionPolicy)
         .addOnFailureListener(new OnFailureListener() {
           @Override
           public void onFailure(@NonNull Exception e) {
@@ -57,20 +61,12 @@ public class GooglePlayServicesSaveGameManager {
             Snapshot snapshot = task.getResult().getData();
 
             // Opening the snapshot was a success and any conflicts have been resolved.
-            try {
-              // Extract the raw data from the snapshot.
-              return snapshot.getSnapshotContents().readFully();
-            } catch (IOException e) {
-              Log.e(TAG, "Error while reading Snapshot.", e);
-            }
+            snapshot.getSnapshotContents().writeBytes(saveGameToByteArray(saveGame));
+            snapshotsClient.commitAndClose(
+                snapshot,
+                new SnapshotMetadataChange.Builder().fromMetadata(snapshot.getMetadata()).build());
 
             return null;
-          }
-        }).addOnCompleteListener(new OnCompleteListener<byte[]>() {
-          @Override
-          public void onComplete(@NonNull Task<byte[]> task) {
-            // Dismiss progress dialog and reflect the changes in the UI when complete.
-            // ...
           }
         });
   }
@@ -86,7 +82,7 @@ public class GooglePlayServicesSaveGameManager {
               AnnotatedData<SnapshotMetadataBuffer> saves = task.getResult();
               SnapshotMetadataBuffer savesBuffer = saves.get();
               if (savesBuffer.getCount() > 0) {
-                // there is save date in Google
+                // there is save data in Google
                 Futures.addCallback(loadSnapshot(savesBuffer.get(0).getUniqueName(), account),
                     new FutureCallback<SaveGame>() {
                       @Override
