@@ -24,6 +24,13 @@
                 android:clipToPadding="false"
                 app:glow_color="@color/menu_button_color" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/neon_divider_size"
+                android:paddingHorizontal="@dimen/between_btn_padding"
+                android:layout_marginBottom="@dimen/menu_btn_padding_vertical"
+                android:background="@android:color/white" />
+            
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

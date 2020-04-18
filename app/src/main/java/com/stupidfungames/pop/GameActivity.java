@@ -259,7 +259,9 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 				if (goToMainMenuAfter) {
 					goBackToMainMenu();
 				}
-				showGameSavedToast();
+				if (result.getResultCode() == SaveGameFlowDialog.RESULT_SUCCESS) {
+					showGameSavedToast();
+				}
 			}
 		}).launch(intent);
 		return true;

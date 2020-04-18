@@ -61,6 +61,11 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name="com.stupidfungames.pop.dialog.ConfirmationToastDialogActivity"
+            android:theme="@style/Theme.Dialog"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name="com.stupidfungames.pop.savegame.SaveGameFlowDialog"
             android:theme="@style/Theme.Dialog"
             android:screenOrientation="portrait" />

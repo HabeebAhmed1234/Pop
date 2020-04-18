@@ -7,7 +7,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.Gson;
 import com.stupidfungames.pop.gamesettings.GamePreferencesManager;
 
-public class LocalSaveGameManager {
+class LocalSaveGameManager {
 
   private static final String LOCAL_SAVE_GAME_DEBUG_KEY = "local_save_game";
 

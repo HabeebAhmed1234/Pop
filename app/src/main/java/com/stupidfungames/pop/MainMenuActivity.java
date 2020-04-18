@@ -27,6 +27,7 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
 
     private GoogleAuthPopupView popupView;
     private PlayerProfileView playerProfileView;
+    private NewGameBtnView newGameBtnView;
     private LoadGameBtnView loadGameBtnView;
 
     private ValueAnimator logoAnimator;
@@ -39,12 +40,6 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
 
         setContentView(R.layout.main_menu_layout);
 
-        findViewById(R.id.new_game_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startNewGame();
-            }
-        });
         findViewById(R.id.quit_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,6 +51,7 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
         playerProfileView =
             new PlayerProfileView(
                 (ViewGroup) findViewById(R.id.player_profile_view), this);
+        newGameBtnView = new NewGameBtnView(findViewById(R.id.new_game_btn), this);
         loadGameBtnView = new LoadGameBtnView(
             saveGameManager,
             (ImageView) findViewById(R.id.loading_spinner),
@@ -64,11 +60,6 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
 
         animateLogo();
         authManager.maybeLoginOnAppStart(this);
-    }
-
-    private void startNewGame() {
-        startActivity(GameActivity.newIntent(this));
-        this.finish();
     }
 
     private void  quitGame() {

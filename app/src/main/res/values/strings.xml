@@ -17,12 +17,14 @@
     <string name="signin_other_error">There was an error signing in. Try again another time.</string>
     <string name="sign_out">| Sign Out</string>
     <string name="no_save_game_available">There is no save game available. Start a new game</string>
-    <string name="save_game_flow_title">Would you like to sign in to save your progress?</string>
+    <string name="save_game_flow_title">Would you like to sign in to save your progress? Doing so will override your current game save!</string>
     <string name="sign_in">Sign In</string>
+    <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="no_permanent">No, don\'t show this again.</string>
     <string name="ok">Ok</string>
     <string name="generic_error">Something went wrong. Please try again later</string>
     <string name="login_to_save">You must login to save your game</string>
     <string name="game_saved">Game saved.</string>
+    <string name="new_game_confirm_title">Are you sure you want to start a new game? This will overwrite your current save game.</string>
 </resources>
