@@ -51,6 +51,9 @@ public class PlayerProfileView implements LoginListener {
   }
 
   @Override
+  public void onLoginStart() {}
+
+  @Override
   public void onLoggedIn(GoogleSignInAccount account) {
     renderLoggedInState(account);
   }

@@ -14,6 +14,7 @@ import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager.LoginListener;
 import com.stupidfungames.pop.dialog.GameNeonDialogActivity;
 import com.stupidfungames.pop.gamesettings.GamePreferencesManager;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -82,14 +83,18 @@ public class SaveGameFlowDialog extends GameNeonDialogActivity implements HostAc
 
   @Override
   protected List<ButtonModel> getButtonModels() {
-    List<ButtonModel> buttonModels = Arrays.asList(
-        new ButtonModel(R.string.sign_in, signInClickListener),
-        new ButtonModel(R.string.no, declineClickListener));
+    List<ButtonModel> buttonModels = new ArrayList<>(
+        Arrays.asList(
+            new ButtonModel(R.string.sign_in, signInClickListener),
+            new ButtonModel(R.string.no, declineClickListener)));
     if (getIntent().getBooleanExtra(EXTRA_ALLOW_PERMANENT_DISMISS, true)) {
       buttonModels.add(new ButtonModel(R.string.no_permanent, declinePermanentClickListener));
     }
     return buttonModels;
   }
+
+  @Override
+  public void onLoginStart() {}
 
   @Override
   public void onLoggedIn(GoogleSignInAccount account) {

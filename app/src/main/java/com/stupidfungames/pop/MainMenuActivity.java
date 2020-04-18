@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.stupidfungames.pop.androidui.GameMenuButton;
@@ -57,6 +58,7 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
                 (ViewGroup) findViewById(R.id.player_profile_view), this);
         loadGameBtnView = new LoadGameBtnView(
             saveGameManager,
+            (ImageView) findViewById(R.id.loading_spinner),
             (GameMenuButton) findViewById(R.id.load_game_btn),
             this);
 

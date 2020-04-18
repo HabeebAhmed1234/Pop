@@ -14,6 +14,9 @@ public class GoogleAuthPopupView {
     hostActivity.getAuthManager()
         .addListener(new LoginListener() {
           @Override
+          public void onLoginStart() {}
+
+          @Override
           public void onLoggedIn(GoogleSignInAccount account) {
             showPopup(rootView, account);
           }

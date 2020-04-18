@@ -57,6 +57,9 @@ public class SaveGameManager implements LoginListener {
     }
 
     @Override
+    public void onLoginStart() {}
+
+    @Override
     public void onLoggedIn(GoogleSignInAccount account) {
         loadGame(account);
     }

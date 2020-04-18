@@ -36,6 +36,7 @@ import java.util.Set;
 public class GooglePlayServicesAuthManager {
 
   public interface LoginListener {
+    void onLoginStart();
     void onLoggedIn(GoogleSignInAccount account);
     void onLoggedOut();
     void onLoginCanceled();
@@ -89,7 +90,7 @@ public class GooglePlayServicesAuthManager {
    */
   public void initiateLogin(final HostActivity hostActivity, @Nullable LoginListener listener) {
     if (isLoggingIn) return;
-    isLoggingIn = true;
+    onLoginStart();
 
     if (listener != null) {
       listeners.add(listener);
@@ -177,6 +178,13 @@ public class GooglePlayServicesAuthManager {
       listener.onLoggedOut();
     }
     listeners.add(listener);
+  }
+
+  private void onLoginStart() {
+    isLoggingIn = true;
+    for (LoginListener listener : listeners) {
+      listener.onLoginStart();
+    }
   }
 
   private void onLogin(GoogleSignInAccount account) {

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/between_btn_padding"
+    android:clipToPadding="false">
+
+  <ImageView
+      android:id="@+id/loading_spinner"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:src="@drawable/circular_spinner" />
+
+
+  <com.stupidfungames.pop.androidui.GameMenuButton
+      android:id="@+id/load_game_btn"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/load_game_text"
+      android:textSize="@dimen/main_menu_btn_text_size"
+      android:clipToPadding="false"
+      app:glow_color="@color/menu_button_color"
+      app:pressed_glow_color = "@color/menu_button_pressed_color" />
+</LinearLayout>
