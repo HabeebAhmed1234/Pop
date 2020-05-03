@@ -1,17 +1,12 @@
 package com.stupidfungames.pop;
 
-import static android.view.animation.Animation.INFINITE;
-import static android.view.animation.Animation.RESTART;
-
 import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import androidx.core.content.ContextCompat;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.stupidfungames.pop.androidui.GameMenuButton;
+import com.stupidfungames.pop.androidui.LoadingSpinner;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager.LoginListener;
 import com.stupidfungames.pop.dialog.ToastDialogActivity;
@@ -24,13 +19,13 @@ public class LoadGameBtnView implements Listener, LoginListener {
 
   private final Context context;
   private final SaveGameManager saveGameManager;
-  private final View loadingSpinner;
+  private final LoadingSpinner loadingSpinner;
   private final GameMenuButton loadGameBtn;
   private final HostActivity hostActivity;
 
   public LoadGameBtnView(
       final SaveGameManager saveGameManager,
-      final  View loadingSpinner,
+      final LoadingSpinner loadingSpinner,
       final GameMenuButton loadGameBtn,
       final HostActivity hostActivity) {
     this.context = loadGameBtn.getContext();
@@ -63,7 +58,7 @@ public class LoadGameBtnView implements Listener, LoginListener {
 
   @Override
   public void onLoginStart() {
-    startLoadingAnimation();
+    loadingSpinner.startLoadingAnimation();
   }
 
   @Override
@@ -95,7 +90,7 @@ public class LoadGameBtnView implements Listener, LoginListener {
    */
   private void setupButtonToPromptLoad() {
     updateButtonColor(false);
-    stopLoadingAnimation();
+    loadingSpinner.stopLoadingAnimation();
     loadGameBtn.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -110,7 +105,7 @@ public class LoadGameBtnView implements Listener, LoginListener {
    */
   private void setupButtonForLoadedGame(final SaveGame saveGame) {
     updateButtonColor(true);
-    stopLoadingAnimation();
+    loadingSpinner.stopLoadingAnimation();
     loadGameBtn.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -125,7 +120,7 @@ public class LoadGameBtnView implements Listener, LoginListener {
    */
   private void setUpButtonForNoSaveGame() {
     updateButtonColor(false);
-    stopLoadingAnimation();
+    loadingSpinner.stopLoadingAnimation();
     loadGameBtn.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -157,22 +152,5 @@ public class LoadGameBtnView implements Listener, LoginListener {
       color = ContextCompat.getColor(context, android.R.color.white);
     }
     loadGameBtn.setTextColor(color);
-  }
-
-  private void startLoadingAnimation() {
-    loadingSpinner.setVisibility(View.VISIBLE);
-
-    RotateAnimation rotate = new RotateAnimation(360, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-    rotate.setDuration(700);
-    rotate.setInterpolator(new LinearInterpolator());
-    rotate.setRepeatCount(INFINITE);
-    rotate.setRepeatMode(RESTART);
-
-    loadingSpinner.startAnimation(rotate);
-  }
-
-  private void stopLoadingAnimation() {
-    loadingSpinner.setVisibility(View.GONE);
-    loadingSpinner.clearAnimation();
   }
 }

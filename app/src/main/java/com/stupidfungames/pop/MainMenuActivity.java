@@ -9,10 +9,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.stupidfungames.pop.androidui.GameMenuButton;
+import com.stupidfungames.pop.androidui.LoadingSpinner;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.savegame.SaveGameManager;
 
@@ -54,7 +54,7 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
         newGameBtnView = new NewGameBtnView(findViewById(R.id.new_game_btn), this);
         loadGameBtnView = new LoadGameBtnView(
             saveGameManager,
-            (ImageView) findViewById(R.id.loading_spinner),
+            (LoadingSpinner) findViewById(R.id.loading_spinner),
             (GameMenuButton) findViewById(R.id.load_game_btn),
             this);
 
