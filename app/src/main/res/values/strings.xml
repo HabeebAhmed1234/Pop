@@ -6,6 +6,7 @@
     <string name="load_game_text">Resume Game</string>
     <string name="game_over_text">Game Over</string>
     <string name="options_text">Options</string>
+    <string name="store">Store</string>
     <string name="quit_text">Quit</string>
     <string name="your_score_title">Your score:</string>
     <string name="game_paused_text">Paused</string>
@@ -25,6 +26,9 @@
     <string name="ok">Ok</string>
     <string name="generic_error">Something went wrong. Please try again later</string>
     <string name="login_to_save">You must login to save your game</string>
+    <string name="must_be_logged_in">You must be logged in to access this feature.</string>
     <string name="game_saved">Game saved.</string>
     <string name="new_game_confirm_title">Are you sure you want to start a new game? This will overwrite your current save game.</string>
+    <string name="error_fetching_products">Something went wrong when fetching products.</string>
+    <string name="no_products_result">No products are available at this time.</string>
 </resources>

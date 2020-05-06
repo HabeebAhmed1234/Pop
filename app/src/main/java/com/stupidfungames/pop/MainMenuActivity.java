@@ -8,12 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.stupidfungames.pop.androidui.GameMenuButton;
 import com.stupidfungames.pop.androidui.LoadingSpinner;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
+import com.stupidfungames.pop.inapppurchase.StoreActivity;
 import com.stupidfungames.pop.savegame.SaveGameManager;
 
 public class MainMenuActivity extends AppCompatActivity implements HostActivity {
@@ -47,6 +49,13 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
             }
         });
 
+        findViewById(R.id.open_store_btn).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openStore();
+            }
+        });
+
         popupView = new GoogleAuthPopupView(findViewById(R.id.root_view), this);
         playerProfileView =
             new PlayerProfileView(
@@ -60,6 +69,10 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
 
         animateLogo();
         authManager.maybeLoginOnAppStart(this);
+    }
+
+    private void openStore() {
+        startActivity(StoreActivity.getIntent(MainMenuActivity.this));
     }
 
     private void  quitGame() {
