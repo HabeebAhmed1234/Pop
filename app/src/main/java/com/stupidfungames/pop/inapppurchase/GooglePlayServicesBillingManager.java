@@ -26,6 +26,7 @@ import com.google.common.util.concurrent.SettableFuture;
 import com.stupidfungames.pop.HostActivity;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager.LoginListener;
+import com.stupidfungames.pop.googleplaysave.GooglePlayServicesSaveManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -210,7 +211,7 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
 
   @Override
   public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> list) {
-    InGameCurrencyBalanceManager balanceManager  = InGameCurrencyBalanceManager.get();
+    InGameCurrencyLedger balanceManager  = InGameCurrencyLedger.get();
     for (final Purchase purchase : list) {
       if (balanceManager.addBalance(purchase.getPurchaseToken(), purchase.getSku())) {
         if (!purchase.isAcknowledged()) {

@@ -11,6 +11,7 @@ import com.stupidfungames.pop.GameActivity;
 import com.stupidfungames.pop.HostActivity;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager.LoginListener;
+import com.stupidfungames.pop.googleplaysave.GooglePlayServicesSaveManager;
 import java.util.HashSet;
 import java.util.Set;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
@@ -39,11 +40,12 @@ public class SaveGameManager implements LoginListener {
      * attempt to load save game data saved by newer clients in case the game breaks as a result.
      */
     private static final int SAVE_GAME_VERSION_NUMER = 1;
+    private static final String SAVE_GAME_NAME = "save_game";
     private static final String TAG = "SaveGameManager";
 
     private final Context context;
     private final Set<Listener> listeners = new HashSet<>();
-    private final GooglePlayServicesSaveGameManager playServicesSaveGameManager;
+    private final GooglePlayServicesSaveManager playServicesSaveGameManager;
     private final GooglePlayServicesAuthManager authManager;
 
     public SaveGameManager(
@@ -51,7 +53,7 @@ public class SaveGameManager implements LoginListener {
         HostActivity hostActivity){
         this.context = context;
         this.authManager = hostActivity.getAuthManager();
-        this.playServicesSaveGameManager = new GooglePlayServicesSaveGameManager(context, hostActivity);
+        this.playServicesSaveGameManager = new GooglePlayServicesSaveManager<SaveGame>(hostActivity);
 
         authManager.addListener(this);
     }
@@ -105,12 +107,12 @@ public class SaveGameManager implements LoginListener {
         LocalSaveGameManager.saveGame(context, newSaveGame);
 
         // Save to google
-        playServicesSaveGameManager.saveGame(newSaveGame);
+        playServicesSaveGameManager.save(SAVE_GAME_NAME, newSaveGame);
     }
 
     public void loadGame(GoogleSignInAccount account) {
         // Try loading from Google
-        Futures.addCallback(playServicesSaveGameManager.load(account),
+        Futures.addCallback(playServicesSaveGameManager.load(SAVE_GAME_NAME, account),
             new FutureCallback<SaveGame>() {
                 @Override
                 public void onSuccess(@NullableDecl SaveGame saveGame) {

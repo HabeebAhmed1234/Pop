@@ -1,4 +1,4 @@
-package com.stupidfungames.pop.savegame;
+package com.stupidfungames.pop.googleplaysave;
 
 import android.content.Context;
 import android.util.Log;
@@ -8,8 +8,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.games.AnnotatedData;
 import com.google.android.gms.games.Games;
-import com.google.android.gms.games.Player;
-import com.google.android.gms.games.PlayersClient;
 import com.google.android.gms.games.SnapshotsClient;
 import com.google.android.gms.games.SnapshotsClient.DataOrConflict;
 import com.google.android.gms.games.snapshot.Snapshot;
@@ -24,24 +22,32 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.stupidfungames.pop.HostActivity;
+import com.stupidfungames.pop.savegame.NoSavesException;
 import java.io.IOException;
+import java.io.Serializable;
 import org.apache.commons.lang3.SerializationUtils;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-public class GooglePlayServicesSaveGameManager {
+/**
+ * Manages the saving and loading of some object of type T in google play services with a given
+ * name (Saveable.name). This name is used to uniquely identify the storage of this object instance
+ * in Google play services save game api.
+ *
+ * @param <T> the type of the object we are saving
+ */
+public class GooglePlayServicesSaveManager<T extends Serializable> {
 
   private static final String TAG = "GooglePlayServicesSave";
-  private static final String SAVE_GAME_NAME = "save_game";
 
   private final Context context;
   private final HostActivity hostActivity;
 
-  public GooglePlayServicesSaveGameManager(Context context, HostActivity hostActivity) {
-    this.context = context;
+  public GooglePlayServicesSaveManager(HostActivity hostActivity) {
     this.hostActivity = hostActivity;
+    this.context = hostActivity.getContext();
   }
 
-  public void saveGame(final SaveGame saveGame) {
+  public void save(final String name, final T objectToSave) {
     final SnapshotsClient snapshotsClient =
         Games.getSnapshotsClient(context, GoogleSignIn.getLastSignedInAccount(context));
 
@@ -49,7 +55,7 @@ public class GooglePlayServicesSaveGameManager {
     int conflictResolutionPolicy = SnapshotsClient.RESOLUTION_POLICY_MOST_RECENTLY_MODIFIED;
 
     // Open the saved game using its name.
-    snapshotsClient.open(SAVE_GAME_NAME, true, conflictResolutionPolicy)
+    snapshotsClient.open(name, true, conflictResolutionPolicy)
         .addOnFailureListener(new OnFailureListener() {
           @Override
           public void onFailure(@NonNull Exception e) {
@@ -61,7 +67,7 @@ public class GooglePlayServicesSaveGameManager {
             Snapshot snapshot = task.getResult().getData();
 
             // Opening the snapshot was a success and any conflicts have been resolved.
-            snapshot.getSnapshotContents().writeBytes(saveGameToByteArray(saveGame));
+            snapshot.getSnapshotContents().writeBytes(saveToByteArray(objectToSave));
             snapshotsClient.commitAndClose(
                 snapshot,
                 new SnapshotMetadataChange.Builder().fromMetadata(snapshot.getMetadata()).build());
@@ -71,9 +77,9 @@ public class GooglePlayServicesSaveGameManager {
         });
   }
 
-  public ListenableFuture<SaveGame> load(final GoogleSignInAccount account) {
+  public ListenableFuture<T> load(final String name, final GoogleSignInAccount account) {
     SnapshotsClient snapshotsClient = Games.getSnapshotsClient(context, account);
-    final SettableFuture<SaveGame> future = SettableFuture.create();
+    final SettableFuture<T> future = SettableFuture.create();
     snapshotsClient.load(true).addOnCompleteListener(
         new OnCompleteListener<AnnotatedData<SnapshotMetadataBuffer>>() {
           @Override
@@ -83,10 +89,10 @@ public class GooglePlayServicesSaveGameManager {
               SnapshotMetadataBuffer savesBuffer = saves.get();
               if (savesBuffer.getCount() > 0) {
                 // there is save data in Google
-                Futures.addCallback(loadSnapshot(savesBuffer.get(0).getUniqueName(), account),
-                    new FutureCallback<SaveGame>() {
+                Futures.addCallback(loadSnapshot(name, account),
+                    new FutureCallback<T>() {
                       @Override
-                      public void onSuccess(@NullableDecl SaveGame result) {
+                      public void onSuccess(@NullableDecl T result) {
                         future.set(result);
                       }
 
@@ -96,7 +102,7 @@ public class GooglePlayServicesSaveGameManager {
                       }
                     }, ContextCompat.getMainExecutor(context));
               } else {
-                future.setException(new NoSaveGamesException());
+                future.setException(new NoSavesException());
               }
             }
           }
@@ -104,14 +110,14 @@ public class GooglePlayServicesSaveGameManager {
     return future;
   }
 
-  private ListenableFuture<SaveGame> loadSnapshot(final String snapshotName, final GoogleSignInAccount account) {
+  private ListenableFuture<T> loadSnapshot(final String snapshotName, final GoogleSignInAccount account) {
     // In the case of a conflict, the most recently modified version of this snapshot will be used.
     int conflictResolutionPolicy = SnapshotsClient.RESOLUTION_POLICY_MOST_RECENTLY_MODIFIED;
 
     // Get the SnapshotsClient from the signed in account.
     SnapshotsClient snapshotsClient = Games.getSnapshotsClient(context, account);
 
-    final SettableFuture<SaveGame> future = SettableFuture.create();
+    final SettableFuture<T> future = SettableFuture.create();
     // Open the saved game using its name.
     snapshotsClient.open(snapshotName, false, conflictResolutionPolicy)
         .addOnFailureListener(new OnFailureListener() {
@@ -128,7 +134,7 @@ public class GooglePlayServicesSaveGameManager {
             try {
               // Extract the raw data from the snapshot.
               byte[] saveData = snapshot.getSnapshotContents().readFully();
-              future.set(byteArrayToSaveGame(saveData));
+              future.set(byteArrayToSave(saveData));
               return saveData;
             } catch (IOException e) {
               Log.e(TAG, "Error while reading Snapshot.", e);
@@ -141,18 +147,18 @@ public class GooglePlayServicesSaveGameManager {
           public void onComplete(@NonNull Task<byte[]> task) {
             if (!future.isDone()) {
               future.setException(
-                  new IllegalStateException("Something went wrong while loading the save game"));
+                  new IllegalStateException("Something went wrong while loading the save"));
             }
           }
         });
     return future;
   }
 
-  public static SaveGame byteArrayToSaveGame(byte[] bytes) {
+  private T byteArrayToSave(byte[] bytes) {
     return SerializationUtils.deserialize(bytes);
   }
 
-  public static byte[] saveGameToByteArray(SaveGame saveGame) {
-    return SerializationUtils.serialize(saveGame);
+  private byte[] saveToByteArray(T save) {
+    return SerializationUtils.serialize(save);
   }
 }

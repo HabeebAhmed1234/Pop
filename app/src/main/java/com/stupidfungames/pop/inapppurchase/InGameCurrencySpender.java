@@ -11,7 +11,7 @@ public class InGameCurrencySpender {
 
 
   /**
-   * Spends the currency from {@link InGameCurrencyBalanceManager} and notifies google play services
+   * Spends the currency from {@link InGameCurrencyLedger} and notifies google play services
    * that a block is consumed if the balance manager tells us it is consumed
    * @param numCoins
    */

@@ -1,6 +1,7 @@
 package com.stupidfungames.pop.inapppurchase;
 
-import com.android.billingclient.api.SkuDetails;
+import com.stupidfungames.pop.HostActivity;
+import com.stupidfungames.pop.googleplaysave.GooglePlayServicesSaveManager;
 
 /**
  * Loads and tracks the balance of in game currency. If no existing ledger is found in save game
@@ -9,27 +10,27 @@ import com.android.billingclient.api.SkuDetails;
  * we then set those as "blocks" of currency in our ledger (save game data). We can then subtract
  * from them when told to do so. If a block is consumed we return that it was consumed. All of this
  * is updated in the ledger
+ *
+ * A new instance must be present for each activity that this ledger is used. Each time it will
+ * initialize.
  */
-public class InGameCurrencyBalanceManager {
+public class InGameCurrencyLedger {
 
-  private static InGameCurrencyBalanceManager sInstance;
+  private static final String LEDGER_SAVE_NAME = "ledger";
 
-  private InGameCurrencyBalanceManager() {
-    init();
-  }
-
-  public static InGameCurrencyBalanceManager get() {
-    if (sInstance == null) {
-      sInstance = new InGameCurrencyBalanceManager();
-    }
-    return sInstance;
-  }
+  private HostActivity hostActivity;
+  private GooglePlayServicesSaveManager saveManager;
 
   /**
-   * Checks if a ledger already exists, else builds a ledger
+   * Checks if a ledger already exists in saveManager, else builds a ledger
    */
-  private void init() {
+  private InGameCurrencyLedger(HostActivity hostActivity) {
+    this.hostActivity = hostActivity;
+    this.saveManager = new GooglePlayServicesSaveManager<Ledger>(hostActivity);
+  }
 
+  private Ledger loadLedgerFromSave() {
+    saveManager.load(LEDGER_SAVE_NAME)
   }
 
   /**
@@ -66,4 +67,5 @@ public class InGameCurrencyBalanceManager {
   public boolean subtractCurrency(int numCoins) {
     return false;
   }
+
 }

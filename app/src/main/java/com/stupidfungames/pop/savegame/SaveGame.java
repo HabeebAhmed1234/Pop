@@ -3,10 +3,8 @@ package com.stupidfungames.pop.savegame;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId;
 import java.io.Serializable;
 import java.util.List;
