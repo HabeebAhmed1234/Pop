@@ -108,6 +108,11 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
     }
 
     @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
     public GooglePlayServicesAuthManager getAuthManager() {
         return authManager;
     }

@@ -1,6 +1,9 @@
 package com.stupidfungames.pop.inapppurchase;
 
+import android.app.Activity;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -15,6 +18,11 @@ import java.util.List;
 public class ProductsAdapter extends Adapter {
 
   private List<SkuDetails> products = new ArrayList<>();
+  private InAppPurchasesProcessor inAppPurchasesProcessor;
+
+  public ProductsAdapter(Activity activity, GooglePlayServicesBillingManager billingManager) {
+    inAppPurchasesProcessor = new InAppPurchasesProcessor(activity, billingManager);
+  }
 
   public void setProducts(List<SkuDetails> products) {
     this.products = products;
@@ -40,20 +48,34 @@ public class ProductsAdapter extends Adapter {
     return products.size();
   }
 
-  public static class ProductViewHolder extends RecyclerView.ViewHolder {
+  public class ProductViewHolder extends RecyclerView.ViewHolder {
     // each data item is just a string in this case
+
+    private SkuDetails skuDetails;
+
     private TextView name;
     private TextView price;
     private TextView description;
+
+    private OnClickListener clickListener = new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        inAppPurchasesProcessor.purchase(skuDetails);
+      }
+    };
 
     public ProductViewHolder(ViewGroup v) {
       super(v);
       name = v.findViewById(R.id.name);
       price = v.findViewById(R.id.price);
       description = v.findViewById(R.id.description);
+
+      v.setOnClickListener(clickListener);
     }
 
     public void bind(SkuDetails skuDetails) {
+      this.skuDetails = skuDetails;
+
       name.setText(skuDetails.getTitle());
       price.setText(skuDetails.getPrice());
       description.setText(skuDetails.getDescription());

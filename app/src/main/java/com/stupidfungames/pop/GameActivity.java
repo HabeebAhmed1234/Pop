@@ -305,6 +305,11 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 	}
 
 	@Override
+	public Context getContext() {
+		return this;
+	}
+
+	@Override
 	public GooglePlayServicesAuthManager getAuthManager() {
 		return authManager;
 	}

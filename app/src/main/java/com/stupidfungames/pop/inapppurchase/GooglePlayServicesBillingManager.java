@@ -1,49 +1,107 @@
 package com.stupidfungames.pop.inapppurchase;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import com.android.billingclient.api.AcknowledgePurchaseParams;
+import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClient.BillingResponseCode;
 import com.android.billingclient.api.BillingClient.SkuType;
 import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
+import com.stupidfungames.pop.HostActivity;
+import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
+import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager.LoginListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
+/**
+ * Manages all calls to the play services billing manager. If the user is not logged in then it will
+ * either prompt them to login or it will throw an exception.
+ */
 public class GooglePlayServicesBillingManager implements PurchasesUpdatedListener {
 
+  private static final String TAG = "GPSBillingManager";
   private static final List<String> productIdsList = new ArrayList<String>(
       Arrays.asList(
-          "pop_coins_100",
-          "pop_coins_500",
-          "pop_coins_1000"));
+          "android.test.purchased"));
 
+  private HostActivity hostActivity;
+  private GooglePlayServicesAuthManager authManager;
   private BillingClient billingClient;
 
   private interface BillingClientReadyCallback {
     void onBillingClientReady();
+    void onBillingClientError(@Nullable Throwable e);
   }
 
-  public GooglePlayServicesBillingManager(Context context) {
-    billingClient = BillingClient.newBuilder(context)
+  public GooglePlayServicesBillingManager(HostActivity hostActivity) {
+    this.hostActivity = hostActivity;
+    this.authManager = hostActivity.getAuthManager();
+    billingClient = BillingClient.newBuilder(hostActivity.getContext())
         .enablePendingPurchases()
         .setListener(this)
         .build();
   }
 
-  public void startConnection(final BillingClientReadyCallback readyCallback, Context context) {
+  private void checkLoginThenStartConnection(final BillingClientReadyCallback readyCallback) {
+    if (!authManager.isLoggedIn()) {
+      authManager.initiateLogin(hostActivity, new LoginListener() {
+        @Override
+        public void onLoginStart() {}
+
+        @Override
+        public void onLoggedIn(GoogleSignInAccount account) {
+          startConnection(readyCallback);
+        }
+
+        @Override
+        public void onLoggedOut() {
+          readyCallback.onBillingClientError(new IllegalStateException("User logged out"));
+        }
+
+        @Override
+        public void onLoginCanceled() {
+          readyCallback.onBillingClientError(new IllegalStateException("User cancelled login"));
+        }
+
+        @Override
+        public void onLoginFailed(Exception e) {
+          readyCallback.onBillingClientError(e);
+        }
+      });
+    } else {
+      startConnection(readyCallback);
+    }
+  }
+
+  private void startConnection(final BillingClientReadyCallback readyCallback) {
+    if (!authManager.isLoggedIn()) {
+      readyCallback.onBillingClientError(
+          new IllegalStateException(
+              "Cannot start a billing connection if user is not logged in."));
+      return;
+    }
+    if (billingClient.isReady()) {
+      readyCallback.onBillingClientReady();
+      return;
+    }
     billingClient.startConnection(new BillingClientStateListener() {
       @Override
       public void onBillingSetupFinished(BillingResult billingResult) {
@@ -54,21 +112,33 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
       }
 
       @Override
-      public void onBillingServiceDisconnected() {
-        // Try to restart the connection on the next request to
-        // Google Play by calling the startConnection() method.
-
-      }
+      public void onBillingServiceDisconnected() {}
     });
   }
 
-  public ListenableFuture<List<SkuDetails>> getProducts(final Context context) {
-    if (billingClient.isReady()) {
-      return getProductsInternal();
+  /**
+   * Ensures that the user is logged in and billing client is connected. then runs the
+   * billingClientReadyCallback after.
+   *
+   * @param billingClientReadyCallback
+   * @param showLogin true if we want to show login flow if the user is not logged in false
+   * if we want to error if user is not logged in
+   */
+  private void ensureConnection(
+      final BillingClientReadyCallback billingClientReadyCallback,
+      final boolean showLogin) {
+    if (authManager.isLoggedIn() && billingClient.isReady()) {
+      billingClientReadyCallback.onBillingClientReady();
+    } else if (showLogin) {
+      checkLoginThenStartConnection(billingClientReadyCallback);
     } else {
-      final SettableFuture<List<SkuDetails>> productsSettableFuture = SettableFuture.create();
+      startConnection(billingClientReadyCallback);
+    }
+  }
 
-      startConnection(new BillingClientReadyCallback() {
+  public ListenableFuture<List<SkuDetails>> getProducts(final Context context) {
+      final SettableFuture<List<SkuDetails>> productsSettableFuture = SettableFuture.create();
+      ensureConnection(new BillingClientReadyCallback() {
         @Override
         public void onBillingClientReady() {
           Futures.addCallback(getProductsInternal(), new FutureCallback<List<SkuDetails>>() {
@@ -87,10 +157,36 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
                 }
               }, ContextCompat.getMainExecutor(context));
         }
-      }, context);
+
+        @Override
+        public void onBillingClientError(@Nullable Throwable e) {
+          productsSettableFuture.setException(e);
+        }
+      }, true);
 
       return productsSettableFuture;
-    }
+  }
+
+  public ListenableFuture<BillingResult> launchPurchaseFlow(
+      final Activity activity, final SkuDetails skuDetails) {
+
+    // Retrieve a value for "skuDetails" by calling querySkuDetailsAsync().
+    final SettableFuture<BillingResult> result = SettableFuture.create();
+    ensureConnection(new BillingClientReadyCallback() {
+      @Override
+      public void onBillingClientReady() {
+        BillingFlowParams flowParams = BillingFlowParams.newBuilder()
+            .setSkuDetails(skuDetails)
+            .build();
+        result.set(billingClient.launchBillingFlow(activity, flowParams));
+      }
+
+      @Override
+      public void onBillingClientError(@Nullable Throwable e) {
+        result.setException(e);
+      }
+    }, true);
+    return result;
   }
 
   private ListenableFuture<List<SkuDetails>> getProductsInternal() {
@@ -101,7 +197,7 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
           @Override
           public void onSkuDetailsResponse(BillingResult result, List<SkuDetails> skuDetailsList) {
             if (result.getResponseCode() == BillingResponseCode.OK && skuDetailsList != null) {
-              productsSettableFuture.set(skuDetailsList);
+              productsSettableFuture.set(generateTestListOfSampleProducts(skuDetailsList));
             } else {
               productsSettableFuture.setException(
                   new IllegalStateException(
@@ -114,6 +210,33 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
 
   @Override
   public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> list) {
+    InGameCurrencyBalanceManager balanceManager  = InGameCurrencyBalanceManager.get();
+    for (final Purchase purchase : list) {
+      if (balanceManager.addBalance(purchase.getPurchaseToken(), purchase.getSku())) {
+        if (!purchase.isAcknowledged()) {
+          billingClient.acknowledgePurchase(
+              AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchase.getPurchaseToken())
+                  .build(), new AcknowledgePurchaseResponseListener() {
+                @Override
+                public void onAcknowledgePurchaseResponse(BillingResult billingResult) {
+                  Log.d(TAG, "Purchase " + purchase.getOrderId() + " acknowledged result " + billingResult);
+                }
+              });
+        }
+      }
+    }
+  }
 
+  private static final int NUM_SAMPLES = 20;
+
+  private List<SkuDetails> generateTestListOfSampleProducts(List<SkuDetails> seed) {
+    List<SkuDetails> samples = new ArrayList<>();
+    if (seed == null || seed.isEmpty()) {
+      return samples;
+    }
+    for (int i = 0  ; i < NUM_SAMPLES ; i++) {
+      samples.add(seed.get(0));
+    }
+    return samples;
   }
 }

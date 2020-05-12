@@ -12,14 +12,12 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.billingclient.api.SkuDetails;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.stupidfungames.pop.HostActivity;
 import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.androidui.LoadingSpinner;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
-import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager.LoginListener;
 import java.util.List;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
@@ -27,14 +25,13 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * This activity displays a list of all products available in the app. If a product is purchased
  * it saves that product item to the "economy" save game in the save game manager.
  */
-public class StoreActivity extends AppCompatActivity implements HostActivity, LoginListener {
+public class StoreActivity extends AppCompatActivity implements HostActivity {
 
   public static Intent getIntent(Context context) {
     return new Intent(context, StoreActivity.class);
   }
 
   private LoadingSpinner loadingSpinner;
-  private View errorView;
   private TextView errorText;
   private RecyclerView productsRecyclerView;
   private ProductsAdapter productsAdapter;
@@ -49,27 +46,22 @@ public class StoreActivity extends AppCompatActivity implements HostActivity, Lo
 
     productsRecyclerView = findViewById(R.id.products_recyclerview);
     loadingSpinner = findViewById(R.id.loading_spinner);
-    errorView = findViewById(R.id.error_view);
     errorText = findViewById(R.id.error_text);
-
-    productsRecyclerView.setHasFixedSize(true);
-    productsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-    productsAdapter = new ProductsAdapter();
-    productsRecyclerView.setAdapter(productsAdapter);
 
     authManager = new GooglePlayServicesAuthManager(this);
     billingManager = new GooglePlayServicesBillingManager(this);
 
-    if (!authManager.isLoggedIn()) {
-      renderLoadingState();
-      authManager.initiateLogin(this, this);
-    } else {
-      startLoadingProducts();
-    }
+    productsRecyclerView.setHasFixedSize(true);
+    productsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    productsAdapter = new ProductsAdapter(this, billingManager);
+    productsRecyclerView.setAdapter(productsAdapter);
+
+    renderLoadingState();
+    startLoadingProducts();
   }
 
   private void renderLoadingState() {
-    errorView.setVisibility(View.GONE);
+    errorText.setVisibility(View.GONE);
     productsRecyclerView.setVisibility(View.GONE);
 
     loadingSpinner.startLoadingAnimation();
@@ -77,7 +69,8 @@ public class StoreActivity extends AppCompatActivity implements HostActivity, Lo
 
   private void renderLoadedState(List<SkuDetails> loadedProducts) {
     loadingSpinner.stopLoadingAnimation();
-    errorView.setVisibility(View.GONE);
+    errorText.setVisibility(View.GONE);
+    productsRecyclerView.setVisibility(View.VISIBLE);
 
     productsAdapter.setProducts(loadedProducts);
   }
@@ -90,7 +83,7 @@ public class StoreActivity extends AppCompatActivity implements HostActivity, Lo
     loadingSpinner.stopLoadingAnimation();
     productsRecyclerView.setVisibility(View.GONE);
 
-    errorView.setVisibility(View.VISIBLE);
+    errorText.setVisibility(View.VISIBLE);
     if (errorMessage != null) {
       errorText.setText(errorMessage);
     }
@@ -118,32 +111,12 @@ public class StoreActivity extends AppCompatActivity implements HostActivity, Lo
   }
 
   @Override
+  public Context getContext() {
+    return this;
+  }
+
+  @Override
   public GooglePlayServicesAuthManager getAuthManager() {
     return authManager;
-  }
-
-  @Override
-  public void onLoginStart() {
-    renderLoadingState();
-  }
-
-  @Override
-  public void onLoggedIn(GoogleSignInAccount account) {
-    startLoadingProducts();
-  }
-
-  @Override
-  public void onLoggedOut() {
-    renderErrorState(R.string.must_be_logged_in);
-  }
-
-  @Override
-  public void onLoginCanceled() {
-    renderErrorState(R.string.must_be_logged_in);
-  }
-
-  @Override
-  public void onLoginFailed(Exception e) {
-    renderErrorState(null);
   }
 }

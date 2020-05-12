@@ -143,6 +143,11 @@ public class SaveGameFlowDialog extends GameNeonDialogActivity implements HostAc
   }
 
   @Override
+  public Context getContext() {
+    return this;
+  }
+
+  @Override
   public GooglePlayServicesAuthManager getAuthManager() {
     return authManager;
   }
