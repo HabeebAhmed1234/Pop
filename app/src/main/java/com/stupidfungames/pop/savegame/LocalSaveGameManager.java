@@ -9,14 +9,14 @@ import com.stupidfungames.pop.gamesettings.GamePreferencesManager;
 
 class LocalSaveGameManager {
 
-  private static final String LOCAL_SAVE_GAME_DEBUG_KEY = "local_save_game";
+  private static final String LOCAL_SAVE_GAME_KEY = "local_save_game";
 
   public static void clear(Context context) {
-    GamePreferencesManager.set(context, LOCAL_SAVE_GAME_DEBUG_KEY, null);
+    GamePreferencesManager.set(context, LOCAL_SAVE_GAME_KEY, null);
   }
 
   public static ListenableFuture<SaveGame> loadGame(Context context) {
-    String saveGameJson = GamePreferencesManager.getString(context, LOCAL_SAVE_GAME_DEBUG_KEY);
+    String saveGameJson = GamePreferencesManager.getString(context, LOCAL_SAVE_GAME_KEY);
     if (TextUtils.isEmpty(saveGameJson)) {
       return Futures.immediateFuture(null);
     }
@@ -26,6 +26,6 @@ class LocalSaveGameManager {
 
   public static void saveGame(Context context, SaveGame newSaveGame) {
     String json = new Gson().toJson(newSaveGame);
-    GamePreferencesManager.set(context, LOCAL_SAVE_GAME_DEBUG_KEY, json);
+    GamePreferencesManager.set(context, LOCAL_SAVE_GAME_KEY, json);
   }
 }

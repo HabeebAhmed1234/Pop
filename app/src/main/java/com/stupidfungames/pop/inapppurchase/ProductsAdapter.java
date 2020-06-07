@@ -18,10 +18,12 @@ import java.util.List;
 public class ProductsAdapter extends Adapter {
 
   private List<SkuDetails> products = new ArrayList<>();
-  private InAppPurchasesProcessor inAppPurchasesProcessor;
+  private final Activity activity;
+  private final GooglePlayServicesBillingManager billingManager;
 
   public ProductsAdapter(Activity activity, GooglePlayServicesBillingManager billingManager) {
-    inAppPurchasesProcessor = new InAppPurchasesProcessor(activity, billingManager);
+    this.activity = activity;
+    this.billingManager = billingManager;
   }
 
   public void setProducts(List<SkuDetails> products) {
@@ -60,7 +62,7 @@ public class ProductsAdapter extends Adapter {
     private OnClickListener clickListener = new OnClickListener() {
       @Override
       public void onClick(View v) {
-        inAppPurchasesProcessor.purchase(skuDetails);
+        billingManager.purchase(activity, skuDetails);
       }
     };
 
