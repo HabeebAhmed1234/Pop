@@ -29,8 +29,9 @@
     <string name="must_be_logged_in">You must be logged in to access this feature.</string>
     <string name="game_saved">Game saved.</string>
     <string name="new_game_confirm_title">Are you sure you want to start a new game? This will overwrite your current save game.</string>
-    <string name="error_fetching_products">Something went wrong when fetching products.</string>
-    <string name="no_products_result">No products are available at this time.</string>
+    <string name="error_fetching_items">Something went wrong! Try again later.</string>
+    <string name="no_items_result">No items are available at this time.</string>
+    <string name="no_purchases_result">No products have been purchased.</string>
     <string name="purchase_succesful">Your purchase was successful!</string>
     <string name="purchase_canceled">Your purchase was cancelled</string>
 </resources>

@@ -122,7 +122,7 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
     }, ContextCompat.getMainExecutor(activity));
   }
 
-  public ListenableFuture<PurchasesResult> queryProducts() {
+  public ListenableFuture<PurchasesResult> queryPurchases() {
     final SettableFuture<PurchasesResult> resultSettableFuture = SettableFuture.create();
     ensureConnection(new BillingClientReadyCallback() {
       @Override

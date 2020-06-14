@@ -19,8 +19,8 @@
     <dimen name="ttlm_default_stroke_weight">4dp</dimen>
     <dimen name="ttlm_default_elevation">2dp</dimen>
 
-    <dimen name="store_list_horizontal_padding">16dp</dimen>
-    <dimen name="store_list_vertical_padding">24dp</dimen>
+    <dimen name="list_horizontal_padding">16dp</dimen>
+    <dimen name="list_vertical_padding">24dp</dimen>
     <dimen name="products_list_item_spacing">12dp</dimen>
     <dimen name="product_horizontal_margin">8dp</dimen>
     <dimen name="product_name_size">16sp</dimen>
