@@ -3,116 +3,97 @@ package com.stupidfungames.pop.inapppurchase;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
+import android.view.ViewGroup;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.DiffUtil.ItemCallback;
 import com.android.billingclient.api.BillingClient.BillingResponseCode;
+import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.Purchase.PurchasesResult;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
-import com.stupidfungames.pop.HostActivity;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.SettableFuture;
 import com.stupidfungames.pop.R;
-import com.stupidfungames.pop.androidui.LoadingSpinner;
-import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
+import com.stupidfungames.pop.list.BindableViewHolder;
+import com.stupidfungames.pop.list.BindableViewHolderFactory;
+import com.stupidfungames.pop.list.LoadableListBaseActivity;
+import com.stupidfungames.pop.list.LoadableListLoadingCoordinator.LoaderCallback;
+import java.util.List;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-public class EquipActivity extends AppCompatActivity implements HostActivity {
+public class EquipActivity extends LoadableListBaseActivity<Purchase> {
 
   public static Intent getIntent(Context context) {
     return new Intent(context, EquipActivity.class);
   }
 
-  private LoadingSpinner loadingSpinner;
-  private TextView errorText;
-  private RecyclerView productsRecyclerView;
-  private LoadableListAdapter loadableListAdapter;
+  GooglePlayServicesBillingManager billingManager;
 
-  private GooglePlayServicesAuthManager authManager;
-  private GooglePlayServicesBillingManager billingManager;
+  private BindableViewHolderFactory bindableViewHolderFactory = new BindableViewHolderFactory() {
+    @Override
+    public int getLayoutId() {
+      return R.layout.purchase_list_item;
+    }
+
+    @Override
+    public BindableViewHolder create(ViewGroup parentView) {
+      return new PurchaseViewHolder(parentView);
+    }
+  };
+
+  private LoaderCallback<List<Purchase>> loaderCallback = new LoaderCallback<List<Purchase>>() {
+    @Override
+    public ListenableFuture<List<Purchase>> loadData() {
+      final SettableFuture<List<Purchase>> futureResult = SettableFuture.create();
+      Futures.addCallback(billingManager.queryPurchases(), new FutureCallback<PurchasesResult>() {
+        @Override
+        public void onSuccess(@NullableDecl PurchasesResult result) {
+          if (result != null
+              && result.getBillingResult().getResponseCode() == BillingResponseCode.OK) {
+            futureResult.set(result.getPurchasesList());
+          } else {
+            futureResult.setException(new IllegalStateException("Error when loading purchases list"));
+          }
+        }
+
+        @Override
+        public void onFailure(Throwable t) {
+          futureResult.setException(t);
+        }
+      }, ContextCompat.getMainExecutor(EquipActivity.this));
+      return futureResult;
+    }
+
+    @Override
+    public boolean isEmptyResult(List<Purchase> result) {
+      return result.isEmpty();
+    }
+  };
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.equip_activity_layout);
-
-    productsRecyclerView = findViewById(R.id.equip_items_recyclerview);
-    loadingSpinner = findViewById(R.id.loading_spinner);
-    errorText = findViewById(R.id.error_text);
-
-    authManager = new GooglePlayServicesAuthManager(this);
     billingManager = new GooglePlayServicesBillingManager(this);
-
-    productsRecyclerView.setHasFixedSize(true);
-    productsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-    loadableListAdapter = new LoadableListAdapter(this, billingManager);
-    productsRecyclerView.setAdapter(loadableListAdapter);
-
-    renderLoadingState();
-    startLoadingEquippableItems();
-  }
-
-  private void renderLoadingState() {
-    errorText.setVisibility(View.GONE);
-    productsRecyclerView.setVisibility(View.GONE);
-
-    loadingSpinner.startLoadingAnimation();
-  }
-
-  private void renderLoadedState(PurchasesResult purchasesResult) {
-    loadingSpinner.stopLoadingAnimation();
-    errorText.setVisibility(View.GONE);
-    productsRecyclerView.setVisibility(View.VISIBLE);
-
-    loadableListAdapter.setProducts(loadedProducts);
-  }
-
-  private void renderErrorState(@StringRes int errorResId) {
-    renderErrorState(getString(errorResId));
-  }
-
-  private void renderErrorState(@Nullable String errorMessage) {
-    loadingSpinner.stopLoadingAnimation();
-    productsRecyclerView.setVisibility(View.GONE);
-
-    errorText.setVisibility(View.VISIBLE);
-    if (errorMessage != null) {
-      errorText.setText(errorMessage);
-    }
-  }
-
-  private void startLoadingEquippableItems() {
-    Futures.addCallback(billingManager.queryPurchases(), new FutureCallback<PurchasesResult>() {
-
-      @Override
-      public void onSuccess(@NullableDecl PurchasesResult result) {
-        if (result != null && result.getResponseCode() == BillingResponseCode.OK) {
-          renderLoadedState(result);
-        } else if (result != null && result.getPurchasesList().isEmpty()) {
-          renderErrorState(R.string.no_purchases_result);
-        } else {
-          renderErrorState(R.string.error_fetching_items);
-        }
-      }
-
-      @Override
-      public void onFailure(Throwable t) {
-        renderErrorState(R.string.error_fetching_items);
-      }
-    }, ContextCompat.getMainExecutor(this));
+    super.onCreate(savedInstanceState);
   }
 
   @Override
-  public Context getContext() {
-    return this;
+  protected int getLayoutId() {
+    return R.layout.equip_activity_layout;
   }
 
   @Override
-  public GooglePlayServicesAuthManager getAuthManager() {
-    return authManager;
+  protected BindableViewHolderFactory getViewHolderFactory() {
+    return bindableViewHolderFactory;
+  }
+
+  @Override
+  protected ItemCallback getDiffutilCallback() {
+    return new PurchasesDiffUtilCallback();
+  }
+
+  @Override
+  protected LoaderCallback<List<Purchase>> getLoaderCallback() {
+    return loaderCallback;
   }
 }

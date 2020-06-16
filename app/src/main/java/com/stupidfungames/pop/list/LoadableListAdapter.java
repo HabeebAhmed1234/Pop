@@ -1,4 +1,4 @@
-package com.stupidfungames.pop.inapppurchase;
+package com.stupidfungames.pop.list;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

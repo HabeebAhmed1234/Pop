@@ -1,4 +1,4 @@
-package com.stupidfungames.pop.inapppurchase;
+package com.stupidfungames.pop.list;
 
 import android.content.Context;
 import android.view.View;
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.androidui.LoadingSpinner;
-import com.stupidfungames.pop.inapppurchase.LoadableListLoadingCoordinator.ViewCoordinator;
+import com.stupidfungames.pop.list.LoadableListLoadingCoordinator.ViewCoordinator;
 import java.util.List;
 
 /**

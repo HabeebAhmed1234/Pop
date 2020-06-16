@@ -6,6 +6,7 @@
     <string name="load_game_text">Resume Game</string>
     <string name="game_over_text">Game Over</string>
     <string name="options_text">Options</string>
+    <string name="purchases">My Purchases</string>
     <string name="store">Store</string>
     <string name="quit_text">Quit</string>
     <string name="your_score_title">Your score:</string>

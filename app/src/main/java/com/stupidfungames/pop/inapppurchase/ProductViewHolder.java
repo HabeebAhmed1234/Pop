@@ -7,8 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.android.billingclient.api.SkuDetails;
 import com.stupidfungames.pop.R;
+import com.stupidfungames.pop.list.BindableViewHolder;
 
-public class ProductViewHolder extends BindableViewHolder<SkuDetails>{
+public class ProductViewHolder extends BindableViewHolder<SkuDetails> {
   // each data item is just a string in this case
 
   private SkuDetails skuDetails;

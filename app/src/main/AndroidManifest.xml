@@ -74,6 +74,10 @@
             android:name="com.stupidfungames.pop.inapppurchase.StoreActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name="com.stupidfungames.pop.inapppurchase.EquipActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

@@ -1,45 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
   <ImageView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:scaleType="centerCrop"
-      android:src="@drawable/main_menu_background"/>
+      android:src="@drawable/main_menu_background" />
 
-  <FrameLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:paddingHorizontal="@dimen/list_horizontal_padding"
-      android:paddingVertical="@dimen/list_vertical_padding">
-
-    <com.stupidfungames.pop.androidui.LoadingSpinner
-        android:id="@+id/loading_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone" />
-
-
-    <com.stupidfungames.pop.androidui.GameMenuText
-        android:id="@+id/error_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textSize="@dimen/main_menu_btn_text_size"
-        android:text="@string/generic_error"
-        android:visibility="gone" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/equip_items_recyclerview"
-        android:scrollbars="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
-  </FrameLayout>
+  <include layout="@layout/loadable_list_view" />
 </FrameLayout>
