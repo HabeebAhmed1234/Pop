@@ -53,8 +53,8 @@ public class StoreActivity extends LoadableListBaseActivity<SkuDetails> {
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
     billingManager = new GooglePlayServicesBillingManager(this);
+    super.onCreate(savedInstanceState);
   }
 
   @Override

@@ -35,4 +35,6 @@
     <string name="no_purchases_result">No products have been purchased.</string>
     <string name="purchase_succesful">Your purchase was successful!</string>
     <string name="purchase_canceled">Your purchase was cancelled</string>
+    <string name="store_title">Store</string>
+    <string name="my_purchases">My Purchases</string>
 </resources>

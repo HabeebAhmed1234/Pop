@@ -5,11 +5,16 @@ import java.util.Map;
 
 public class ProductsInfoMap {
 
+  public static final String SKU_NO_ADS = "no_ads";
+  public static final String SKU_GAME_CONTINUE = "game_continue";
+  public static final String SKU_BG_1 = "bg_1";
+  public static final String SKU_BG_2 = "bg_2";
+
   public static Map<String, GameProduct> skuToProductsMap = ImmutableMap.of(
-      "no_ads", new GameProduct("no_ads", "Add Free Experience", "Ensures that you no longer have to watch ads in the app"),
-      "game_continue", new GameProduct("game_continue", "Game Continue", "Token that lets you resume your game after game over."),
-      "bg_1", new GameProduct("bg_1", "Back ground 1", "Back ground 1"),
-      "bg_2", new GameProduct("bg_2", "Back ground 2", "Back ground 2")
+      SKU_NO_ADS, new GameProduct("no_ads", "Add Free Experience", "Ensures that you no longer have to watch ads in the app"),
+      SKU_GAME_CONTINUE, new GameProduct("game_continue", "Game Continue", "Token that lets you resume your game after game over."),
+      SKU_BG_1, new GameProduct("bg_1", "Back ground 1", "Back ground 1"),
+      SKU_BG_2, new GameProduct("bg_2", "Back ground 2", "Back ground 2")
   );
 
   public static class GameProduct {
