@@ -47,7 +47,6 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
 
   private HostActivity hostActivity;
   private GooglePlayServicesAuthManager authManager;
-  private Ledger ledger;
   private BillingClient billingClient;
 
   private interface BillingClientReadyCallback {
@@ -245,7 +244,8 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
           @Override
           public void onSkuDetailsResponse(BillingResult result, List<SkuDetails> skuDetailsList) {
             if (result.getResponseCode() == BillingResponseCode.OK && skuDetailsList != null) {
-              productsSettableFuture.set(generateTestListOfSampleProducts(skuDetailsList));
+              productsSettableFuture.set(skuDetailsList);
+              //productsSettableFuture.set(generateTestListOfSampleProducts(skuDetailsList));
             } else {
               productsSettableFuture.setException(
                   new IllegalStateException(
@@ -259,7 +259,6 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
   @Override
   public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> list) {
     for (final Purchase purchase : list) {
-      ledger.updatePurchase(purchase);
       if (!purchase.isAcknowledged()) {
         billingClient.acknowledgePurchase(
             AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchase.getPurchaseToken())
