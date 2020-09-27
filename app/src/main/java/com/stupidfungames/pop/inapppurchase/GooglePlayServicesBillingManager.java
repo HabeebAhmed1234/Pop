@@ -258,6 +258,9 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
 
   @Override
   public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> list) {
+    if (list == null) {
+      return;
+    }
     for (final Purchase purchase : list) {
       if (!purchase.isAcknowledged()) {
         billingClient.acknowledgePurchase(
