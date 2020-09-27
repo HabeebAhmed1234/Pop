@@ -3,7 +3,7 @@ package com.stupidfungames.pop.nuke;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
-import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
+import com.stupidfungames.pop.bubblepopper.BufferedBubblePopperEntity;
 import com.stupidfungames.pop.entitymatchers.BubblesEntityMatcher;
 import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
@@ -59,7 +59,7 @@ public class NukerEntity extends BaseEntity {
             for (IEntity bubble : bubbles) {
                 if (!bubbleNukeMutex.contains(bubble.hashCode())) {
                     BubbleEntityUserData bubbleEntityUserData = (BubbleEntityUserData) bubble.getUserData();
-                    get(BubblePopperEntity.class).popBubble(bubbleEntityUserData.bubbleSprite, bubbleEntityUserData.size, bubbleEntityUserData.bubbleType);
+                    get(BufferedBubblePopperEntity.class).popBubble(bubbleEntityUserData.bubbleSprite, bubbleEntityUserData.size, bubbleEntityUserData.bubbleType);
                     bubbleNukeMutex.add(bubble.hashCode());
                 }
             }

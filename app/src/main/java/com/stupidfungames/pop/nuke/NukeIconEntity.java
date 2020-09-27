@@ -19,7 +19,7 @@ import org.andengine.util.color.AndengineColor;
 import static com.stupidfungames.pop.GameConstants.NUKE_UNLOCK_THRESHOLD;
 import static com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId.NUKE_ICON;
 
-public class NukeIconBaseEntity extends IconBaseEntity implements BaseStateMachine.Listener<NukeStateMachine.State> {
+public class NukeIconEntity extends IconBaseEntity implements BaseStateMachine.Listener<NukeStateMachine.State> {
 
     private final ButtonUpTouchListener touchListener = new ButtonUpTouchListener() {
         @Override
@@ -32,14 +32,12 @@ public class NukeIconBaseEntity extends IconBaseEntity implements BaseStateMachi
         }
     };
 
-    public NukeIconBaseEntity(BinderEnity parent) {
+    public NukeIconEntity(BinderEnity parent) {
         super(parent);
     }
 
     @Override
-    protected void createBindings(Binder binder) {
-
-    }
+    protected void createBindings(Binder binder) {}
 
     @Override
     public void onCreateScene() {

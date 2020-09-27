@@ -16,11 +16,9 @@ import com.stupidfungames.pop.backgroundmusic.BackgroundMusicBaseEntity;
 import com.stupidfungames.pop.ballandchain.BallAndChainManagerBaseEntity;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
-import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
-import com.stupidfungames.pop.bubblepopper.BufferedBubblePopperBaseEntity;
+import com.stupidfungames.pop.bubblepopper.BufferedBubblePopperEntity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity;
 import com.stupidfungames.pop.bubbletimeout.BubblesLifecycleManagerEntity;
-import com.stupidfungames.pop.dialog.ToastDialogActivity;
 import com.stupidfungames.pop.difficulty.GameDifficultyEntity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
@@ -134,9 +132,8 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 						.bind(BubbleSpawnerEntity.class, new BubbleSpawnerEntity(this))
 						.bind(BubbleCleanerBaseEntity.class, new BubbleCleanerBaseEntity(this))
 						.bind(BubbleLossDetectorBaseEntity.class, new BubbleLossDetectorBaseEntity(this))
-						.bind(BubblePopperEntity.class, new BubblePopperEntity(this))
 						.bind(TouchPopperFactoryEntity.class, new TouchPopperFactoryEntity(this))
-						.bind(BufferedBubblePopperBaseEntity.class, new BufferedBubblePopperBaseEntity(this))
+						.bind(BufferedBubblePopperEntity.class, new BufferedBubblePopperEntity(this))
 
 						.bind(GameIconsHostTrayEntity.class, new GameIconsHostTrayEntity(this))
 						.bind(BallAndChainManagerBaseEntity.class, new BallAndChainManagerBaseEntity(this))

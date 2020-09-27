@@ -1,6 +1,7 @@
 package com.stupidfungames.pop.bubblepopper;
 
 import com.stupidfungames.pop.BaseEntity;
+import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity;
 import com.stupidfungames.pop.physics.PhysicsWorld;
@@ -14,10 +15,11 @@ import java.util.Set;
 /**
  * A wrapper around {@link BubblePopperEntity} which limits the number of bubbles popped per frame
  */
-public class BufferedBubblePopperBaseEntity extends BaseEntity implements PhysicsWorld.OnUpdateListener, BubblePopper {
+public class BufferedBubblePopperEntity extends BaseEntity implements PhysicsWorld.OnUpdateListener {
 
-    private static final int MAX_BUBBLES_POPPED_PER_FRAME = 1;
+    private static final int MAX_BUBBLES_POPPED_PER_FRAME = 10;
     private Set<BubblePopData> bubblesToPop = new HashSet<>();
+    private BubblePopperEntity bubblePopperEntity;
 
     private static class BubblePopData {
         public final IShape previousBubble;
@@ -33,13 +35,20 @@ public class BufferedBubblePopperBaseEntity extends BaseEntity implements Physic
         }
     }
 
-    public BufferedBubblePopperBaseEntity(BinderEnity parent) {
+    public BufferedBubblePopperEntity(BinderEnity parent) {
         super(parent);
+    }
+
+    @Override
+    protected void createBindings(Binder binder) {
+        super.createBindings(binder);
+        binder.bind(BubblePopperEntity.class, new BubblePopperEntity(this));
     }
 
     @Override
     public void onCreateScene() {
         super.onCreateScene();
+        bubblePopperEntity = get(BubblePopperEntity.class);
         physicsWorld.addOnUpdateListener(this);
     }
 
@@ -59,12 +68,11 @@ public class BufferedBubblePopperBaseEntity extends BaseEntity implements Physic
                 numBubblesToPop--;
                 BubblePopData data = dataIterator.next();
                 dataIterator.remove();
-                get(BubblePopperEntity.class).popBubble(data.previousBubble, data.oldBubbleSize, data.bubbleType);
+                bubblePopperEntity.popBubble(data.previousBubble, data.oldBubbleSize, data.bubbleType);
             }
         }
     }
 
-    @Override
     public void popBubble(IShape previousBubble, BubbleSpawnerEntity.BubbleSize oldBubbleSize, BubbleSpawnerEntity.BubbleType bubbleType) {
         bubblesToPop.add(new BubblePopData(previousBubble, oldBubbleSize, bubbleType));
     }

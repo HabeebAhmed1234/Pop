@@ -27,7 +27,7 @@ import org.andengine.entity.text.Text;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
-public class BubblePopperEntity extends BaseEntity implements BubblePopper, EventBus.Subscriber {
+class BubblePopperEntity extends BaseEntity implements EventBus.Subscriber {
 
     public static final int SCORE_INCREMENT_PER_BUBBLE_POP = 10;
     public static final int MAX_SCORE_INCREASE_PER_NEW_SPAWNED_BUBBLE = 70; // Since there are three bubble sizes a total of 7 bubbles can be popped from one spawned bubble
@@ -48,14 +48,13 @@ public class BubblePopperEntity extends BaseEntity implements BubblePopper, Even
         EventBus.get().unSubscribe(GameEvent.BUBBLE_TOUCHED, this);
     }
 
-    @Override
     public void popBubble(IShape previousBubble, BubbleSpawnerEntity.BubbleSize oldBubbleSize, BubbleSpawnerEntity.BubbleType bubbleType) {
         // Play the pop sound
         getRandomPopSound().play();
 
         Vec2 oldBubbleScenePosition = Vec2Pool.obtain(previousBubble.getX(), previousBubble.getY());
         // Spawn new bubbles if the one we popped not the smallest bubble
-        if(!oldBubbleSize.isSmallestBubble()) {
+        if (!oldBubbleSize.isSmallestBubble()) {
             spawnPoppedBubbles(oldBubbleSize, oldBubbleScenePosition, bubbleType);
         }
 
@@ -77,7 +76,7 @@ public class BubblePopperEntity extends BaseEntity implements BubblePopper, Even
                 oldBubbleScenePosition.y,
                 oldBubbleSize.nextPoppedSize());
 
-        BubblePhysicsUtil.applyVelocity(leftBubble,-3f, -1.2f);
+        BubblePhysicsUtil.applyVelocity(leftBubble, -3f, -1.2f);
 
         Body rightBubble = bubbleSpawnerEntity.spawnBubble(
                 bubbleType,
@@ -102,12 +101,12 @@ public class BubblePopperEntity extends BaseEntity implements BubblePopper, Even
         get(GameAnimationManager.class).startModifier(
                 scorePlus10Text,
                 new ParallelEntityModifier(
-                    new ScaleModifier(0.75f, 0.1f, 1.1f),
-                    new AlphaModifier(0.75f, 1f, 0f)));
+                        new ScaleModifier(0.75f, 0.1f, 1.1f),
+                        new AlphaModifier(0.75f, 1f, 0f)));
     }
 
     private Sound getRandomPopSound() {
-        int random=(int) (Math.random()*4);
+        int random = (int) (Math.random() * 4);
         GameSoundsManager soundsManager = get(GameSoundsManager.class);
         switch (random) {
             case 0:

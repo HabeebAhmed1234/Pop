@@ -4,7 +4,7 @@ import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GamePhysicsContactsEntity;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
-import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
+import com.stupidfungames.pop.bubblepopper.BufferedBubblePopperEntity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.TurretBulletPoppedBubbleEventPayload;
 import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
@@ -44,7 +44,7 @@ public class TurretsBulletsCollisionManager extends BaseEntity implements GamePh
         if (!bubbleEntityUserData.isPoppable()) {
             return;
         }
-        get(BubblePopperEntity.class).popBubble(
+        get(BufferedBubblePopperEntity.class).popBubble(
                 bubbleEntityUserData.bubbleSprite,
                 bubbleEntityUserData.size,
                 bubbleEntityUserData.bubbleType);

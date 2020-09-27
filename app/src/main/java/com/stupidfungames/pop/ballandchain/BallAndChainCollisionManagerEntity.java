@@ -3,7 +3,7 @@ package com.stupidfungames.pop.ballandchain;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GamePhysicsContactsEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
-import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
+import com.stupidfungames.pop.bubblepopper.BufferedBubblePopperEntity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
 import com.stupidfungames.pop.fixturedefdata.ChainLinkEntityUserData;
@@ -46,7 +46,7 @@ class BallAndChainCollisionManagerEntity extends BaseEntity implements GamePhysi
         if (!bubbleEntityUserData.isPoppable()) {
             return;
         }
-        get(BubblePopperEntity.class).popBubble(
+        get(BufferedBubblePopperEntity.class).popBubble(
                 bubbleEntityUserData.bubbleSprite,
                 bubbleEntityUserData.size,
                 bubbleEntityUserData.bubbleType);

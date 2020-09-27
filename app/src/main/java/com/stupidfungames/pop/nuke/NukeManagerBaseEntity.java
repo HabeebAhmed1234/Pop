@@ -15,6 +15,6 @@ public class NukeManagerBaseEntity extends BaseEntity {
         binder.bind(NukeStateMachine.class, new NukeStateMachine());
         binder.bind(NukeCooldownManager.class, new NukeCooldownManager(this));
         binder.bind(NukerEntity.class, new NukerEntity(this));
-        binder.bind(NukeIconBaseEntity.class, new NukeIconBaseEntity(this));
+        binder.bind(NukeIconEntity.class, new NukeIconEntity(this));
     }
 }
