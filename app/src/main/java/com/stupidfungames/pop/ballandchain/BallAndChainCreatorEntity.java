@@ -131,6 +131,7 @@ class BallAndChainCreatorEntity extends BaseEntity {
         FixtureDef chainLinkFixtureDef = BASE_CHAIN_LINK_FIXTURE_DEF;
         chainLinkFixtureDef.setFilter(CollisionFilters.BALL_AND_CHAIN_FILTER);
         chainLinkFixtureDef.setUserData(chainLinkEntityUserData);
+
         Body chainLinkBody = PhysicsFactory.createBoxBody(physicsWorld, chainLinkSprite, BodyType.DYNAMIC, chainLinkFixtureDef);
 
         addToScene(chainLinkSprite, chainLinkBody);

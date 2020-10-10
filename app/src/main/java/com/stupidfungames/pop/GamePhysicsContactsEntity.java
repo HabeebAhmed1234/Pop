@@ -1,26 +1,18 @@
 package com.stupidfungames.pop;
 
 import android.util.Log;
-
+import androidx.annotation.Nullable;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.fixturedefdata.BaseEntityUserData;
-import com.stupidfungames.pop.physics.PhysicsWorld;
-
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.Contact;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import androidx.annotation.Nullable;
 
 /**
  * Enables other entities to listen to contacts that happen in the physics world involving one or two
@@ -28,41 +20,7 @@ import androidx.annotation.Nullable;
  *
  * Ensures that callbacks on contact get called after a physics step has been completed
  */
-public class GamePhysicsContactsEntity extends BaseEntity implements ContactListener, PhysicsWorld.OnUpdateListener {
-
-    private static final int MAX_NOTIFICATIONS_PER_PHYSICS_UPDATE = 1;
-
-    @Override
-    public void onUpdateCompleted() {
-        if (!pendingBeginContacts.isEmpty()) {
-            Iterator<Contact> it = pendingBeginContacts.iterator();
-            int numUpdated = 0;
-            while (numUpdated < MAX_NOTIFICATIONS_PER_PHYSICS_UPDATE && it.hasNext()) {
-                Contact contact = it.next();
-                @Nullable Set<GameContactListener> listeners = getListenersFromContact(contact);
-                if (listeners == null) {
-                    return;
-                }
-                notifyBeginContact(listeners, contact.m_fixtureA, contact.m_fixtureB);
-                numUpdated++;
-            }
-            pendingBeginContacts.clear();
-        }
-        if (!pendingEndContacts.isEmpty()) {
-            Iterator<Contact> it = pendingEndContacts.iterator();
-            int numUpdated = 0;
-            while (numUpdated < MAX_NOTIFICATIONS_PER_PHYSICS_UPDATE && it.hasNext()){
-                Contact contact = it.next();
-                @Nullable Set<GameContactListener> listeners = getListenersFromContact(contact);
-                if (listeners == null) {
-                    return;
-                }
-                notifyEndContact(listeners, contact.m_fixtureA, contact.m_fixtureB);
-                numUpdated++;
-            }
-            pendingEndContacts.clear();
-        }
-    }
+public class GamePhysicsContactsEntity extends BaseEntity implements ContactListener {
 
     public interface GameContactListener {
         void onBeginContact(Fixture fixture1, Fixture fixture2);
@@ -70,8 +28,6 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
     }
 
     private Map<Set<Class<? extends BaseEntityUserData>>, Set<GameContactListener>> gameContactListenerMap = new HashMap<>();
-    private List<Contact> pendingBeginContacts = new ArrayList<>();
-    private List<Contact> pendingEndContacts = new ArrayList<>();
 
     public GamePhysicsContactsEntity(BinderEnity parent) {
         super(parent);
@@ -79,27 +35,43 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
 
     @Override
     public void onCreateScene() {
-        physicsWorld.addOnUpdateListener(this);
         physicsWorld.setContactListener(this);
     }
 
     @Override
     public void onDestroy() {
         physicsWorld.setContactListener(null);
-        physicsWorld.removeOnUpdateListener(this);
     }
 
     @Override
-    public void beginContact(Contact contact) {
+    public void beginContact(final Contact contact) {
         if (isContactListenedTo(contact)) {
-            pendingBeginContacts.add(contact);
+            physicsWorld.postRunnable(new Runnable() {
+                @Override
+                public void run() {
+                    @Nullable Set<GameContactListener> listeners = getListenersFromContact(contact);
+                    if (listeners == null) {
+                        return;
+                    }
+                    notifyBeginContact(listeners, contact.m_fixtureA, contact.m_fixtureB);
+                }
+            });
         }
     }
 
     @Override
-    public void endContact(Contact contact) {
+    public void endContact(final Contact contact) {
         if (isContactListenedTo(contact)) {
-            pendingEndContacts.add(contact);
+            physicsWorld.postRunnable(new Runnable() {
+                @Override
+                public void run() {
+                    @Nullable Set<GameContactListener> listeners = getListenersFromContact(contact);
+                    if (listeners == null) {
+                        return;
+                    }
+                    notifyEndContact(listeners, contact.m_fixtureA, contact.m_fixtureB);
+                }
+            });
         }
     }
 

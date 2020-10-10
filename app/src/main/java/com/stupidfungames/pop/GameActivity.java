@@ -16,7 +16,7 @@ import com.stupidfungames.pop.backgroundmusic.BackgroundMusicBaseEntity;
 import com.stupidfungames.pop.ballandchain.BallAndChainManagerBaseEntity;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
-import com.stupidfungames.pop.bubblepopper.BufferedBubblePopperEntity;
+import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity;
 import com.stupidfungames.pop.bubbletimeout.BubblesLifecycleManagerEntity;
 import com.stupidfungames.pop.difficulty.GameDifficultyEntity;
@@ -133,7 +133,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 						.bind(BubbleCleanerBaseEntity.class, new BubbleCleanerBaseEntity(this))
 						.bind(BubbleLossDetectorBaseEntity.class, new BubbleLossDetectorBaseEntity(this))
 						.bind(TouchPopperFactoryEntity.class, new TouchPopperFactoryEntity(this))
-						.bind(BufferedBubblePopperEntity.class, new BufferedBubblePopperEntity(this))
+						.bind(BubblePopperEntity.class, new BubblePopperEntity(this))
 
 						.bind(GameIconsHostTrayEntity.class, new GameIconsHostTrayEntity(this))
 						.bind(BallAndChainManagerBaseEntity.class, new BallAndChainManagerBaseEntity(this))

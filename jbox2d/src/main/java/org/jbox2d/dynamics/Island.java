@@ -23,6 +23,7 @@
  ******************************************************************************/
 package org.jbox2d.dynamics;
 
+import android.util.Log;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.common.MathUtils;
@@ -564,6 +565,10 @@ public class Island {
 
   public void add(Body body) {
     assert (m_bodyCount < m_bodyCapacity);
+    if (m_bodyCount >= m_bodies.length) {
+      Log.d("asdasd", "too many bodies in this island max is " + m_bodies.length + " m_bodyCapacity = " + m_bodyCapacity);
+    }
+    assert (m_bodyCount < m_bodies.length);
     body.m_islandIndex = m_bodyCount;
     m_bodies[m_bodyCount] = body;
     ++m_bodyCount;

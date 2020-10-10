@@ -36,13 +36,6 @@ public class PhysicsWorld implements IUpdateHandler {
 	// Constants
 	// ===========================================================
 
-	public interface OnUpdateListener {
-		/**
-		 * Called after a physics step completes.
-		 */
-		void onUpdateCompleted();
-	}
-
 	static {
 		//System.loadLibrary( "andenginephysicsbox2dextension" );
 	}
@@ -60,8 +53,6 @@ public class PhysicsWorld implements IUpdateHandler {
 
 	protected int mVelocityIterations = VELOCITY_ITERATIONS_DEFAULT;
 	protected int mPositionIterations = POSITION_ITERATIONS_DEFAULT;
-
-	private Set<OnUpdateListener> listeners = new HashSet<>();
 
 	// ===========================================================
 	// Constructors
@@ -127,21 +118,6 @@ public class PhysicsWorld implements IUpdateHandler {
 		this.mRunnableHandler.onUpdate(pSecondsElapsed);
 		this.mWorld.step(pSecondsElapsed, this.mVelocityIterations, this.mPositionIterations);
 		this.mPhysicsConnectorManager.onUpdate(pSecondsElapsed);
-		notifyUpdateCompleted();
-	}
-
-	private void notifyUpdateCompleted() {
-		for (OnUpdateListener listener : listeners) {
-			listener.onUpdateCompleted();
-		}
-	}
-
-	public void addOnUpdateListener(OnUpdateListener listener) {
-		this.listeners.add(listener);
-	}
-
-	public void removeOnUpdateListener(OnUpdateListener listener) {
-		this.listeners.remove(listener);
 	}
 
 	@Override
