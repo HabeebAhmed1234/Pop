@@ -126,7 +126,7 @@ public class MathUtils extends PlatformMathUtils {
     if (Settings.FAST_ABS) {
       return x > 0 ? x : -x;
     } else {
-      return StrictMath.abs(x);
+      return Math.abs(x);
     }
   }
 
@@ -143,7 +143,7 @@ public class MathUtils extends PlatformMathUtils {
     if (Settings.FAST_FLOOR) {
       return fastFloor(x);
     } else {
-      return (int) StrictMath.floor(x);
+      return (int) Math.floor(x);
     }
   }
 
@@ -159,7 +159,7 @@ public class MathUtils extends PlatformMathUtils {
     if (Settings.FAST_CEIL) {
       return fastCeil(x);
     } else {
-      return (int) StrictMath.ceil(x);
+      return (int) Math.ceil(x);
     }
   }
 
@@ -260,7 +260,7 @@ public class MathUtils extends PlatformMathUtils {
     if (Settings.FAST_POW) {
       return fastPow(a, b);
     } else {
-      return (float) StrictMath.pow(a, b);
+      return (float) Math.pow(a, b);
     }
   }
 
@@ -268,7 +268,7 @@ public class MathUtils extends PlatformMathUtils {
     if (Settings.FAST_ATAN2) {
       return fastAtan2(y, x);
     } else {
-      return (float) StrictMath.atan2(y, x);
+      return (float) Math.atan2(y, x);
     }
   }
 

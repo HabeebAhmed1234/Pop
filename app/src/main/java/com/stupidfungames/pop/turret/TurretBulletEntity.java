@@ -1,9 +1,13 @@
 package com.stupidfungames.pop.turret;
 
 import static com.stupidfungames.pop.eventbus.GameEvent.TURRET_BULLET_POPPED_BUBBLE;
-import static com.stupidfungames.pop.utils.GeometryUtils.getAngleOfCenters;
 
+import android.content.Context;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.SettableFuture;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameFixtureDefs;
 import com.stupidfungames.pop.binder.BinderEnity;
@@ -24,6 +28,7 @@ import org.andengine.entity.OnDetachedListener;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.AndengineColor;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
@@ -46,7 +51,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
   private MouseJoint targetingMouseJoint;
 
   private Sprite bulletSprite;
-  @Nullable private Body bulletBody;
+  private SettableFuture<Body> bulletBodyFuture = SettableFuture.create();
 
   private final OnDetachedListener targetBubbleOnDetachedListener = new OnDetachedListener() {
     @Override
@@ -115,26 +120,15 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
     physicsWorld.postRunnable(new Runnable() {
       @Override
       public void run() {
-        bulletBody = PhysicsFactory
+        final Body bulletBody = PhysicsFactory
             .createCircleBody(physicsWorld, bulletSprite, BodyType.DYNAMIC, bulletFixtureDef);
         bulletBody.setGravityScale(0);
 
         targetingMouseJoint = createBulletTargetingMouseJoint(bulletSprite, bulletBody);
         addToScene(bulletSprite, bulletBody);
+        bulletBodyFuture.set(bulletBody);
       }
     });
-  }
-
-  private void applyInitForceToBullet() {
-    if (targetBubble != null) {
-      Sprite turretBody = get(HostTurretCallback.class).getTurretBodySprite();
-      float angle = getAngleOfCenters(turretBody, targetBubble);
-      float xComponentForce = BULLET_MUZZLE_FORCE_MAGNITUDE * (float) Math.cos(angle);
-      float yComponentForce = BULLET_MUZZLE_FORCE_MAGNITUDE * (float) Math.sin(angle);
-      if (bulletBody != null) {
-        bulletBody.applyForceToCenter(Vec2Pool.obtain(xComponentForce, yComponentForce));
-      }
-    }
   }
 
   private MouseJoint createBulletTargetingMouseJoint(final Sprite sprite, final Body body) {
@@ -190,14 +184,23 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
     get(BulletExplosionsBaseEntity.class).explode(
         bulletSprite.getX() + bulletSprite.getWidthScaled() / 2,
         bulletSprite.getY() + bulletSprite.getHeightScaled() / 2);
-    if (bulletBody != null) {
-      removeFromScene(bulletBody);
-    }
+    Futures.addCallback(bulletBodyFuture, new FutureCallback<Body>() {
+      @Override
+      public void onSuccess(@NullableDecl Body result) {
+        if (result != null) {
+          removeFromScene(result);
+        }
+      }
+
+      @Override
+      public void onFailure(Throwable t) {
+      }
+    }, ContextCompat.getMainExecutor(get(Context.class)));
 
     physicsWorld.destroyBody(targetingMouseJoint.getBodyA());
     physicsWorld.destroyBody(targetingMouseJoint.getBodyB());
     physicsWorld.destroyJoint(targetingMouseJoint);
     bulletSprite = null;
-    bulletBody = null;
+    bulletBodyFuture = null;
   }
 }

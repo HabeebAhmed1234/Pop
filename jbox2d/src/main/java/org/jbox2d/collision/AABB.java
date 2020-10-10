@@ -43,6 +43,7 @@ public class AABB {
     lowerBound = new Vec2();
     upperBound = new Vec2();
   }
+
   /**
    * Copies from the given object
    * 
