@@ -21,6 +21,7 @@ import com.stupidfungames.pop.physics.util.Vec2Pool;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.utils.CoordinateConversionUtil;
+import java.util.concurrent.ExecutionException;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.IEntity;
@@ -48,7 +49,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
 
   @Nullable
   private Sprite targetBubble;
-  private MouseJoint targetingMouseJoint;
+  private SettableFuture<MouseJoint> targetingMouseJointFuture = SettableFuture.create();
 
   private Sprite bulletSprite;
   private SettableFuture<Body> bulletBodyFuture = SettableFuture.create();
@@ -70,12 +71,20 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
       true, new ITimerCallback() {
     @Override
     public void onTimePassed(TimerHandler pTimerHandler) {
-      if (targetBubble != null && targetingMouseJoint != null) {
-        targetingMouseJoint.setTarget(
-            CoordinateConversionUtil.sceneToPhysicsWorld(
-                Vec2Pool.obtain(
-                    targetBubble.getX() + targetBubble.getWidthScaled() / 2,
-                    targetBubble.getY() + targetBubble.getHeightScaled() / 2)));
+      if (targetBubble != null && targetingMouseJointFuture != null) {
+        if (targetingMouseJointFuture.isDone()) {
+          try {
+            targetingMouseJointFuture.get().setTarget(
+                CoordinateConversionUtil.sceneToPhysicsWorld(
+                    Vec2Pool.obtain(
+                        targetBubble.getX() + targetBubble.getWidthScaled() / 2,
+                        targetBubble.getY() + targetBubble.getHeightScaled() / 2)));
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          } catch (ExecutionException e) {
+            e.printStackTrace();
+          }
+        }
       }
     }
   });
@@ -124,7 +133,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
             .createCircleBody(physicsWorld, bulletSprite, BodyType.DYNAMIC, bulletFixtureDef);
         bulletBody.setGravityScale(0);
 
-        targetingMouseJoint = createBulletTargetingMouseJoint(bulletSprite, bulletBody);
+        targetingMouseJointFuture.set(createBulletTargetingMouseJoint(bulletSprite, bulletBody));
         addToScene(bulletSprite, bulletBody);
         bulletBodyFuture.set(bulletBody);
       }
@@ -186,9 +195,10 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
         bulletSprite.getY() + bulletSprite.getHeightScaled() / 2);
     Futures.addCallback(bulletBodyFuture, new FutureCallback<Body>() {
       @Override
-      public void onSuccess(@NullableDecl Body result) {
-        if (result != null) {
-          removeFromScene(result);
+      public void onSuccess(@NullableDecl Body bulletBody) {
+        if (bulletBody != null) {
+          removeFromScene(bulletBody);
+          bulletBodyFuture = null;
         }
       }
 
@@ -197,10 +207,21 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
       }
     }, ContextCompat.getMainExecutor(get(Context.class)));
 
-    physicsWorld.destroyBody(targetingMouseJoint.getBodyA());
-    physicsWorld.destroyBody(targetingMouseJoint.getBodyB());
-    physicsWorld.destroyJoint(targetingMouseJoint);
+    Futures.addCallback(targetingMouseJointFuture, new FutureCallback<MouseJoint>() {
+      @Override
+      public void onSuccess(@NullableDecl MouseJoint targetingMouseJoint) {
+        if (targetingMouseJoint != null) {
+          physicsWorld.destroyBody(targetingMouseJoint.getBodyA());
+          physicsWorld.destroyJoint(targetingMouseJoint);
+        }
+        targetingMouseJointFuture = null;
+      }
+
+      @Override
+      public void onFailure(Throwable t) {
+
+      }
+    }, ContextCompat.getMainExecutor(get(Context.class)));
     bulletSprite = null;
-    bulletBodyFuture = null;
   }
 }

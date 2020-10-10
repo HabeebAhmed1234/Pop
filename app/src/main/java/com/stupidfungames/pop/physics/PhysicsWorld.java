@@ -156,7 +156,7 @@ public class PhysicsWorld implements IUpdateHandler {
 	}
 
 	public void dispose() {
-		// TODO: wat
+		// TODO: wtf is this
 		//this.mWorld.dispose();
 	}
 
