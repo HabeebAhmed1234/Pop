@@ -30,7 +30,6 @@ import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager.LoginListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
@@ -41,12 +40,6 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 public class GooglePlayServicesBillingManager implements PurchasesUpdatedListener {
 
   private static final String TAG = "GPSBillingManager";
-  private static final List<String> productIdsList = new ArrayList<String>(
-      Arrays.asList(
-          "android.test.purchased",
-          "pop_coins_500",
-          "pop_coins_100",
-          "pop_coins_1000"));
 
   private HostActivity hostActivity;
   private GooglePlayServicesAuthManager authManager;
@@ -242,7 +235,8 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
   private ListenableFuture<List<SkuDetails>> getProductsInternal() {
     final SettableFuture<List<SkuDetails>> productsSettableFuture = SettableFuture.create();
     billingClient.querySkuDetailsAsync(
-        SkuDetailsParams.newBuilder().setSkusList(productIdsList).setType(SkuType.INAPP).build(),
+        SkuDetailsParams.newBuilder().setSkusList(ProductSKUManager.ProductSKU.toStringList())
+            .setType(SkuType.INAPP).build(),
         new SkuDetailsResponseListener() {
           @Override
           public void onSkuDetailsResponse(BillingResult result, List<SkuDetails> skuDetailsList) {

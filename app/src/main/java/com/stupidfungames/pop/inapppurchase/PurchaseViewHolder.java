@@ -3,9 +3,9 @@ package com.stupidfungames.pop.inapppurchase;
 import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.android.billingclient.api.Purchase;
 import com.stupidfungames.pop.R;
-import com.stupidfungames.pop.inapppurchase.ProductsInfoMap.GameProduct;
 import com.stupidfungames.pop.list.BindableViewHolder;
 
 public class PurchaseViewHolder extends BindableViewHolder<Purchase> {
@@ -21,8 +21,8 @@ public class PurchaseViewHolder extends BindableViewHolder<Purchase> {
 
   @Override
   public void bind(Purchase model) {
-    GameProduct product =  ProductsInfoMap.skuToProductsMap.get(model.getSku());
-    name.setText(product.name);
-    description.setText(product.description);
+    @Nullable GameProduct product =  ProductSKUManager.get().skuToProductsMap.get(model.getSku());
+    name.setText(product != null ? product.name : "Product Name Not Found");
+    description.setText(product != null ? product.description : "Product Description Not Found");
   }
 }
