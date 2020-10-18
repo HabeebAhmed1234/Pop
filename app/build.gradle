@@ -9,14 +9,20 @@ android {
         applicationId "com.stupidfungames.pop"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 2
+        versionCode 3
         versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
     signingConfigs {
         debug {
-            storeFile file('pop_keystore')
+            storeFile file('pop_keystore_main')
+            keyAlias 'key0'
+            keyPassword 'Ghostly_1234'
+            storePassword 'Ghostly_1234'
+        }
+        release {
+            storeFile file('pop_keystore_main')
             keyAlias 'key0'
             keyPassword 'Ghostly_1234'
             storePassword 'Ghostly_1234'

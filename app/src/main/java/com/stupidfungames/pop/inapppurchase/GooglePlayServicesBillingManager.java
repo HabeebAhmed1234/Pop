@@ -43,7 +43,10 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
   private static final String TAG = "GPSBillingManager";
   private static final List<String> productIdsList = new ArrayList<String>(
       Arrays.asList(
-          "android.test.purchased"));
+          "android.test.purchased",
+          "pop_coins_500",
+          "pop_coins_100",
+          "pop_coins_1000"));
 
   private HostActivity hostActivity;
   private GooglePlayServicesAuthManager authManager;

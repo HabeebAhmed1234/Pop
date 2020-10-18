@@ -18,6 +18,7 @@ import static android.view.MotionEvent.ACTION_UP;
 public class GameMenuButton extends TextView {
 
     private static final float DEFAULT_GLOW_RADIUS = 80;
+
     private static final int DEFAULT_COLOR = R.color.menu_button_color;
     private static final int DEFAULT_PRESSED_GLOW_COLOR =  R.color.menu_button_pressed_color;
 
