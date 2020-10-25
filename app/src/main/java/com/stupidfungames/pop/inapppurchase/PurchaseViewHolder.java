@@ -23,7 +23,9 @@ public class PurchaseViewHolder extends BindableViewHolder<Purchase> {
   public void bind(Purchase model) {
     @Nullable GameProduct product = ProductSKUManager.get().skuToProductsMap
         .get(model.getSku());
-    name.setText(product != null ? product.name : "Product Name Not Found");
-    description.setText(product != null ? product.description : "Product Description Not Found");
+    name.setText(
+        product != null ? itemView.getContext().getString(product.name) : "Product Name Not Found");
+    description.setText(
+        product != null ? itemView.getContext().getString(product.description) : "Product Description Not Found");
   }
 }

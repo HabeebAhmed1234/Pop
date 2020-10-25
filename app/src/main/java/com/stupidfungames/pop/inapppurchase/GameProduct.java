@@ -1,14 +1,16 @@
 package com.stupidfungames.pop.inapppurchase;
 
+import androidx.annotation.StringRes;
+
 public class GameProduct {
 
-  public final String name;
-  public final String description;
+  public final @StringRes int name;
+  public final @StringRes int description;
 
   public GameProduct(
-      String name,
-      String description) {
-    this.name = name;
+      @StringRes int title,
+      @StringRes int description) {
+    this.name = title;
     this.description = description;
   }
 }

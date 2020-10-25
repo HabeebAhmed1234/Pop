@@ -1,40 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_id">120569614320</string>
-    <string name="app_name">Pop</string>
-    <string name="new_game_text">New Game</string>
-    <string name="load_game_text">Resume Game</string>
-    <string name="game_over_text">Game Over</string>
-    <string name="options_text">Options</string>
-    <string name="purchases">My Purchases</string>
-    <string name="store">Store</string>
-    <string name="quit_text">Quit</string>
-    <string name="your_score_title">Your score:</string>
-    <string name="game_paused_text">Paused</string>
-    <string name="game_update_text">The save you are trying to load was saved on a newer version of the game. Please update your game.</string>
-    <string name="resume_btn_text">Resume</string>
-    <string name="quit_btn_text">Quit</string>
-    <string name="dismiss">Dismiss</string>
-    <string name="update_btn_text">Update</string>
-    <string name="signin_other_error">There was an error signing in. Try again another time.</string>
-    <string name="sign_out">| Sign Out</string>
-    <string name="no_save_game_available">There is no save game available. Start a new game</string>
-    <string name="save_game_flow_title">Would you like to sign in to save your progress? Doing so will override your current game save!</string>
-    <string name="sign_in">Sign In</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="no_permanent">No, don\'t show this again.</string>
-    <string name="ok">Ok</string>
-    <string name="generic_error">Something went wrong. Please try again later</string>
-    <string name="login_to_save">You must login to save your game</string>
-    <string name="must_be_logged_in">You must be logged in to access this feature.</string>
-    <string name="game_saved">Game saved.</string>
-    <string name="new_game_confirm_title">Are you sure you want to start a new game? This will overwrite your current save game.</string>
-    <string name="error_fetching_items">Something went wrong! Try again later.</string>
-    <string name="no_items_result">No items are available at this time.</string>
-    <string name="no_purchases_result">No products have been purchased.</string>
-    <string name="purchase_succesful">Your purchase was successful!</string>
-    <string name="purchase_canceled">Your purchase was cancelled</string>
-    <string name="store_title">Store</string>
-    <string name="my_purchases">My Purchases</string>
+  <string name="app_id">120569614320</string>
+  <string name="app_name">Pop</string>
+  <string name="new_game_text">New Game</string>
+  <string name="load_game_text">Resume Game</string>
+  <string name="game_over_text">Game Over</string>
+  <string name="options_text">Options</string>
+  <string name="purchases">My Purchases</string>
+  <string name="store">Store</string>
+  <string name="quit_text">Quit</string>
+  <string name="your_score_title">Your score:</string>
+  <string name="game_paused_text">Paused</string>
+  <string name="game_update_text">The save you are trying to load was saved on a newer version of the game. Please update your game.</string>
+  <string name="resume_btn_text">Resume</string>
+  <string name="quit_btn_text">Quit</string>
+  <string name="dismiss">Dismiss</string>
+  <string name="update_btn_text">Update</string>
+  <string name="signin_other_error">There was an error signing in. Try again another time.</string>
+  <string name="sign_out">| Sign Out</string>
+  <string name="no_save_game_available">There is no save game available. Start a new game</string>
+  <string name="save_game_flow_title">Would you like to sign in to save your progress? Doing so will override your current game save!</string>
+  <string name="sign_in">Sign In</string>
+  <string name="yes">Yes</string>
+  <string name="no">No</string>
+  <string name="no_permanent">No, don\'t show this again.</string>
+  <string name="ok">Ok</string>
+  <string name="generic_error">Something went wrong. Please try again later</string>
+  <string name="login_to_save">You must login to save your game</string>
+  <string name="must_be_logged_in">You must be logged in to access this feature.</string>
+  <string name="game_saved">Game saved.</string>
+  <string name="new_game_confirm_title">Are you sure you want to start a new game? This will overwrite your current save game.</string>
+  <string name="error_fetching_items">Something went wrong! Try again later.</string>
+  <string name="no_items_result">No items are available at this time.</string>
+  <string name="no_purchases_result">No products have been purchased.</string>
+  <string name="purchase_succesful">Your purchase was successful!</string>
+  <string name="purchase_canceled">Your purchase was cancelled</string>
+  <string name="store_title">Store</string>
+  <string name="my_purchases">My Purchases</string>
+
+  <!-- product titles -->
+  <string name="title_game_continue_token">Continue Game Token</string>
+  <string name="title_no_ads">Add Free Experience</string>
+
+  <!-- product descriptions -->
+  <string name="description_game_continue_token">Allows you to continue your game even after its game over. Can be used once.</string>
+  <string name="description_no_ads">Removes all ads from your gaming experience!</string>
+
+  <!-- background product titles -->
+  <string name="title_bg_1">Neon Bus</string>
+  <string name="title_bg_2">Akihabara</string>
+  <string name="title_bg_3">Tokyo Streets</string>
+  <string name="title_bg_4">Victoria Peak</string>
+  <string name="title_bg_5">Tokyo Sky</string>
+  <string name="title_bg_6">Tokyo Sky Lights</string>
+  <string name="title_bg_7">Glass Building</string>
+  <string name="title_bg_8">Gradient</string>
+  <string name="title_bg_9">Smoky Temple</string>
+  <string name="title_bg_10">Packed Streets</string>
+  <string name="title_bg_11">Monster Buildings</string>
+  <string name="title_bg_12">Foggy City</string>
+  <string name="title_bg_13">Red Lamp</string>
+
+  <!-- background product descriptions -->
+  <string name="description_bg_1">Cool background of a bus in Hong Kong</string>
+  <string name="description_bg_2">Background of Akihabara, Tokyo</string>
+  <string name="description_bg_3">Background of the neon streets of Tokyo</string>
+  <string name="description_bg_4">Background of a view from Victoria Peak Hong Kong</string>
+  <string name="description_bg_5">Background of a view of Tokyo</string>
+  <string name="description_bg_6">Background of a view of the Tokyo skyline</string>
+  <string name="description_bg_7">Background of a glass building in Hong Kong</string>
+  <string name="description_bg_8">Background of a gradient from red to black</string>
+  <string name="description_bg_9">Background of a smoky temple </string>
+  <string name="description_bg_10">Background of the packed streets of Tokyo</string>
+  <string name="description_bg_11">Background of the monster buildings of Hong Kong</string>
+  <string name="description_bg_12">Background of the foggy skyline of Tokyo</string>
+  <string name="description_bg_13">Background of a huge red lamp</string>
 </resources>

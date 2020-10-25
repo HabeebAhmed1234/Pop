@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.DiffUtil.ItemCallback;
 import com.android.billingclient.api.BillingClient.BillingResponseCode;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.Purchase.PurchasesResult;
+import com.bumptech.glide.Glide;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -30,7 +32,8 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<Purchase>
     return new Intent(context, EquipActivity.class);
   }
 
-  GooglePlayServicesBillingManager billingManager;
+  private GooglePlayServicesBillingManager billingManager;
+  private ImageView background;
 
   private BindableViewHolderFactory bindableViewHolderFactory = new BindableViewHolderFactory() {
     @Override
@@ -78,6 +81,7 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<Purchase>
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     billingManager = new GooglePlayServicesBillingManager(this);
     super.onCreate(savedInstanceState);
+    background = findViewById(R.id.background);
   }
 
   @Override
@@ -88,6 +92,19 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<Purchase>
       drawableResId = PurchaseSkuToBackgroundResId.get().map.get(purchaseSku);
     }
     return drawableResId;
+  }
+
+  @Override
+  protected void onClick(Purchase purchase) {
+    super.onClick(purchase);
+    String purchaseSku = purchase.getSku();
+    if (PurchaseSkuToBackgroundResId.get().map.containsKey(purchaseSku)) {
+      // Set this as the current background of the activity
+      Glide.with(this).load(PurchaseSkuToBackgroundResId.get().map.get(purchaseSku))
+          .into(background);
+    } else {
+      Glide.with(this).load(R.drawable.main_menu_background).into(background);
+    }
   }
 
   @Override
