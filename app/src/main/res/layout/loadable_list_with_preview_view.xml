@@ -8,9 +8,8 @@
   <FrameLayout
     android:id="@+id/preview_image_frame"
     android:layout_width="wrap_content"
-    android:layout_height="0dp"
+    android:layout_height="wrap_content"
     android:padding="16dp"
-    android:layout_weight="1"
     android:background="@drawable/rounded_border"
     android:layout_gravity="center"
     android:visibility="gone">
@@ -18,12 +17,13 @@
     <ImageView
       android:id="@+id/preview_image"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content" />
+      android:layout_height="140dp"
+      android:adjustViewBounds="true"/>
   </FrameLayout>
 
   <include
     layout="@layout/loadable_list_view"
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    android:layout_weight="3" />
+    android:layout_weight="1"/>
 </LinearLayout>
