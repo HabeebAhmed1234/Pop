@@ -18,8 +18,7 @@ public class ProductSKUManager {
     SKU_BG_3("bg_3"),
     SKU_BG_4("bg_4"),
     SKU_BG_5("bg_5"),
-    SKU_BG_6("bg_6"),
-    SKU_BG_7("bg_7"),;
+    SKU_BG_6("bg_6");
 
     public String skuString;
 

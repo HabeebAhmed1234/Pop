@@ -4,11 +4,10 @@ import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.android.billingclient.api.Purchase;
 import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.list.BindableViewHolder;
 
-public class PurchaseViewHolder extends BindableViewHolder<Purchase> {
+public class PurchaseViewHolder extends BindableViewHolder<PurchasePreviewableModel> {
 
   private TextView name;
   private TextView description;
@@ -20,8 +19,9 @@ public class PurchaseViewHolder extends BindableViewHolder<Purchase> {
   }
 
   @Override
-  public void bind(Purchase model) {
-    @Nullable GameProduct product =  ProductSKUManager.get().skuToProductsMap.get(model.getSku());
+  public void bind(PurchasePreviewableModel model) {
+    @Nullable GameProduct product = ProductSKUManager.get().skuToProductsMap
+        .get(model.purchase.getSku());
     name.setText(product != null ? product.name : "Product Name Not Found");
     description.setText(product != null ? product.description : "Product Description Not Found");
   }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ViewGroup;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil.ItemCallback;
@@ -19,10 +20,12 @@ import com.stupidfungames.pop.list.BindableViewHolder;
 import com.stupidfungames.pop.list.BindableViewHolderFactory;
 import com.stupidfungames.pop.list.LoadableListLoadingCoordinator.LoaderCallback;
 import com.stupidfungames.pop.list.LoadableListWithPreviewBaseActivity;
+import com.stupidfungames.pop.purchasedbackground.PurchaseSkuToBackgroundResId;
+import java.util.ArrayList;
 import java.util.List;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-public class EquipActivity extends LoadableListWithPreviewBaseActivity<Purchase> {
+public class EquipActivity extends LoadableListWithPreviewBaseActivity<PurchasePreviewableModel> {
 
   public static Intent getIntent(Context context) {
     return new Intent(context, EquipActivity.class);
@@ -42,16 +45,16 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<Purchase>
     }
   };
 
-  private LoaderCallback<List<Purchase>> loaderCallback = new LoaderCallback<List<Purchase>>() {
+  private LoaderCallback<List<PurchasePreviewableModel>> loaderCallback = new LoaderCallback<List<PurchasePreviewableModel>>() {
     @Override
-    public ListenableFuture<List<Purchase>> loadData() {
-      final SettableFuture<List<Purchase>> futureResult = SettableFuture.create();
+    public ListenableFuture<List<PurchasePreviewableModel>> loadData() {
+      final SettableFuture<List<PurchasePreviewableModel>> futureResult = SettableFuture.create();
       Futures.addCallback(billingManager.queryPurchases(), new FutureCallback<PurchasesResult>() {
         @Override
         public void onSuccess(@NullableDecl PurchasesResult result) {
           if (result != null
               && result.getBillingResult().getResponseCode() == BillingResponseCode.OK) {
-            futureResult.set(result.getPurchasesList());
+            futureResult.set(parsePurchases(result.getPurchasesList()));
           } else {
             futureResult
                 .setException(new IllegalStateException("Error when loading purchases list"));
@@ -67,7 +70,7 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<Purchase>
     }
 
     @Override
-    public boolean isEmptyResult(List<Purchase> result) {
+    public boolean isEmptyResult(List<PurchasePreviewableModel> result) {
       return result.isEmpty();
     }
   };
@@ -94,12 +97,20 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<Purchase>
   }
 
   @Override
-  protected LoaderCallback<List<Purchase>> getLoaderCallback() {
+  protected LoaderCallback<List<PurchasePreviewableModel>> getLoaderCallback() {
     return loaderCallback;
   }
 
-  @Override
-  protected void onClick(Purchase item) {
-
+  private static List<PurchasePreviewableModel> parsePurchases(List<Purchase> purchases) {
+    final List<PurchasePreviewableModel> parsedPurchases = new ArrayList<>();
+    for (Purchase purchase : purchases) {
+      @DrawableRes int drawableResId = 0;
+      String purchaseSku = purchase.getSku();
+      if (PurchaseSkuToBackgroundResId.get().map.containsKey(purchaseSku)) {
+        drawableResId = PurchaseSkuToBackgroundResId.get().map.get(purchaseSku);
+      }
+      parsedPurchases.add(new PurchasePreviewableModel(drawableResId, purchase));
+    }
+    return parsedPurchases;
   }
 }
