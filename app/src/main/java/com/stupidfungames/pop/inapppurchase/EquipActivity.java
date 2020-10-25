@@ -17,12 +17,12 @@ import com.google.common.util.concurrent.SettableFuture;
 import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.list.BindableViewHolder;
 import com.stupidfungames.pop.list.BindableViewHolderFactory;
-import com.stupidfungames.pop.list.LoadableListBaseActivity;
 import com.stupidfungames.pop.list.LoadableListLoadingCoordinator.LoaderCallback;
+import com.stupidfungames.pop.list.LoadableListWithPreviewBaseActivity;
 import java.util.List;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-public class EquipActivity extends LoadableListBaseActivity<Purchase> {
+public class EquipActivity extends LoadableListWithPreviewBaseActivity<Purchase> {
 
   public static Intent getIntent(Context context) {
     return new Intent(context, EquipActivity.class);
@@ -53,7 +53,8 @@ public class EquipActivity extends LoadableListBaseActivity<Purchase> {
               && result.getBillingResult().getResponseCode() == BillingResponseCode.OK) {
             futureResult.set(result.getPurchasesList());
           } else {
-            futureResult.setException(new IllegalStateException("Error when loading purchases list"));
+            futureResult
+                .setException(new IllegalStateException("Error when loading purchases list"));
           }
         }
 
@@ -95,5 +96,10 @@ public class EquipActivity extends LoadableListBaseActivity<Purchase> {
   @Override
   protected LoaderCallback<List<Purchase>> getLoaderCallback() {
     return loaderCallback;
+  }
+
+  @Override
+  protected void onClick(Purchase item) {
+
   }
 }

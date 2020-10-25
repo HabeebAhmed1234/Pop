@@ -24,10 +24,10 @@ public class LoadableListViewCoordinator<T> implements ViewCoordinator<List<T>> 
   private RecyclerView recyclerView;
   private ListAdapter adapter;
 
-  public LoadableListViewCoordinator(ListAdapter<T, ?> adapter, ViewGroup viewGroup) {
+  public LoadableListViewCoordinator(ListAdapter<T, ?> adapter, RecyclerView recyclerView, ViewGroup viewGroup) {
     this.context = viewGroup.getContext();
     this.adapter = adapter;
-    recyclerView = viewGroup.findViewById(R.id.recyclerview);
+    this.recyclerView = recyclerView;
     loadingSpinner = viewGroup.findViewById(R.id.loading_spinner);
     errorText = viewGroup.findViewById(R.id.error_text);
 

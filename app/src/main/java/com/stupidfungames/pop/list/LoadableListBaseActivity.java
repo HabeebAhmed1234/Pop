@@ -2,11 +2,14 @@ package com.stupidfungames.pop.list;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DiffUtil.ItemCallback;
+import androidx.recyclerview.widget.RecyclerView;
 import com.android.billingclient.api.SkuDetails;
 import com.stupidfungames.pop.HostActivity;
 import com.stupidfungames.pop.R;
@@ -21,19 +24,32 @@ import java.util.List;
 public abstract class LoadableListBaseActivity<T> extends AppCompatActivity implements
     HostActivity {
 
+  private final OnClickListener onClickListener = new OnClickListener() {
+    @Override
+    public void onClick(View v) {
+      LoadableListBaseActivity.this
+          .onClick((T) loadableListAdapter.getItemAtPosition(recyclerView.getChildLayoutPosition(v)));
+    }
+  };
+
   private GooglePlayServicesAuthManager authManager;
 
+  private RecyclerView recyclerView;
   private LoadableListAdapter loadableListAdapter;
   private LoadableListViewCoordinator<SkuDetails> loadableListViewCoordinator;
   private LoadableListLoadingCoordinator<List<SkuDetails>> loadingCoordinator;
+
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(getLayoutId());
-
-    loadableListAdapter = new LoadableListAdapter(getDiffutilCallback(), getViewHolderFactory());
-    loadableListViewCoordinator = new LoadableListViewCoordinator(loadableListAdapter,
+    recyclerView = findViewById(R.id.recyclerview);
+    loadableListAdapter = new LoadableListAdapter(getDiffutilCallback(),
+        getViewHolderFactory(), onClickListener);
+    loadableListViewCoordinator = new LoadableListViewCoordinator(
+        loadableListAdapter,
+        recyclerView,
         (ViewGroup) findViewById(R.id.loadable_list_view));
     loadingCoordinator = new LoadableListLoadingCoordinator(getLoaderCallback(),
         loadableListViewCoordinator);
@@ -49,6 +65,8 @@ public abstract class LoadableListBaseActivity<T> extends AppCompatActivity impl
   protected abstract ItemCallback getDiffutilCallback();
 
   protected abstract LoaderCallback<List<T>> getLoaderCallback();
+
+  protected abstract void onClick(T item);
 
   @Override
   public Context getContext() {

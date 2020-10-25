@@ -47,7 +47,7 @@ public class StoreActivity extends LoadableListBaseActivity<SkuDetails> {
 
     @Override
     public BindableViewHolder create(ViewGroup parentView) {
-      return new ProductViewHolder(billingManager, StoreActivity.this, parentView);
+      return new ProductViewHolder(parentView);
     }
   };
 
@@ -75,5 +75,10 @@ public class StoreActivity extends LoadableListBaseActivity<SkuDetails> {
   @Override
   protected LoaderCallback<List<SkuDetails>> getLoaderCallback() {
     return loaderCallback;
+  }
+
+  @Override
+  protected void onClick(SkuDetails item) {
+    billingManager.purchase(this, item);
   }
 }

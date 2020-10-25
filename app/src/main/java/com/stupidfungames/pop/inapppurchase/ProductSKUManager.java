@@ -14,7 +14,12 @@ public class ProductSKUManager {
     SKU_NO_ADS("no_ads"),
     SKU_GAME_CONTINUE("game_continue"),
     SKU_BG_1("bg_1"),
-    SKU_BG_2("bg_2");
+    SKU_BG_2("bg_2"),
+    SKU_BG_3("bg_3"),
+    SKU_BG_4("bg_4"),
+    SKU_BG_5("bg_5"),
+    SKU_BG_6("bg_6"),
+    SKU_BG_7("bg_7"),;
 
     public String skuString;
 
