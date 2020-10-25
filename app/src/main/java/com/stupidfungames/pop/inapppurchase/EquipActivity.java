@@ -21,11 +21,10 @@ import com.stupidfungames.pop.list.BindableViewHolderFactory;
 import com.stupidfungames.pop.list.LoadableListLoadingCoordinator.LoaderCallback;
 import com.stupidfungames.pop.list.LoadableListWithPreviewBaseActivity;
 import com.stupidfungames.pop.purchasedbackground.PurchaseSkuToBackgroundResId;
-import java.util.ArrayList;
 import java.util.List;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-public class EquipActivity extends LoadableListWithPreviewBaseActivity<PurchasePreviewableModel> {
+public class EquipActivity extends LoadableListWithPreviewBaseActivity<Purchase> {
 
   public static Intent getIntent(Context context) {
     return new Intent(context, EquipActivity.class);
@@ -45,16 +44,16 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<PurchaseP
     }
   };
 
-  private LoaderCallback<List<PurchasePreviewableModel>> loaderCallback = new LoaderCallback<List<PurchasePreviewableModel>>() {
+  private LoaderCallback<List<Purchase>> loaderCallback = new LoaderCallback<List<Purchase>>() {
     @Override
-    public ListenableFuture<List<PurchasePreviewableModel>> loadData() {
-      final SettableFuture<List<PurchasePreviewableModel>> futureResult = SettableFuture.create();
+    public ListenableFuture<List<Purchase>> loadData() {
+      final SettableFuture<List<Purchase>> futureResult = SettableFuture.create();
       Futures.addCallback(billingManager.queryPurchases(), new FutureCallback<PurchasesResult>() {
         @Override
         public void onSuccess(@NullableDecl PurchasesResult result) {
           if (result != null
               && result.getBillingResult().getResponseCode() == BillingResponseCode.OK) {
-            futureResult.set(parsePurchases(result.getPurchasesList()));
+            futureResult.set(result.getPurchasesList());
           } else {
             futureResult
                 .setException(new IllegalStateException("Error when loading purchases list"));
@@ -70,7 +69,7 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<PurchaseP
     }
 
     @Override
-    public boolean isEmptyResult(List<PurchasePreviewableModel> result) {
+    public boolean isEmptyResult(List<Purchase> result) {
       return result.isEmpty();
     }
   };
@@ -79,6 +78,16 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<PurchaseP
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     billingManager = new GooglePlayServicesBillingManager(this);
     super.onCreate(savedInstanceState);
+  }
+
+  @Override
+  protected int getPreviewResId(Purchase purchase) {
+    @DrawableRes int drawableResId = 0;
+    String purchaseSku = purchase.getSku();
+    if (PurchaseSkuToBackgroundResId.get().map.containsKey(purchaseSku)) {
+      drawableResId = PurchaseSkuToBackgroundResId.get().map.get(purchaseSku);
+    }
+    return drawableResId;
   }
 
   @Override
@@ -97,20 +106,7 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<PurchaseP
   }
 
   @Override
-  protected LoaderCallback<List<PurchasePreviewableModel>> getLoaderCallback() {
+  protected LoaderCallback<List<Purchase>> getLoaderCallback() {
     return loaderCallback;
-  }
-
-  private static List<PurchasePreviewableModel> parsePurchases(List<Purchase> purchases) {
-    final List<PurchasePreviewableModel> parsedPurchases = new ArrayList<>();
-    for (Purchase purchase : purchases) {
-      @DrawableRes int drawableResId = 0;
-      String purchaseSku = purchase.getSku();
-      if (PurchaseSkuToBackgroundResId.get().map.containsKey(purchaseSku)) {
-        drawableResId = PurchaseSkuToBackgroundResId.get().map.get(purchaseSku);
-      }
-      parsedPurchases.add(new PurchasePreviewableModel(drawableResId, purchase));
-    }
-    return parsedPurchases;
   }
 }

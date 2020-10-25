@@ -10,16 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.core.util.Preconditions;
 import com.bumptech.glide.Glide;
 import com.stupidfungames.pop.R;
-import com.stupidfungames.pop.list.LoadableListWithPreviewBaseActivity.PreviewableModel;
 
-public abstract class LoadableListWithPreviewBaseActivity<T extends PreviewableModel> extends
+public abstract class LoadableListWithPreviewBaseActivity<T> extends
     LoadableListBaseActivity<T> {
-
-  public interface PreviewableModel {
-
-    @DrawableRes
-    int getPreviewResId();
-  }
 
   private ImageView previewImageView;
 
@@ -32,13 +25,16 @@ public abstract class LoadableListWithPreviewBaseActivity<T extends PreviewableM
 
   @Override
   protected void onClick(T item) {
-    int resId = item.getPreviewResId();
+    int resId = getPreviewResId(item);
     if (resId > 0) {
       showPreview(resId);
     } else {
       hidePreview();
     }
   }
+
+  protected abstract @DrawableRes
+  int getPreviewResId(T item);
 
   private void showPreview(@DrawableRes int previewDrawableId) {
     previewImageView.setVisibility(VISIBLE);
