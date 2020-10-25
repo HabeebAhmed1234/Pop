@@ -4,12 +4,22 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
-  <ImageView
-    android:id="@+id/background"
+  <FrameLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scaleType="centerCrop"
-    android:src="@drawable/main_menu_background" />
+    android:layout_height="match_parent">
+
+    <ImageView
+      android:id="@+id/background"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:scaleType="centerCrop"
+      android:src="@drawable/main_menu_background" />
+
+    <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="#95000000" />
+  </FrameLayout>
 
   <LinearLayout
     android:layout_width="match_parent"

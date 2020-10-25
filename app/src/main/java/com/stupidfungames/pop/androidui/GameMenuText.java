@@ -48,7 +48,6 @@ public class GameMenuText extends TextView {
 
     private void initShadow(Context context, @Nullable AttributeSet attrs) {
         if (attrs == null) {
-            setShadowLayer(DEFAULT_GLOW_RADIUS, 0,0, DEFAULT_COLOR);
             return;
         }
         TypedArray a = context.getTheme().obtainStyledAttributes(

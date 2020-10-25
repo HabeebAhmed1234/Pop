@@ -45,6 +45,7 @@ public abstract class LoadableListBaseActivity<T> extends AppCompatActivity impl
     super.onCreate(savedInstanceState);
     setContentView(getLayoutId());
     recyclerView = findViewById(R.id.recyclerview);
+    recyclerView.setHasFixedSize(true);
     loadableListAdapter = new LoadableListAdapter(getDiffutilCallback(),
         getViewHolderFactory(), onClickListener);
     loadableListViewCoordinator = new LoadableListViewCoordinator(

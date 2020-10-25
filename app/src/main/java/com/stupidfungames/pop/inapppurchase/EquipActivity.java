@@ -38,7 +38,7 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<Purchase>
   private BindableViewHolderFactory bindableViewHolderFactory = new BindableViewHolderFactory() {
     @Override
     public int getLayoutId() {
-      return R.layout.purchase_list_item;
+      return R.layout.product_list_item;
     }
 
     @Override
