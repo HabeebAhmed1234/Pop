@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ViewGroup;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil.ItemCallback;
 import com.android.billingclient.api.SkuDetails;
@@ -11,15 +12,16 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.list.BindableViewHolder;
 import com.stupidfungames.pop.list.BindableViewHolderFactory;
-import com.stupidfungames.pop.list.LoadableListBaseActivity;
 import com.stupidfungames.pop.list.LoadableListLoadingCoordinator.LoaderCallback;
+import com.stupidfungames.pop.list.LoadableListWithPreviewBaseActivity;
+import com.stupidfungames.pop.purchasedbackground.PurchaseSkuToBackgroundResId;
 import java.util.List;
 
 /**
  * This activity displays a list of all products available in the app. If a product is purchased it
  * saves that product item to the "economy" save game in the save game manager.
  */
-public class StoreActivity extends LoadableListBaseActivity<SkuDetails> {
+public class StoreActivity extends LoadableListWithPreviewBaseActivity<SkuDetails> {
 
   public static Intent getIntent(Context context) {
     return new Intent(context, StoreActivity.class);
@@ -42,12 +44,12 @@ public class StoreActivity extends LoadableListBaseActivity<SkuDetails> {
   private BindableViewHolderFactory bindableViewHolderFactory = new BindableViewHolderFactory() {
     @Override
     public int getLayoutId() {
-      return R.layout.product_list_item;
+      return R.layout.store_list_item;
     }
 
     @Override
     public BindableViewHolder create(ViewGroup parentView) {
-      return new ProductViewHolder(parentView);
+      return new StoreProductViewHolder(billingManager, StoreActivity.this, parentView);
     }
   };
 
@@ -78,7 +80,12 @@ public class StoreActivity extends LoadableListBaseActivity<SkuDetails> {
   }
 
   @Override
-  protected void onClick(SkuDetails item) {
-    billingManager.purchase(this, item);
+  protected int getPreviewResId(SkuDetails item) {
+    @DrawableRes int drawableResId = 0;
+    String purchaseSku = item.getSku();
+    if (PurchaseSkuToBackgroundResId.get().map.containsKey(purchaseSku)) {
+      drawableResId = PurchaseSkuToBackgroundResId.get().map.get(purchaseSku);
+    }
+    return drawableResId;
   }
 }

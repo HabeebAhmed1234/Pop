@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/root_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+  android:id="@+id/root_view"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
 
   <ImageView
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:scaleType="centerCrop"
-      android:src="@drawable/main_menu_background" />
+    android:id="@+id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scaleType="centerCrop"
+    android:src="@drawable/main_menu_background" />
 
   <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:paddingTop="24dp"
-      android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="24dp">
 
     <com.stupidfungames.pop.androidui.GameMenuText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/between_btn_padding"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/store_title"
-        android:textSize="@dimen/main_menu_btn_text_size" />
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginBottom="@dimen/between_btn_padding"
+      android:text="@string/store_title"
+      android:textSize="@dimen/main_menu_btn_text_size" />
 
-    <include layout="@layout/loadable_list_view" />
+    <include layout="@layout/loadable_list_with_preview_view" />
   </LinearLayout>
 </FrameLayout>

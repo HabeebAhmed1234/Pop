@@ -37,6 +37,8 @@
   <string name="purchase_canceled">Your purchase was cancelled</string>
   <string name="store_title">Store</string>
   <string name="my_purchases">My Purchases</string>
+  <string name="buy">Buy</string>
+  <string name="equip">Equip</string>
 
   <!-- product titles -->
   <string name="title_game_continue_token">Continue Game Token</string>

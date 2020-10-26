@@ -28,4 +28,5 @@
     <dimen name="product_description_size">12sp</dimen>
     <dimen name="product_title_spacing">4dp</dimen>
     <dimen name="product_image_right_margin">4dp</dimen>
+    <dimen name="product_image_size">48dp</dimen>
 </resources>
