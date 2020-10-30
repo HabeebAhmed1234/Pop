@@ -34,6 +34,11 @@ public class LoadableListAdapter<T> extends ListAdapter<T, BindableViewHolder> {
     holder.bind(getItem(position));
   }
 
+  @Override
+  public void onViewRecycled(@NonNull BindableViewHolder holder) {
+    holder.unBind();
+  }
+
   public T getItemAtPosition(int position) {
     return getItem(position);
   }

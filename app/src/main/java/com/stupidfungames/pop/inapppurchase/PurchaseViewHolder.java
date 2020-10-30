@@ -1,5 +1,6 @@
 package com.stupidfungames.pop.inapppurchase;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -11,6 +12,11 @@ import androidx.annotation.Nullable;
 import com.android.billingclient.api.Purchase;
 import com.bumptech.glide.Glide;
 import com.stupidfungames.pop.R;
+import com.stupidfungames.pop.eventbus.EventBus;
+import com.stupidfungames.pop.eventbus.EventBus.Subscriber;
+import com.stupidfungames.pop.eventbus.EventPayload;
+import com.stupidfungames.pop.eventbus.GameEvent;
+import com.stupidfungames.pop.eventbus.GameSettingChangedEventPayload;
 import com.stupidfungames.pop.inapppurchase.backgrounds.EquipBackgroundHelper;
 import com.stupidfungames.pop.list.BindableViewHolder;
 
@@ -23,15 +29,30 @@ public class PurchaseViewHolder extends BindableViewHolder<Purchase> {
         if (EquipBackgroundHelper.isBackgroundEquiped(itemView.getContext(), sku)) {
           // we must unequip the background
           EquipBackgroundHelper.unequip(itemView.getContext());
-          Toast.makeText(itemView.getContext(), R.string.un_equip_success, Toast.LENGTH_LONG).show();
+          Toast.makeText(itemView.getContext(), R.string.un_equip_success, Toast.LENGTH_LONG)
+              .show();
         } else {
           // we must equip the background
           if (!EquipBackgroundHelper.equipBackground(itemView.getContext(), sku)) {
-            Toast.makeText(itemView.getContext(), R.string.error_equipping, Toast.LENGTH_LONG).show();
+            Toast.makeText(itemView.getContext(), R.string.error_equipping, Toast.LENGTH_LONG)
+                .show();
           } else {
-            Toast.makeText(itemView.getContext(), R.string.equip_success, Toast.LENGTH_SHORT).show();;
+            Toast.makeText(itemView.getContext(), R.string.equip_success, Toast.LENGTH_SHORT)
+                .show();
+            ;
           }
         }
+        updateEquipBtn();
+      }
+    }
+  };
+
+  private final EventBus.Subscriber onEquippedItemChangedListener = new Subscriber() {
+    @Override
+    public void onEvent(GameEvent event, EventPayload payload) {
+      if (!TextUtils.isEmpty(sku)
+          && ((GameSettingChangedEventPayload) payload).settingKey
+          .equals(EquipBackgroundHelper.EQUIPPED_BACKGROUND_PREF)) {
         updateEquipBtn();
       }
     }
@@ -70,12 +91,21 @@ public class PurchaseViewHolder extends BindableViewHolder<Purchase> {
             : "Product Description Not Found");
 
     updateEquipBtn();
+
+    EventBus.get().subscribe(GameEvent.SETTING_CHANGED, onEquippedItemChangedListener);
+  }
+
+  @Override
+  public void unBind() {
+    EventBus.get().unSubscribe(GameEvent.SETTING_CHANGED, onEquippedItemChangedListener);
   }
 
   private void updateEquipBtn() {
     if (SkuClassificationHelper.isEquippablePurchase(sku)) {
       equipBtn.setVisibility(View.VISIBLE);
-      equipBtn.setText(EquipBackgroundHelper.isBackgroundEquiped(itemView.getContext(), sku) ? R.string.un_equip : R.string.equip);
+      equipBtn.setText(
+          EquipBackgroundHelper.isBackgroundEquiped(itemView.getContext(), sku) ? R.string.un_equip
+              : R.string.equip);
     } else {
       equipBtn.setVisibility(View.GONE);
     }

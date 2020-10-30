@@ -13,7 +13,7 @@ import com.stupidfungames.pop.inapppurchase.ProductSKUManager;
  */
 public class EquipBackgroundHelper {
 
-  private static final String EQUIPPED_BACKGROUND_PREF = "equipped_background_pref";
+  public static final String EQUIPPED_BACKGROUND_PREF = "equipped_background_pref";
 
   /**
    * Returns true if equip succeeded.

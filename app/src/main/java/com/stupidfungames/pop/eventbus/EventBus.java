@@ -20,10 +20,6 @@ public class EventBus {
     private Map<GameEvent, ConcurrentLinkedQueue<Subscriber>> mEventSubscribers = new ConcurrentHashMap<>();
     private Map<GameEvent, EventPayload> mLastEventPayloads = new ConcurrentHashMap<>();
 
-    public static void destroy() {
-        sEventBus = null;
-    }
-
     public static EventBus get() {
         if (sEventBus == null) {
             sEventBus = new EventBus();

@@ -285,7 +285,6 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
 		// Destroy the game
 		gameLifeCycleCalllbackManager.onDestroy();
-		EventBus.destroy();
 		gameLifeCycleCalllbackManager = null;
 	}
 

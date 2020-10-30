@@ -15,4 +15,6 @@ public abstract class BindableViewHolder<T> extends ViewHolder {
   }
 
   public abstract void bind(T model);
+
+  public abstract void unBind();
 }

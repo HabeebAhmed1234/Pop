@@ -57,6 +57,11 @@ public class StoreProductViewHolder extends BindableViewHolder<SkuDetails> {
     description.setText(skuDetails.getDescription());
   }
 
+  @Override
+  public void unBind() {
+
+  }
+
   private void bindImage() {
     String sku = skuDetails.getSku();
     if (ProductSKUManager.get().skuToProductsMap.containsKey(sku)) {
