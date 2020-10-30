@@ -108,7 +108,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 						.bind(BackgroundMusicBaseEntity.class, new BackgroundMusicBaseEntity(this))
 						.bind(GameFontsManager.class, new GameFontsManager(this))
 						.bind(GameAnimationManager.class, new GameAnimationManager(this))
-						.bind(LevelBaseEntity.class, new LevelBaseEntity(this))
+						.bind(LevelEntity.class, new LevelEntity(this))
 
 						.bind(GamePhysicsContactsEntity.class, new GamePhysicsContactsEntity(this))
 						.bind(InteractionCounter.class, new InteractionCounter(this))

@@ -40,7 +40,6 @@ public class ProductSKUManager {
       return skuStrings;
     }
   }
-
   public final ImmutableMap<String, GameProduct> skuToProductsMap;
   private static ProductSKUManager sProductSKUManager;
 

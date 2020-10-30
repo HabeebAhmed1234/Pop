@@ -2,9 +2,12 @@ package com.stupidfungames.pop;
 
 import static com.stupidfungames.pop.GameFixtureDefs.WALL_FIXTURE_DEF;
 
+import android.content.Context;
+import androidx.annotation.DrawableRes;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.collision.CollisionFilters;
 import com.stupidfungames.pop.fixturedefdata.LevelWallEntityUserData;
+import com.stupidfungames.pop.inapppurchase.backgrounds.EquipBackgroundHelper;
 import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
@@ -14,6 +17,7 @@ import org.andengine.entity.primitive.Line;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
@@ -21,14 +25,14 @@ import org.jbox2d.dynamics.FixtureDef;
  * This class creates the level with all of its physics entities. This includes the walls and other
  * obstacles
  */
-public class LevelBaseEntity extends BaseEntity {
+public class LevelEntity extends BaseEntity {
 
   private static final float RAMP_WIDTH = ScreenUtils.getSreenSize().widthPx * 5;
   private static final float RAMP_HEIGHT = ScreenUtils.getSreenSize().heightPx * 3;
 
   private static FixtureDef levelWallFixtureDef = createWallFixtureDef();
 
-  public LevelBaseEntity(BinderEnity parent) {
+  public LevelEntity(BinderEnity parent) {
     super(parent);
   }
 
