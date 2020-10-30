@@ -2,12 +2,11 @@ package com.stupidfungames.pop.inapppurchase.backgrounds;
 
 import android.content.Context;
 import android.text.TextUtils;
-import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
 import com.google.common.collect.ImmutableMap;
 import com.stupidfungames.pop.gamesettings.GamePreferencesManager;
 import com.stupidfungames.pop.inapppurchase.GameProduct;
 import com.stupidfungames.pop.inapppurchase.ProductSKUManager;
-import com.stupidfungames.pop.inapppurchase.SkuClassificationHelper;
 
 /**
  * Use this to equip a certain background for the game.
@@ -35,13 +34,13 @@ public class EquipBackgroundHelper {
   /**
    * Returns -1 if no background was set.
    */
-  @DrawableRes public static int getBackgroundDrawableRes(Context context) {
+  @Nullable public static String getBackgroundFileName(Context context) {
     String sku = GamePreferencesManager.getString(context, EQUIPPED_BACKGROUND_PREF);
     ImmutableMap<String, GameProduct> skuToProductsMap = ProductSKUManager.get().skuToProductsMap;
     if (TextUtils.isEmpty(sku) || !skuToProductsMap.containsKey(sku)) {
-      return -1;
+      return null;
     }
-    return skuToProductsMap.get(sku).image;
+    return skuToProductsMap.get(sku).imageFileName;
   }
 
   public static boolean isBackgroundEquiped(Context context, String sku) {
