@@ -13,6 +13,7 @@ import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.utils.GeometryUtils;
 import com.stupidfungames.pop.utils.ScreenUtils;
+import javax.microedition.khronos.opengles.GL10;
 import org.andengine.entity.primitive.Line;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.background.SpriteBackground;
@@ -49,6 +50,8 @@ public class LevelEntity extends BaseEntity {
   private void createBackground() {
     final Sprite backgroundSprite = getBackgroundSprite();
     GeometryUtils.scaleToFixScreen(backgroundSprite);
+    backgroundSprite.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+    backgroundSprite.setAlpha(0.4f);
     scene.setBackground(new SpriteBackground(backgroundSprite));
   }
 
