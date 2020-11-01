@@ -14,6 +14,8 @@ import com.android.billingclient.api.BillingClient.SkuType;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.ConsumeParams;
+import com.android.billingclient.api.ConsumeResponseListener;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.Purchase.PurchasesResult;
 import com.android.billingclient.api.PurchasesUpdatedListener;
@@ -115,6 +117,58 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
         Toast.makeText(activity, R.string.generic_error, Toast.LENGTH_LONG).show();
       }
     }, ContextCompat.getMainExecutor(activity));
+  }
+
+  /**
+   * Checks if the user has the given sku purchased and active. Returns the purchase object.
+   */
+  public ListenableFuture<Purchase> hasPurchase(final String sku) {
+    final SettableFuture<Purchase> hasPurchase = SettableFuture.create();
+    ListenableFuture<PurchasesResult> purchases = queryPurchases();
+    Futures.addCallback(
+        purchases,
+        new FutureCallback<PurchasesResult>() {
+
+          @Override
+          public void onSuccess(@NullableDecl PurchasesResult result) {
+            if (result == null
+                || result.getBillingResult().getResponseCode() != BillingResponseCode.OK) {
+              hasPurchase.set(null);
+            }
+            List<Purchase> purchases = result.getPurchasesList();
+            for (Purchase purchase : purchases) {
+              if (purchase.getSku().equals(sku)) {
+                hasPurchase.set(purchase);
+                return;
+              }
+            }
+            hasPurchase.set(null);
+          }
+
+          @Override
+          public void onFailure(Throwable t) {
+            hasPurchase.setException(t);
+          }
+        },
+        ContextCompat.getMainExecutor(hostActivity.getContext()));
+    return hasPurchase;
+  }
+
+  /**
+   * Consumes the given purchased item.
+   * @param purchase
+   */
+  public void consume(Purchase purchase) {
+    ConsumeParams consumeParams =
+        ConsumeParams.newBuilder()
+            .setPurchaseToken(purchase.getPurchaseToken())
+            .build();
+
+    billingClient.consumeAsync(consumeParams, new ConsumeResponseListener() {
+      @Override
+      public void onConsumeResponse(BillingResult billingResult, String purchaseToken) {
+      }
+    });
   }
 
   public ListenableFuture<PurchasesResult> queryPurchases() {

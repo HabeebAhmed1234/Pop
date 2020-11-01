@@ -3,10 +3,14 @@
   <string name="app_id">120569614320</string>
   <string name="app_name">Pop</string>
   <string name="new_game_text">New Game</string>
+  <string name="continue_game_text">Continue Game</string>
+  <string name="continue_game_text_with_ad">Watch Ad to Continue Game</string>
+  <string name="continue_game_text_with_token_purchase">Buy token to Continue Game</string>
   <string name="load_game_text">Resume Game</string>
   <string name="game_over_text">Game Over</string>
   <string name="options_text">Options</string>
   <string name="purchases">My Purchases</string>
+  <string name="error_checking_continue_token">There was an error checking if you have a continue token. You can watch an ad instead.</string>
   <string name="store">Store</string>
   <string name="quit_text">Quit</string>
   <string name="your_score_title">Your score:</string>

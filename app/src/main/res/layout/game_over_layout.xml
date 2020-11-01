@@ -1,75 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <ImageView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:scaleType="centerCrop"
+    android:src="@drawable/main_menu_background" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/main_menu_background"/>
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_gravity="center">
+    <com.stupidfungames.pop.androidui.GameMenuText
+      android:id="@+id/game_over_text"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:clipToPadding="false"
+      android:gravity="center"
+      android:paddingVertical="@dimen/menu_btn_padding_vertical"
+      android:text="@string/game_over_text"
+      android:textSize="@dimen/text_size_xlarge"
+      app:glow_color="@color/menu_button_color" />
 
-        <com.stupidfungames.pop.androidui.GameMenuText
-            android:id="@+id/game_over_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/game_over_text"
-            android:textSize="60sp"
-            android:gravity="center"
-            android:clipToPadding="false"
-            android:paddingVertical="@dimen/menu_btn_padding_vertical"
-            app:glow_color="@color/menu_button_color"
-            />
+    <com.stupidfungames.pop.androidui.GameMenuText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:clipToPadding="false"
+      android:gravity="center"
+      android:paddingVertical="@dimen/menu_btn_padding_vertical"
+      android:text="@string/your_score_title"
+      android:textSize="@dimen/text_size_large"
+      app:glow_color="@color/menu_button_color" />
 
-        <com.stupidfungames.pop.androidui.GameMenuText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:text="@string/your_score_title"
-            android:gravity="center"
-            android:clipToPadding="false"
-            android:paddingVertical="@dimen/menu_btn_padding_vertical"
-            app:glow_color="@color/menu_button_color" />
+    <com.stupidfungames.pop.androidui.GameMenuText
+      android:id="@+id/score_text"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="24dp"
+      android:gravity="center"
+      android:paddingVertical="@dimen/menu_btn_padding_vertical"
+      android:textColor="@color/green"
+      android:textSize="@dimen/text_size_large"
+      app:glow_color="@color/menu_button_color" />
 
-        <com.stupidfungames.pop.androidui.GameMenuText
-            android:id="@+id/score_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:textColor="@color/green"
-            android:gravity="center"
-            android:paddingVertical="@dimen/menu_btn_padding_vertical"
-            android:layout_marginBottom="24dp"
-            app:glow_color="@color/menu_button_color" />
+    <com.stupidfungames.pop.androidui.GameMenuButton
+      android:id="@+id/continue_game_btn"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:paddingVertical="@dimen/menu_btn_padding_vertical"
+      android:text="@string/continue_game_text"
+      android:textSize="@dimen/text_size_large"
+      app:glow_color="@color/menu_button_color"
+      app:pressed_glow_color="@color/menu_button_pressed_color" />
 
-        <com.stupidfungames.pop.androidui.GameMenuButton
-            android:id="@+id/new_game_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/new_game_text"
-            android:gravity="center"
-            android:textSize="26sp"
-            android:paddingVertical="@dimen/menu_btn_padding_vertical"
-            app:glow_color="@color/menu_button_color"
-            app:pressed_glow_color = "@color/menu_button_pressed_color" />
+    <com.stupidfungames.pop.androidui.GameMenuButton
+      android:id="@+id/new_game_btn"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:paddingVertical="@dimen/menu_btn_padding_vertical"
+      android:text="@string/new_game_text"
+      android:textSize="@dimen/text_size_medium"
+      app:glow_color="@color/menu_button_color"
+      app:pressed_glow_color="@color/menu_button_pressed_color" />
 
-        <com.stupidfungames.pop.androidui.GameMenuButton
-            android:id="@+id/quit_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="26sp"
-            android:text="@string/quit_text"
-            android:gravity="center"
-            android:paddingVertical="@dimen/menu_btn_padding_vertical"
-            app:glow_color="@color/menu_button_color"
-            app:pressed_glow_color = "@color/menu_button_pressed_color" />
-    </LinearLayout>
+    <com.stupidfungames.pop.androidui.GameMenuButton
+      android:id="@+id/quit_btn"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:paddingVertical="@dimen/menu_btn_padding_vertical"
+      android:text="@string/quit_text"
+      android:textSize="@dimen/text_size_medium"
+      app:glow_color="@color/menu_button_color"
+      app:pressed_glow_color="@color/menu_button_pressed_color" />
+  </LinearLayout>
 </FrameLayout>

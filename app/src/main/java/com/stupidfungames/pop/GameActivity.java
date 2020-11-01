@@ -20,7 +20,6 @@ import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity;
 import com.stupidfungames.pop.bubbletimeout.BubblesLifecycleManagerEntity;
 import com.stupidfungames.pop.difficulty.GameDifficultyEntity;
-import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
 import com.stupidfungames.pop.hudentities.ScoreHudEntity;
 import com.stupidfungames.pop.hudentities.TimerHudEntity;
@@ -55,258 +54,277 @@ import org.andengine.opengl.font.FontManager;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
-public class GameActivity extends SimpleBaseGameActivity implements HostActivity, IAccelerationListener, GamePauser,
-		SaveGameButtonCallback {
+public class GameActivity extends SimpleBaseGameActivity implements HostActivity,
+    IAccelerationListener, GamePauser,
+    SaveGameButtonCallback {
 
-	public static final String SAVE_GAME_EXTRA = "save_game";
-	private static final int PAUSE_ACTIVITY_REQUEST_CODE = 1;
+  public static final String CONTINUE_SCORE_EXTRA = "continue_score";
+  public static final String SAVE_GAME_EXTRA = "save_game";
+  private static final int PAUSE_ACTIVITY_REQUEST_CODE = 1;
 
-	private ShakeCamera camera;
+  private ShakeCamera camera;
 
-	private GameLifeCycleCalllbackManager gameLifeCycleCalllbackManager = new GameLifeCycleCalllbackManager();
-	private GooglePlayServicesAuthManager authManager;
-	private SaveGameManager saveGameManager;
+  private GameLifeCycleCalllbackManager gameLifeCycleCalllbackManager = new GameLifeCycleCalllbackManager();
+  private GooglePlayServicesAuthManager authManager;
+  private SaveGameManager saveGameManager;
 
-	BinderEnity mRootBinder;
+  BinderEnity mRootBinder;
 
-	public static Intent newIntent(SaveGame saveGame, Context context) {
-		Intent intent = new Intent(context, GameActivity.class);
-		intent.putExtra(SAVE_GAME_EXTRA, saveGame.toJson());
-		return intent;
-	}
-	public static Intent newIntent(Context context) {
-		return new Intent(context, GameActivity.class);
-	}
+  public static Intent newIntent(int continueScore, Context context) {
+    Intent intent = new Intent(context, GameActivity.class);
+    intent.putExtra(CONTINUE_SCORE_EXTRA, continueScore);
+    return intent;
+  }
 
-	@Override
-	protected void onCreate(Bundle pSavedInstanceState) {
-		super.onCreate(pSavedInstanceState);
-		authManager = new GooglePlayServicesAuthManager(this);
-		saveGameManager = new SaveGameManager(this, this);
+  public static Intent newIntent(SaveGame saveGame, Context context) {
+    Intent intent = new Intent(context, GameActivity.class);
+    intent.putExtra(SAVE_GAME_EXTRA, saveGame.toJson());
+    return intent;
+  }
 
-		// The root binder
-		mRootBinder = new BinderEnity(null) {
+  public static Intent newIntent(Context context) {
+    return new Intent(context, GameActivity.class);
+  }
 
-			@Override
-			protected void createBindings(Binder binder) {
-				binder
-						.bind(GameLifeCycleCalllbackManager.class, gameLifeCycleCalllbackManager)
-						.bind(GameResources.class, GameResources.createNew(GameActivity.this, GameActivity.this))
-						.bind(FontManager.class, getFontManager())
-						.bind(TextureManager.class, getTextureManager())
-						.bind(AssetManager.class, getAssets())
-						.bind(Context.class, GameActivity.this)
-						.bind(SoundManager.class, getSoundManager())
-						.bind(MusicManager.class, getMusicManager())
-						.bind(ShakeCamera.class, camera)
-						.bind(GamePauser.class, GameActivity.this)
-						.bind(SaveGameButtonCallback.class, GameActivity.this)
+  @Override
+  protected void onCreate(Bundle pSavedInstanceState) {
+    super.onCreate(pSavedInstanceState);
+    authManager = new GooglePlayServicesAuthManager(this);
+    saveGameManager = new SaveGameManager(this, this);
 
-						.bind(GameTexturesManager.class, new GameTexturesManager(this))
-						.bind(GameSoundsManager.class, new GameSoundsManager(this))
-						.bind(GameMusicResourceManagerBaseEntity.class, new GameMusicResourceManagerBaseEntity(this))
-						.bind(BackgroundMusicBaseEntity.class, new BackgroundMusicBaseEntity(this))
-						.bind(GameFontsManager.class, new GameFontsManager(this))
-						.bind(GameAnimationManager.class, new GameAnimationManager(this))
-						.bind(LevelEntity.class, new LevelEntity(this))
+    // The root binder
+    mRootBinder = new BinderEnity(null) {
 
-						.bind(GamePhysicsContactsEntity.class, new GamePhysicsContactsEntity(this))
-						.bind(InteractionCounter.class, new InteractionCounter(this))
-						.bind(GameSceneTouchListenerEntity.class, new GameSceneTouchListenerEntity(this))
+      @Override
+      protected void createBindings(Binder binder) {
+        binder
+            .bind(GameLifeCycleCalllbackManager.class, gameLifeCycleCalllbackManager)
+            .bind(GameResources.class,
+                GameResources.createNew(GameActivity.this, GameActivity.this))
+            .bind(FontManager.class, getFontManager())
+            .bind(TextureManager.class, getTextureManager())
+            .bind(AssetManager.class, getAssets())
+            .bind(Context.class, GameActivity.this)
+            .bind(SoundManager.class, getSoundManager())
+            .bind(MusicManager.class, getMusicManager())
+            .bind(ShakeCamera.class, camera)
+            .bind(GamePauser.class, GameActivity.this)
+            .bind(SaveGameButtonCallback.class, GameActivity.this)
 
-						.bind(GameTooltipsEntity.class, new GameTooltipsEntity(this))
-						.bind(GameStartTooltipEntity.class, new GameStartTooltipEntity(this))
+            .bind(GameTexturesManager.class, new GameTexturesManager(this))
+            .bind(GameSoundsManager.class, new GameSoundsManager(this))
+            .bind(GameMusicResourceManagerBaseEntity.class,
+                new GameMusicResourceManagerBaseEntity(this))
+            .bind(BackgroundMusicBaseEntity.class, new BackgroundMusicBaseEntity(this))
+            .bind(GameFontsManager.class, new GameFontsManager(this))
+            .bind(GameAnimationManager.class, new GameAnimationManager(this))
+            .bind(LevelEntity.class, new LevelEntity(this))
 
-						.bind(GameQuickSettingsHostTrayBaseEntity.class, new GameQuickSettingsHostTrayBaseEntity(this))
-						.bind(MusicQuickSettingIconEntity.class, new MusicQuickSettingIconEntity(this))
-						.bind(GamePauseQuickSettingsIconEntity.class, new GamePauseQuickSettingsIconEntity(this))
-						.bind(SaveGameQuickSettingsIconEntity.class, new SaveGameQuickSettingsIconEntity(this))
+            .bind(GamePhysicsContactsEntity.class, new GamePhysicsContactsEntity(this))
+            .bind(InteractionCounter.class, new InteractionCounter(this))
+            .bind(GameSceneTouchListenerEntity.class, new GameSceneTouchListenerEntity(this))
 
-						.bind(ScoreHudEntity.class, new ScoreHudEntity(this))
-						.bind(TimerHudEntity.class, new TimerHudEntity(this))
+            .bind(GameTooltipsEntity.class, new GameTooltipsEntity(this))
+            .bind(GameStartTooltipEntity.class, new GameStartTooltipEntity(this))
 
-						.bind(GameDifficultyEntity.class, new GameDifficultyEntity(this))
-						.bind(GameOverSequenceEntity.class, new GameOverSequenceEntity(this))
-						.bind(BubblesLifecycleManagerEntity.class, new BubblesLifecycleManagerEntity(this))
+            .bind(GameQuickSettingsHostTrayBaseEntity.class,
+                new GameQuickSettingsHostTrayBaseEntity(this))
+            .bind(MusicQuickSettingIconEntity.class, new MusicQuickSettingIconEntity(this))
+            .bind(GamePauseQuickSettingsIconEntity.class,
+                new GamePauseQuickSettingsIconEntity(this))
+            .bind(SaveGameQuickSettingsIconEntity.class, new SaveGameQuickSettingsIconEntity(this))
 
-						.bind(BubbleSpawnerEntity.class, new BubbleSpawnerEntity(this))
-						.bind(BubbleCleanerBaseEntity.class, new BubbleCleanerBaseEntity(this))
-						.bind(BubbleLossDetectorBaseEntity.class, new BubbleLossDetectorBaseEntity(this))
-						.bind(TouchPopperFactoryEntity.class, new TouchPopperFactoryEntity(this))
-						.bind(BubblePopperEntity.class, new BubblePopperEntity(this))
+            .bind(ScoreHudEntity.class, new ScoreHudEntity(this))
+            .bind(TimerHudEntity.class, new TimerHudEntity(this))
 
-						.bind(GameIconsHostTrayEntity.class, new GameIconsHostTrayEntity(this))
-						.bind(BallAndChainManagerBaseEntity.class, new BallAndChainManagerBaseEntity(this))
-						.bind(TurretsManagerEntity.class, new TurretsManagerEntity(this))
-						.bind(WallsManagerBaseEntity.class, new WallsManagerBaseEntity(this))
-						.bind(NukeManagerBaseEntity.class, new NukeManagerBaseEntity(this))
+            .bind(GameDifficultyEntity.class, new GameDifficultyEntity(this))
+            .bind(GameOverSequenceEntity.class, new GameOverSequenceEntity(this))
+            .bind(BubblesLifecycleManagerEntity.class, new BubblesLifecycleManagerEntity(this))
 
-				;
-			}
-		};
-	}
+            .bind(BubbleSpawnerEntity.class, new BubbleSpawnerEntity(this))
+            .bind(BubbleCleanerBaseEntity.class, new BubbleCleanerBaseEntity(this))
+            .bind(BubbleLossDetectorBaseEntity.class, new BubbleLossDetectorBaseEntity(this))
+            .bind(TouchPopperFactoryEntity.class, new TouchPopperFactoryEntity(this))
+            .bind(BubblePopperEntity.class, new BubblePopperEntity(this))
 
-	@Override
-	public void pauseGameWithPauseScreen() {
-		mRootBinder.get(GameSoundsManager.class).getSound(SoundId.PAUSE).play();
-		startActivityForResult(GamePauseActivity.newIntent(this), PAUSE_ACTIVITY_REQUEST_CODE);
-	}
+            .bind(GameIconsHostTrayEntity.class, new GameIconsHostTrayEntity(this))
+            .bind(BallAndChainManagerBaseEntity.class, new BallAndChainManagerBaseEntity(this))
+            .bind(TurretsManagerEntity.class, new TurretsManagerEntity(this))
+            .bind(WallsManagerBaseEntity.class, new WallsManagerBaseEntity(this))
+            .bind(NukeManagerBaseEntity.class, new NukeManagerBaseEntity(this))
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == PAUSE_ACTIVITY_REQUEST_CODE) {
-			mRootBinder.get(GameSoundsManager.class).getSound(SoundId.UNPAUSE).play();
-			if(resultCode == GamePauseActivity.RESULT_QUIT) {
-				startActivity(MainMenuActivity.newIntent(this));
-				finish();
-			}
-		}
-	}
+        ;
+      }
+    };
+  }
 
-	@Override
-	public EngineOptions onCreateEngineOptions() {
-		ScreenUtils.onCreateEngineOptions(this);
-		ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
-		camera = new ShakeCamera(0, 0, screenSize.widthPx, screenSize.heightPx);
-		final EngineOptions engineOptions = new EngineOptions(
-				true,
-				ScreenOrientation.PORTRAIT_FIXED,
-				new RatioResolutionPolicy(screenSize.widthPx, screenSize.heightPx),
-				this.camera);
-		engineOptions.getTouchOptions().setNeedsMultiTouch(true);
-		engineOptions.getAudioOptions().setNeedsSound(true);
-		engineOptions.getAudioOptions().getMusicOptions().setNeedsMusic(true);
-		engineOptions.getAudioOptions().getSoundOptions().setMaxSimultaneousStreams(50);
-		return engineOptions;
-	}
+  @Override
+  public void pauseGameWithPauseScreen() {
+    mRootBinder.get(GameSoundsManager.class).getSound(SoundId.PAUSE).play();
+    startActivityForResult(GamePauseActivity.newIntent(this), PAUSE_ACTIVITY_REQUEST_CODE);
+  }
 
-	@Override
-	public void onCreateResources() {
-		ScreenUtils.onCreateResources(getVertexBufferObjectManager());
-		gameLifeCycleCalllbackManager.onCreateResources();
-	}
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == PAUSE_ACTIVITY_REQUEST_CODE) {
+      mRootBinder.get(GameSoundsManager.class).getSound(SoundId.UNPAUSE).play();
+      if (resultCode == GamePauseActivity.RESULT_QUIT) {
+        startActivity(MainMenuActivity.newIntent(this));
+        finish();
+      }
+    }
+  }
 
-	@Override
-	public Scene onCreateScene() {
-		gameLifeCycleCalllbackManager.onCreateScene();
-		SaveGame saveGame = getSaveGameFromIntent();
-		if (saveGame != null) {
-			gameLifeCycleCalllbackManager.onLoadGame(saveGame);
-		}
-		return mRootBinder.get(GameResources.class).scene;
-	}
+  @Override
+  public EngineOptions onCreateEngineOptions() {
+    ScreenUtils.onCreateEngineOptions(this);
+    ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
+    camera = new ShakeCamera(0, 0, screenSize.widthPx, screenSize.heightPx);
+    final EngineOptions engineOptions = new EngineOptions(
+        true,
+        ScreenOrientation.PORTRAIT_FIXED,
+        new RatioResolutionPolicy(screenSize.widthPx, screenSize.heightPx),
+        this.camera);
+    engineOptions.getTouchOptions().setNeedsMultiTouch(true);
+    engineOptions.getAudioOptions().setNeedsSound(true);
+    engineOptions.getAudioOptions().getMusicOptions().setNeedsMusic(true);
+    engineOptions.getAudioOptions().getSoundOptions().setMaxSimultaneousStreams(50);
+    return engineOptions;
+  }
 
-	@Override
-	public void onResumeGame() {
-		super.onResumeGame();
-		this.enableAccelerationSensor(this);
-	}
+  @Override
+  public void onCreateResources() {
+    ScreenUtils.onCreateResources(getVertexBufferObjectManager());
+    gameLifeCycleCalllbackManager.onCreateResources();
+  }
 
-	@Override
-	public void onPauseGame() {
-		super.onPauseGame();
-		this.disableAccelerationSensor();
+  @Override
+  public Scene onCreateScene() {
+    gameLifeCycleCalllbackManager.onCreateScene();
+    SaveGame saveGame = getSaveGameFromIntent();
+    if (saveGame != null) {
+      gameLifeCycleCalllbackManager.onLoadGame(saveGame);
+    }
+    return mRootBinder.get(GameResources.class).scene;
+  }
 
-		// if we are already logged in then just save the game
-		if (authManager.isLoggedIn()) {
-			saveGameManager.saveGame(this, fabricateSaveGame());
-		}
-	}
+  @Override
+  public void onResumeGame() {
+    super.onResumeGame();
+    this.enableAccelerationSensor(this);
+  }
 
-	@Override
-	public void saveGamePressed() {
-		if (authManager.isLoggedIn()) {
-			ContextCompat.getMainExecutor(this).execute(new Runnable() {
-				@Override
-				public void run() {
-					saveGameManager.saveGame(GameActivity.this, fabricateSaveGame());
-					showGameSavedToast();
-				}
-			});
-		} else {
-			startSaveGameFlow(false, true, false);
-		}
-	}
+  @Override
+  public void onPauseGame() {
+    super.onPauseGame();
+    this.disableAccelerationSensor();
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			// If we are not logged in then we must launch a prompt for the user to log in to save their
-			// game
-			if (!authManager.isLoggedIn()) {
-				if (startSaveGameFlow(true, false, true)) {
-					return true;
-				}
-			}
-			// The save game flow cannot be not launched. proceed to exit the game
-			goBackToMainMenu();
-			return true;
-		}
-		return false;
-	}
+    // if we are already logged in then just save the game
+    if (authManager.isLoggedIn()) {
+      saveGameManager.saveGame(this, fabricateSaveGame());
+    }
+  }
 
-	private boolean startSaveGameFlow(final boolean allowForPermanentDismiss, final boolean forceShow, final boolean goToMainMenuAfter) {
-		@Nullable Intent intent =
-				SaveGameFlowDialog.getIntent(fabricateSaveGame(), allowForPermanentDismiss, forceShow, this);
-		if (intent == null) return false;
-		prepareCall(new StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-			@Override
-			public void onActivityResult(ActivityResult result) {
-				if (goToMainMenuAfter) {
-					goBackToMainMenu();
-				}
-				if (result.getResultCode() == SaveGameFlowDialog.RESULT_SUCCESS) {
-					showGameSavedToast();
-				}
-			}
-		}).launch(intent);
-		return true;
-	}
+  @Override
+  public void saveGamePressed() {
+    if (authManager.isLoggedIn()) {
+      ContextCompat.getMainExecutor(this).execute(new Runnable() {
+        @Override
+        public void run() {
+          saveGameManager.saveGame(GameActivity.this, fabricateSaveGame());
+          showGameSavedToast();
+        }
+      });
+    } else {
+      startSaveGameFlow(false, true, false);
+    }
+  }
 
-	private void showGameSavedToast() {
-		Toast.makeText(GameActivity.this, R.string.game_saved, Toast.LENGTH_SHORT).show();
-	}
+  @Override
+  public boolean onKeyDown(int keyCode, KeyEvent event) {
+    if (keyCode == KeyEvent.KEYCODE_BACK) {
+      // If we are not logged in then we must launch a prompt for the user to log in to save their
+      // game
+      if (!authManager.isLoggedIn()) {
+        if (startSaveGameFlow(true, false, true)) {
+          return true;
+        }
+      }
+      // The save game flow cannot be not launched. proceed to exit the game
+      goBackToMainMenu();
+      return true;
+    }
+    return false;
+  }
 
-	private void goBackToMainMenu() {
-		startActivity(MainMenuActivity.newIntent(this));
-		finish();
-	}
+  private boolean startSaveGameFlow(final boolean allowForPermanentDismiss, final boolean forceShow,
+      final boolean goToMainMenuAfter) {
+    @Nullable Intent intent =
+        SaveGameFlowDialog
+            .getIntent(fabricateSaveGame(), allowForPermanentDismiss, forceShow, this);
+    if (intent == null) {
+      return false;
+    }
+    prepareCall(new StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+      @Override
+      public void onActivityResult(ActivityResult result) {
+        if (goToMainMenuAfter) {
+          goBackToMainMenu();
+        }
+        if (result.getResultCode() == SaveGameFlowDialog.RESULT_SUCCESS) {
+          showGameSavedToast();
+        }
+      }
+    }).launch(intent);
+    return true;
+  }
 
-	private SaveGame fabricateSaveGame() {
-		SaveGame newSaveGame = new SaveGame();
-		gameLifeCycleCalllbackManager.onSaveGame(newSaveGame);
-		return newSaveGame;
-	}
+  private void showGameSavedToast() {
+    Toast.makeText(GameActivity.this, R.string.game_saved, Toast.LENGTH_SHORT).show();
+  }
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
+  private void goBackToMainMenu() {
+    startActivity(MainMenuActivity.newIntent(this));
+    finish();
+  }
 
-		// Destroy the game
-		gameLifeCycleCalllbackManager.onDestroy();
-		gameLifeCycleCalllbackManager = null;
-	}
+  private SaveGame fabricateSaveGame() {
+    SaveGame newSaveGame = new SaveGame();
+    gameLifeCycleCalllbackManager.onSaveGame(newSaveGame);
+    return newSaveGame;
+  }
 
-	@Override
-	public void onAccelerationAccuracyChanged(AccelerationData pAccelerationData) {}
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
 
-	@Override
-	public void onAccelerationChanged(AccelerationData pAccelerationData) {}
+    // Destroy the game
+    gameLifeCycleCalllbackManager.onDestroy();
+    gameLifeCycleCalllbackManager = null;
+  }
 
-	private SaveGame getSaveGameFromIntent() {
-		String saveGameJson = getIntent().getStringExtra(SAVE_GAME_EXTRA);
-		SaveGame saveGame = SaveGame.fromJson(saveGameJson);
-		return saveGame;
-	}
+  @Override
+  public void onAccelerationAccuracyChanged(AccelerationData pAccelerationData) {
+  }
 
-	@Override
-	public Context getContext() {
-		return this;
-	}
+  @Override
+  public void onAccelerationChanged(AccelerationData pAccelerationData) {
+  }
 
-	@Override
-	public GooglePlayServicesAuthManager getAuthManager() {
-		return authManager;
-	}
+  private SaveGame getSaveGameFromIntent() {
+    String saveGameJson = getIntent().getStringExtra(SAVE_GAME_EXTRA);
+    SaveGame saveGame = SaveGame.fromJson(saveGameJson);
+    return saveGame;
+  }
+
+  @Override
+  public Context getContext() {
+    return this;
+  }
+
+  @Override
+  public GooglePlayServicesAuthManager getAuthManager() {
+    return authManager;
+  }
 }

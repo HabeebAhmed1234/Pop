@@ -1,6 +1,11 @@
 <resources>
     <dimen name="button_horizontal_padding">8dp</dimen>
 
+    <dimen name="text_size_xlarge">60sp</dimen>
+    <dimen name="text_size_large">32sp</dimen>
+    <dimen name="text_size_medium">26sp</dimen>
+    <dimen name="text_size_small">18sp</dimen>
+
     <dimen name="main_menu_padding_horizontal">32dp</dimen>
     <dimen name="main_menu_padding_top">120dp</dimen>
     <dimen name="between_btn_padding">16dp</dimen>
