@@ -76,7 +76,6 @@ public class GameLifeCycleCalllbackManager {
         while (it.hasNext()) {
             it.next().onLoadGame(saveGame);
         }
-
     }
 
 
@@ -85,7 +84,6 @@ public class GameLifeCycleCalllbackManager {
         while (it.hasNext()) {
             it.next().onSaveGame(saveGame);
         }
-
     }
 
     public void onDestroy() {

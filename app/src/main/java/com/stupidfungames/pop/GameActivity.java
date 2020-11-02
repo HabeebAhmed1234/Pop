@@ -55,10 +55,9 @@ import org.andengine.opengl.texture.TextureManager;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
 public class GameActivity extends SimpleBaseGameActivity implements HostActivity,
-    IAccelerationListener, GamePauser,
+    IAccelerationListener, GamePauser, GameSaver,
     SaveGameButtonCallback {
 
-  public static final String CONTINUE_SCORE_EXTRA = "continue_score";
   public static final String SAVE_GAME_EXTRA = "save_game";
   private static final int PAUSE_ACTIVITY_REQUEST_CODE = 1;
 
@@ -69,12 +68,6 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
   private SaveGameManager saveGameManager;
 
   BinderEnity mRootBinder;
-
-  public static Intent newIntent(int continueScore, Context context) {
-    Intent intent = new Intent(context, GameActivity.class);
-    intent.putExtra(CONTINUE_SCORE_EXTRA, continueScore);
-    return intent;
-  }
 
   public static Intent newIntent(SaveGame saveGame, Context context) {
     Intent intent = new Intent(context, GameActivity.class);
@@ -98,6 +91,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
       @Override
       protected void createBindings(Binder binder) {
         binder
+            .bind(GameSaver.class, GameActivity.this)
             .bind(GameLifeCycleCalllbackManager.class, gameLifeCycleCalllbackManager)
             .bind(GameResources.class,
                 GameResources.createNew(GameActivity.this, GameActivity.this))
@@ -289,7 +283,8 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
     finish();
   }
 
-  private SaveGame fabricateSaveGame() {
+  @Override
+  public SaveGame fabricateSaveGame() {
     SaveGame newSaveGame = new SaveGame();
     gameLifeCycleCalllbackManager.onSaveGame(newSaveGame);
     return newSaveGame;

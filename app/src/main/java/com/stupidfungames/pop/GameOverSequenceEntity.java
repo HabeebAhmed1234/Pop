@@ -1,7 +1,6 @@
 package com.stupidfungames.pop;
 
 import android.content.Context;
-
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
@@ -12,7 +11,6 @@ import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import com.stupidfungames.pop.resources.sounds.SoundId;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
-
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.particle.BatchedSpriteParticleSystem;
@@ -28,78 +26,83 @@ import org.andengine.util.color.AndengineColor;
 
 public class GameOverSequenceEntity extends BaseEntity {
 
-    private static final float EXPLOSION_DURATION_SECONDS = 3f;
-    private static final float FADE_OUT_TIME = 1f;
-    private final float PARTICLE_EXPLOSION_VELOCITY_MAGNITUDE = 1000;
-    private static final float RATE_MIN    = 50;
-    private static final float RATE_MAX	   = 100;
-    private static final int PARTICLES_MAX = 1000;
+  private static final float EXPLOSION_DURATION_SECONDS = 3f;
+  private static final float FADE_OUT_TIME = 1f;
+  private final float PARTICLE_EXPLOSION_VELOCITY_MAGNITUDE = 1000;
+  private static final float RATE_MIN = 50;
+  private static final float RATE_MAX = 100;
+  private static final int PARTICLES_MAX = 1000;
 
-    private boolean isGameOverStarted = false;
+  private boolean isGameOverStarted = false;
 
-    private EventBus.Subscriber gameOverExplosionSubscriber = new EventBus.Subscriber() {
-        @Override
-        public void onEvent(GameEvent event, EventPayload payload) {
-                runGameOverSequenceWithExplosion((GameOverExplosionEventPayload) payload);
-        }
-    };
-
-    public GameOverSequenceEntity(BinderEnity parent) {
-        super(parent);
-    }
-
+  private EventBus.Subscriber gameOverExplosionSubscriber = new EventBus.Subscriber() {
     @Override
-    public void onCreateScene() {
-        EventBus.get().subscribe(GameEvent.GAME_OVER_ON_EXPLOSION_EVENT, gameOverExplosionSubscriber);
+    public void onEvent(GameEvent event, EventPayload payload) {
+      runGameOverSequenceWithExplosion((GameOverExplosionEventPayload) payload);
     }
+  };
 
-    @Override
-    public void onDestroy() {
-        EventBus.get().unSubscribe(GameEvent.GAME_OVER_ON_EXPLOSION_EVENT, gameOverExplosionSubscriber);
+  public GameOverSequenceEntity(BinderEnity parent) {
+    super(parent);
+  }
+
+  @Override
+  public void onCreateScene() {
+    EventBus.get().subscribe(GameEvent.GAME_OVER_ON_EXPLOSION_EVENT, gameOverExplosionSubscriber);
+  }
+
+  @Override
+  public void onDestroy() {
+    EventBus.get().unSubscribe(GameEvent.GAME_OVER_ON_EXPLOSION_EVENT, gameOverExplosionSubscriber);
+  }
+
+  private void runGameOverSequenceWithExplosion(GameOverExplosionEventPayload payload) {
+    if (isGameOverStarted) {
+      return;
     }
+    isGameOverStarted = true;
+    final Sprite bubble = payload.bubble;
 
-    private void runGameOverSequenceWithExplosion(GameOverExplosionEventPayload payload) {
-        if (isGameOverStarted) return;
-        isGameOverStarted = true;
-        final Sprite bubble  = payload.bubble;
+    IParticleEmitter emitter = new PointParticleEmitter(bubble.getX() + bubble.getWidthScaled() / 2,
+        bubble.getY() + bubble.getHeightScaled() / 2);
+    final ParticleSystem explosionParticleSystem = new BatchedSpriteParticleSystem(
+        emitter,
+        RATE_MIN,
+        RATE_MAX,
+        PARTICLES_MAX,
+        get(GameTexturesManager.class).getTextureRegion(TextureId.BULLET),
+        vertexBufferObjectManager);
 
-        IParticleEmitter emitter = new PointParticleEmitter(bubble.getX() + bubble.getWidthScaled() / 2, bubble.getY() + bubble.getHeightScaled() / 2);
-        final ParticleSystem explosionParticleSystem = new BatchedSpriteParticleSystem(
-                emitter,
-                RATE_MIN,
-                RATE_MAX,
-                PARTICLES_MAX,
-                get(GameTexturesManager.class).getTextureRegion(TextureId.BULLET),
-                vertexBufferObjectManager);
+    explosionParticleSystem.addParticleInitializer(new VelocityParticleInitializer(
+        -PARTICLE_EXPLOSION_VELOCITY_MAGNITUDE,
+        PARTICLE_EXPLOSION_VELOCITY_MAGNITUDE,
+        -PARTICLE_EXPLOSION_VELOCITY_MAGNITUDE,
+        PARTICLE_EXPLOSION_VELOCITY_MAGNITUDE));
+    explosionParticleSystem.addParticleInitializer(new ExpireParticleInitializer(FADE_OUT_TIME));
+    explosionParticleSystem.addParticleModifier(
+        new ColorParticleModifier(0, FADE_OUT_TIME, AndengineColor.WHITE, AndengineColor.RED));
+    explosionParticleSystem.addParticleModifier(new AlphaParticleModifier(0, FADE_OUT_TIME, 1, 0));
 
-        explosionParticleSystem.addParticleInitializer(new VelocityParticleInitializer(
-                -PARTICLE_EXPLOSION_VELOCITY_MAGNITUDE,
-                PARTICLE_EXPLOSION_VELOCITY_MAGNITUDE,
-                -PARTICLE_EXPLOSION_VELOCITY_MAGNITUDE,
-                PARTICLE_EXPLOSION_VELOCITY_MAGNITUDE));
-        explosionParticleSystem.addParticleInitializer(new ExpireParticleInitializer(FADE_OUT_TIME));
-        explosionParticleSystem.addParticleModifier(new ColorParticleModifier(0, FADE_OUT_TIME, AndengineColor.WHITE, AndengineColor.RED));
-        explosionParticleSystem.addParticleModifier(new AlphaParticleModifier(0, FADE_OUT_TIME, 1, 0));
+    scene.attachChild(explosionParticleSystem);
 
-        scene.attachChild(explosionParticleSystem);
+    get(GameSoundsManager.class).getSound(SoundId.EXPOSION).play();
+    get(ShakeCamera.class).shake(3, 4);
 
-        get(GameSoundsManager.class).getSound(SoundId.EXPOSION).play();
-        get(ShakeCamera.class).shake(3, 4);
+    scene.registerUpdateHandler(new TimerHandler(EXPLOSION_DURATION_SECONDS, new ITimerCallback() {
+      @Override
+      public void onTimePassed(TimerHandler pTimerHandler) {
+        explosionParticleSystem.setParticlesSpawnEnabled(false);
+        onGameover();
+      }
+    }));
 
-        scene.registerUpdateHandler(new TimerHandler(EXPLOSION_DURATION_SECONDS, new ITimerCallback() {
-            @Override
-            public void onTimePassed(TimerHandler pTimerHandler) {
-                explosionParticleSystem.setParticlesSpawnEnabled(false);
-                onGameover();
-            }
-        }));
+    removeFromScene(bubble);
+  }
 
-        removeFromScene(bubble);
-    }
-
-    private void onGameover() {
-        Context context = get(Context.class);
-        context.startActivity(GameOverActivity.newIntent(context, get(ScoreHudEntity.class).getScore()));
-        hostActivity.finish();
-    }
+  private void onGameover() {
+    Context context = get(Context.class);
+    context.startActivity(GameOverActivity.newIntent(context, get(ScoreHudEntity.class).getScore(),
+        get(GameSaver.class).fabricateSaveGame()));
+    hostActivity.finish();
+  }
 }

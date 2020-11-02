@@ -21,7 +21,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 public class ContinueGameBtnView {
 
-  interface ContinueGameBtnViewHostActivity extends HostActivity {
+  public interface ContinueGameBtnViewHostActivity extends HostActivity {
 
     void continueGame();
   }

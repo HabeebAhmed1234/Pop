@@ -15,18 +15,21 @@ import com.stupidfungames.pop.androidui.GameMenuButton;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.continuegame.ContinueGameBtnView;
 import com.stupidfungames.pop.continuegame.ContinueGameBtnView.ContinueGameBtnViewHostActivity;
+import com.stupidfungames.pop.savegame.SaveGame;
 
 public class GameOverActivity extends AppCompatActivity implements ContinueGameBtnViewHostActivity {
 
   public static final String SCORE_EXTRA = "score_extra";
+  public static final String CONTINUE_SAVE_GAME_EXTRA = "continue_save_game";
   private ValueAnimator logoAnimator;
 
   private ContinueGameBtnView continueGameBtnView;
 
-  public static Intent newIntent(Context context, int score) {
+  public static Intent newIntent(Context context, int score, SaveGame continueGame) {
     Intent intent = new Intent(context, GameOverActivity.class);
     Bundle b = new Bundle();
     b.putInt(GameOverActivity.SCORE_EXTRA, score);
+    b.putString(CONTINUE_SAVE_GAME_EXTRA, continueGame.toJson());
     intent.putExtras(b);
     return intent;
   }
@@ -70,8 +73,14 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
 
   @Override
   public void continueGame() {
-    startActivity(GameActivity.newIntent(getGameOverScore(), this));
+    startActivity(GameActivity.newIntent(getSaveGameFromIntent(), this));
     finish();
+  }
+
+  private SaveGame getSaveGameFromIntent() {
+    String saveGameJson = getIntent().getStringExtra(CONTINUE_SAVE_GAME_EXTRA);
+    SaveGame saveGame = SaveGame.fromJson(saveGameJson);
+    return saveGame;
   }
 
   private void quitGame() {
