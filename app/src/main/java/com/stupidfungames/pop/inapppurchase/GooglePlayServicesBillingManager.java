@@ -95,8 +95,12 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
     return productsSettableFuture;
   }
 
-  public void purchase(final Activity activity, final SkuDetails skuDetails) {
+  /**
+   * Returns a purchase result future which tells you whether or not the purchase was successful.
+   */
+  public ListenableFuture<Boolean> purchase(final Activity activity, final SkuDetails skuDetails) {
     ListenableFuture<BillingResult> result = launchPurchaseFlow(activity, skuDetails);
+    final SettableFuture<Boolean> purchaseResultFuture = SettableFuture.create();
     Futures.addCallback(result, new FutureCallback<BillingResult>() {
       @Override
       public void onSuccess(@NullableDecl BillingResult result) {
@@ -105,8 +109,14 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
           switch (result.getResponseCode()) {
             case BillingResponseCode.OK:
               toastResId = R.string.purchase_succesful;
+              purchaseResultFuture.set(true);
+              break;
             case BillingResponseCode.USER_CANCELED:
               toastResId = R.string.purchase_canceled;
+              purchaseResultFuture.set(false);
+              break;
+            default:
+              purchaseResultFuture.set(false);
           }
         }
         Toast.makeText(activity, toastResId, Toast.LENGTH_LONG).show();
@@ -115,8 +125,10 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
       @Override
       public void onFailure(Throwable t) {
         Toast.makeText(activity, R.string.generic_error, Toast.LENGTH_LONG).show();
+        purchaseResultFuture.set(false);
       }
     }, ContextCompat.getMainExecutor(activity));
+    return purchaseResultFuture;
   }
 
   /**
@@ -156,7 +168,6 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
 
   /**
    * Consumes the given purchased item.
-   * @param purchase
    */
   public void consume(Purchase purchase) {
     ConsumeParams consumeParams =

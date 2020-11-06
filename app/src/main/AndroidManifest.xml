@@ -33,6 +33,14 @@
             android:screenOrientation="portrait" ></activity>
 
         <activity
+          android:name="com.stupidfungames.pop.continuegame.ContinueGameChoiceDialogActivity"
+          android:screenOrientation="portrait" ></activity>
+
+        <activity
+          android:name="com.stupidfungames.pop.ads.AdRoomActivity"
+          android:screenOrientation="portrait" ></activity>
+
+        <activity
             android:name="com.stupidfungames.pop.GamePauseActivity"
             android:theme="@style/Theme.Dialog"
             android:screenOrientation="portrait" >

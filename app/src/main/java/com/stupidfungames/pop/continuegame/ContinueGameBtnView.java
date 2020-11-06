@@ -5,6 +5,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -39,14 +42,15 @@ public class ContinueGameBtnView {
     @Override
     public void onClick(View v) {
       // Present the user with the option to watch an ad or buy a continue game token
-
+      launchContinueGameChoice();
     }
   };
 
   private ContinueGameBtnState currentState = ContinueGameBtnState.UNKNOWN;
 
   private GameMenuButton continueGameButton;
-  @Nullable private Purchase continueGamePurchase;
+  @Nullable
+  private Purchase continueGamePurchase;
 
   private GooglePlayServicesAuthManager authManager;
   private GooglePlayServicesBillingManager billingManager;
@@ -85,7 +89,8 @@ public class ContinueGameBtnView {
           @Override
           public void onFailure(Throwable t) {
             Log.e(TAG, "Error checking continue token", t);
-            Toast.makeText(getContext(), R.string.error_checking_continue_token, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), R.string.error_checking_continue_token, Toast.LENGTH_LONG)
+                .show();
             setGameButtonState(ContinueGameBtnState.NO_TOKEN_WATCH_AD_OR_BUY);
           }
         }, ContextCompat.getMainExecutor(getContext()));
@@ -116,6 +121,21 @@ public class ContinueGameBtnView {
         break;
     }
     continueGameButton.setTextColor(color);
+  }
+
+  private void launchContinueGameChoice() {
+    hostActivity
+        .prepareCall(new StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+          @Override
+          public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == ContinueGameChoiceDialogActivity.RESULT_TOKEN_ACQUIRED) {
+              hostActivity.continueGame();
+            } else {
+              Toast.makeText(getContext(), R.string.continue_game_token_not_aquired,
+                  Toast.LENGTH_SHORT).show();
+            }
+          }
+        }).launch(ContinueGameChoiceDialogActivity.createIntent(getContext()));
   }
 
   private Context getContext() {
