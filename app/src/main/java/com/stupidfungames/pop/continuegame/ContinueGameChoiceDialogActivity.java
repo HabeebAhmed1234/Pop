@@ -1,7 +1,5 @@
 package com.stupidfungames.pop.continuegame;
 
-import static com.stupidfungames.pop.ads.AdRoomActivity.RESULT_AD_WATCHED;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -77,7 +75,7 @@ public class ContinueGameChoiceDialogActivity extends GameNeonDialogActivity imp
     prepareCall(new StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
       @Override
       public void onActivityResult(ActivityResult result) {
-        if (result.getResultCode() == RESULT_AD_WATCHED) {
+        if (result.getResultCode() == AdRoomActivity.RESULT_AD_WATCHED) {
           onAdWatched();
         } else {
           showMustChooseOptionError();
