@@ -49,16 +49,7 @@
       android:textSize="@dimen/text_size_large"
       app:glow_color="@color/menu_button_color" />
 
-    <com.stupidfungames.pop.androidui.GameMenuButton
-      android:id="@+id/continue_game_btn"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:gravity="center"
-      android:paddingVertical="@dimen/menu_btn_padding_vertical"
-      android:text="@string/continue_game_text"
-      android:textSize="@dimen/text_size_large"
-      app:glow_color="@color/menu_button_color"
-      app:pressed_glow_color="@color/menu_button_pressed_color" />
+    <include layout="@layout/continue_game_btn" />
 
     <com.stupidfungames.pop.androidui.GameMenuButton
       android:id="@+id/new_game_btn"

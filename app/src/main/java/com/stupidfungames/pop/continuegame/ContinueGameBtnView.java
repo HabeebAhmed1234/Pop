@@ -17,7 +17,7 @@ import com.google.common.util.concurrent.Futures;
 import com.stupidfungames.pop.HostActivity;
 import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.androidui.GameMenuButton;
-import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
+import com.stupidfungames.pop.androidui.LoadingSpinner;
 import com.stupidfungames.pop.inapppurchase.GooglePlayServicesBillingManager;
 import com.stupidfungames.pop.inapppurchase.ProductSKUManager.ProductSKU;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
@@ -34,7 +34,9 @@ public class ContinueGameBtnView {
   private final OnClickListener continueGameAndConsumeTokenOnClickListener = new OnClickListener() {
     @Override
     public void onClick(View v) {
-      billingManager.consume(continueGamePurchase);
+      if (continueGamePurchase != null) {
+        billingManager.consume(continueGamePurchase);
+      }
       hostActivity.continueGame();
     }
   };
@@ -46,27 +48,28 @@ public class ContinueGameBtnView {
     }
   };
 
-  private ContinueGameBtnState currentState = ContinueGameBtnState.UNKNOWN;
+  private ContinueGameBtnState currentState = ContinueGameBtnState.LOADING;
 
+  private LoadingSpinner loadingSpinner;
   private GameMenuButton continueGameButton;
   @Nullable
   private Purchase continueGamePurchase;
 
-  private GooglePlayServicesAuthManager authManager;
   private GooglePlayServicesBillingManager billingManager;
 
   private enum ContinueGameBtnState {
-    UNKNOWN,
-    TOKEN_PRESENT,
-    NO_TOKEN_WATCH_AD_OR_BUY
+    LOADING, // Checking if the user has a continue game token
+    ALLOW_CONTINUE_GAME, // User is allowed to continue game (either has token on watched ad)
+    WATCH_AD_OR_BUY // User must watch an ad or buy a token to continue
   }
 
   public ContinueGameBtnView(
+      LoadingSpinner loadingSpinner,
       GameMenuButton continueGameButton,
       ContinueGameBtnViewHostActivity hostActivity) {
+    this.loadingSpinner = loadingSpinner;
     this.continueGameButton = continueGameButton;
     this.hostActivity = hostActivity;
-    authManager = new GooglePlayServicesAuthManager(hostActivity.getContext());
     billingManager = new GooglePlayServicesBillingManager(hostActivity);
 
     updateButton();
@@ -74,15 +77,16 @@ public class ContinueGameBtnView {
   }
 
   private void checkIfUserHasContinueToken() {
+    setGameButtonState(ContinueGameBtnState.LOADING);
     Futures.addCallback(billingManager.hasPurchase(ProductSKU.SKU_GAME_CONTINUE.skuString),
         new FutureCallback<Purchase>() {
           @Override
           public void onSuccess(@NullableDecl Purchase result) {
             if (result != null) {
               continueGamePurchase = result;
-              setGameButtonState(ContinueGameBtnState.TOKEN_PRESENT);
+              setGameButtonState(ContinueGameBtnState.ALLOW_CONTINUE_GAME);
             } else {
-              setGameButtonState(ContinueGameBtnState.NO_TOKEN_WATCH_AD_OR_BUY);
+              setGameButtonState(ContinueGameBtnState.WATCH_AD_OR_BUY);
             }
           }
 
@@ -91,7 +95,7 @@ public class ContinueGameBtnView {
             Log.e(TAG, "Error checking continue token", t);
             Toast.makeText(getContext(), R.string.error_checking_continue_token, Toast.LENGTH_LONG)
                 .show();
-            setGameButtonState(ContinueGameBtnState.NO_TOKEN_WATCH_AD_OR_BUY);
+            setGameButtonState(ContinueGameBtnState.WATCH_AD_OR_BUY);
           }
         }, ContextCompat.getMainExecutor(getContext()));
   }
@@ -107,15 +111,19 @@ public class ContinueGameBtnView {
   private void updateButton() {
     @ColorInt int color = ContextCompat.getColor(getContext(), R.color.menu_button_color_disabled);
     switch (currentState) {
-      case UNKNOWN:
+      case LOADING:
+        loadingSpinner.startLoadingAnimation();
         color = ContextCompat.getColor(getContext(), R.color.menu_button_color_disabled);
         continueGameButton.setOnClickListener(null);
         break;
-      case TOKEN_PRESENT:
-        color = ContextCompat.getColor(getContext(), R.color.menu_button_color);
+      case ALLOW_CONTINUE_GAME:
+        promptUserToContinueGame();
+        loadingSpinner.stopLoadingAnimation();
+        color = ContextCompat.getColor(getContext(), R.color.green);
         continueGameButton.setOnClickListener(continueGameAndConsumeTokenOnClickListener);
         break;
-      case NO_TOKEN_WATCH_AD_OR_BUY:
+      case WATCH_AD_OR_BUY:
+        loadingSpinner.stopLoadingAnimation();
         color = ContextCompat.getColor(getContext(), R.color.menu_button_color);
         continueGameButton.setOnClickListener(watchAdOrBuyTokenOnClickListener);
         break;
@@ -129,13 +137,20 @@ public class ContinueGameBtnView {
           @Override
           public void onActivityResult(ActivityResult result) {
             if (result.getResultCode() == ContinueGameChoiceDialogActivity.RESULT_TOKEN_ACQUIRED) {
-              hostActivity.continueGame();
+              checkIfUserHasContinueToken();
+            } else if (result.getResultCode() == ContinueGameChoiceDialogActivity.RESULT_AD_WATCHED) {
+              promptUserToContinueGame();
+              setGameButtonState(ContinueGameBtnState.ALLOW_CONTINUE_GAME);
             } else {
               Toast.makeText(getContext(), R.string.continue_game_token_not_aquired,
                   Toast.LENGTH_SHORT).show();
             }
           }
         }).launch(ContinueGameChoiceDialogActivity.createIntent(getContext()));
+  }
+
+  private void promptUserToContinueGame() {
+    Toast.makeText(getContext(), R.string.prompt_user_to_continue, Toast.LENGTH_SHORT).show();
   }
 
   private Context getContext() {

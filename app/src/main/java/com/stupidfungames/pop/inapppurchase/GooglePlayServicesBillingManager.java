@@ -3,6 +3,7 @@ package com.stupidfungames.pop.inapppurchase;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.util.Pair;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -46,6 +47,9 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
   private HostActivity hostActivity;
   private GooglePlayServicesAuthManager authManager;
   private BillingClient billingClient;
+
+  @Nullable
+  private Pair<SkuDetails, SettableFuture<Purchase>> productPurchaseFuture;
 
   private interface BillingClientReadyCallback {
 
@@ -96,39 +100,58 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
   }
 
   /**
-   * Returns a purchase result future which tells you whether or not the purchase was successful.
+   * Returns a listenable future which gets set to the Purchase that is successfully made. Else
+   * fails.
    */
-  public ListenableFuture<Boolean> purchase(final Activity activity, final SkuDetails skuDetails) {
+  public ListenableFuture<Purchase> purchase(final Activity activity, final SkuDetails skuDetails) {
     ListenableFuture<BillingResult> result = launchPurchaseFlow(activity, skuDetails);
-    final SettableFuture<Boolean> purchaseResultFuture = SettableFuture.create();
+    if (productPurchaseFuture != null) {
+      onPurchaseFailed();
+    }
+    productPurchaseFuture = new Pair<>(skuDetails, SettableFuture.<Purchase>create());
     Futures.addCallback(result, new FutureCallback<BillingResult>() {
       @Override
       public void onSuccess(@NullableDecl BillingResult result) {
-        int toastResId = R.string.generic_error;
+        int toastResId = -1;
         if (result != null) {
           switch (result.getResponseCode()) {
             case BillingResponseCode.OK:
-              toastResId = R.string.purchase_succesful;
-              purchaseResultFuture.set(true);
               break;
             case BillingResponseCode.USER_CANCELED:
               toastResId = R.string.purchase_canceled;
-              purchaseResultFuture.set(false);
+              onPurchaseFailed();
               break;
             default:
-              purchaseResultFuture.set(false);
+              onPurchaseFailed();
           }
         }
-        Toast.makeText(activity, toastResId, Toast.LENGTH_LONG).show();
+        if (toastResId != -1) {
+          Toast.makeText(activity, toastResId, Toast.LENGTH_LONG).show();
+        }
       }
 
       @Override
       public void onFailure(Throwable t) {
         Toast.makeText(activity, R.string.generic_error, Toast.LENGTH_LONG).show();
-        purchaseResultFuture.set(false);
+        onPurchaseFailed();
       }
     }, ContextCompat.getMainExecutor(activity));
-    return purchaseResultFuture;
+    return productPurchaseFuture.second;
+  }
+
+  private void onPurchaseFailed() {
+    if (productPurchaseFuture != null && productPurchaseFuture.second != null) {
+      productPurchaseFuture.second.setException(new IllegalStateException("Purchase failed"));
+    }
+    productPurchaseFuture = null;
+  }
+
+  private void onPurchaseSuccess(Purchase purchase) {
+    if (productPurchaseFuture != null && productPurchaseFuture.second != null
+        && productPurchaseFuture.first != null && productPurchaseFuture.first.getSku()
+        .equals(purchase.getSku())) {
+      productPurchaseFuture.second.set(purchase);
+    }
   }
 
   /**
@@ -320,7 +343,8 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
 
   @Override
   public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> list) {
-    if (list == null) {
+    if (billingResult.getResponseCode() == BillingResponseCode.USER_CANCELED || list == null) {
+      onPurchaseFailed();
       return;
     }
     for (final Purchase purchase : list) {
@@ -334,6 +358,10 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
                     "Purchase " + purchase.getOrderId() + " acknowledged result " + billingResult);
               }
             });
+      }
+      if (productPurchaseFuture != null && productPurchaseFuture.first != null
+          && productPurchaseFuture.first.getSku().equals(purchase.getSku())) {
+        onPurchaseSuccess(purchase);
       }
     }
   }

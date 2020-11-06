@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.stupidfungames.pop.androidui.GameMenuButton;
+import com.stupidfungames.pop.androidui.LoadingSpinner;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.continuegame.ContinueGameBtnView;
 import com.stupidfungames.pop.continuegame.ContinueGameBtnView.ContinueGameBtnViewHostActivity;
@@ -22,7 +23,7 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
   public static final String SCORE_EXTRA = "score_extra";
   public static final String CONTINUE_SAVE_GAME_EXTRA = "continue_save_game";
   private ValueAnimator logoAnimator;
-
+  private GooglePlayServicesAuthManager authManager;
   private ContinueGameBtnView continueGameBtnView;
 
   public static Intent newIntent(Context context, int score, SaveGame continueGame) {
@@ -39,8 +40,12 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
     super.onCreate(savedInstanceState);
     setContentView(R.layout.game_over_layout);
 
+    authManager = new GooglePlayServicesAuthManager(this);
+
     continueGameBtnView = new ContinueGameBtnView(
-        (GameMenuButton) findViewById(R.id.continue_game_btn), this);
+        (LoadingSpinner) findViewById(R.id.loading_spinner),
+        (GameMenuButton) findViewById(R.id.continue_game_btn),
+        this);
 
     findViewById(R.id.new_game_btn).setOnClickListener(new View.OnClickListener() {
       @Override
@@ -122,7 +127,6 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
 
   @Override
   public GooglePlayServicesAuthManager getAuthManager() {
-    return null;
+    return authManager;
   }
-
 }

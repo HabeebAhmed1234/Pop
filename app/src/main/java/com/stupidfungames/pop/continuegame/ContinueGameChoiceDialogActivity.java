@@ -12,6 +12,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.SkuDetails;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -35,6 +36,7 @@ public class ContinueGameChoiceDialogActivity extends GameNeonDialogActivity imp
     HostActivity {
 
   public static final int RESULT_TOKEN_ACQUIRED = 1;
+  public static final int RESULT_AD_WATCHED = 2;
 
   private GooglePlayServicesAuthManager authManager;
   private GooglePlayServicesBillingManager googlePlayServicesBillingManager;
@@ -76,7 +78,7 @@ public class ContinueGameChoiceDialogActivity extends GameNeonDialogActivity imp
       @Override
       public void onActivityResult(ActivityResult result) {
         if (result.getResultCode() == RESULT_AD_WATCHED) {
-          onTokenAquired();
+          onAdWatched();
         } else {
           showMustChooseOptionError();
         }
@@ -107,16 +109,20 @@ public class ContinueGameChoiceDialogActivity extends GameNeonDialogActivity imp
   private void purchaseGameContinueToken(SkuDetails gameContinueTokenSkuDetails) {
     Futures.addCallback(
         googlePlayServicesBillingManager.purchase(this, gameContinueTokenSkuDetails),
-        new FutureCallback<Boolean>() {
+        new FutureCallback<Purchase>() {
           @Override
-          public void onSuccess(@NullableDecl Boolean result) {
-            if (result != null && result == true) {
+          public void onSuccess(@NullableDecl Purchase result) {
+            if (result != null) {
               onTokenAquired();
+            } else {
+              showMustChooseOptionError();
             }
           }
 
           @Override
-          public void onFailure(Throwable t) {}
+          public void onFailure(Throwable t) {
+            showMustChooseOptionError();
+          }
         }, ContextCompat.getMainExecutor(this));
   }
 
@@ -141,6 +147,11 @@ public class ContinueGameChoiceDialogActivity extends GameNeonDialogActivity imp
 
   private void onTokenAquired() {
     setResult(RESULT_TOKEN_ACQUIRED);
+    finish();
+  }
+
+  private void onAdWatched() {
+    setResult(RESULT_AD_WATCHED);
     finish();
   }
 

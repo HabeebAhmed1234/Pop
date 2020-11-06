@@ -52,6 +52,7 @@
   <string name="buy_game_continue_token">Buy a game continue token [$0.99]</string>
   <string name="continue_game_token_not_aquired">You must acquire a continue game token to continue your game.</string>
   <string name="must_choose_option_to_continue">You must choose one of the options to continue your game.</string>
+  <string name="prompt_user_to_continue">You can continue to resume your game!</string>
 
   <!-- product titles -->
   <string name="title_game_continue_token">Continue Game Token</string>
