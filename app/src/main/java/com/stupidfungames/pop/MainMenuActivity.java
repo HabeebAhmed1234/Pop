@@ -12,6 +12,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.stupidfungames.pop.androidui.GameMenuButton;
 import com.stupidfungames.pop.androidui.LoadingSpinner;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
@@ -38,6 +41,9 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        MobileAds.initialize(this);
+
         authManager = new GooglePlayServicesAuthManager(this);
         saveGameManager = new SaveGameManager(this, this);
 
@@ -77,6 +83,8 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
 
         animateLogo();
         authManager.maybeLoginOnAppStart(this);
+
+        ((AdView)findViewById(R.id.adView)).loadAd(((new AdRequest.Builder()).build()));
     }
 
     private void openStore() {
