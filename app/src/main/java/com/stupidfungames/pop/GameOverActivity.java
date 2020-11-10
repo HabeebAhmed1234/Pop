@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.stupidfungames.pop.androidui.GameMenuButton;
 import com.stupidfungames.pop.androidui.LoadingSpinner;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
@@ -70,6 +72,8 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
 
     saveGameManager = new SaveGameManager(this, this);
     saveGameManager.deleteSaveGame();
+
+    ((AdView)findViewById(R.id.adView)).loadAd(((new AdRequest.Builder()).build()));
   }
 
   private int getGameOverScore() {

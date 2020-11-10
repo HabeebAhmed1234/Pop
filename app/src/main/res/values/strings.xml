@@ -2,6 +2,9 @@
 <resources>
   <string name="app_id">120569614320</string>
   <string name="app_name">Pop</string>
+  <string name="test_banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+  <string name="test_interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+
   <string name="new_game_text">New Game</string>
   <string name="continue_game_text">Continue Game</string>
   <string name="continue_game_text_with_ad">Watch Ad to Continue Game</string>

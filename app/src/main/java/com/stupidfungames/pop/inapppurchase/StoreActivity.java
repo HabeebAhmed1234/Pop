@@ -8,6 +8,8 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil.ItemCallback;
 import com.android.billingclient.api.SkuDetails;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.list.BindableViewHolder;
@@ -57,6 +59,8 @@ public class StoreActivity extends LoadableListWithPreviewBaseActivity<SkuDetail
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     billingManager = new GooglePlayServicesBillingManager(this);
     super.onCreate(savedInstanceState);
+
+    ((AdView)findViewById(R.id.adView)).loadAd(((new AdRequest.Builder()).build()));
   }
 
   @Override

@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.DiffUtil.ItemCallback;
 import com.android.billingclient.api.BillingClient.BillingResponseCode;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.Purchase.PurchasesResult;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -78,6 +80,7 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<Purchase>
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     billingManager = new GooglePlayServicesBillingManager(this);
     super.onCreate(savedInstanceState);
+    ((AdView)findViewById(R.id.adView)).loadAd(((new AdRequest.Builder()).build()));
   }
 
   @Override
