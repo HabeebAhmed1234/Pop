@@ -17,6 +17,7 @@ import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.continuegame.ContinueGameBtnView;
 import com.stupidfungames.pop.continuegame.ContinueGameBtnView.ContinueGameBtnViewHostActivity;
 import com.stupidfungames.pop.savegame.SaveGame;
+import com.stupidfungames.pop.savegame.SaveGameManager;
 
 public class GameOverActivity extends AppCompatActivity implements ContinueGameBtnViewHostActivity {
 
@@ -25,6 +26,7 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
   private ValueAnimator logoAnimator;
   private GooglePlayServicesAuthManager authManager;
   private ContinueGameBtnView continueGameBtnView;
+  private SaveGameManager saveGameManager;
 
   public static Intent newIntent(Context context, int score, SaveGame continueGame) {
     Intent intent = new Intent(context, GameOverActivity.class);
@@ -65,6 +67,9 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
         .setText(Integer.toString(getGameOverScore()));
 
     animateGameOver();
+
+    saveGameManager = new SaveGameManager(this, this);
+    saveGameManager.deleteSaveGame();
   }
 
   private int getGameOverScore() {

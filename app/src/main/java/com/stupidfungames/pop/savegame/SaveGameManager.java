@@ -110,6 +110,19 @@ public class SaveGameManager implements LoginListener {
         playServicesSaveGameManager.save(SAVE_GAME_NAME, newSaveGame);
     }
 
+    public void deleteSaveGame() {
+        LocalSaveGameManager.delete(context);
+
+        if (!authManager.isLoggedIn()) {
+            Log.e(TAG, "Delete remote copy of save game");
+            return;
+        }
+
+        // Save to google
+        playServicesSaveGameManager.delete(SAVE_GAME_NAME);
+
+    }
+
     public void loadGame(GoogleSignInAccount account) {
         // Try loading from Google
         Futures.addCallback(playServicesSaveGameManager.load(SAVE_GAME_NAME, account),

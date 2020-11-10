@@ -28,4 +28,7 @@ class LocalSaveGameManager {
     String json = new Gson().toJson(newSaveGame);
     GamePreferencesManager.set(context, LOCAL_SAVE_GAME_KEY, json);
   }
+  public static void delete(Context context) {
+    GamePreferencesManager.remove(context, LOCAL_SAVE_GAME_KEY);
+  }
 }

@@ -77,6 +77,31 @@ public class GooglePlayServicesSaveManager<T extends Serializable> {
         });
   }
 
+  public void delete(String name) {
+    final SnapshotsClient snapshotsClient =
+        Games.getSnapshotsClient(context, GoogleSignIn.getLastSignedInAccount(context));
+
+    // In the case of a conflict, the most recently modified version of this snapshot will be used.
+    int conflictResolutionPolicy = SnapshotsClient.RESOLUTION_POLICY_MOST_RECENTLY_MODIFIED;
+
+    // Open the saved game using its name.
+    snapshotsClient.open(name, true, conflictResolutionPolicy)
+        .addOnFailureListener(new OnFailureListener() {
+          @Override
+          public void onFailure(@NonNull Exception e) {
+            Log.e(TAG, "Error while opening Snapshot.", e);
+          }
+        }).continueWith(new Continuation<SnapshotsClient.DataOrConflict<Snapshot>, byte[]>() {
+      @Override
+      public byte[] then(@NonNull Task<SnapshotsClient.DataOrConflict<Snapshot>> task) throws Exception {
+        Snapshot snapshot = task.getResult().getData();
+        snapshotsClient.delete(snapshot.getMetadata());
+        return null;
+      }
+    });
+
+  }
+
   public ListenableFuture<T> load(final String name, final GoogleSignInAccount account) {
     SnapshotsClient snapshotsClient = Games.getSnapshotsClient(context, account);
     final SettableFuture<T> future = SettableFuture.create();

@@ -12,7 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
-import com.stupidfungames.pop.backgroundmusic.BackgroundMusicBaseEntity;
+import com.stupidfungames.pop.backgroundmusic.BackgroundMusicEntity;
 import com.stupidfungames.pop.ballandchain.BallAndChainManagerBaseEntity;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
@@ -20,6 +20,7 @@ import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity;
 import com.stupidfungames.pop.bubbletimeout.BubblesLifecycleManagerEntity;
 import com.stupidfungames.pop.difficulty.GameDifficultyEntity;
+import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
 import com.stupidfungames.pop.hudentities.ScoreHudEntity;
 import com.stupidfungames.pop.hudentities.TimerHudEntity;
@@ -109,7 +110,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(GameSoundsManager.class, new GameSoundsManager(this))
             .bind(GameMusicResourceManagerBaseEntity.class,
                 new GameMusicResourceManagerBaseEntity(this))
-            .bind(BackgroundMusicBaseEntity.class, new BackgroundMusicBaseEntity(this))
+            .bind(BackgroundMusicEntity.class, new BackgroundMusicEntity(this))
             .bind(GameFontsManager.class, new GameFontsManager(this))
             .bind(GameAnimationManager.class, new GameAnimationManager(this))
             .bind(LevelEntity.class, new LevelEntity(this))

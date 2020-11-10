@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.GameSettingChangedEventPayload;
@@ -56,6 +57,15 @@ public class GamePreferencesManager {
       }
     });
     notifyChanged(key);
+  }
+
+  public static void remove(Context context, final String key) {
+    runMutation(context, new Mutation() {
+      @Override
+      public void mutate(Editor editor) {
+        editor.remove(key);
+      }
+    });
   }
 
   private static void notifyChanged(final String key) {

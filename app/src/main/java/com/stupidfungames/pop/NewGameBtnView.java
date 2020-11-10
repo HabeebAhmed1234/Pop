@@ -23,7 +23,6 @@ public class NewGameBtnView {
     this.context = newGameBtn.getContext();
     this.newGameBtn = newGameBtn;
     this.hostActivity = hostActivity;
-
     initClickListeners();
   }
 

@@ -12,6 +12,8 @@ import java.util.Map;
 
 public class SaveGame implements Serializable {
 
+    public static SaveGame EMPTY = new SaveGame();
+
     public static class WallCoord implements Serializable{
         public float x1;
         public float y1;
