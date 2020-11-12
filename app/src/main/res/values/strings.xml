@@ -8,6 +8,9 @@
 
   <string name="new_game_text">New Game</string>
   <string name="continue_game_text">Continue Game</string>
+  <string name="share">Share</string>
+  <string name="game_share_string_title">Share Pop! with</string>
+  <string name="game_share_string">Try playing Pop - Bubble Popping Game! \n https://play.google.com/store/apps/details?id=com.stupidfungames.pop</string>
   <string name="continue_game_text_with_ad">Watch Ad to Continue Game</string>
   <string name="continue_game_text_with_token_purchase">Buy token to Continue Game</string>
   <string name="load_game_text">Resume Game</string>

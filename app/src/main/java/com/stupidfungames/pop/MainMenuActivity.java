@@ -35,6 +35,7 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
     private PlayerProfileView playerProfileView;
     private NewGameBtnView newGameBtnView;
     private LoadGameBtnView loadGameBtnView;
+    private ShareBtnView shareBtnView;
 
     private ValueAnimator logoAnimator;
 
@@ -80,6 +81,8 @@ public class MainMenuActivity extends AppCompatActivity implements HostActivity 
             (LoadingSpinner) findViewById(R.id.loading_spinner),
             (GameMenuButton) findViewById(R.id.load_game_btn),
             this);
+
+        shareBtnView = new ShareBtnView(findViewById(R.id.share_btn), this);
 
         animateLogo();
         authManager.maybeLoginOnAppStart(this);
