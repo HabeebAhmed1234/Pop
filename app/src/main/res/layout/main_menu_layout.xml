@@ -32,35 +32,55 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <FrameLayout
+        <com.stupidfungames.pop.androidui.GameMenuText
+          android:id="@+id/logo"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginBottom="@dimen/title_margin_bottom"
-          android:clipToPadding="false">
+          android:clipToPadding="false"
+          android:gravity="center"
+          android:text="@string/app_name"
+          android:textSize="150sp"
+          app:glow_color="@color/menu_button_color" />
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="@dimen/between_btn_padding"
+          android:gravity="center"
+          android:orientation="horizontal">
+
 
           <com.stupidfungames.pop.androidui.GameMenuText
-            android:id="@+id/logo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:clipToPadding="false"
-            android:text="@string/app_name"
-            android:textSize="150sp"
-            app:glow_color="@color/menu_button_color" />
-
-          <com.stupidfungames.pop.androidui.GameMenuText
-            android:id="@+id/share_btn"
+            android:id="@+id/share_btn_android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
             android:clipToPadding="false"
+            android:padding="4dp"
             android:text="@string/share"
             android:textSize="20sp"
             app:glow_color="@color/menu_button_color" />
-        </FrameLayout>
+
+          <com.stupidfungames.pop.androidui.GameMenuText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:clipToPadding="false"
+            android:padding="4dp"
+            android:text="@string/vertical_divider"
+            android:textSize="20sp"
+            app:glow_color="@color/menu_button_color" />
+
+          <com.stupidfungames.pop.androidui.GameMenuText
+            android:id="@+id/share_btn_fb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:padding="4dp"
+            android:text="@string/share_facebook"
+            android:textSize="20sp"
+            app:glow_color="@color/menu_button_color" />
+        </LinearLayout>
 
         <com.stupidfungames.pop.androidui.GameMenuButton
           android:id="@+id/new_game_btn"
