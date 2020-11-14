@@ -1,9 +1,5 @@
 package com.stupidfungames.pop;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.stupidfungames.pop.androidui.BlinkAnimator;
 import com.stupidfungames.pop.androidui.GameMenuButton;
 import com.stupidfungames.pop.androidui.LoadingSpinner;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
@@ -38,7 +35,7 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
   private LoadGameBtnView loadGameBtnView;
   private ShareBtnView shareBtnView;
 
-  private ValueAnimator logoAnimator;
+  private BlinkAnimator blinkAnimator = new BlinkAnimator();
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,10 +82,16 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
     shareBtnView = new ShareBtnView(findViewById(R.id.share_btn_android),
         findViewById(R.id.share_btn_fb), this);
 
-    animateLogo();
+    animate();
     authManager.maybeLoginOnAppStart(this);
 
     ((AdView) findViewById(R.id.adView)).loadAd(((new AdRequest.Builder()).build()));
+  }
+
+  private void animate() {
+    blinkAnimator.animate(findViewById(R.id.logo));
+    blinkAnimator.animate(findViewById(R.id.share_btn_android));
+    blinkAnimator.animate(findViewById(R.id.share_btn_fb));
   }
 
   private void openStore() {
@@ -103,32 +106,10 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
     this.finish();
   }
 
-  private void animateLogo() {
-    final View logo = findViewById(R.id.logo);
-    logoAnimator = ObjectAnimator.ofFloat(1, 0.5f, 1, 1, 1, 1, 1, 1, 1, 1, 0.7f, 1);
-    logoAnimator.setDuration(2000);
-    logoAnimator.start();
-    logoAnimator.setRepeatMode(ValueAnimator.RESTART);
-
-    logoAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-      @Override
-      public void onAnimationUpdate(ValueAnimator animation) {
-        logo.setAlpha((float) animation.getAnimatedValue());
-      }
-    });
-    logoAnimator.addListener(new AnimatorListenerAdapter() {
-      @Override
-      public void onAnimationEnd(Animator animation) {
-        super.onAnimationEnd(animation);
-        animation.start();
-      }
-    });
-  }
-
   @Override
   protected void onDestroy() {
     super.onDestroy();
-    logoAnimator.end();
+    blinkAnimator.onDestroy();
   }
 
   @Override
