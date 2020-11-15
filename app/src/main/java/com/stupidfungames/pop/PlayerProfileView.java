@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.games.Games;
@@ -51,7 +52,8 @@ public class PlayerProfileView implements LoginListener {
   }
 
   @Override
-  public void onLoginStart() {}
+  public void onLoginStart() {
+  }
 
   @Override
   public void onLoggedIn(GoogleSignInAccount account) {
@@ -65,11 +67,15 @@ public class PlayerProfileView implements LoginListener {
 
   @Override
   public void onLoginFailed(Exception e) {
+    Toast.makeText(hostActivity.getContext(), R.string.signin_other_error, Toast.LENGTH_SHORT)
+        .show();
     renderLoggedOutState();
   }
 
   @Override
   public void onLoginCanceled() {
+    Toast.makeText(hostActivity.getContext(), R.string.signin_canceled, Toast.LENGTH_SHORT)
+        .show();
     renderLoggedOutState();
   }
 
