@@ -18,6 +18,7 @@ import com.stupidfungames.pop.androidui.LoadingSpinner;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.inapppurchase.EquipActivity;
 import com.stupidfungames.pop.inapppurchase.StoreActivity;
+import com.stupidfungames.pop.notifications.UserNudgeNotificationManager;
 import com.stupidfungames.pop.savegame.SaveGameManager;
 
 public class MainMenuActivity extends AppCompatActivity implements ShareHostActivity {
@@ -86,6 +87,12 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
     authManager.maybeLoginOnAppStart(this);
 
     ((AdView) findViewById(R.id.adView)).loadAd(((new AdRequest.Builder()).build()));
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    new UserNudgeNotificationManager().scheduleNudgeNotifications(this);
   }
 
   private void animate() {

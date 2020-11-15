@@ -5,10 +5,14 @@ import com.stupidfungames.pop.ads.GameAdsManager;
 
 public class GameApplication extends Application {
 
-
   @Override
   public void onCreate() {
     super.onCreate();
     GameAdsManager.get().initialize(this);
+  }
+
+  @Override
+  public void onTerminate() {
+    super.onTerminate();
   }
 }
