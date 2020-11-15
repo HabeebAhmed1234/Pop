@@ -41,6 +41,7 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    scheduleNudgeNotifications();
     MobileAds.initialize(this);
 
     authManager = new GooglePlayServicesAuthManager(this);
@@ -89,9 +90,7 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
     ((AdView) findViewById(R.id.adView)).loadAd(((new AdRequest.Builder()).build()));
   }
 
-  @Override
-  protected void onResume() {
-    super.onResume();
+  private void scheduleNudgeNotifications() {
     new UserNudgeNotificationManager().scheduleNudgeNotifications(this);
   }
 
