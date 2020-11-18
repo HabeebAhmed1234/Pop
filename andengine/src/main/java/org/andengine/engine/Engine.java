@@ -304,7 +304,12 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 	}
 
 	public void unregisterUpdateHandler(final IUpdateHandler pUpdateHandler) {
-		this.mUpdateHandlers.remove(pUpdateHandler);
+		runOnUpdateThread(new Runnable() {
+			@Override
+			public void run() {
+				mUpdateHandlers.remove(pUpdateHandler);
+			}
+		});
 	}
 
 	public void clearUpdateHandlers() {

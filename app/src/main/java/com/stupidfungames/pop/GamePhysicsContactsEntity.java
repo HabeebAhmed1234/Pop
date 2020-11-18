@@ -48,22 +48,32 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
   @Override
   public void beginContact(final Contact contact) {
     if (isContactListenedTo(contact)) {
-      @Nullable Set<GameContactListener> listeners = getListenersFromContact(contact);
+      @Nullable final Set<GameContactListener> listeners = getListenersFromContact(contact);
       if (listeners == null) {
         return;
       }
-      notifyBeginContact(listeners, contact.m_fixtureA, contact.m_fixtureB);
+      physicsWorld.postRunnable(new Runnable() {
+        @Override
+        public void run() {
+          notifyBeginContact(listeners, contact.m_fixtureA, contact.m_fixtureB);
+        }
+      });
     }
   }
 
   @Override
   public void endContact(final Contact contact) {
     if (isContactListenedTo(contact)) {
-      @Nullable Set<GameContactListener> listeners = getListenersFromContact(contact);
+      @Nullable final Set<GameContactListener> listeners = getListenersFromContact(contact);
       if (listeners == null) {
         return;
       }
-      notifyEndContact(listeners, contact.m_fixtureA, contact.m_fixtureB);
+      physicsWorld.postRunnable(new Runnable() {
+        @Override
+        public void run() {
+          notifyEndContact(listeners, contact.m_fixtureA, contact.m_fixtureB);
+        }
+      });
     }
   }
 
