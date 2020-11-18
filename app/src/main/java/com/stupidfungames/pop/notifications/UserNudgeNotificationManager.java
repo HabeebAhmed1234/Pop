@@ -40,7 +40,6 @@ public class UserNudgeNotificationManager extends BroadcastReceiver {
       long notificationTime = System.currentTimeMillis() + INTERVAL_MILLIS * (scheduledAlarms + 1);
       scheduledAlarms++;
       am.set(AlarmManager.RTC_WAKEUP, notificationTime, contentIntent);
-      Log.d("asdasd", "Scheduled notification with id " + i + " for time " + notificationTime);
     }
   }
 
