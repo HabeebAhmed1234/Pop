@@ -8,11 +8,11 @@ import com.stupidfungames.pop.binder.BinderEnity;
  * Manages the ball and chain tool that gcan be used to pop bubbles by the user swinging around a
  * spike ball on a chain.
  */
-public class BallAndChainManagerBaseEntity extends BaseEntity {
+public class BallAndChainManagerEntity extends BaseEntity {
 
   private BallAndChain ballAndChain;
 
-  public BallAndChainManagerBaseEntity(BinderEnity parent) {
+  public BallAndChainManagerEntity(BinderEnity parent) {
     super(parent);
   }
 
@@ -30,13 +30,8 @@ public class BallAndChainManagerBaseEntity extends BaseEntity {
 
   @Override
   public void onCreateScene() {
-    physicsWorld.postRunnable(new Runnable() {
-      @Override
-      public void run() {
-        ballAndChain = get(BallAndChainCreatorEntity.class).createBallAndChain();
-        get(BallAndChainColorEntity.class).setBallAndChain(ballAndChain);
-        get(BallAndChainHandleEntity.class).setHandleJoint(ballAndChain.handle);
-      }
-    });
+    ballAndChain = get(BallAndChainCreatorEntity.class).createBallAndChain();
+    get(BallAndChainColorEntity.class).setBallAndChain(ballAndChain);
+    get(BallAndChainHandleEntity.class).setHandleJoint(ballAndChain.handle);
   }
 }

@@ -1,18 +1,23 @@
 package com.stupidfungames.pop.walls;
 
-import android.content.Context;
+import static org.andengine.input.touch.TouchEvent.ACTION_CANCEL;
+import static org.andengine.input.touch.TouchEvent.ACTION_DOWN;
+import static org.andengine.input.touch.TouchEvent.ACTION_MOVE;
+import static org.andengine.input.touch.TouchEvent.ACTION_OUTSIDE;
+import static org.andengine.input.touch.TouchEvent.ACTION_UP;
 
+import android.content.Context;
 import android.util.Pair;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameFixtureDefs;
-import com.stupidfungames.pop.binder.BinderEnity;
-import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
 import com.stupidfungames.pop.GameSceneTouchListenerEntity;
+import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.collision.CollisionFilters;
 import com.stupidfungames.pop.entitymatchers.WallsEntityMatcher;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.fixturedefdata.WallEntityUserData;
+import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
 import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.physics.util.Vec2Pool;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
@@ -21,8 +26,8 @@ import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.savegame.SaveGame;
 import com.stupidfungames.pop.savegame.SaveGame.WallCoord;
 import com.stupidfungames.pop.utils.GeometryUtils;
-
 import java.util.ArrayList;
+import java.util.List;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.primitive.Line;
 import org.andengine.entity.scene.Scene;
@@ -33,14 +38,6 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
-
-import java.util.List;
-
-import static org.andengine.input.touch.TouchEvent.ACTION_CANCEL;
-import static org.andengine.input.touch.TouchEvent.ACTION_DOWN;
-import static org.andengine.input.touch.TouchEvent.ACTION_MOVE;
-import static org.andengine.input.touch.TouchEvent.ACTION_OUTSIDE;
-import static org.andengine.input.touch.TouchEvent.ACTION_UP;
 
 /**
  * Depending on if walls are toggled on allows for the creation of walls on the screen
@@ -188,23 +185,18 @@ public class WallsCreatorEntity extends BaseEntity implements
     final FixtureDef wallFixtureDef = GameFixtureDefs.WALL_FIXTURE_DEF;
     wallFixtureDef.setFilter(CollisionFilters.WALL_FILTER);
     wallFixtureDef.setUserData(wallUserData);
-    physicsWorld.postRunnable(new Runnable() {
-      @Override
-      public void run() {
-        Body wallBody = PhysicsFactory
-            .createLineBody(physicsWorld, wallLine, BodyType.STATIC, wallFixtureDef);
-        wallUserData.wallDeleteIcon = WallDeleteIconFactory
-            .getWallDeletionSprite(get(Context.class), wallLine, wallBody,
-                get(GameTexturesManager.class), vertexBufferObjectManager);
-        addToSceneWithTouch(wallUserData.wallDeleteIcon,
-            get(WallsDeletionHandlerFactoryEntity.class).getWallDeletionHandler());
-        wallUserData.wallDeleteIcon.setVisible(isVisible);
+    Body wallBody = PhysicsFactory
+        .createLineBody(physicsWorld, wallLine, BodyType.STATIC, wallFixtureDef);
+    wallUserData.wallDeleteIcon = WallDeleteIconFactory
+        .getWallDeletionSprite(get(Context.class), wallLine, wallBody,
+            get(GameTexturesManager.class), vertexBufferObjectManager);
+    addToSceneWithTouch(wallUserData.wallDeleteIcon,
+        get(WallsDeletionHandlerFactoryEntity.class).getWallDeletionHandler());
+    wallUserData.wallDeleteIcon.setVisible(isVisible);
 
-        if (notifyWallPlaced) {
-          EventBus.get().sendEvent(GameEvent.WALL_PLACED);
-        }
-      }
-    });
+    if (notifyWallPlaced) {
+      EventBus.get().sendEvent(GameEvent.WALL_PLACED);
+    }
   }
 
   private void spanWall(TouchEvent touchEvent) {

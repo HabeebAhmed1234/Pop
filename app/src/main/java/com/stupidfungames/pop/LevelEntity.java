@@ -2,12 +2,9 @@ package com.stupidfungames.pop;
 
 import static com.stupidfungames.pop.GameFixtureDefs.WALL_FIXTURE_DEF;
 
-import android.content.Context;
-import androidx.annotation.DrawableRes;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.collision.CollisionFilters;
 import com.stupidfungames.pop.fixturedefdata.LevelWallEntityUserData;
-import com.stupidfungames.pop.inapppurchase.backgrounds.EquipBackgroundHelper;
 import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
@@ -18,7 +15,6 @@ import org.andengine.entity.primitive.Line;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.region.ITextureRegion;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
@@ -56,55 +52,35 @@ public class LevelEntity extends BaseEntity {
   }
 
   private void createLeftLevelWall() {
-    physicsWorld.postRunnable(new Runnable() {
-      @Override
-      public void run() {
-        PhysicsFactory.createBoxBody(physicsWorld,
-            new Rectangle(0, 0, 2, levelHeight, vertexBufferObjectManager),
-            BodyType.STATIC,
-            levelWallFixtureDef);
-      }
-    });
+    PhysicsFactory.createBoxBody(physicsWorld,
+        new Rectangle(0, 0, 2, levelHeight, vertexBufferObjectManager),
+        BodyType.STATIC,
+        levelWallFixtureDef);
   }
 
   private void createRightLevelWall() {
-    physicsWorld.postRunnable(new Runnable() {
-      @Override
-      public void run() {
-        PhysicsFactory.createBoxBody(physicsWorld,
-            new Rectangle(levelWidth - 2, 0, 2, levelHeight, vertexBufferObjectManager),
-            BodyType.STATIC,
-            levelWallFixtureDef);
-      }
-    });
+    PhysicsFactory.createBoxBody(physicsWorld,
+        new Rectangle(levelWidth - 2, 0, 2, levelHeight, vertexBufferObjectManager),
+        BodyType.STATIC,
+        levelWallFixtureDef);
   }
 
   private void createLeftFunnelWall() {
-    physicsWorld.postRunnable(new Runnable() {
-      @Override
-      public void run() {
-        PhysicsFactory.createLineBody(
-            physicsWorld,
-            new Line(0, 0, -RAMP_WIDTH, -RAMP_HEIGHT, vertexBufferObjectManager),
-            BodyType.STATIC,
-            levelWallFixtureDef);
-      }
-    });
+    PhysicsFactory.createLineBody(
+        physicsWorld,
+        new Line(0, 0, -RAMP_WIDTH, -RAMP_HEIGHT, vertexBufferObjectManager),
+        BodyType.STATIC,
+        levelWallFixtureDef);
   }
 
   private void createRightFunnelWall() {
     final float screenWidth = ScreenUtils.getSreenSize().widthPx;
-    physicsWorld.postRunnable(new Runnable() {
-      @Override
-      public void run() {
-        PhysicsFactory.createLineBody(
-            physicsWorld,
-            new Line(screenWidth, 0, screenWidth + RAMP_WIDTH, -RAMP_HEIGHT,
-                vertexBufferObjectManager),
-            BodyType.STATIC,
-            levelWallFixtureDef);
-      }
-    });
+    PhysicsFactory.createLineBody(
+        physicsWorld,
+        new Line(screenWidth, 0, screenWidth + RAMP_WIDTH, -RAMP_HEIGHT,
+            vertexBufferObjectManager),
+        BodyType.STATIC,
+        levelWallFixtureDef);
   }
 
   private Sprite getBackgroundSprite() {

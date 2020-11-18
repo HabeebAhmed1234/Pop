@@ -126,18 +126,13 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
     final FixtureDef bulletFixtureDef = GameFixtureDefs.TURRET_BULLET_FIXTURE_DEF;
     bulletFixtureDef.setFilter(CollisionFilters.BULLET_FILTER);
     bulletFixtureDef.setUserData(userData);
-    physicsWorld.postRunnable(new Runnable() {
-      @Override
-      public void run() {
-        final Body bulletBody = PhysicsFactory
-            .createCircleBody(physicsWorld, bulletSprite, BodyType.DYNAMIC, bulletFixtureDef);
-        bulletBody.setGravityScale(0);
+    final Body bulletBody = PhysicsFactory
+        .createCircleBody(physicsWorld, bulletSprite, BodyType.DYNAMIC, bulletFixtureDef);
+    bulletBody.setGravityScale(0);
 
-        targetingMouseJointFuture.set(createBulletTargetingMouseJoint(bulletSprite, bulletBody));
-        addToScene(bulletSprite, bulletBody);
-        bulletBodyFuture.set(bulletBody);
-      }
-    });
+    targetingMouseJointFuture.set(createBulletTargetingMouseJoint(bulletSprite, bulletBody));
+    addToScene(bulletSprite, bulletBody);
+    bulletBodyFuture.set(bulletBody);
   }
 
   private MouseJoint createBulletTargetingMouseJoint(final Sprite sprite, final Body body) {

@@ -110,42 +110,27 @@ public abstract class BaseEntity extends BinderEnity implements
   }
 
   protected void linkPhysics(final IAreaShape entity, final Body body) {
-    physicsWorld.postRunnable(new Runnable() {
-      @Override
-      public void run() {
-        physicsWorld.registerPhysicsConnector(new PhysicsConnector(entity, body, true, true));
-      }
-    });
+    physicsWorld.registerPhysicsConnector(new PhysicsConnector(entity, body, true, true));
   }
 
   protected void removeFromScene(final Body body) {
-    physicsWorld.postRunnable(new Runnable() {
-      @Override
-      public void run() {
-        PhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager()
-            .findPhysicsConnectorByBody(body);
-        if (physicsConnector != null) {
-          physicsWorld.unregisterPhysicsConnector(physicsConnector);
-          removeFromSceneInternal(physicsConnector.getShape());
-        }
-        physicsWorld.destroyBody(body);
-      }
-    });
+    PhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager()
+        .findPhysicsConnectorByBody(body);
+    if (physicsConnector != null) {
+      physicsWorld.unregisterPhysicsConnector(physicsConnector);
+      removeFromSceneInternal(physicsConnector.getShape());
+    }
+    physicsWorld.destroyBody(body);
   }
 
   protected void removeFromScene(final IShape sprite) {
-    physicsWorld.postRunnable(new Runnable() {
-      @Override
-      public void run() {
-        PhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager()
-            .findPhysicsConnectorByShape(sprite);
-        if (physicsConnector != null) {
-          physicsWorld.unregisterPhysicsConnector(physicsConnector);
-          physicsWorld.destroyBody(physicsConnector.getBody());
-        }
-        removeFromSceneInternal(sprite);
-      }
-    });
+    PhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager()
+        .findPhysicsConnectorByShape(sprite);
+    if (physicsConnector != null) {
+      physicsWorld.unregisterPhysicsConnector(physicsConnector);
+      physicsWorld.destroyBody(physicsConnector.getBody());
+    }
+    removeFromSceneInternal(sprite);
   }
 
   protected boolean isInScene(final IEntity entity) {

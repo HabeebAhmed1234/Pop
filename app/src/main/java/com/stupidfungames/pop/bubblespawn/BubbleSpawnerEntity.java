@@ -130,16 +130,11 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
   }
 
   private void spawnStartingBubble(final float x, final float y) {
-    physicsWorld.postRunnable(new Runnable() {
-      @Override
-      public void run() {
-        BubbleType bubbleType = BubbleType.random();
-        Body body = spawnBubble(bubbleType, x, y, BubbleSize.LARGE);
-        EventBus.get().sendEvent(GameEvent.STARTING_BUBBLE_SPAWNED,
-            new StartingBubbleSpawnedEventPayload(bubbleType));
-        BubblePhysicsUtil.applyVelocity(body, 0f, (float) (SensorManager.GRAVITY_EARTH * 0.3 * 2));
-      }
-    });
+    BubbleType bubbleType = BubbleType.random();
+    Body body = spawnBubble(bubbleType, x, y, BubbleSize.LARGE);
+    EventBus.get().sendEvent(GameEvent.STARTING_BUBBLE_SPAWNED,
+        new StartingBubbleSpawnedEventPayload(bubbleType));
+    BubblePhysicsUtil.applyVelocity(body, 0f, (float) (SensorManager.GRAVITY_EARTH * 0.3 * 2));
   }
 
   /**

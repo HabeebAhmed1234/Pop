@@ -54,15 +54,10 @@ public class BubbleLossDetectorBaseEntity extends BaseEntity {
     final FixtureDef floorFixtureDef = FLOOR_SENSOR_FIXTURE_DEF;
     floorFixtureDef.setUserData(new FloorEntityUserData());
     floorFixtureDef.setFilter(CollisionFilters.WALL_FILTER);
-    physicsWorld.postRunnable(new Runnable() {
-      @Override
-      public void run() {
-        PhysicsFactory.createBoxBody(physicsWorld, floorDetector, BodyType.STATIC, floorFixtureDef);
-        get(GamePhysicsContactsEntity.class)
-            .addContactListener(BubbleEntityUserData.class, FloorEntityUserData.class,
-                contactListener);
-      }
-    });
+    PhysicsFactory.createBoxBody(physicsWorld, floorDetector, BodyType.STATIC, floorFixtureDef);
+    get(GamePhysicsContactsEntity.class)
+        .addContactListener(BubbleEntityUserData.class, FloorEntityUserData.class,
+            contactListener);
   }
 
   @Override

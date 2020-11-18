@@ -13,14 +13,13 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.backgroundmusic.BackgroundMusicEntity;
-import com.stupidfungames.pop.ballandchain.BallAndChainManagerBaseEntity;
+import com.stupidfungames.pop.ballandchain.BallAndChainManagerEntity;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity;
 import com.stupidfungames.pop.bubbletimeout.BubblesLifecycleManagerEntity;
 import com.stupidfungames.pop.difficulty.GameDifficultyEntity;
-import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
 import com.stupidfungames.pop.hudentities.ScoreHudEntity;
 import com.stupidfungames.pop.hudentities.TimerHudEntity;
@@ -143,7 +142,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(BubblePopperEntity.class, new BubblePopperEntity(this))
 
             .bind(GameIconsHostTrayEntity.class, new GameIconsHostTrayEntity(this))
-            .bind(BallAndChainManagerBaseEntity.class, new BallAndChainManagerBaseEntity(this))
+            .bind(BallAndChainManagerEntity.class, new BallAndChainManagerEntity(this))
             .bind(TurretsManagerEntity.class, new TurretsManagerEntity(this))
             .bind(WallsManagerBaseEntity.class, new WallsManagerBaseEntity(this))
             .bind(NukeManagerBaseEntity.class, new NukeManagerBaseEntity(this))

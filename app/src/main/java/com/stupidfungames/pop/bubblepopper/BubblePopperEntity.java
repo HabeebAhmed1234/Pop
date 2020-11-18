@@ -73,27 +73,22 @@ public class BubblePopperEntity extends BaseEntity implements EventBus.Subscribe
       final BubbleSpawnerEntity.BubbleSize oldBubbleSize,
       final Vec2 oldBubbleScenePosition,
       final BubbleSpawnerEntity.BubbleType bubbleType) {
-    physicsWorld.postRunnable(new Runnable() {
-      @Override
-      public void run() {
-        BubbleSpawnerEntity bubbleSpawnerEntity = get(BubbleSpawnerEntity.class);
-        Body leftBubble = bubbleSpawnerEntity.spawnBubble(
-            bubbleType,
-            oldBubbleScenePosition.x,
-            oldBubbleScenePosition.y,
-            oldBubbleSize.nextPoppedSize());
+    BubbleSpawnerEntity bubbleSpawnerEntity = get(BubbleSpawnerEntity.class);
+    Body leftBubble = bubbleSpawnerEntity.spawnBubble(
+        bubbleType,
+        oldBubbleScenePosition.x,
+        oldBubbleScenePosition.y,
+        oldBubbleSize.nextPoppedSize());
 
-        BubblePhysicsUtil.applyVelocity(leftBubble, -3f, -1.2f);
+    BubblePhysicsUtil.applyVelocity(leftBubble, -3f, -1.2f);
 
-        Body rightBubble = bubbleSpawnerEntity.spawnBubble(
-            bubbleType,
-            oldBubbleScenePosition.x,
-            oldBubbleScenePosition.y,
-            oldBubbleSize.nextPoppedSize());
+    Body rightBubble = bubbleSpawnerEntity.spawnBubble(
+        bubbleType,
+        oldBubbleScenePosition.x,
+        oldBubbleScenePosition.y,
+        oldBubbleSize.nextPoppedSize());
 
-        BubblePhysicsUtil.applyVelocity(rightBubble, 3f, -1.2f);
-      }
-    });
+    BubblePhysicsUtil.applyVelocity(rightBubble, 3f, -1.2f);
   }
 
   private void increaseScore(float sceneX, float sceneY) {
