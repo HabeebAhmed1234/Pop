@@ -28,6 +28,20 @@ public class EventBus {
     }
     private EventBus() {}
 
+
+
+    public void printSubscriberClasses() {
+        Log.d("asdasd", "list of classes still subscribed to events:");
+        for (GameEvent event : mEventSubscribers.keySet()) {
+            Log.d("asdasd", "event name : " + event);
+            for (Subscriber subscriber : mEventSubscribers.get(event)) {
+                Log.d("asdasd", subscriber.getClass().getSimpleName());
+            }
+        }
+    }
+
+
+
     public boolean containsSubscriber(GameEvent event, Subscriber subscriber) {
         return getSubscribers(event).contains(subscriber);
     }

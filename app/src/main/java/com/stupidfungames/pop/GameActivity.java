@@ -20,10 +20,10 @@ import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity;
 import com.stupidfungames.pop.bubbletimeout.BubblesLifecycleManagerEntity;
 import com.stupidfungames.pop.difficulty.GameDifficultyEntity;
+import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
 import com.stupidfungames.pop.hudentities.ScoreHudEntity;
 import com.stupidfungames.pop.hudentities.TimerHudEntity;
-import com.stupidfungames.pop.interaction.InteractionCounter;
 import com.stupidfungames.pop.nuke.NukeManagerBaseEntity;
 import com.stupidfungames.pop.resources.fonts.GameFontsManager;
 import com.stupidfungames.pop.resources.music.GameMusicResourceManagerBaseEntity;
@@ -116,7 +116,6 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(LevelEntity.class, new LevelEntity(this))
 
             .bind(GamePhysicsContactsEntity.class, new GamePhysicsContactsEntity(this))
-            .bind(InteractionCounter.class, new InteractionCounter(this))
             .bind(GameSceneTouchListenerEntity.class, new GameSceneTouchListenerEntity(this))
 
             .bind(GameTooltipsEntity.class, new GameTooltipsEntity(this))
@@ -295,11 +294,13 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
   @Override
   protected void onDestroy() {
+    EventBus.get().printSubscriberClasses();
     super.onDestroy();
 
     // Destroy the game
     gameLifeCycleCalllbackManager.onDestroy();
     gameLifeCycleCalllbackManager = null;
+
   }
 
   @Override

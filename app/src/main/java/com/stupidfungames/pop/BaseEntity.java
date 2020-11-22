@@ -1,5 +1,6 @@
 package com.stupidfungames.pop;
 
+import android.util.Log;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.fixturedefdata.BaseEntityUserData;
 import com.stupidfungames.pop.physics.PhysicsConnector;
@@ -71,6 +72,8 @@ public abstract class BaseEntity extends BinderEnity implements
   @Override
   public void onDestroy() {
     get(GameLifeCycleCalllbackManager.class).unRegisterGameEntity(this);
+
+    Log.d("asdasd", getClass().getSimpleName() + "destroyBindings " + hashCode());
     destroyBindings();
   }
 

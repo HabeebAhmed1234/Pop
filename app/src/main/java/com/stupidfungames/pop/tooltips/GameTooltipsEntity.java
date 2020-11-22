@@ -3,6 +3,7 @@ package com.stupidfungames.pop.tooltips;
 import android.content.Context;
 import android.content.Intent;
 
+import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
@@ -15,6 +16,7 @@ public class GameTooltipsEntity extends BaseEntity {
 
     @Override
     protected void createBindings(Binder binder) {
+        Log.d("asdasd", "GameTooltipsEntity.createBindings " + hashCode());
         binder.bind(TooltipTexts.class, new TooltipTexts());
         binder.bind(TooltipPreferences.class, new TooltipPreferences(this));
     }
@@ -22,7 +24,6 @@ public class GameTooltipsEntity extends BaseEntity {
     @Override
     public void onCreateScene() {
         super.onCreateScene();
-        //get(TooltipPreferences.class).clearDebug();
     }
 
     public void maybeShowTooltip(TooltipId id) {
@@ -35,6 +36,7 @@ public class GameTooltipsEntity extends BaseEntity {
 
     public void maybeShowTooltip(TooltipId id, float anchorX, float anchorY) {
         TooltipPreferences tooltipPreferences = get(TooltipPreferences.class);
+        Log.d("asdasd", "maybeShowTooltip " + hashCode());
         if (tooltipPreferences.shouldShowTooltip(id)) {
             tooltipPreferences.tooltipShown(id);
             showAnchoredTooltip(id, anchorX, anchorY);

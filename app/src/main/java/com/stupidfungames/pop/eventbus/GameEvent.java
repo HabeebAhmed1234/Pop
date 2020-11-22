@@ -8,7 +8,6 @@ public enum GameEvent {
     DECREMENT_SCORE, // Fired when score is decremented. Accompanied by score decrement amount in payload
     INCREMENT_SCORE, // Fired when score is incrementd. Accompanied by score increment amount in payload
     SCORE_CHANGED, // Fired anytime the score changes. Payload contains score
-    STARTING_BUBBLE_SPAWNED, // Fired anytime a new bubble is spawned, Payload contains the bubble type
     BUBBLE_SPAWNED, // Fired when a bubble is spawned
     BUBBLE_TOUCHED, // Fired when a bubble is touched by a user's finger
     SPAWN_INTERVAL_CHANGED, // Fired when the bubble spawn interval changes as determined by GameDifficultyEntity

@@ -2,7 +2,6 @@ package com.stupidfungames.pop.turrets.turret;
 
 import static com.stupidfungames.pop.turrets.TurretsConstants.TURRET_DRAGGING_SCALE_MULTIPLIER;
 
-import android.util.Pair;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
@@ -10,6 +9,8 @@ import com.stupidfungames.pop.savegame.SaveGame;
 import com.stupidfungames.pop.statemachine.BaseStateMachine;
 import com.stupidfungames.pop.turrets.turret.TurretStateMachine.State;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.color.AndengineColor;
 
@@ -109,8 +110,9 @@ public class TurretEntity extends BaseEntity implements
     if (saveGame.turretPostitions == null) {
       saveGame.turretPostitions = new ArrayList<>();
     }
-    Pair position = new Pair<>(turretBodySprite.getX() + turretBodySprite.getWidthScaled() / 2,
-        turretBodySprite.getY() + turretBodySprite.getHeightScaled() / 2);
+    List<Float> position = Arrays
+        .asList(turretBodySprite.getX() + turretBodySprite.getWidthScaled() / 2,
+            turretBodySprite.getY() + turretBodySprite.getHeightScaled() / 2);
     saveGame.turretPostitions.add(position);
   }
 
