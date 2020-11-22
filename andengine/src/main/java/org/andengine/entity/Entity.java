@@ -1166,7 +1166,9 @@ public class Entity implements IEntity {
 
 	@Override
 	public void addOnDetachedListener(OnDetachedListener listener) {
-		onDetatchListeners.add(listener);
+		if (!this.onDetatchListeners.contains(listener)) {
+			onDetatchListeners.add(listener);
+		}
 	}
 
 	@Override

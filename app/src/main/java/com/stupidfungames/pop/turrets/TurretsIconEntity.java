@@ -1,4 +1,4 @@
-package com.stupidfungames.pop.turret;
+package com.stupidfungames.pop.turrets;
 
 import com.stupidfungames.pop.GameSceneTouchListenerEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
@@ -12,13 +12,14 @@ import com.stupidfungames.pop.resources.sounds.SoundId;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.tooltips.TooltipId;
 
+import com.stupidfungames.pop.turrets.turret.TurretEntity;
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.color.AndengineColor;
 
 import static com.stupidfungames.pop.GameConstants.TURRETS_DIFFICULTY_UNLOCK_THRESHOLD;
-import static com.stupidfungames.pop.turret.TurretsConstants.MAX_TURRET_INVENTORY;
+import static com.stupidfungames.pop.turrets.TurretsConstants.MAX_TURRET_INVENTORY;
 import static org.andengine.input.touch.TouchEvent.ACTION_CANCEL;
 import static org.andengine.input.touch.TouchEvent.ACTION_DOWN;
 import static org.andengine.input.touch.TouchEvent.ACTION_MOVE;

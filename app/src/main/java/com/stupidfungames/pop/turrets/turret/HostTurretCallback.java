@@ -1,4 +1,4 @@
-package com.stupidfungames.pop.turret;
+package com.stupidfungames.pop.turrets.turret;
 
 import org.andengine.entity.sprite.Sprite;
 

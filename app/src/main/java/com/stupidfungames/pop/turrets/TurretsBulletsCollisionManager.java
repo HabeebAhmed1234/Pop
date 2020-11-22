@@ -1,4 +1,4 @@
-package com.stupidfungames.pop.turret;
+package com.stupidfungames.pop.turrets;
 
 import static com.stupidfungames.pop.eventbus.GameEvent.TURRET_BULLET_POPPED_BUBBLE;
 
@@ -23,9 +23,7 @@ public class TurretsBulletsCollisionManager extends BaseEntity implements
   }
 
   @Override
-  protected void createBindings(Binder binder) {
-
-  }
+  protected void createBindings(Binder binder) {}
 
   @Override
   public void onCreateScene() {

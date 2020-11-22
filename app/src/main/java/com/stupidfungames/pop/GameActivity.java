@@ -39,7 +39,7 @@ import com.stupidfungames.pop.settingstray.MusicQuickSettingIconEntity;
 import com.stupidfungames.pop.settingstray.SaveGameQuickSettingsIconEntity;
 import com.stupidfungames.pop.settingstray.SaveGameQuickSettingsIconEntity.SaveGameButtonCallback;
 import com.stupidfungames.pop.tooltips.GameTooltipsEntity;
-import com.stupidfungames.pop.turret.TurretsManagerEntity;
+import com.stupidfungames.pop.turrets.TurretsManagerEntity;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import com.stupidfungames.pop.walls.WallsManagerBaseEntity;
 import org.andengine.audio.music.MusicManager;
@@ -48,6 +48,7 @@ import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.util.FPSLogger;
 import org.andengine.input.sensor.acceleration.AccelerationData;
 import org.andengine.input.sensor.acceleration.IAccelerationListener;
 import org.andengine.opengl.font.FontManager;
@@ -200,6 +201,8 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
     if (saveGame != null) {
       gameLifeCycleCalllbackManager.onLoadGame(saveGame);
     }
+
+    getEngine().registerUpdateHandler(new FPSLogger());
     return mRootBinder.get(GameResources.class).scene;
   }
 

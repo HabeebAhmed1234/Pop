@@ -13,7 +13,7 @@ public class BlinkAnimator {
   private static final float[] BLINK_ANIMATION_1 =
       new float[]{1, 0.5f, 1, 1, 1, 1, 1, 1, 1, 1, 0.7f, 1};
 
-  Set<ValueAnimator> animators = new HashSet<>();
+  private final Set<ValueAnimator> animators = new HashSet<>();
 
 
   public void animate(final View view) {

@@ -1,4 +1,4 @@
-package com.stupidfungames.pop.turret;
+package com.stupidfungames.pop.turrets;
 
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.Binder;
@@ -20,7 +20,7 @@ import org.andengine.entity.particle.modifier.ExpireParticleInitializer;
 /**
  * Manages the turret bullet explosions
  */
-class BulletExplosionsBaseEntity extends BaseEntity {
+public class BulletExplosionsEntity extends BaseEntity {
 
     private static final float EXPLOSION_DURATION_SECONDS = 0.3f;
     private static final float FADE_OUT_TIME = EXPLOSION_DURATION_SECONDS;
@@ -31,7 +31,7 @@ class BulletExplosionsBaseEntity extends BaseEntity {
 
     private static final int PARTICLE_EXPLOSION_VELOCITY_MAGNITUDE = 500;
 
-    BulletExplosionsBaseEntity(BinderEnity parent) {
+    BulletExplosionsEntity(BinderEnity parent) {
         super(parent);
     }
 

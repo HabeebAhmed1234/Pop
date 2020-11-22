@@ -1,7 +1,7 @@
 package com.stupidfungames.pop;
 
 import com.stupidfungames.pop.binder.BinderEnity;
-import com.stupidfungames.pop.turret.HostTurretCallback;
+import com.stupidfungames.pop.turrets.turret.HostTurretCallback;
 
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;

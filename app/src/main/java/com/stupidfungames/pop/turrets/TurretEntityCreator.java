@@ -1,4 +1,4 @@
-package com.stupidfungames.pop.turret;
+package com.stupidfungames.pop.turrets;
 
 import android.content.Context;
 
@@ -8,6 +8,7 @@ import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.savegame.SaveGame;
+import com.stupidfungames.pop.turrets.turret.TurretEntity;
 import com.stupidfungames.pop.utils.ScreenUtils;
 
 import org.andengine.entity.sprite.Sprite;

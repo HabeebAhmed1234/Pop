@@ -13,7 +13,7 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.util.color.AndengineColor;
 
-import static com.stupidfungames.pop.turret.TurretsConstants.MAX_TURRET_INVENTORY;
+import static com.stupidfungames.pop.turrets.TurretsConstants.MAX_TURRET_INVENTORY;
 
 /**
  * Base class for icons that have inventory text on top of them

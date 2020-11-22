@@ -1,4 +1,4 @@
-package com.stupidfungames.pop.turret;
+package com.stupidfungames.pop.turrets.turret;
 
 import com.stupidfungames.pop.statemachine.BaseStateMachine;
 
@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.stupidfungames.pop.turret.TurretStateMachine.State.DOCKED;
-import static com.stupidfungames.pop.turret.TurretStateMachine.State.DRAGGING;
-import static com.stupidfungames.pop.turret.TurretStateMachine.State.FIRING;
-import static com.stupidfungames.pop.turret.TurretStateMachine.State.TARGETING;
+import static com.stupidfungames.pop.turrets.turret.TurretStateMachine.State.DOCKED;
+import static com.stupidfungames.pop.turrets.turret.TurretStateMachine.State.DRAGGING;
+import static com.stupidfungames.pop.turrets.turret.TurretStateMachine.State.FIRING;
+import static com.stupidfungames.pop.turrets.turret.TurretStateMachine.State.TARGETING;
 
 class TurretStateMachine extends BaseStateMachine<TurretStateMachine.State> {
 

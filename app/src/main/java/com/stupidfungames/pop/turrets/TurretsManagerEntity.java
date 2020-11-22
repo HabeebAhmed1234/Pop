@@ -1,4 +1,4 @@
-package com.stupidfungames.pop.turret;
+package com.stupidfungames.pop.turrets;
 
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.Binder;
@@ -16,7 +16,7 @@ public class TurretsManagerEntity extends BaseEntity {
     @Override
     protected void createBindings(Binder binder) {
         binder.bind(TurretsMutex.class, new TurretsMutex(this));
-        binder.bind(BulletExplosionsBaseEntity.class, new BulletExplosionsBaseEntity(this));
+        binder.bind(BulletExplosionsEntity.class, new BulletExplosionsEntity(this));
         binder.bind(TurretEntityCreator.class, new TurretEntityCreator(this));
         binder.bind(TurretsBulletsCollisionManager.class, new TurretsBulletsCollisionManager(this));
         binder.bind(TurretsIconEntity.class, new TurretsIconEntity(this));
