@@ -103,7 +103,9 @@ public abstract class BaseEntity extends BinderEnity implements
   }
 
   protected void addToScene(IEntity entity) {
-    scene.attachChild(entity);
+    if (!entity.isAttached()) {
+      scene.attachChild(entity);
+    }
   }
 
   protected void addToScene(IAreaShape entity, Body body) {
@@ -116,11 +118,17 @@ public abstract class BaseEntity extends BinderEnity implements
   }
 
   protected void removeFromScene(final Body body) {
+    removeFromScene(body, true);
+  }
+
+  protected void removeFromScene(final Body body, final boolean alsoRemoveSprite) {
     PhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager()
         .findPhysicsConnectorByBody(body);
     if (physicsConnector != null) {
       physicsWorld.unregisterPhysicsConnector(physicsConnector);
-      removeFromSceneInternal(physicsConnector.getShape());
+      if (alsoRemoveSprite) {
+        removeFromSceneInternal(physicsConnector.getShape());
+      }
     }
     physicsWorld.destroyBody(body);
   }

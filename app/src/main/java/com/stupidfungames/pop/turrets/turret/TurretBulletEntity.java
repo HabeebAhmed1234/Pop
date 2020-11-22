@@ -2,11 +2,6 @@ package com.stupidfungames.pop.turrets.turret;
 
 import static com.stupidfungames.pop.eventbus.GameEvent.TURRET_BULLET_POPPED_BUBBLE;
 
-import android.content.Context;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameFixtureDefs;
 import com.stupidfungames.pop.binder.BinderEnity;
@@ -18,8 +13,6 @@ import com.stupidfungames.pop.eventbus.TurretBulletPoppedBubbleEventPayload;
 import com.stupidfungames.pop.fixturedefdata.TurretBulletUserData;
 import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.physics.util.Vec2Pool;
-import com.stupidfungames.pop.resources.textures.GameTexturesManager;
-import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.turrets.BulletExplosionsEntity;
 import com.stupidfungames.pop.utils.CoordinateConversionUtil;
 import org.andengine.engine.handler.timer.ITimerCallback;
@@ -27,9 +20,6 @@ import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.OnDetachedListener;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.util.color.AndengineColor;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
@@ -57,8 +47,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
   private final OnDetachedListener targetBubbleOnDetachedListener = new OnDetachedListener() {
     @Override
     public void onDetached(IEntity entity) {
-      entity.removeOnDetachedListener(this);
-      destroyBulletWithExplosion();
+      destroyBullet();
     }
   };
 
@@ -90,29 +79,23 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
 
   @Override
   public void onDestroy() {
-    destroyBullet();
+    super.onDestroy();
+    unregisterUpdateHandlers();
+    destroyBulletReferences();
   }
 
   private void initBullet() {
     Sprite turretCannonSprite = get(HostTurretCallback.class).getTurretCannonSprite();
-    ITextureRegion turretBulletTexture = get(GameTexturesManager.class)
-        .getTextureRegion(TextureId.BULLET);
     float[] turretCannonTipLocalPosition = new float[]{turretCannonSprite.getWidthScaled(),
         turretCannonSprite.getHeightScaled() / 2};
     turretCannonSprite.getLocalToSceneTransformation().transform(turretCannonTipLocalPosition);
-    bulletSprite = new Sprite(
-        turretCannonTipLocalPosition[0],
-        turretCannonTipLocalPosition[1],
-        turretBulletTexture,
-        vertexBufferObjectManager);
-    bulletSprite.setColor(AndengineColor.RED);
-    TurretBulletUserData userData = new TurretBulletUserData();
-    id = userData.getId();
-    bulletSprite.setUserData(userData);
+    bulletSprite = get(TurretBulletSpritePool.class)
+        .get(turretCannonTipLocalPosition[0], turretCannonTipLocalPosition[1]);
+    id = ((TurretBulletUserData) bulletSprite.getUserData()).getId();
 
     final FixtureDef bulletFixtureDef = GameFixtureDefs.TURRET_BULLET_FIXTURE_DEF;
     bulletFixtureDef.setFilter(CollisionFilters.BULLET_FILTER);
-    bulletFixtureDef.setUserData(userData);
+    bulletFixtureDef.setUserData(bulletSprite.getUserData());
     bulletBody = PhysicsFactory
         .createCircleBody(physicsWorld, bulletSprite, BodyType.DYNAMIC, bulletFixtureDef);
     bulletBody.setGravityScale(0);
@@ -141,8 +124,9 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
 
   @Override
   public void onEvent(GameEvent event, EventPayload payload) {
-    if (event == TURRET_BULLET_POPPED_BUBBLE && ((TurretBulletPoppedBubbleEventPayload) payload).bulletId == id) {
-      destroyBulletWithExplosion();
+    if (event == TURRET_BULLET_POPPED_BUBBLE
+        && ((TurretBulletPoppedBubbleEventPayload) payload).bulletId == id) {
+      destroyBullet();
     }
   }
 
@@ -162,27 +146,30 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
     if (targetBubble != null) {
       targetBubble.removeOnDetachedListener(targetBubbleOnDetachedListener);
     }
-    engine.unregisterUpdateHandler(bulletTargetingUpdater);
+    if (engine.containsUpdateHandler(bulletTargetingUpdater)) {
+      engine.unregisterUpdateHandler(bulletTargetingUpdater);
+    }
     if (EventBus.get().containsSubscriber(TURRET_BULLET_POPPED_BUBBLE, this)) {
       EventBus.get().unSubscribe(TURRET_BULLET_POPPED_BUBBLE, this);
     }
   }
 
-  private void destroyBulletWithExplosion() {
+  private void destroyBullet() {
     if (!isDestroyed) {
       get(BulletExplosionsEntity.class).explode(
           bulletSprite.getX() + bulletSprite.getWidthScaled() / 2,
           bulletSprite.getY() + bulletSprite.getHeightScaled() / 2);
-      destroyBullet();
+      get(TurretBulletSpritePool.class).recycle(bulletSprite);
+      destroyBulletReferences();
     }
   }
 
-  private void destroyBullet() {
+  private void destroyBulletReferences() {
     if (!isDestroyed) {
       isDestroyed = true;
 
       unregisterUpdateHandlers();
-      removeFromScene(bulletBody);
+      removeFromScene(bulletBody, false);
       physicsWorld.destroyBody(targetingMouseJoint.getBodyA());
       physicsWorld.destroyJoint(targetingMouseJoint);
 

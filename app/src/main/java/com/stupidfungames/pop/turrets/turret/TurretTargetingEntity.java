@@ -18,7 +18,7 @@ import org.andengine.entity.sprite.Sprite;
  * the state machine for the turret enters the TARGETING state then we lock onto a bubble and fire
  * when we are allowed. We fire by calling the TurretFiringEntity.
  */
-public class TurretTargetingBaseEntity extends BaseEntity implements
+public class TurretTargetingEntity extends BaseEntity implements
     BaseStateMachine.Listener<TurretStateMachine.State> {
 
   public static final float TARGETING_TIMER_UPDATE_INTERVAL_SECONDS = 1f / 30;
@@ -36,7 +36,7 @@ public class TurretTargetingBaseEntity extends BaseEntity implements
         }
       });
 
-  public TurretTargetingBaseEntity(BinderEnity parent) {
+  public TurretTargetingEntity(BinderEnity parent) {
     super(parent);
     get(TurretStateMachine.class).addAllStateTransitionListener(this);
   }
