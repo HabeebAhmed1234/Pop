@@ -44,12 +44,10 @@ public class NukerEntity extends BaseEntity {
     public void onTimePassed(TimerHandler pTimerHandler) {
       if (numWavesLeft > 0) {
         popAllBubbles();
-        Log.d("asdasd", "numWavesLeft = " + numWavesLeft + " registerUpdateHandler");
         engine.registerUpdateHandler(new TimerHandler(NUKE_INTERVAL_SECONDS,
             new NukeWaveTimerHandler(numWavesLeft - 1)));
       } else {
         bubbleNukeMutex.clear();
-        Log.d("asdasd", "numWavesLeft = " + numWavesLeft + " unregisterUpdateHandler");
         engine.unregisterUpdateHandler(nuke);
         get(NukeStateMachine.class).transitionState(NukeStateMachine.State.COOLDOWN);
       }

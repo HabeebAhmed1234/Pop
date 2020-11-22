@@ -68,6 +68,7 @@ public class WallsIconEntity extends InventoryIconBaseEntity implements BaseStat
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         get(WallsStateMachine.class).removeAllStateTransitionListener(this);
 
         EventBus.get()

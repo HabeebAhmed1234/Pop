@@ -58,7 +58,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
     @Override
     public void onDetached(IEntity entity) {
       entity.removeOnDetachedListener(this);
-      destroyBullet();
+      destroyBulletWithExplosion();
     }
   };
 
@@ -142,7 +142,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
   @Override
   public void onEvent(GameEvent event, EventPayload payload) {
     if (event == TURRET_BULLET_POPPED_BUBBLE && ((TurretBulletPoppedBubbleEventPayload) payload).bulletId == id) {
-      destroyBullet();
+      destroyBulletWithExplosion();
     }
   }
 
@@ -168,14 +168,20 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
     }
   }
 
+  private void destroyBulletWithExplosion() {
+    if (!isDestroyed) {
+      get(BulletExplosionsEntity.class).explode(
+          bulletSprite.getX() + bulletSprite.getWidthScaled() / 2,
+          bulletSprite.getY() + bulletSprite.getHeightScaled() / 2);
+      destroyBullet();
+    }
+  }
+
   private void destroyBullet() {
     if (!isDestroyed) {
       isDestroyed = true;
 
       unregisterUpdateHandlers();
-      get(BulletExplosionsEntity.class).explode(
-          bulletSprite.getX() + bulletSprite.getWidthScaled() / 2,
-          bulletSprite.getY() + bulletSprite.getHeightScaled() / 2);
       removeFromScene(bulletBody);
       physicsWorld.destroyBody(targetingMouseJoint.getBodyA());
       physicsWorld.destroyJoint(targetingMouseJoint);

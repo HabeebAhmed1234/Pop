@@ -72,8 +72,6 @@ public abstract class BaseEntity extends BinderEnity implements
   @Override
   public void onDestroy() {
     get(GameLifeCycleCalllbackManager.class).unRegisterGameEntity(this);
-
-    Log.d("asdasd", getClass().getSimpleName() + "destroyBindings " + hashCode());
     destroyBindings();
   }
 
