@@ -45,5 +45,9 @@ public abstract class BinderEnity {
         return object;
     }
 
+    protected void destroyBindings() {
+        bindings.clear();
+    }
+
     protected void createBindings(Binder binder) {}
 }

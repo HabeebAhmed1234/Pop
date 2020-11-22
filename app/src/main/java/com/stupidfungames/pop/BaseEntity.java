@@ -71,6 +71,7 @@ public abstract class BaseEntity extends BinderEnity implements
   @Override
   public void onDestroy() {
     get(GameLifeCycleCalllbackManager.class).unRegisterGameEntity(this);
+    destroyBindings();
   }
 
   protected void addToSceneWithTouch(IEntity parentEntity, IAreaShape childSprite,
