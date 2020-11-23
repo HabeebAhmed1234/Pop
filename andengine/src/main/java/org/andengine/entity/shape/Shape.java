@@ -135,7 +135,7 @@ public abstract class Shape extends Entity implements IShape {
 
 	@Override
 	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-		if (onAreaTouchListener != null) {
+		if (onAreaTouchListener != null && isVisible()) {
 			return onAreaTouchListener.onAreaTouched(pSceneTouchEvent, this, pTouchAreaLocalX, pTouchAreaLocalY);
 		}
 		return false;

@@ -5,6 +5,7 @@ import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameAnimationManager;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity;
+import com.stupidfungames.pop.bubblespawn.BubbleSpritePool;
 import com.stupidfungames.pop.eventbus.BubbleTouchedEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
@@ -20,7 +21,7 @@ import org.andengine.audio.sound.Sound;
 import org.andengine.entity.modifier.AlphaModifier;
 import org.andengine.entity.modifier.ParallelEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
-import org.andengine.entity.shape.IShape;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -47,7 +48,7 @@ public class BubblePopperEntity extends BaseEntity implements EventBus.Subscribe
   }
 
   public void popBubble(
-      IShape previousBubble,
+      Sprite previousBubble,
       BubbleSpawnerEntity.BubbleSize oldBubbleSize,
       BubbleSpawnerEntity.BubbleType bubbleType) {
     // Play the pop sound
@@ -63,7 +64,8 @@ public class BubblePopperEntity extends BaseEntity implements EventBus.Subscribe
     increaseScore(oldBubbleScenePosition.x, oldBubbleScenePosition.y);
 
     // Remove the popped bubble
-    removeFromScene(previousBubble);
+    get(BubbleSpritePool.class).recycle(previousBubble);
+    removePhysics(previousBubble);
   }
 
   /**

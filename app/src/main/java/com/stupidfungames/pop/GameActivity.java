@@ -18,6 +18,7 @@ import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity;
+import com.stupidfungames.pop.bubblespawn.BubbleSpritePool;
 import com.stupidfungames.pop.bubbletimeout.BubblesLifecycleManagerEntity;
 import com.stupidfungames.pop.difficulty.GameDifficultyEntity;
 import com.stupidfungames.pop.eventbus.EventBus;
@@ -131,6 +132,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(ScoreHudEntity.class, new ScoreHudEntity(this))
             .bind(TimerHudEntity.class, new TimerHudEntity(this))
 
+            .bind(BubbleSpritePool.class, new BubbleSpritePool(this))
             .bind(GameDifficultyEntity.class, new GameDifficultyEntity(this))
             .bind(GameOverSequenceEntity.class, new GameOverSequenceEntity(this))
             .bind(BubblesLifecycleManagerEntity.class, new BubblesLifecycleManagerEntity(this))

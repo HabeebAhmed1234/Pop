@@ -18,12 +18,7 @@ import com.stupidfungames.pop.eventbus.DifficultyChangedEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
-import com.stupidfungames.pop.eventbus.StartingBubbleSpawnedEventPayload;
-import com.stupidfungames.pop.fixturedefdata.BaseEntityUserData;
-import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
 import com.stupidfungames.pop.physics.PhysicsFactory;
-import com.stupidfungames.pop.resources.textures.GameTexturesManager;
-import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.utils.BubblePhysicsUtil;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import java.util.Arrays;
@@ -33,8 +28,6 @@ import java.util.Random;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.util.color.AndengineColor;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
@@ -143,24 +136,13 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
   public Body spawnBubble(final BubbleType bubbleType, final float x, final float y,
       BubbleSize bubbleSize) {
     //add object
-    final Sprite bubbleSprite = new Sprite(
-        x,
-        y,
-        getBubbleTexture(bubbleType),
-        vertexBufferObjectManager);
-    colorBubble(bubbleType, bubbleSprite);
-    final BaseEntityUserData userData = getBubbleUserData(bubbleSprite, bubbleType, bubbleSize);
-    bubbleSprite.setUserData(userData);
-    float bubbleSizePx = ScreenUtils.dpToPx(bubbleSize.sizeDp, get(Context.class));
-    bubbleSprite.setScale(bubbleSizePx / bubbleSprite.getWidthScaled());
-
-    // If the bubble's right or left edge will clip outside of the screen horizontal bounds
-    // We need to adjust the bubble position
-    clipBubblePosition(bubbleSprite);
+    BubbleSpritePool spritePool = get(BubbleSpritePool.class);
+    spritePool.setNextBubbleMetaData(bubbleType, bubbleSize);
+    final Sprite bubbleSprite = spritePool.createNewSprite(x, y);
 
     final FixtureDef bubbleFixtureDef = GameFixtureDefs.BASE_BUBBLE_FIXTURE_DEF;
     bubbleFixtureDef.setFilter(CollisionFilters.BUBBLE_FILTER);
-    bubbleFixtureDef.setUserData(userData);
+    bubbleFixtureDef.setUserData(bubbleSprite.getUserData());
     final Body body = PhysicsFactory
         .createCircleBody(physicsWorld, bubbleSprite, 0.8f, BodyType.DYNAMIC, bubbleFixtureDef);
     body.setGravityScale(BUBBLE_GRAVITY_SCALE);
@@ -172,60 +154,6 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
 
   private void notifyBubbleSpawned(Sprite bubbleSprite) {
     EventBus.get().sendEvent(GameEvent.BUBBLE_SPAWNED, new BubbleSpawnedEventPayload(bubbleSprite));
-  }
-
-  private void clipBubblePosition(Sprite bubbleSprite) {
-    if (bubbleSprite.getX() < 0) {
-      bubbleSprite.setX(0);
-    }
-    float bubbleWidth = bubbleSprite.getWidthScaled();
-    if (bubbleSprite.getX() + bubbleWidth > ScreenUtils.getSreenSize().widthPx) {
-      bubbleSprite.setX(ScreenUtils.getSreenSize().widthPx - bubbleWidth);
-    }
-  }
-
-  private ITextureRegion getBubbleTexture(BubbleType bubbleType) {
-    switch (bubbleType) {
-      case RED:
-      case GREEN:
-      case BLUE:
-        return get(GameTexturesManager.class).getTextureRegion(TextureId.BALL);
-      default:
-        throw new IllegalStateException(
-            "there is no bubble texture for bubbleType = " + bubbleType);
-
-    }
-  }
-
-  private void colorBubble(BubbleType type, Sprite bubble) {
-    AndengineColor color = AndengineColor.WHITE;
-    switch (type) {
-      case RED:
-        color = AndengineColor.RED;
-        break;
-      case GREEN:
-        color = AndengineColor.GREEN;
-        break;
-      case BLUE:
-        color = AndengineColor.BLUE;
-        break;
-      default:
-        throw new IllegalStateException("there is no bubble color for bubbleType = " + type);
-    }
-    if (color != null) {
-      bubble.setColor(color);
-    }
-  }
-
-  private BaseEntityUserData getBubbleUserData(Sprite bubbleSprite, BubbleType bubbleType,
-      BubbleSize bubbleSize) {
-    switch (bubbleType) {
-      case RED:
-      case GREEN:
-      case BLUE:
-        return new BubbleEntityUserData(true, bubbleSize, bubbleType, bubbleSprite);
-    }
-    throw new IllegalStateException("there is no bubble user data for bubbleType = " + bubbleType);
   }
 
   @Override

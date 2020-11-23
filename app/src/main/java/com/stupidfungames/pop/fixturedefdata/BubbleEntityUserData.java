@@ -13,7 +13,7 @@ public class BubbleEntityUserData extends BaseEntityUserData {
     public boolean isScoreLossBubble;
     public BubbleSpawnerEntity.BubbleSize size;
     public BubbleType bubbleType;
-    public IShape bubbleSprite;
+    public Sprite bubbleSprite;
 
     public boolean isTargeted;
 

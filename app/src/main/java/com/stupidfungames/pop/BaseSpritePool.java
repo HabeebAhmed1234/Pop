@@ -30,6 +30,7 @@ public abstract class BaseSpritePool extends BaseEntity {
       sprite.setX(x);
       sprite.setY(y);
       sprite.setVisible(true);
+      updateSprite(sprite);
     }
     return sprite;
   }
@@ -37,6 +38,7 @@ public abstract class BaseSpritePool extends BaseEntity {
 
   public void recycle(Sprite sprite) {
     sprite.setVisible(false);
+
     sprites.add(sprite);
   }
 
@@ -53,6 +55,8 @@ public abstract class BaseSpritePool extends BaseEntity {
     sprites.clear();
     sprites = null;
   }
+
+  protected void updateSprite(Sprite sprite) {}
 
   protected abstract Sprite createNewSprite(float x, float y);
 }

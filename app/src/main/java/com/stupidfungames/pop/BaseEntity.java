@@ -133,6 +133,15 @@ public abstract class BaseEntity extends BinderEnity implements
     physicsWorld.destroyBody(body);
   }
 
+  protected void removePhysics(Sprite sprite) {
+    PhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager()
+        .findPhysicsConnectorByShape(sprite);
+    if (physicsConnector != null) {
+      physicsWorld.unregisterPhysicsConnector(physicsConnector);
+      physicsWorld.destroyBody(physicsConnector.getBody());
+    }
+  }
+
   protected void removeFromScene(final IShape sprite) {
     PhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager()
         .findPhysicsConnectorByShape(sprite);
