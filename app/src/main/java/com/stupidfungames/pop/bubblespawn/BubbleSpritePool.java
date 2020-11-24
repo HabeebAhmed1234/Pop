@@ -45,6 +45,7 @@ public class BubbleSpritePool extends BaseSpritePool {
   @Override
   protected void updateSprite(Sprite sprite) {
     adjustBubbleSprite(sprite, nextBubbleSize, nextBubbleType);
+    updateBubbleEntityUserData(sprite, nextBubbleSize, nextBubbleType);
   }
 
   private void adjustBubbleSprite(Sprite sprite, BubbleSize bubbleSize, BubbleType bubbleType) {
@@ -75,6 +76,11 @@ public class BubbleSpritePool extends BaseSpritePool {
         return new BubbleEntityUserData(true, bubbleSize, bubbleType, bubbleSprite);
     }
     throw new IllegalStateException("there is no bubble user data for bubbleType = " + bubbleType);
+  }
+
+  private void updateBubbleEntityUserData(Sprite bubbleSprite, BubbleSize size, BubbleType type) {
+    BubbleEntityUserData userData = (BubbleEntityUserData) bubbleSprite.getUserData();
+    userData.update(size, type);
   }
 
   private void colorBubble(BubbleType type, Sprite bubble) {
@@ -109,6 +115,6 @@ public class BubbleSpritePool extends BaseSpritePool {
 
   private void adjustBubbleScale(Sprite bubbleSprite, BubbleSize bubbleSize) {
     float bubbleSizePx = ScreenUtils.dpToPx(bubbleSize.sizeDp, get(Context.class));
-    bubbleSprite.setScale(bubbleSizePx / bubbleSprite.getWidthScaled());
+    bubbleSprite.setScale(bubbleSizePx / bubbleSprite.getWidth());
   }
 }

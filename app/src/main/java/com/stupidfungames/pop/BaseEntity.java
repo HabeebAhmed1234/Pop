@@ -139,6 +139,7 @@ public abstract class BaseEntity extends BinderEnity implements
     if (physicsConnector != null) {
       physicsWorld.unregisterPhysicsConnector(physicsConnector);
       physicsWorld.destroyBody(physicsConnector.getBody());
+      physicsConnector.clear();
     }
   }
 
@@ -148,6 +149,7 @@ public abstract class BaseEntity extends BinderEnity implements
     if (physicsConnector != null) {
       physicsWorld.unregisterPhysicsConnector(physicsConnector);
       physicsWorld.destroyBody(physicsConnector.getBody());
+      physicsConnector.clear();
     }
     removeFromSceneInternal(sprite);
   }

@@ -138,7 +138,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
     //add object
     BubbleSpritePool spritePool = get(BubbleSpritePool.class);
     spritePool.setNextBubbleMetaData(bubbleType, bubbleSize);
-    final Sprite bubbleSprite = spritePool.createNewSprite(x, y);
+    final Sprite bubbleSprite = spritePool.get(x, y);
 
     final FixtureDef bubbleFixtureDef = GameFixtureDefs.BASE_BUBBLE_FIXTURE_DEF;
     bubbleFixtureDef.setFilter(CollisionFilters.BUBBLE_FILTER);

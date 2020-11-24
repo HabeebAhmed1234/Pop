@@ -23,14 +23,15 @@ public abstract class BaseSpritePool extends BaseEntity {
   public Sprite get(float x, float y) {
     Sprite sprite = sprites.poll();
     if (sprite == null) {
-      Log.d("asdasd", getClass().getSimpleName() + " creating sprite number " + num);
       num++;
       sprite = createNewSprite(x, y);
+      Log.d("asdasd", getClass().getSimpleName() + " creating sprite number " + num + " hash " + sprite.hashCode());
     } else {
+      updateSprite(sprite);
       sprite.setX(x);
       sprite.setY(y);
       sprite.setVisible(true);
-      updateSprite(sprite);
+      sprite.setTouchEnabled(true);
     }
     return sprite;
   }
@@ -38,6 +39,7 @@ public abstract class BaseSpritePool extends BaseEntity {
 
   public void recycle(Sprite sprite) {
     sprite.setVisible(false);
+    sprite.setTouchEnabled(false);
     sprites.add(sprite);
   }
 
@@ -49,7 +51,6 @@ public abstract class BaseSpritePool extends BaseEntity {
       if (userData instanceof BaseEntityUserData) {
         ((BaseEntityUserData) userData).reset();
       }
-      Log.d("asdasd", "cleared bubble user data");
       sprite.setUserData(null);
     }
     sprites.clear();

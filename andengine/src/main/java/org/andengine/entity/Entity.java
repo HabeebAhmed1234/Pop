@@ -57,6 +57,7 @@ public class Entity implements IEntity {
 
 	protected boolean mDisposed;
 	protected boolean mVisible = true;
+	protected boolean mTouchEnabled = true;
 	protected boolean mCullingEnabled;
 	protected boolean mIgnoreUpdate;
 	protected boolean mChildrenVisible = true;
@@ -147,6 +148,16 @@ public class Entity implements IEntity {
 	@Override
 	public void setVisible(final boolean pVisible) {
 		this.mVisible = pVisible;
+	}
+
+	@Override
+	public boolean isTouchEnabled() {
+		return this.mTouchEnabled;
+	}
+
+	@Override
+	public void setTouchEnabled(boolean pTouchEnabled) {
+		this.mTouchEnabled = pTouchEnabled;
 	}
 
 	@Override
@@ -1206,6 +1217,7 @@ public class Entity implements IEntity {
 	@Override
 	public void reset() {
 		this.mVisible = true;
+		this.mTouchEnabled = true;
 		this.mCullingEnabled = false;
 		this.mIgnoreUpdate = false;
 		this.mChildrenVisible = true;

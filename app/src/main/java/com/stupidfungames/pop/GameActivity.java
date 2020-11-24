@@ -135,7 +135,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(BubbleSpritePool.class, new BubbleSpritePool(this))
             .bind(GameDifficultyEntity.class, new GameDifficultyEntity(this))
             .bind(GameOverSequenceEntity.class, new GameOverSequenceEntity(this))
-            .bind(BubblesLifecycleManagerEntity.class, new BubblesLifecycleManagerEntity(this))
+            //.bind(BubblesLifecycleManagerEntity.class, new BubblesLifecycleManagerEntity(this))
 
             .bind(BubbleSpawnerEntity.class, new BubbleSpawnerEntity(this))
             .bind(BubbleCleanerBaseEntity.class, new BubbleCleanerBaseEntity(this))

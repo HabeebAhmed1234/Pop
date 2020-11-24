@@ -38,6 +38,9 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 	public boolean isVisible();
 	public void setVisible(final boolean pVisible);
 
+	public boolean isTouchEnabled();
+	public void setTouchEnabled(final boolean pTouchEnabled);
+
 	public boolean isIgnoreUpdate();
 	public void setIgnoreUpdate(boolean pIgnoreUpdate);
 

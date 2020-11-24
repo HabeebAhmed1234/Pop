@@ -64,6 +64,16 @@ public class ScaleMenuItemDecorator extends BaseMenuItemDecorator {
 	}
 
 	@Override
+	public boolean isTouchEnabled() {
+		return true;
+	}
+
+	@Override
+	public void setTouchEnabled(boolean pTouchEnabled) {
+
+	}
+
+	@Override
 	public boolean isAttached() {
 		return false;
 	}
