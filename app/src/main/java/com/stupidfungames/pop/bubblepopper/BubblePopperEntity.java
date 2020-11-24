@@ -1,16 +1,21 @@
 package com.stupidfungames.pop.bubblepopper;
 
+import static com.stupidfungames.pop.eventbus.GameEvent.BUBBLE_POPPED;
+
 import android.opengl.GLES20;
+import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameAnimationManager;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpritePool;
+import com.stupidfungames.pop.eventbus.BubblePoppedEventPayload;
 import com.stupidfungames.pop.eventbus.BubbleTouchedEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.IncrementScoreEventPayload;
+import com.stupidfungames.pop.fixturedefdata.BaseEntityUserData;
 import com.stupidfungames.pop.physics.util.Vec2Pool;
 import com.stupidfungames.pop.resources.fonts.FontId;
 import com.stupidfungames.pop.resources.fonts.GameFontsManager;
@@ -66,6 +71,10 @@ public class BubblePopperEntity extends BaseEntity implements EventBus.Subscribe
     // Remove the popped bubble
     get(BubbleSpritePool.class).recycle(previousBubble);
     removePhysics(previousBubble);
+    if (previousBubble.getUserData() == null) {
+      Log.d("asdasd", "USER DATA IS NUL");
+    }
+    EventBus.get().sendEvent(BUBBLE_POPPED, new BubblePoppedEventPayload(((BaseEntityUserData)previousBubble.getUserData()).getId()));
   }
 
   /**

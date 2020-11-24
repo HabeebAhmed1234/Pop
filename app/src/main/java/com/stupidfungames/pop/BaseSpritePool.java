@@ -38,7 +38,6 @@ public abstract class BaseSpritePool extends BaseEntity {
 
   public void recycle(Sprite sprite) {
     sprite.setVisible(false);
-
     sprites.add(sprite);
   }
 
@@ -50,13 +49,15 @@ public abstract class BaseSpritePool extends BaseEntity {
       if (userData instanceof BaseEntityUserData) {
         ((BaseEntityUserData) userData).reset();
       }
+      Log.d("asdasd", "cleared bubble user data");
       sprite.setUserData(null);
     }
     sprites.clear();
     sprites = null;
   }
 
-  protected void updateSprite(Sprite sprite) {}
+  protected void updateSprite(Sprite sprite) {
+  }
 
   protected abstract Sprite createNewSprite(float x, float y);
 }

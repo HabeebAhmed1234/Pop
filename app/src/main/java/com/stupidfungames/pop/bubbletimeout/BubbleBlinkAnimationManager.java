@@ -16,6 +16,7 @@ import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.S
 import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.BLINKING_IMMINENT;
 import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.BLINKING_SLOWLY;
 import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.EXPLODING;
+import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.IDLE;
 import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.STABLE;
 
 /**
@@ -70,7 +71,7 @@ class BubbleBlinkAnimationManager implements BubbleLifecycleController, BaseStat
         if (currentBlinkModifier != null) {
             bubble.unregisterEntityModifier(currentBlinkModifier);
         }
-        if (newState != STABLE && newState != BubbleLifeCycleStateMachine.State.EXPLODING) {
+        if (newState != IDLE && newState != STABLE && newState != BubbleLifeCycleStateMachine.State.EXPLODING) {
             // We have entered a blinking state. set the correct modifier and remove the existing modifier
             currentBlinkModifier = stateToModifiersMap.get(newState);
             bubble.registerEntityModifier(currentBlinkModifier);

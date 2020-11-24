@@ -9,8 +9,6 @@ import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import java.util.HashMap;
 import java.util.Map;
-import org.andengine.entity.IEntity;
-import org.andengine.entity.OnDetachedListener;
 import org.andengine.entity.sprite.Sprite;
 
 public class BubblesLifecycleManagerEntity extends BaseEntity implements EventBus.Subscriber {
@@ -31,6 +29,10 @@ public class BubblesLifecycleManagerEntity extends BaseEntity implements EventBu
   public void onDestroy() {
     super.onDestroy();
     EventBus.get().unSubscribe(GameEvent.BUBBLE_SPAWNED, this);
+    for (BubbleLifecycleControllersManager manager : controllersManagerMap.values()) {
+      manager.onDestroy();
+    }
+    controllersManagerMap.clear();
   }
 
   @Override
@@ -38,20 +40,16 @@ public class BubblesLifecycleManagerEntity extends BaseEntity implements EventBu
     if (event == GameEvent.BUBBLE_SPAWNED) {
       BubbleSpawnedEventPayload bubbleSpawnedEventPayload = (BubbleSpawnedEventPayload) payload;
       final Sprite bubbleSprite = bubbleSpawnedEventPayload.bubbleSprite;
-      controllersManagerMap.put(
-          bubbleSprite,
-          new BubbleLifecycleControllersManager(
-              get(GameSoundsManager.class),
-              engine,
-              bubbleSprite));
-      bubbleSprite.addOnDetachedListener(new OnDetachedListener() {
-        @Override
-        public void onDetached(IEntity entity) {
-          bubbleSprite.removeOnDetachedListener(this);
-          BubbleLifecycleControllersManager controller = controllersManagerMap.get(bubbleSprite);
-          controller.onDestroy();
-        }
-      });
+      if (controllersManagerMap.containsKey(bubbleSprite)) {
+        controllersManagerMap.get(bubbleSprite).reset();
+      } else {
+        controllersManagerMap.put(
+            bubbleSprite,
+            new BubbleLifecycleControllersManager(
+                get(GameSoundsManager.class),
+                engine,
+                bubbleSprite));
+      }
     }
   }
 }

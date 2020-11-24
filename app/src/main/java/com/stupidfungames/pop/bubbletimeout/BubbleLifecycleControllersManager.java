@@ -1,5 +1,6 @@
 package com.stupidfungames.pop.bubbletimeout;
 
+import com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 
 import org.andengine.engine.Engine;
@@ -15,9 +16,22 @@ import java.util.Set;
 class BubbleLifecycleControllersManager {
 
     private Set<BubbleLifecycleController> lifecycleControllers = new HashSet<>();
+    private BubbleLifeCycleStateMachine stateMachine;
 
     public BubbleLifecycleControllersManager(GameSoundsManager soundsManager, Engine engine, Sprite bubbleSprite) {
         initControllers(soundsManager, engine, bubbleSprite);
+    }
+
+    /**
+     * called when a bubble is re-spawned
+     */
+    public void reset() {
+        if (stateMachine != null) {
+            if (stateMachine.getCurrentState() != State.IDLE) {
+                stateMachine.transitionState(State.IDLE);
+            }
+            stateMachine.transitionState(State.STABLE);
+        }
     }
 
     /**
@@ -31,7 +45,7 @@ class BubbleLifecycleControllersManager {
     }
 
     private void initControllers(GameSoundsManager soundsManager, Engine engine, Sprite bubbleSprite) {
-        BubbleLifeCycleStateMachine stateMachine = new BubbleLifeCycleStateMachine();
+        stateMachine = new BubbleLifeCycleStateMachine();
         lifecycleControllers.add(new BubbleBlinkAnimationManager(bubbleSprite, stateMachine, soundsManager));
         lifecycleControllers.add(new BubbleLifecycleTransitionDriver(bubbleSprite, engine, stateMachine));
         lifecycleControllers.add(new BubbleLifecycleGameOverEntity(bubbleSprite, stateMachine));
