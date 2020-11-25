@@ -2,13 +2,14 @@ package com.stupidfungames.pop.bubblepopper;
 
 import static com.stupidfungames.pop.eventbus.GameEvent.BUBBLE_POPPED;
 
-import android.opengl.GLES20;
-import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameAnimationManager;
+import com.stupidfungames.pop.GameAnimationManager.AnimationListener;
+import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpritePool;
+import com.stupidfungames.pop.bubblespawn.BubbleSpritePool.SpritePoolParams;
 import com.stupidfungames.pop.eventbus.BubblePoppedEventPayload;
 import com.stupidfungames.pop.eventbus.BubbleTouchedEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
@@ -17,8 +18,7 @@ import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.IncrementScoreEventPayload;
 import com.stupidfungames.pop.fixturedefdata.BaseEntityUserData;
 import com.stupidfungames.pop.physics.util.Vec2Pool;
-import com.stupidfungames.pop.resources.fonts.FontId;
-import com.stupidfungames.pop.resources.fonts.GameFontsManager;
+import com.stupidfungames.pop.pool.SpriteInitializerParams;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import com.stupidfungames.pop.resources.sounds.SoundId;
 import com.stupidfungames.pop.utils.BubblePhysicsUtil;
@@ -47,6 +47,12 @@ public class BubblePopperEntity extends BaseEntity implements EventBus.Subscribe
   }
 
   @Override
+  protected void createBindings(Binder binder) {
+    super.createBindings(binder);
+    binder.bind(ScoreTickerSpritePool.class, new ScoreTickerSpritePool(this));
+  }
+
+  @Override
   public void onDestroy() {
     super.onDestroy();
     EventBus.get().unSubscribe(GameEvent.BUBBLE_TOUCHED, this);
@@ -71,7 +77,8 @@ public class BubblePopperEntity extends BaseEntity implements EventBus.Subscribe
     // Remove the popped bubble
     get(BubbleSpritePool.class).recycle(previousBubble);
     removePhysics(previousBubble);
-    EventBus.get().sendEvent(BUBBLE_POPPED, new BubblePoppedEventPayload(((BaseEntityUserData)previousBubble.getUserData()).getId()));
+    EventBus.get().sendEvent(BUBBLE_POPPED,
+        new BubblePoppedEventPayload(((BaseEntityUserData) previousBubble.getUserData()).getId()));
   }
 
   /**
@@ -105,19 +112,22 @@ public class BubblePopperEntity extends BaseEntity implements EventBus.Subscribe
         new IncrementScoreEventPayload(SCORE_INCREMENT_PER_BUBBLE_POP));
   }
 
-  private void showScoretickerText(float sceneX, float sceneY) {
-    final Text scorePlus10Text = new Text(sceneX, sceneY,
-        get(GameFontsManager.class).getFont(FontId.SCORE_TICKER_FONT), "+10!",
-        vertexBufferObjectManager);
-    scorePlus10Text.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
-    scorePlus10Text.setColor(0, 1, 0);
-    addToScene(scorePlus10Text);
-
-    get(GameAnimationManager.class).startModifier(
-        scorePlus10Text,
-        new ParallelEntityModifier(
-            new ScaleModifier(0.75f, 0.1f, 1.1f),
-            new AlphaModifier(0.75f, 1f, 0f)));
+  private void showScoretickerText(float x, float y) {
+    final ScoreTickerSpritePool scoreTickerSpritePool = get(ScoreTickerSpritePool.class);
+    final Text scorePlus10Text = (Text) scoreTickerSpritePool.get(new SpriteInitializerParams(x, y));
+    if (!scorePlus10Text.isAttached()) {
+      addToScene(scorePlus10Text);
+    }
+    ParallelEntityModifier animation = new ParallelEntityModifier(
+        new ScaleModifier(0.75f, 0.1f, 1.1f),
+        new AlphaModifier(0.75f, 1f, 0f));
+    get(GameAnimationManager.class).startModifier(scorePlus10Text, animation,
+        new AnimationListener() {
+          @Override
+          public void onFinished() {
+            scoreTickerSpritePool.recycle(scorePlus10Text);
+          }
+        });
   }
 
   private Sound getRandomPopSound() {

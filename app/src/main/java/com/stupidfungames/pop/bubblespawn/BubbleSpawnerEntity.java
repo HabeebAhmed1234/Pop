@@ -11,6 +11,7 @@ import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameFixtureDefs;
 import com.stupidfungames.pop.TouchPopperFactoryEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
+import com.stupidfungames.pop.bubblespawn.BubbleSpritePool.SpritePoolParams;
 import com.stupidfungames.pop.collision.CollisionFilters;
 import com.stupidfungames.pop.entitymatchers.BubblesEntityMatcher;
 import com.stupidfungames.pop.eventbus.BubbleSpawnedEventPayload;
@@ -136,9 +137,8 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
   public Body spawnBubble(final BubbleType bubbleType, final float x, final float y,
       BubbleSize bubbleSize) {
     //add object
-    BubbleSpritePool spritePool = get(BubbleSpritePool.class);
-    spritePool.setNextBubbleMetaData(bubbleType, bubbleSize);
-    final Sprite bubbleSprite = spritePool.get(x, y);
+    final Sprite bubbleSprite = (Sprite) get(BubbleSpritePool.class)
+        .get(new SpritePoolParams(x, y, bubbleType, bubbleSize));
 
     final FixtureDef bubbleFixtureDef = GameFixtureDefs.BASE_BUBBLE_FIXTURE_DEF;
     bubbleFixtureDef.setFilter(CollisionFilters.BUBBLE_FILTER);

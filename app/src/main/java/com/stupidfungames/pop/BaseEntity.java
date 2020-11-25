@@ -22,7 +22,7 @@ import org.jbox2d.dynamics.Body;
  * This class represents the base functionality of all entities within the game.
  *
  * An entity is a game object which has access to the game scene and physics world. All user inputs
- * will ping methods within game entities which will then update the underlying sprites.
+ * will ping methods within game entities which will then update the underlying items.
  *
  * All data is stored within these entity objects that extends this BaseEntity
  */
