@@ -2,6 +2,7 @@ package com.stupidfungames.pop.bubblepopper;
 
 import static com.stupidfungames.pop.eventbus.GameEvent.BUBBLE_POPPED;
 
+import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameAnimationManager;
 import com.stupidfungames.pop.GameAnimationManager.AnimationListener;
@@ -62,6 +63,10 @@ public class BubblePopperEntity extends BaseEntity implements EventBus.Subscribe
       Sprite previousBubble,
       BubbleSpawnerEntity.BubbleSize oldBubbleSize,
       BubbleSpawnerEntity.BubbleType bubbleType) {
+    if (!previousBubble.isVisible()) {
+      Log.d("BubblePopperEntity", "tried to pop the same bubble more than once");
+      return;
+    }
     // Play the pop sound
     getRandomPopSound().play();
 

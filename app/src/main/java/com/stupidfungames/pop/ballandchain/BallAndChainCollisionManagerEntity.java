@@ -2,6 +2,7 @@ package com.stupidfungames.pop.ballandchain;
 
 import static com.stupidfungames.pop.eventbus.GameEvent.BALL_AND_CHAIN_POPPED_BUBBLE;
 
+import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GamePhysicsContactsEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
@@ -43,6 +44,12 @@ class BallAndChainCollisionManagerEntity extends BaseEntity implements
 
   @Override
   public void onBeginContact(Fixture fixture1, Fixture fixture2) {
+    Log.d("asdasd", fixture1.hashCode() + fixture2.hashCode() + " onBeginContact");
+  }
+
+  @Override
+  public void onEndContact(Fixture fixture1, Fixture fixture2) {
+    Log.d("asdasd", fixture1.hashCode() + fixture2.hashCode() + " onEndContact");
     if (!shouldBallAndChainPop(get(BallAndChainStateMachine.class).getCurrentState())) {
       return;
     }
@@ -51,15 +58,13 @@ class BallAndChainCollisionManagerEntity extends BaseEntity implements
     if (!bubbleEntityUserData.isPoppable()) {
       return;
     }
-    get(BubblePopperEntity.class).popBubble(
-        bubbleEntityUserData.bubbleSprite,
-        bubbleEntityUserData.size,
-        bubbleEntityUserData.bubbleType);
-    EventBus.get().sendEvent(BALL_AND_CHAIN_POPPED_BUBBLE);
-  }
-
-  @Override
-  public void onEndContact(Fixture fixture1, Fixture fixture2) {
+    if (bubbleEntityUserData.bubbleSprite.isVisible()) {
+      get(BubblePopperEntity.class).popBubble(
+          bubbleEntityUserData.bubbleSprite,
+          bubbleEntityUserData.size,
+          bubbleEntityUserData.bubbleType);
+      EventBus.get().sendEvent(BALL_AND_CHAIN_POPPED_BUBBLE);
+    }
   }
 
   private boolean shouldBallAndChainPop(BallAndChainStateMachine.State state) {
