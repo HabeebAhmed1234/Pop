@@ -2,8 +2,8 @@ package com.stupidfungames.pop.pool;
 
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
+import java.util.LinkedList;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * A pool of items.
@@ -34,7 +34,7 @@ public abstract class ItemPool<T, P> extends BaseEntity {
     void destroy(I item);
   }
 
-  private final Queue<T> items = new ConcurrentLinkedQueue<>();
+  private final Queue<T> items = new LinkedList<>();
   private ItemInitializer initializer;
 
   public ItemPool(BinderEnity parent) {

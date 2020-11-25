@@ -3,8 +3,8 @@ package com.stupidfungames.pop;
 import android.util.Log;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.ArrayList;
+import java.util.List;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.input.touch.TouchEvent;
@@ -21,7 +21,7 @@ public class GameSceneTouchListenerEntity extends BaseEntity implements IOnScene
 
   private static final String TAG = "TouchListener";
 
-  private Queue<SceneTouchListener> sceneTouchlisteners = new ConcurrentLinkedQueue<>();
+  private List<SceneTouchListener> sceneTouchlisteners = new ArrayList<>();
 
   public GameSceneTouchListenerEntity(BinderEnity parent) {
     super(parent);
@@ -34,7 +34,9 @@ public class GameSceneTouchListenerEntity extends BaseEntity implements IOnScene
   }
 
   public boolean hasSceneTouchListener(SceneTouchListener listener) {
-    return sceneTouchlisteners.contains(listener);
+    boolean hasSceneTouchListener = false;
+    hasSceneTouchListener = sceneTouchlisteners.contains(listener);
+    return hasSceneTouchListener;
   }
 
   public GameSceneTouchListenerEntity addSceneTouchListener(SceneTouchListener listener) {
@@ -55,9 +57,11 @@ public class GameSceneTouchListenerEntity extends BaseEntity implements IOnScene
   @Override
   public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
     boolean handled = false;
-    for (SceneTouchListener listener : sceneTouchlisteners) {
-      if (listener.onSceneTouchEvent(pScene, pSceneTouchEvent)) {
-        handled = true;
+    for (int i = 0; i < sceneTouchlisteners.size(); i++) {
+      if (i < sceneTouchlisteners.size()) {
+        if (sceneTouchlisteners.get(i).onSceneTouchEvent(pScene, pSceneTouchEvent)) {
+          handled = true;
+        }
       }
     }
     return handled;

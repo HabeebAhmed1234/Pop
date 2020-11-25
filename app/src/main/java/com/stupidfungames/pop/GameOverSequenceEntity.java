@@ -2,6 +2,7 @@ package com.stupidfungames.pop;
 
 import android.content.Context;
 import com.stupidfungames.pop.binder.BinderEnity;
+import com.stupidfungames.pop.bubblespawn.BubbleSpritePool;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
@@ -96,7 +97,7 @@ public class GameOverSequenceEntity extends BaseEntity {
       }
     }));
 
-    removeFromScene(bubble);
+    get(BubbleSpritePool.class).recycle(bubble);
   }
 
   private void onGameover() {

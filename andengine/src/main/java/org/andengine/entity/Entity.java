@@ -1,9 +1,9 @@
 package org.andengine.entity;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.UpdateHandlerList;
@@ -64,7 +64,7 @@ public class Entity implements IEntity {
   private IEntity mParent;
 
   private boolean isAttached = false;
-  private Queue<OnDetachedListener> onDetatchListeners = new ConcurrentLinkedQueue<>();
+  private Queue<OnDetachedListener> onDetatchListeners = new LinkedList<>();
 
   protected SmartList<IEntity> mChildren;
   private EntityModifierList mEntityModifiers;

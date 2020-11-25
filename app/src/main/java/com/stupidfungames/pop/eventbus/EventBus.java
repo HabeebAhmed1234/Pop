@@ -1,11 +1,10 @@
 package com.stupidfungames.pop.eventbus;
 
 import android.util.Log;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class EventBus {
 
@@ -17,8 +16,8 @@ public class EventBus {
   private static EventBus sEventBus;
   private static final String TAG = EventBus.class.getName();
 
-  private Map<GameEvent, ConcurrentLinkedQueue<Subscriber>> mEventSubscribers = new ConcurrentHashMap<>();
-  private Map<GameEvent, EventPayload> mLastEventPayloads = new ConcurrentHashMap<>();
+  private Map<GameEvent, List<Subscriber>> mEventSubscribers = new HashMap<>();
+  private Map<GameEvent, EventPayload> mLastEventPayloads = new HashMap<>();
 
   public static EventBus get() {
     if (sEventBus == null) {
@@ -50,7 +49,7 @@ public class EventBus {
   }
 
   public EventBus subscribe(GameEvent event, Subscriber subscriber, boolean notifyOfLastEvent) {
-    Queue<Subscriber> subscribers = getSubscribers(event);
+    List<Subscriber> subscribers = getSubscribers(event);
     if (subscribers.contains(subscriber)) {
       throw new IllegalStateException(
           "Event " + event + " is already subscribed to by subscriber " + subscriber);
@@ -66,7 +65,7 @@ public class EventBus {
   }
 
   public EventBus unSubscribe(GameEvent event, Subscriber subscriber) {
-    Queue<Subscriber> subscribers = getSubscribers(event);
+    List<Subscriber> subscribers = getSubscribers(event);
     if (!subscribers.contains(subscriber)) {
       throw new IllegalStateException(
           "Subscriber " + subscriber + " was never subscribed to event " + event);
@@ -81,19 +80,20 @@ public class EventBus {
 
   public void sendEvent(GameEvent event, EventPayload payload) {
     mLastEventPayloads.put(event, payload);
-    Queue<Subscriber> subscribers = getSubscribers(event);
+    List<Subscriber> subscribers = getSubscribers(event);
     if (subscribers.isEmpty()) {
       Log.e(TAG, "There are no subscribers for event " + event);
     }
-    Iterator<Subscriber> it = subscribers.iterator();
-    while (it.hasNext()) {
-      it.next().onEvent(event, payload);
+    for (int i = 0; i < subscribers.size(); i++) {
+      if (i < subscribers.size()) {
+        subscribers.get(i).onEvent(event, payload);
+      }
     }
   }
 
-  private Queue<Subscriber> getSubscribers(GameEvent event) {
+  private List<Subscriber> getSubscribers(GameEvent event) {
     if (!mEventSubscribers.containsKey(event)) {
-      mEventSubscribers.put(event, new ConcurrentLinkedQueue<Subscriber>());
+      mEventSubscribers.put(event, new ArrayList<Subscriber>());
     }
     return mEventSubscribers.get(event);
   }
