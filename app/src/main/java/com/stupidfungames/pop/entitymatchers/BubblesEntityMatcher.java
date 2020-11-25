@@ -21,7 +21,9 @@ public class BubblesEntityMatcher implements IEntityMatcher {
 
     @Override
     public boolean matches(IEntity pEntity) {
-        if (!pEntity.isVisible()) return false;
+        if (!pEntity.isVisible()) {
+            return false;
+        }
         @Nullable Object userdata = pEntity.getUserData();
         if (userdata != null && userdata instanceof BubbleEntityUserData) {
             BubbleEntityUserData bubbleUserData = (BubbleEntityUserData) userdata;

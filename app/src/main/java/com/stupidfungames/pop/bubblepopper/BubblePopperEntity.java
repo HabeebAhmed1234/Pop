@@ -76,7 +76,6 @@ public class BubblePopperEntity extends BaseEntity implements EventBus.Subscribe
 
     // Remove the popped bubble
     get(BubbleSpritePool.class).recycle(previousBubble);
-    removePhysics(previousBubble);
     EventBus.get().sendEvent(BUBBLE_POPPED,
         new BubblePoppedEventPayload(((BaseEntityUserData) previousBubble.getUserData()).getId()));
   }

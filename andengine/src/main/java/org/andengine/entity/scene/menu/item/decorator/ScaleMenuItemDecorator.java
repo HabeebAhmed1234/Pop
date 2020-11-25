@@ -89,6 +89,11 @@ public class ScaleMenuItemDecorator extends BaseMenuItemDecorator {
 	}
 
 	@Override
+	public void clearOnDetachedListeners() {
+
+	}
+
+	@Override
 	public void setOnAreaTouchListener(IOnAreaTouchListener listener) {
 
 	}

@@ -28,6 +28,12 @@ public class TurretBulletSpritePool extends ItemPool {
       sprite.setUserData(new TurretBulletUserData());
       return sprite;
     }
+
+    @Override
+    public void onRecycle(Sprite item) {
+      super.onRecycle(item);
+      removePhysics(item);
+    }
   };
 
   public TurretBulletSpritePool(BinderEnity parent) {

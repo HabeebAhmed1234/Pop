@@ -137,8 +137,8 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             //.bind(BubblesLifecycleManagerEntity.class, new BubblesLifecycleManagerEntity(this))
 
             .bind(BubbleSpawnerEntity.class, new BubbleSpawnerEntity(this))
-            .bind(BubbleCleanerBaseEntity.class, new BubbleCleanerBaseEntity(this))
-            .bind(BubbleLossDetectorBaseEntity.class, new BubbleLossDetectorBaseEntity(this))
+            .bind(BubbleCleanerEntity.class, new BubbleCleanerEntity(this))
+            .bind(BubbleLossDetectorEntity.class, new BubbleLossDetectorEntity(this))
             .bind(TouchPopperFactoryEntity.class, new TouchPopperFactoryEntity(this))
             .bind(BubblePopperEntity.class, new BubblePopperEntity(this))
 

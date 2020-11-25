@@ -54,6 +54,14 @@ public class BubbleSpritePool extends ItemPool {
       adjustBubbleSprite(item, params.bubbleSize, params.bubbleType);
       updateBubbleEntityUserData(item, params.bubbleSize, params.bubbleType);
     }
+
+    @Override
+    public void onRecycle(Sprite item) {
+      super.onRecycle(item);
+      BubbleEntityUserData userData = (BubbleEntityUserData) item.getUserData();
+      userData.isTargeted = false;
+      removePhysics(item);
+    }
   };
 
   public BubbleSpritePool(BinderEnity parent) {

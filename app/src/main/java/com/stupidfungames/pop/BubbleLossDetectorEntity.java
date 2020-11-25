@@ -4,6 +4,7 @@ import static com.stupidfungames.pop.GameFixtureDefs.FLOOR_SENSOR_FIXTURE_DEF;
 
 import android.opengl.GLES20;
 import com.stupidfungames.pop.binder.BinderEnity;
+import com.stupidfungames.pop.bubblespawn.BubbleSpritePool;
 import com.stupidfungames.pop.collision.CollisionFilters;
 import com.stupidfungames.pop.eventbus.DecrementScoreEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
@@ -27,7 +28,7 @@ import org.jbox2d.dynamics.FixtureDef;
  * This entity detects whether or not any bubbles have fallen below the screen. Thus resulting in
  * points lost.
  */
-public class BubbleLossDetectorBaseEntity extends BaseEntity {
+public class BubbleLossDetectorEntity extends BaseEntity {
 
   private static final int SCORE_DECREMENT_AMOUNT = 5;
 
@@ -42,7 +43,7 @@ public class BubbleLossDetectorBaseEntity extends BaseEntity {
     }
   };
 
-  public BubbleLossDetectorBaseEntity(BinderEnity parent) {
+  public BubbleLossDetectorEntity(BinderEnity parent) {
     super(parent);
   }
 
@@ -76,7 +77,7 @@ public class BubbleLossDetectorBaseEntity extends BaseEntity {
       EventBus.get().sendEvent(GameEvent.DECREMENT_SCORE,
           new DecrementScoreEventPayload(SCORE_DECREMENT_AMOUNT));
     }
-    removeFromScene(bubbleFixture.getBody());
+    get(BubbleSpritePool.class).recycle(data.bubbleSprite);
   }
 
   private void createScoreLossText(float x, float y) {

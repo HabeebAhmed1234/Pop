@@ -33,7 +33,6 @@ public class BubbleEntityUserData extends BaseEntityUserData {
   public void update(
       BubbleSpawnerEntity.BubbleSize size,
       BubbleType bubbleType) {
-    isTargeted = false;
     this.size = size;
     this.bubbleType = bubbleType;
   }

@@ -46,7 +46,6 @@ public abstract class ItemPool<T, P> extends BaseEntity {
     T item = items.poll();
     if (item == null) {
       item = (T) initializer.createNew(params);
-    } else {
     }
     initializer.update(item, params);
     return item;

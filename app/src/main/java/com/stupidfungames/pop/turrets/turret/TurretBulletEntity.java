@@ -15,6 +15,7 @@ import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.physics.util.Vec2Pool;
 import com.stupidfungames.pop.pool.SpriteInitializerParams;
 import com.stupidfungames.pop.turrets.BulletExplosionsEntity;
+import com.stupidfungames.pop.turrets.TurretUtils;
 import com.stupidfungames.pop.utils.CoordinateConversionUtil;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -34,10 +35,12 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
   private static final float MOUSE_JOINT_DAMPING_RATIO = 0f;
   private static final float MOUSE_JOINT_FREQUENCY = 100;
   private static final float MOUSE_JOINT_MAX_FORCE_MULTIPLIER = 350.0f;
+  private static final int MAX_RETARGET_COUNT = 2;
 
-  private static final float TARGETING_UPDATE_INTERVAL = 1f / 30f;
+  private static final float TARGETING_UPDATE_INTERVAL = 1f / 10f;
 
   private int id;
+  private int retargetCount = 0;
   private Sprite targetBubble;
   private MouseJoint targetingMouseJoint;
   private Sprite bulletSprite;
@@ -56,13 +59,13 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
       true, new ITimerCallback() {
     @Override
     public void onTimePassed(TimerHandler pTimerHandler) {
-      if (targetBubble != null && targetBubble.isAttached() && targetBubble.isVisible()) {
+      if (targetBubble != null) {
         targetingMouseJoint.setTarget(
             CoordinateConversionUtil.sceneToPhysicsWorld(
                 Vec2Pool.obtain(
                     targetBubble.getX() + targetBubble.getWidthScaled() / 2,
                     targetBubble.getY() + targetBubble.getHeightScaled() / 2)));
-      } else {
+      } else if(retargetCount > MAX_RETARGET_COUNT || !findNextTarget()){
         destroyBullet();
       }
     }
@@ -72,7 +75,6 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
     super(parent);
     this.targetBubble = targetBubble;
     initBullet();
-    registerUpdateHandlers();
   }
 
   @Override
@@ -106,6 +108,19 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
 
     targetingMouseJoint = createBulletTargetingMouseJoint(bulletSprite, bulletBody);
     addToScene(bulletSprite, bulletBody);
+    registerUpdateHandlers();
+  }
+
+  private boolean findNextTarget() {
+    Sprite bubble = TurretUtils
+        .getClosestPoppableBubble(scene, get(HostTurretCallback.class).getTurretBodySprite());
+    if (bubble != null) {
+      return false;
+    }
+    targetBubble = bubble;
+    targetBubble.addOnDetachedListener(targetBubbleOnDetachedListener);
+    retargetCount++;
+    return true;
   }
 
   private MouseJoint createBulletTargetingMouseJoint(final Sprite sprite, final Body body) {
@@ -173,7 +188,6 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
       isDestroyed = true;
 
       unregisterUpdateHandlers();
-      removeFromScene(bulletBody, false);
       physicsWorld.destroyBody(targetingMouseJoint.getBodyA());
       physicsWorld.destroyJoint(targetingMouseJoint);
 

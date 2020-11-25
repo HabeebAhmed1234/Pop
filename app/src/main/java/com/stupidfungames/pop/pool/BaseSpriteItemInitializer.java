@@ -24,6 +24,7 @@ public class BaseSpriteItemInitializer<P extends SpriteInitializerParams> implem
   public void onRecycle(Sprite item) {
     item.setVisible(false);
     item.setTouchEnabled(false);
+    item.clearOnDetachedListeners();
   }
 
   @Override

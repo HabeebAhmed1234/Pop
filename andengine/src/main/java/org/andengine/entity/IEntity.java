@@ -197,6 +197,7 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 
 	public void addOnDetachedListener(OnDetachedListener listener);
 	public void removeOnDetachedListener(OnDetachedListener listener);
+	public void clearOnDetachedListeners();
 
 	public void attachChild(final IEntity pEntity);
 

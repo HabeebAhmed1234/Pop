@@ -1200,6 +1200,11 @@ public class Entity implements IEntity {
   }
 
   @Override
+  public void clearOnDetachedListeners() {
+    onDetatchListeners.clear();
+  }
+
+  @Override
   public Object getUserData() {
     return this.mUserData;
   }

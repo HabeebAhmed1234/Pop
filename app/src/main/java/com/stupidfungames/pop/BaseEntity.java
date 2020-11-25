@@ -131,6 +131,7 @@ public abstract class BaseEntity extends BinderEnity implements
       }
     }
     physicsWorld.destroyBody(body);
+    physicsConnector.clear();
   }
 
   protected void removePhysics(Sprite sprite) {
