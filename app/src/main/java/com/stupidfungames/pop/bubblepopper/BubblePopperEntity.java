@@ -79,10 +79,12 @@ public class BubblePopperEntity extends BaseEntity implements EventBus.Subscribe
     // Increment the score
     increaseScore(oldBubbleScenePosition.x, oldBubbleScenePosition.y);
 
-    // Remove the popped bubble
-    get(BubbleSpritePool.class).recycle(previousBubble);
+    // Notify bubble popped
     EventBus.get().sendEvent(BUBBLE_POPPED,
         new BubblePoppedEventPayload(((BaseEntityUserData) previousBubble.getUserData()).getId()));
+
+    // Remove the popped bubble
+    get(BubbleSpritePool.class).recycle(previousBubble);
   }
 
   /**

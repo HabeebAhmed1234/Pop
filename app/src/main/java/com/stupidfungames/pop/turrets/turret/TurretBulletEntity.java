@@ -1,15 +1,18 @@
 package com.stupidfungames.pop.turrets.turret;
 
+import static com.stupidfungames.pop.eventbus.GameEvent.BUBBLE_POPPED;
 import static com.stupidfungames.pop.eventbus.GameEvent.TURRET_BULLET_POPPED_BUBBLE;
 
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameFixtureDefs;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.collision.CollisionFilters;
+import com.stupidfungames.pop.eventbus.BubblePoppedEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.TurretBulletPoppedBubbleEventPayload;
+import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
 import com.stupidfungames.pop.fixturedefdata.TurretBulletUserData;
 import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.physics.util.Vec2Pool;
@@ -19,8 +22,6 @@ import com.stupidfungames.pop.turrets.TurretUtils;
 import com.stupidfungames.pop.utils.CoordinateConversionUtil;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
-import org.andengine.entity.IEntity;
-import org.andengine.entity.OnDetachedListener;
 import org.andengine.entity.sprite.Sprite;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -39,7 +40,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
 
   private static final float TARGETING_UPDATE_INTERVAL = 1f / 10f;
 
-  private int id;
+  private int id = -1;
   private int retargetCount = 0;
   private Sprite targetBubble;
   private MouseJoint targetingMouseJoint;
@@ -47,16 +48,6 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
   private Body bulletBody;
 
   private boolean isDestroyed = false;
-
-  private final OnDetachedListener targetBubbleOnDetachedListener = new OnDetachedListener() {
-    @Override
-    public void onDetached(IEntity entity) {
-      if (targetBubble != null) {
-        targetBubble.removeOnDetachedListener(this);
-        targetBubble = null;
-      }
-    }
-  };
 
   private final TimerHandler bulletTargetingUpdater = new TimerHandler(TARGETING_UPDATE_INTERVAL,
       true, new ITimerCallback() {
@@ -101,6 +92,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
     bulletSprite = (Sprite) get(TurretBulletSpritePool.class).get(
         new SpriteInitializerParams(turretCannonTipLocalPosition[0],
             turretCannonTipLocalPosition[1]));
+
     id = ((TurretBulletUserData) bulletSprite.getUserData()).getId();
 
     final FixtureDef bulletFixtureDef = GameFixtureDefs.TURRET_BULLET_FIXTURE_DEF;
@@ -126,7 +118,6 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
       return;
     }
     targetBubble = bubble;
-    targetBubble.addOnDetachedListener(targetBubbleOnDetachedListener);
   }
 
   private MouseJoint createBulletTargetingMouseJoint(final Sprite sprite, final Body body) {
@@ -149,18 +140,28 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
 
   @Override
   public void onEvent(GameEvent event, EventPayload payload) {
-    if (event == TURRET_BULLET_POPPED_BUBBLE
-        && ((TurretBulletPoppedBubbleEventPayload) payload).bulletId == id) {
-      findNextTarget();
+    switch (event) {
+      case BUBBLE_SPAWNED:
+        if (targetBubble != null
+            && ((BubblePoppedEventPayload) payload).bubbleId == ((BubbleEntityUserData) targetBubble
+            .getUserData()).getId()) {
+          targetBubble = null;
+        }
+        break;
+      case TURRET_BULLET_POPPED_BUBBLE:
+        if (((TurretBulletPoppedBubbleEventPayload) payload).bulletId == id) {
+          destroyBullet();
+        }
+        break;
     }
   }
 
   private void registerUpdateHandlers() {
-    if (targetBubble != null) {
-      targetBubble.addOnDetachedListener(targetBubbleOnDetachedListener);
-    }
     if (!engine.containsUpdateHandler(bulletTargetingUpdater)) {
       engine.registerUpdateHandler(bulletTargetingUpdater);
+    }
+    if (!EventBus.get().containsSubscriber(BUBBLE_POPPED, this)) {
+      EventBus.get().subscribe(BUBBLE_POPPED, this);
     }
     if (!EventBus.get().containsSubscriber(TURRET_BULLET_POPPED_BUBBLE, this)) {
       EventBus.get().subscribe(TURRET_BULLET_POPPED_BUBBLE, this);
@@ -168,11 +169,11 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
   }
 
   private void unregisterUpdateHandlers() {
-    if (targetBubble != null) {
-      targetBubble.removeOnDetachedListener(targetBubbleOnDetachedListener);
-    }
     if (engine.containsUpdateHandler(bulletTargetingUpdater)) {
       engine.unregisterUpdateHandler(bulletTargetingUpdater);
+    }
+    if (EventBus.get().containsSubscriber(BUBBLE_POPPED, this)) {
+      EventBus.get().unSubscribe(BUBBLE_POPPED, this);
     }
     if (EventBus.get().containsSubscriber(TURRET_BULLET_POPPED_BUBBLE, this)) {
       EventBus.get().unSubscribe(TURRET_BULLET_POPPED_BUBBLE, this);
@@ -197,7 +198,6 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
       physicsWorld.destroyBody(targetingMouseJoint.getBodyA());
       physicsWorld.destroyJoint(targetingMouseJoint);
 
-      id = 0;
       targetBubble = null;
       targetingMouseJoint = null;
       bulletSprite = null;

@@ -70,6 +70,9 @@ public class BubbleLossDetectorEntity extends BaseEntity {
 
   private void processBubbleFellBelowScreen(Fixture bubbleFixture) {
     BubbleEntityUserData data = (BubbleEntityUserData) bubbleFixture.getUserData();
+    if (!data.bubbleSprite.isVisible()) {
+      return;
+    }
     if (data.isScoreLossBubble) {
       createScoreLossText(
           data.bubbleSprite.getX(),
