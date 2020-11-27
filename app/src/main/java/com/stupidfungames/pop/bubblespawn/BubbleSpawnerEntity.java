@@ -130,7 +130,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
   }
 
   /**
-   * Creates a bubble in the scene and returns the corresponding physics connector.
+   * Creates a bubble in the scene and returns the corresponding physics body.
    *
    * returns the Body of the spawned bubble
    */

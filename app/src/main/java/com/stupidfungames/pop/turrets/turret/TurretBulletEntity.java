@@ -51,7 +51,10 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
   private final OnDetachedListener targetBubbleOnDetachedListener = new OnDetachedListener() {
     @Override
     public void onDetached(IEntity entity) {
-      destroyBullet();
+      if (targetBubble != null) {
+        targetBubble.removeOnDetachedListener(this);
+        targetBubble = null;
+      }
     }
   };
 
@@ -59,14 +62,14 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
       true, new ITimerCallback() {
     @Override
     public void onTimePassed(TimerHandler pTimerHandler) {
-      if (targetBubble != null) {
+      if (targetBubble != null && targetBubble.isVisible()) {
         targetingMouseJoint.setTarget(
             CoordinateConversionUtil.sceneToPhysicsWorld(
                 Vec2Pool.obtain(
                     targetBubble.getX() + targetBubble.getWidthScaled() / 2,
                     targetBubble.getY() + targetBubble.getHeightScaled() / 2)));
-      } else if(retargetCount > MAX_RETARGET_COUNT || !findNextTarget()){
-        destroyBullet();
+      } else {
+        findNextTarget();
       }
     }
   });
@@ -74,6 +77,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
   public TurretBulletEntity(Sprite targetBubble, BinderEnity parent) {
     super(parent);
     this.targetBubble = targetBubble;
+    registerUpdateHandlers();
     initBullet();
   }
 
@@ -108,19 +112,21 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
 
     targetingMouseJoint = createBulletTargetingMouseJoint(bulletSprite, bulletBody);
     addToScene(bulletSprite, bulletBody);
-    registerUpdateHandlers();
   }
 
-  private boolean findNextTarget() {
+  private void findNextTarget() {
+    if (retargetCount > MAX_RETARGET_COUNT) {
+      destroyBullet();
+    }
+    retargetCount++;
     Sprite bubble = TurretUtils
         .getClosestPoppableBubble(scene, get(HostTurretCallback.class).getTurretBodySprite());
-    if (bubble != null) {
-      return false;
+    if (bubble == null) {
+      destroyBullet();
+      return;
     }
     targetBubble = bubble;
     targetBubble.addOnDetachedListener(targetBubbleOnDetachedListener);
-    retargetCount++;
-    return true;
   }
 
   private MouseJoint createBulletTargetingMouseJoint(final Sprite sprite, final Body body) {
@@ -145,7 +151,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
   public void onEvent(GameEvent event, EventPayload payload) {
     if (event == TURRET_BULLET_POPPED_BUBBLE
         && ((TurretBulletPoppedBubbleEventPayload) payload).bulletId == id) {
-      destroyBullet();
+      findNextTarget();
     }
   }
 

@@ -1,6 +1,7 @@
 package com.stupidfungames.pop;
 
 import com.stupidfungames.pop.savegame.SaveGame;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -57,21 +58,21 @@ public class GameLifeCycleCalllbackManager {
   }
 
   public void onCreateResources() {
-    Iterator<BaseEntity> it = gameEntities.iterator();
+    Iterator<BaseEntity> it = new ArrayList(gameEntities).iterator();
     while (it.hasNext()) {
       it.next().onCreateResources();
     }
   }
 
   public void onCreateScene() {
-    Iterator<BaseEntity> it = gameEntities.iterator();
+    Iterator<BaseEntity> it = new ArrayList(gameEntities).iterator();
     while (it.hasNext()) {
       it.next().onCreateScene();
     }
   }
 
   public void onLoadGame(SaveGame saveGame) {
-    Iterator<BaseEntity> it = gameEntities.iterator();
+    Iterator<BaseEntity> it = new ArrayList(gameEntities).iterator();
     while (it.hasNext()) {
       it.next().onLoadGame(saveGame);
     }
@@ -79,14 +80,14 @@ public class GameLifeCycleCalllbackManager {
 
 
   public void onSaveGame(SaveGame saveGame) {
-    Iterator<BaseEntity> it = gameEntities.iterator();
+    Iterator<BaseEntity> it = new ArrayList(gameEntities).iterator();
     while (it.hasNext()) {
       it.next().onSaveGame(saveGame);
     }
   }
 
   public void onDestroy() {
-    Iterator<BaseEntity> it = gameEntities.iterator();
+    Iterator<BaseEntity> it = new ArrayList(gameEntities).iterator();
     while (it.hasNext()) {
       it.next().onDestroy();
     }
