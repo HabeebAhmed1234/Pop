@@ -59,10 +59,7 @@ class BallAndChainCollisionManagerEntity extends BaseEntity implements
       return;
     }
     if (bubbleEntityUserData.bubbleSprite.isVisible()) {
-      get(BubblePopperEntity.class).popBubble(
-          bubbleEntityUserData.bubbleSprite,
-          bubbleEntityUserData.size,
-          bubbleEntityUserData.bubbleType);
+      get(BubblePopperEntity.class).popBubble(bubbleEntityUserData.bubbleSprite);
       EventBus.get().sendEvent(BALL_AND_CHAIN_POPPED_BUBBLE);
     }
   }

@@ -23,7 +23,8 @@ public class TurretsBulletsCollisionManager extends BaseEntity implements
   }
 
   @Override
-  protected void createBindings(Binder binder) {}
+  protected void createBindings(Binder binder) {
+  }
 
   @Override
   public void onCreateScene() {
@@ -43,15 +44,12 @@ public class TurretsBulletsCollisionManager extends BaseEntity implements
     if (!bubbleEntityUserData.isPoppable()) {
       return;
     }
-    get(BubblePopperEntity.class).popBubble(
-        bubbleEntityUserData.bubbleSprite,
-        bubbleEntityUserData.size,
-        bubbleEntityUserData.bubbleType);
-
-    Fixture bulletFixture = FixtureDefDataUtil.getBulletFixture(fixture1, fixture2);
-    TurretBulletUserData bulletUserData = (TurretBulletUserData) bulletFixture.getUserData();
-    EventBus.get().sendEvent(TURRET_BULLET_POPPED_BUBBLE,
-        new TurretBulletPoppedBubbleEventPayload(bulletUserData.getId()));
+    if (get(BubblePopperEntity.class).popBubble(bubbleEntityUserData.bubbleSprite)) {
+      Fixture bulletFixture = FixtureDefDataUtil.getBulletFixture(fixture1, fixture2);
+      TurretBulletUserData bulletUserData = (TurretBulletUserData) bulletFixture.getUserData();
+      EventBus.get().sendEvent(TURRET_BULLET_POPPED_BUBBLE,
+          new TurretBulletPoppedBubbleEventPayload(bulletUserData.getId()));
+    }
   }
 
   @Override

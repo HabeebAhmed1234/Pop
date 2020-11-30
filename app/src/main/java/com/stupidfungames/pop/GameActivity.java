@@ -17,8 +17,10 @@ import com.stupidfungames.pop.ballandchain.BallAndChainManagerEntity;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
+import com.stupidfungames.pop.bubblepopper.RecursiveBubblePopper;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpritePool;
+import com.stupidfungames.pop.bubbletimeout.BubblesLifecycleManagerEntity;
 import com.stupidfungames.pop.difficulty.GameDifficultyEntity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
@@ -134,7 +136,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(BubbleSpritePool.class, new BubbleSpritePool(this))
             .bind(GameDifficultyEntity.class, new GameDifficultyEntity(this))
             .bind(GameOverSequenceEntity.class, new GameOverSequenceEntity(this))
-            //.bind(BubblesLifecycleManagerEntity.class, new BubblesLifecycleManagerEntity(this))
+            .bind(BubblesLifecycleManagerEntity.class, new BubblesLifecycleManagerEntity(this))
 
             .bind(BubbleSpawnerEntity.class, new BubbleSpawnerEntity(this))
             .bind(BubbleCleanerEntity.class, new BubbleCleanerEntity(this))
@@ -148,7 +150,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(WallsManagerBaseEntity.class, new WallsManagerBaseEntity(this))
             .bind(NukeManagerBaseEntity.class, new NukeManagerBaseEntity(this))
 
-        ;
+            .bind(RecursiveBubblePopper.class, new RecursiveBubblePopper(this));
       }
     };
   }

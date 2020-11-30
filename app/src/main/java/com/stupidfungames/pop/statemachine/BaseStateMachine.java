@@ -19,6 +19,7 @@ public abstract class BaseStateMachine<StateType extends Enum> {
     void onEnterState(T newState);
   }
 
+  private final StateType initialState;
   private StateType currentState = null;
   private Map<StateType, Queue<Listener<StateType>>> transitionListeners = new ConcurrentHashMap<>();
   private Map<StateType, Set<StateType>> validTransitions = null;
@@ -28,6 +29,7 @@ public abstract class BaseStateMachine<StateType extends Enum> {
   protected abstract Map<StateType, Set<StateType>> getAllValidStateTransitions();
 
   public BaseStateMachine(StateType initialState) {
+    this.initialState = initialState;
     currentState = initialState;
   }
 
@@ -114,6 +116,14 @@ public abstract class BaseStateMachine<StateType extends Enum> {
       throw new IllegalArgumentException(
           "Cannot transition state machine from " + currentState + " to " + newState);
     }
+  }
+
+  /**
+   * Resets then state back to initial state and forces the transition.
+   */
+  public void reset() {
+    currentState = initialState;
+    notifyTransition(currentState);
   }
 
   private Map<StateType, Set<StateType>> getAllValidStateTransitionsInternal() {

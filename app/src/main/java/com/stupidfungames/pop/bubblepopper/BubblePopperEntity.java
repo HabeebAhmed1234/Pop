@@ -9,8 +9,9 @@ import com.stupidfungames.pop.GameAnimationManager.AnimationListener;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity;
+import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleSize;
+import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleType;
 import com.stupidfungames.pop.bubblespawn.BubbleSpritePool;
-import com.stupidfungames.pop.bubblespawn.BubbleSpritePool.SpritePoolParams;
 import com.stupidfungames.pop.eventbus.BubblePoppedEventPayload;
 import com.stupidfungames.pop.eventbus.BubbleTouchedEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
@@ -18,6 +19,7 @@ import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.IncrementScoreEventPayload;
 import com.stupidfungames.pop.fixturedefdata.BaseEntityUserData;
+import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
 import com.stupidfungames.pop.physics.util.Vec2Pool;
 import com.stupidfungames.pop.pool.SpriteInitializerParams;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
@@ -36,6 +38,7 @@ public class BubblePopperEntity extends BaseEntity implements EventBus.Subscribe
 
   public static final int SCORE_INCREMENT_PER_BUBBLE_POP = 10;
   public static final int MAX_SCORE_INCREASE_PER_NEW_SPAWNED_BUBBLE = 70; // Since there are three bubble sizes a total of 7 bubbles can be popped from one spawned bubble
+  private static final float POPPED_BUBBLES_HORIZONTAL_OFFSET = 0.5f;
 
   public BubblePopperEntity(BinderEnity parent) {
     super(parent);
@@ -59,21 +62,27 @@ public class BubblePopperEntity extends BaseEntity implements EventBus.Subscribe
     EventBus.get().unSubscribe(GameEvent.BUBBLE_TOUCHED, this);
   }
 
-  public void popBubble(
-      Sprite previousBubble,
-      BubbleSpawnerEntity.BubbleSize oldBubbleSize,
-      BubbleSpawnerEntity.BubbleType bubbleType) {
-    if (!previousBubble.isVisible()) {
+  /**
+   * Pops the given bubble. Returns true if bubble was popped false otherwise.
+   */
+  public boolean popBubble(Sprite previousBubble) {
+    if (!previousBubble.isVisible() && previousBubble
+        .getUserData() instanceof BubbleEntityUserData) {
       Log.d("BubblePopperEntity", "tried to pop the same bubble more than once");
-      return;
+      return false;
     }
+
+    BubbleEntityUserData userData = (BubbleEntityUserData) previousBubble.getUserData();
+    final BubbleSize oldBubbleSize = userData.size;
+    final BubbleType bubbleType = userData.bubbleType;
+
     // Play the pop sound
     getRandomPopSound().play();
 
     Vec2 oldBubbleScenePosition = Vec2Pool.obtain(previousBubble.getX(), previousBubble.getY());
     // Spawn new bubbles if the one we popped not the smallest bubble
     if (!oldBubbleSize.isSmallestBubble()) {
-      spawnPoppedBubbles(oldBubbleSize, oldBubbleScenePosition, bubbleType);
+      spawnPoppedBubbles(previousBubble, oldBubbleSize, oldBubbleScenePosition, bubbleType);
     }
 
     // Increment the score
@@ -85,19 +94,25 @@ public class BubblePopperEntity extends BaseEntity implements EventBus.Subscribe
 
     // Remove the popped bubble
     get(BubbleSpritePool.class).recycle(previousBubble);
+    return true;
   }
 
   /**
    * Spawns 2 new bubbles in the place where the old bubble was
    */
   private void spawnPoppedBubbles(
+      final Sprite oldBubbleSprite,
       final BubbleSpawnerEntity.BubbleSize oldBubbleSize,
       final Vec2 oldBubbleScenePosition,
       final BubbleSpawnerEntity.BubbleType bubbleType) {
     BubbleSpawnerEntity bubbleSpawnerEntity = get(BubbleSpawnerEntity.class);
+
+    float horizontalOffset =
+        (oldBubbleSprite.getWidthScaled() / 2) * POPPED_BUBBLES_HORIZONTAL_OFFSET;
+
     Body leftBubble = bubbleSpawnerEntity.spawnBubble(
         bubbleType,
-        oldBubbleScenePosition.x,
+        oldBubbleScenePosition.x - horizontalOffset,
         oldBubbleScenePosition.y,
         oldBubbleSize.nextPoppedSize());
 
@@ -105,7 +120,7 @@ public class BubblePopperEntity extends BaseEntity implements EventBus.Subscribe
 
     Body rightBubble = bubbleSpawnerEntity.spawnBubble(
         bubbleType,
-        oldBubbleScenePosition.x,
+        oldBubbleScenePosition.x + horizontalOffset,
         oldBubbleScenePosition.y,
         oldBubbleSize.nextPoppedSize());
 
@@ -120,7 +135,8 @@ public class BubblePopperEntity extends BaseEntity implements EventBus.Subscribe
 
   private void showScoretickerText(float x, float y) {
     final ScoreTickerSpritePool scoreTickerSpritePool = get(ScoreTickerSpritePool.class);
-    final Text scorePlus10Text = (Text) scoreTickerSpritePool.get(new SpriteInitializerParams(x, y));
+    final Text scorePlus10Text = (Text) scoreTickerSpritePool
+        .get(new SpriteInitializerParams(x, y));
     if (!scorePlus10Text.isAttached()) {
       addToScene(scorePlus10Text);
     }
@@ -158,7 +174,7 @@ public class BubblePopperEntity extends BaseEntity implements EventBus.Subscribe
   public void onEvent(GameEvent event, EventPayload payload) {
     if (event == GameEvent.BUBBLE_TOUCHED) {
       BubbleTouchedEventPayload touchedEventPayload = (BubbleTouchedEventPayload) payload;
-      popBubble(touchedEventPayload.sprite, touchedEventPayload.size, touchedEventPayload.type);
+      popBubble(touchedEventPayload.sprite);
     }
   }
 }

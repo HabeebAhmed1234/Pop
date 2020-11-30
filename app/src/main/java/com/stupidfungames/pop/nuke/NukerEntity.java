@@ -8,7 +8,6 @@ import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
 import com.stupidfungames.pop.entitymatchers.BubblesEntityMatcher;
-import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import com.stupidfungames.pop.resources.sounds.SoundId;
 import java.util.List;
@@ -46,11 +45,9 @@ public class NukerEntity extends BaseEntity {
 
     private void popAllBubbles() {
       List<IEntity> bubbles = getAllBubbles();
+      BubblePopperEntity bubblePopperEntity = get(BubblePopperEntity.class);
       for (IEntity bubble : bubbles) {
-        BubbleEntityUserData bubbleEntityUserData = (BubbleEntityUserData) bubble.getUserData();
-        get(BubblePopperEntity.class)
-            .popBubble((Sprite) bubble, bubbleEntityUserData.size,
-                bubbleEntityUserData.bubbleType);
+        bubblePopperEntity.popBubble((Sprite) bubble);
       }
     }
 

@@ -31,9 +31,7 @@ class BubbleLifecycleControllersManager {
    */
   public void reset() {
     if (stateMachine != null) {
-      if (stateMachine.getCurrentState() != State.IDLE) {
-        stateMachine.transitionState(State.IDLE);
-      }
+      stateMachine.reset();
       stateMachine.transitionState(State.STABLE);
     }
   }
