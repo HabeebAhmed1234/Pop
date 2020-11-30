@@ -60,6 +60,7 @@ public class BubbleSpritePool extends ItemPool {
       super.onRecycle(item);
       BubbleEntityUserData userData = (BubbleEntityUserData) item.getUserData();
       userData.isTargeted = false;
+      userData.isMarkedForRecursivePopping = false;
       removePhysics(item);
     }
   };

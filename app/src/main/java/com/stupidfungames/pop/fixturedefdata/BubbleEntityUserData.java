@@ -13,6 +13,7 @@ public class BubbleEntityUserData extends BaseEntityUserData {
   public Sprite bubbleSprite;
 
   public boolean isTargeted;
+  public boolean isMarkedForRecursivePopping;
 
   /**
    * @param isScoreLossBubble If true then the user will lose points when this bubble passes the
@@ -59,5 +60,7 @@ public class BubbleEntityUserData extends BaseEntityUserData {
     size = null;
     bubbleType = null;
     bubbleSprite = null;
+    isMarkedForRecursivePopping = false;
+    isTargeted = false;
   }
 }
