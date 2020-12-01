@@ -97,7 +97,9 @@ public class GameOverSequenceEntity extends BaseEntity {
       }
     }));
 
-    get(BubbleSpritePool.class).recycle(bubble);
+    if (bubble.isVisible()) {
+      get(BubbleSpritePool.class).recycle(bubble);
+    }
   }
 
   private void onGameover() {

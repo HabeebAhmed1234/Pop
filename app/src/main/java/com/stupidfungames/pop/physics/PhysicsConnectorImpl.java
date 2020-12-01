@@ -1,7 +1,5 @@
 package com.stupidfungames.pop.physics;
 
-import com.stupidfungames.pop.physics.util.constants.PhysicsConstants;
-import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.shape.IAreaShape;
 import org.andengine.entity.shape.IShape;
 import org.andengine.util.math.MathUtils;
@@ -14,7 +12,7 @@ import org.jbox2d.dynamics.Body;
  * @author Nicolas Gramlich
  * @since 18:51:22 - 05.07.2010
  */
-public class PhysicsConnector implements IUpdateHandler, PhysicsConstants {
+public class PhysicsConnectorImpl implements IPhysicsConnector {
   // ===========================================================
   // Constants
   // ===========================================================
@@ -37,21 +35,21 @@ public class PhysicsConnector implements IUpdateHandler, PhysicsConstants {
   // Constructors
   // ===========================================================
 
-  public PhysicsConnector(final IAreaShape pAreaShape, final Body pBody) {
+  public PhysicsConnectorImpl(final IAreaShape pAreaShape, final Body pBody) {
     this(pAreaShape, pBody, true, true);
   }
 
-  public PhysicsConnector(final IAreaShape pAreaShape, final Body pBody,
+  public PhysicsConnectorImpl(final IAreaShape pAreaShape, final Body pBody,
       final float pPixelToMeterRatio) {
     this(pAreaShape, pBody, true, true, pPixelToMeterRatio);
   }
 
-  public PhysicsConnector(final IAreaShape pAreaShape, final Body pBody,
+  public PhysicsConnectorImpl(final IAreaShape pAreaShape, final Body pBody,
       final boolean pUdatePosition, final boolean pUpdateRotation) {
     this(pAreaShape, pBody, pUdatePosition, pUpdateRotation, PIXEL_TO_METER_RATIO_DEFAULT);
   }
 
-  public PhysicsConnector(final IAreaShape pAreaShape, final Body pBody,
+  public PhysicsConnectorImpl(final IAreaShape pAreaShape, final Body pBody,
       final boolean pUdatePosition, final boolean pUpdateRotation, final float pPixelToMeterRatio) {
     this.mShape = pAreaShape;
     this.mBody = pBody;
@@ -64,6 +62,7 @@ public class PhysicsConnector implements IUpdateHandler, PhysicsConstants {
     this.mShapeHalfBaseHeight = pAreaShape.getHeight() * 0.5f;
   }
 
+  @Override
   public void clear() {
     mShape = null;
     mBody = null;
@@ -78,10 +77,12 @@ public class PhysicsConnector implements IUpdateHandler, PhysicsConstants {
   // Getter & Setter
   // ===========================================================
 
+  @Override
   public IShape getShape() {
     return this.mShape;
   }
 
+  @Override
   public Body getBody() {
     return this.mBody;
   }

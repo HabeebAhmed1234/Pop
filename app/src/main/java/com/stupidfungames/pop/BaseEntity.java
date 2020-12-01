@@ -1,10 +1,11 @@
 package com.stupidfungames.pop;
 
-import android.util.Log;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.fixturedefdata.BaseEntityUserData;
-import com.stupidfungames.pop.physics.PhysicsConnector;
+import com.stupidfungames.pop.physics.IPhysicsConnector;
+import com.stupidfungames.pop.physics.PhysicsConnectorImpl;
 import com.stupidfungames.pop.physics.PhysicsWorld;
+import com.stupidfungames.pop.physics.ReversePhysicsConnectorImpl;
 import com.stupidfungames.pop.savegame.SaveGame;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.engine.Engine;
@@ -114,7 +115,11 @@ public abstract class BaseEntity extends BinderEnity implements
   }
 
   protected void linkPhysics(final IAreaShape entity, final Body body) {
-    physicsWorld.registerPhysicsConnector(new PhysicsConnector(entity, body, true, true));
+    physicsWorld.registerPhysicsConnector(new PhysicsConnectorImpl(entity, body, true, true));
+  }
+
+  protected void linkReversePhysics(final IAreaShape entity, final Body body) {
+    physicsWorld.registerPhysicsConnector(new ReversePhysicsConnectorImpl(entity, body, true, true));
   }
 
   protected void removeFromScene(final Body body) {
@@ -122,7 +127,7 @@ public abstract class BaseEntity extends BinderEnity implements
   }
 
   protected void removeFromScene(final Body body, final boolean alsoRemoveSprite) {
-    PhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager()
+    IPhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager()
         .findPhysicsConnectorByBody(body);
     if (physicsConnector != null) {
       physicsWorld.unregisterPhysicsConnector(physicsConnector);
@@ -135,7 +140,7 @@ public abstract class BaseEntity extends BinderEnity implements
   }
 
   protected void removePhysics(Sprite sprite) {
-    PhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager()
+    IPhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager()
         .findPhysicsConnectorByShape(sprite);
     physicsWorld.unregisterPhysicsConnector(physicsConnector);
     physicsWorld.destroyBody(physicsConnector.getBody());
@@ -143,7 +148,7 @@ public abstract class BaseEntity extends BinderEnity implements
   }
 
   protected void removeFromScene(final IShape sprite) {
-    PhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager()
+    IPhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager()
         .findPhysicsConnectorByShape(sprite);
     if (physicsConnector != null) {
       physicsWorld.unregisterPhysicsConnector(physicsConnector);

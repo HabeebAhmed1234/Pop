@@ -6,7 +6,10 @@ import android.util.Pair;
 import androidx.annotation.Nullable;
 
 import com.stupidfungames.pop.BaseEntity;
+import com.stupidfungames.pop.GameFixtureDefs;
 import com.stupidfungames.pop.binder.BinderEnity;
+import com.stupidfungames.pop.collision.CollisionFilters;
+import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.tray.TrayStateMachine.State;
 import com.stupidfungames.pop.utils.ScreenUtils;
 
@@ -17,6 +20,9 @@ import org.andengine.util.color.AndengineColor;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.FixtureDef;
 
 public abstract class TrayIconsHolderBaseEntity<IconIdType> extends BaseEntity {
 
@@ -97,8 +103,19 @@ public abstract class TrayIconsHolderBaseEntity<IconIdType> extends BaseEntity {
 
     public void addIcon(IconIdType iconId, Sprite iconSprite, IOnAreaTouchListener areaTouchListener) {
         addToSceneWithTouch(iconsTray, iconSprite, areaTouchListener);
+        setUpPhysics(iconSprite);
         icons.add(Pair.create(iconId, iconSprite));
         refreshDimensions(iconSprite);
+    }
+
+    private void setUpPhysics(Sprite iconSprite) {
+        final FixtureDef iconFixtureDef = GameFixtureDefs.ICON_BOX_FIXTURE_DEF;
+        iconFixtureDef.setFilter(CollisionFilters.BUBBLE_FILTER);
+
+        final Body body = PhysicsFactory
+            .createBoxBody(physicsWorld, iconSprite,  BodyType.STATIC, iconFixtureDef);
+
+        linkReversePhysics(iconSprite, body);
     }
 
     @Nullable

@@ -1,9 +1,7 @@
 package com.stupidfungames.pop.icons;
 
 import android.content.Context;
-
 import androidx.annotation.Nullable;
-
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
@@ -16,7 +14,6 @@ import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.tooltips.GameTooltipsEntity;
 import com.stupidfungames.pop.tooltips.TooltipId;
 import com.stupidfungames.pop.utils.ScreenUtils;
-
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.sprite.Sprite;
@@ -29,107 +26,111 @@ import org.andengine.util.color.AndengineColor;
  */
 public abstract class IconBaseEntity extends BaseEntity implements EventBus.Subscriber {
 
-    private static final IOnAreaTouchListener NO_OP_AREA_TOUCH_LISTENER = new IOnAreaTouchListener() {
-        @Override
-        public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-            return false;
-        }
-    };
-
-    private static final int TOOLTIP_LEFT_PADDING_DP = 8;
-
-    private Sprite iconSprite;
-    private boolean isUnlocked;
-
-    public IconBaseEntity(BinderEnity parent) {
-        super(parent);
-    }
-
+  private static final IOnAreaTouchListener NO_OP_AREA_TOUCH_LISTENER = new IOnAreaTouchListener() {
     @Override
-    public void onCreateScene() {
-        iconSprite = new Sprite(
-            -1000,
-            0,
-            get(GameTexturesManager.class).getTextureRegion(getIconTextureId()),
-            vertexBufferObjectManager);
-        setIconColor(AndengineColor.TRANSPARENT);
-
-        EventBus.get()
-                .subscribe(GameEvent.GAME_PROGRESS_CHANGED, this, true)
-                .subscribe(GameEvent.GAME_ICONS_TRAY_OPENED, this, true);
+    public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea,
+        float pTouchAreaLocalX, float pTouchAreaLocalY) {
+      return false;
     }
+  };
 
-    @Override
-    public void onDestroy() {
-        EventBus.get()
-                .unSubscribe(GameEvent.GAME_PROGRESS_CHANGED, this)
-                .unSubscribe(GameEvent.GAME_ICONS_TRAY_OPENED, this);
-        iconSprite.removeOnAreaTouchListener();
-    }
+  private static final int TOOLTIP_LEFT_PADDING_DP = 8;
 
-    @Override
-    public void onEvent(GameEvent event, EventPayload payload) {
-        switch (event) {
-            case GAME_PROGRESS_CHANGED:
-                GameProgressEventPayload progressEventPayload = (GameProgressEventPayload) payload;
-                onGameProgressChanged(progressEventPayload.percentProgress);
-                break;
-            case GAME_ICONS_TRAY_OPENED:
-                if (isUnlocked()) {
-                    float[] tooltipAnchor = getIconTooltipAnchor();
-                    get(GameTooltipsEntity.class).maybeShowTooltip(getIconTooltipId(), tooltipAnchor[0], tooltipAnchor[1]);
-                }
-                break;
+  private Sprite iconSprite;
+  private boolean isUnlocked;
+
+  public IconBaseEntity(BinderEnity parent) {
+    super(parent);
+  }
+
+  @Override
+  public void onCreateScene() {
+    iconSprite = new Sprite(
+        -1000,
+        0,
+        get(GameTexturesManager.class).getTextureRegion(getIconTextureId()),
+        vertexBufferObjectManager);
+
+    setIconColor(AndengineColor.TRANSPARENT);
+
+    EventBus.get()
+        .subscribe(GameEvent.GAME_PROGRESS_CHANGED, this, true)
+        .subscribe(GameEvent.GAME_ICONS_TRAY_OPENED, this, true);
+  }
+
+  @Override
+  public void onDestroy() {
+    EventBus.get()
+        .unSubscribe(GameEvent.GAME_PROGRESS_CHANGED, this)
+        .unSubscribe(GameEvent.GAME_ICONS_TRAY_OPENED, this);
+    iconSprite.removeOnAreaTouchListener();
+  }
+
+  @Override
+  public void onEvent(GameEvent event, EventPayload payload) {
+    switch (event) {
+      case GAME_PROGRESS_CHANGED:
+        GameProgressEventPayload progressEventPayload = (GameProgressEventPayload) payload;
+        onGameProgressChanged(progressEventPayload.percentProgress);
+        break;
+      case GAME_ICONS_TRAY_OPENED:
+        if (isUnlocked()) {
+          float[] tooltipAnchor = getIconTooltipAnchor();
+          get(GameTooltipsEntity.class)
+              .maybeShowTooltip(getIconTooltipId(), tooltipAnchor[0], tooltipAnchor[1]);
         }
+        break;
     }
+  }
 
-    private void onGameProgressChanged(float newProgressPercentage) {
-        if (newProgressPercentage >= getGameProgressPercentageUnlockThreshold() && !isUnlocked) {
-            isUnlocked = true;
-            setIconColor(getUnlockedIconColor());
-            addIconToTray();
-            onIconUnlocked();
-        }
+  private void onGameProgressChanged(float newProgressPercentage) {
+    if (newProgressPercentage >= getGameProgressPercentageUnlockThreshold() && !isUnlocked) {
+      isUnlocked = true;
+      setIconColor(getUnlockedIconColor());
+      addIconToTray();
+      onIconUnlocked();
     }
+  }
 
-    private float[] getIconTooltipAnchor() {
-        float[] anchor = new float[2];
-        Transformation transformation = iconSprite.getLocalToSceneTransformation();
-        anchor[0] = - ScreenUtils.dpToPx(TOOLTIP_LEFT_PADDING_DP, get(Context.class));
-        anchor[1] = iconSprite.getHeightScaled() / 2;
-        transformation.transform(anchor);
-        return anchor;
-    }
+  private float[] getIconTooltipAnchor() {
+    float[] anchor = new float[2];
+    Transformation transformation = iconSprite.getLocalToSceneTransformation();
+    anchor[0] = -ScreenUtils.dpToPx(TOOLTIP_LEFT_PADDING_DP, get(Context.class));
+    anchor[1] = iconSprite.getHeightScaled() / 2;
+    transformation.transform(anchor);
+    return anchor;
+  }
 
-    protected void addIconToTray() {
-        @Nullable IOnAreaTouchListener touchListener = getTouchListener();
-        get(GameIconsHostTrayEntity.class).addIcon(getIconId(), iconSprite, touchListener == null ? NO_OP_AREA_TOUCH_LISTENER : touchListener);
-    }
+  protected void addIconToTray() {
+    @Nullable IOnAreaTouchListener touchListener = getTouchListener();
+    get(GameIconsHostTrayEntity.class).addIcon(getIconId(), iconSprite,
+        touchListener == null ? NO_OP_AREA_TOUCH_LISTENER : touchListener);
+  }
 
-    protected Sprite getIconSprite () {
-        return iconSprite;
-    }
+  protected Sprite getIconSprite() {
+    return iconSprite;
+  }
 
-    protected void setIconColor(AndengineColor color) {
-        iconSprite.setColor(color);
-    }
+  protected void setIconColor(AndengineColor color) {
+    iconSprite.setColor(color);
+  }
 
-    protected boolean isUnlocked() {
-        return isUnlocked;
-    }
+  protected boolean isUnlocked() {
+    return isUnlocked;
+  }
 
-    protected abstract TextureId getIconTextureId();
+  protected abstract TextureId getIconTextureId();
 
-    protected abstract GameIconsHostTrayEntity.IconId getIconId();
+  protected abstract GameIconsHostTrayEntity.IconId getIconId();
 
-    protected abstract float getGameProgressPercentageUnlockThreshold();
+  protected abstract float getGameProgressPercentageUnlockThreshold();
 
-    protected abstract void onIconUnlocked();
+  protected abstract void onIconUnlocked();
 
-    protected abstract AndengineColor getUnlockedIconColor();
+  protected abstract AndengineColor getUnlockedIconColor();
 
-    @Nullable
-    protected abstract IOnAreaTouchListener getTouchListener();
+  @Nullable
+  protected abstract IOnAreaTouchListener getTouchListener();
 
-    protected abstract TooltipId getIconTooltipId();
+  protected abstract TooltipId getIconTooltipId();
 }
