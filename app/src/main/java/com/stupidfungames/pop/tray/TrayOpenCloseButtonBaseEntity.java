@@ -97,7 +97,7 @@ public abstract class TrayOpenCloseButtonBaseEntity extends BaseEntity implement
   }
 
   public void onIconsTrayInitialized() {
-    if (!(isIconCreated())) {
+    /*if (!(isIconCreated())) {
       createIconSprite();
     }
 
@@ -106,7 +106,7 @@ public abstract class TrayOpenCloseButtonBaseEntity extends BaseEntity implement
         toggleBtnTouchListener);
     addToScene(hostTrayCallback.getTrayIconsHolderRectangle(), iconSpriteClose);
 
-    refreshDimensions();
+    refreshDimensions();*/
   }
 
   public void onIconsTrayDimensionsChanged() {
@@ -147,7 +147,7 @@ public abstract class TrayOpenCloseButtonBaseEntity extends BaseEntity implement
     iconSpriteClose.setHeight(getButtonSpecInternal().iconSizePx);
     iconSpriteClose.setVisible(false);
 
-    setUpPhysics();
+    //setUpPhysics();
   }
 
   private void setIconPosition(float x, float y) {
