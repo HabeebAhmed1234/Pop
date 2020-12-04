@@ -23,6 +23,9 @@ import com.stupidfungames.pop.androidui.LoadingSpinner;
 public class AdRoomActivity extends AppCompatActivity {
 
   public static final int RESULT_AD_WATCHED = 1;
+  public static final int RESULT_AD_NOT_WATCHED = 2;
+
+  private boolean isRewardEarned = false;
 
   private LoadingSpinner loadingSpinner;
   private RewardedAd rewardedAd;
@@ -36,16 +39,23 @@ public class AdRoomActivity extends AppCompatActivity {
 
     @Override
     public void onRewardedAdClosed() {
-      onAdWatched();
+      Toast.makeText(AdRoomActivity.this, R.string.ad_reward_failed_message, Toast.LENGTH_SHORT).show();
+      if (isRewardEarned) {
+        onAdWatched();
+      } else {
+        onAdNotWatched();
+      }
     }
 
     @Override
     public void onUserEarnedReward(@NonNull RewardItem reward) {
+      isRewardEarned = true;
       Toast.makeText(AdRoomActivity.this, R.string.ad_reward_message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRewardedAdFailedToShow(AdError adError) {
+      isRewardEarned = true;
       onAdWatchError();
     }
   };
@@ -88,6 +98,11 @@ public class AdRoomActivity extends AppCompatActivity {
 
   private void onAdWatched() {
     setResult(RESULT_AD_WATCHED);
+    finish();
+  }
+
+  private void onAdNotWatched() {
+    setResult(RESULT_AD_NOT_WATCHED);
     finish();
   }
 }

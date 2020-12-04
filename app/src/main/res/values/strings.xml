@@ -76,6 +76,7 @@
   <!-- Ads -->
   <string name="ad_load_error">There was a problem loading the ad. Have a free game continue token!</string>
   <string name="ad_reward_message">Thanks for watching have a game continue token!</string>
+  <string name="ad_reward_failed_message">You must finish watching the ad to get a game continue token.</string>
 
   <!-- product titles -->
   <string name="title_game_continue_token">Continue Game Token</string>
