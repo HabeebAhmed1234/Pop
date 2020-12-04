@@ -2,6 +2,7 @@ package com.stupidfungames.pop.binder;
 
 import android.util.Log;
 
+import androidx.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +31,7 @@ public abstract class BinderEnity {
      * If this is called from a constructor of an Entity then there is no gurantee that you will
      * get it
      */
+    @Nullable
     public <T> T get(Class<T> type) {
         if (!bindings.containsKey(type)) {
             if (parent == null) {
@@ -37,6 +39,9 @@ public abstract class BinderEnity {
                 return null;
             }
             return parent.get(type);
+        }
+        if (!bindings.containsKey(type)) {
+            return null;
         }
         T object = (T)  bindings.get(type);
         if (object == null) {

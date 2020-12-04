@@ -119,7 +119,8 @@ public abstract class BaseEntity extends BinderEnity implements
   }
 
   protected void linkReversePhysics(final IAreaShape entity, final Body body) {
-    physicsWorld.registerPhysicsConnector(new ReversePhysicsConnectorImpl(entity, body, true, true));
+    physicsWorld
+        .registerPhysicsConnector(new ReversePhysicsConnectorImpl(entity, body, true, true));
   }
 
   protected void removeFromScene(final Body body) {
@@ -139,9 +140,14 @@ public abstract class BaseEntity extends BinderEnity implements
     physicsWorld.destroyBody(body);
   }
 
-  protected void removePhysics(Sprite sprite) {
+  protected boolean hasPhysics(IShape shape) {
+    return shape != null
+        && physicsWorld.getPhysicsConnectorManager().findPhysicsConnectorByShape(shape) != null;
+  }
+
+  protected void removePhysics(IShape shape) {
     IPhysicsConnector physicsConnector = physicsWorld.getPhysicsConnectorManager()
-        .findPhysicsConnectorByShape(sprite);
+        .findPhysicsConnectorByShape(shape);
     physicsWorld.unregisterPhysicsConnector(physicsConnector);
     physicsWorld.destroyBody(physicsConnector.getBody());
     physicsConnector.clear();

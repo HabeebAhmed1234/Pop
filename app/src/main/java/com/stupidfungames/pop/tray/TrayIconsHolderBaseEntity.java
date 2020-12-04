@@ -103,19 +103,8 @@ public abstract class TrayIconsHolderBaseEntity<IconIdType> extends BaseEntity {
 
     public void addIcon(IconIdType iconId, Sprite iconSprite, IOnAreaTouchListener areaTouchListener) {
         addToSceneWithTouch(iconsTray, iconSprite, areaTouchListener);
-        setUpPhysics(iconSprite);
         icons.add(Pair.create(iconId, iconSprite));
         refreshDimensions(iconSprite);
-    }
-
-    private void setUpPhysics(Sprite iconSprite) {
-        final FixtureDef iconFixtureDef = GameFixtureDefs.ICON_BOX_FIXTURE_DEF;
-        iconFixtureDef.setFilter(CollisionFilters.BUBBLE_FILTER);
-
-        final Body body = PhysicsFactory
-            .createBoxBody(physicsWorld, iconSprite,  BodyType.STATIC, iconFixtureDef);
-
-        linkReversePhysics(iconSprite, body);
     }
 
     @Nullable
@@ -165,6 +154,20 @@ public abstract class TrayIconsHolderBaseEntity<IconIdType> extends BaseEntity {
     private void refreshTrayDimensions() {
         iconsTray.setWidth(getTrayWidthPx());
         iconsTray.setHeight(getTrayHeightPx());
+        updatePhysics();
+    }
+
+    private void updatePhysics() {
+        final FixtureDef iconFixtureDef = GameFixtureDefs.ICON_BOX_FIXTURE_DEF;
+        iconFixtureDef.setFilter(CollisionFilters.BUBBLE_FILTER);
+
+        final Body body = PhysicsFactory
+            .createBoxBody(physicsWorld, iconsTray,  BodyType.STATIC, iconFixtureDef);
+
+        if (hasPhysics(iconsTray)) {
+            removePhysics(iconsTray);
+        }
+        linkReversePhysics(iconsTray, body);
     }
 
     private void refreshIconPostitions() {

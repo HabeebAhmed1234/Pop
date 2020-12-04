@@ -2,10 +2,7 @@ package com.stupidfungames.pop.tray;
 
 import android.content.Context;
 import com.stupidfungames.pop.BaseEntity;
-import com.stupidfungames.pop.GameFixtureDefs;
 import com.stupidfungames.pop.binder.BinderEnity;
-import com.stupidfungames.pop.collision.CollisionFilters;
-import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.statemachine.BaseStateMachine;
 import com.stupidfungames.pop.touchlisteners.ButtonUpTouchListener;
@@ -14,9 +11,6 @@ import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
-import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.FixtureDef;
 
 public abstract class TrayOpenCloseButtonBaseEntity extends BaseEntity implements
     BaseStateMachine.Listener<TrayStateMachine.State> {
@@ -97,7 +91,7 @@ public abstract class TrayOpenCloseButtonBaseEntity extends BaseEntity implement
   }
 
   public void onIconsTrayInitialized() {
-    /*if (!(isIconCreated())) {
+    if (!(isIconCreated())) {
       createIconSprite();
     }
 
@@ -106,7 +100,7 @@ public abstract class TrayOpenCloseButtonBaseEntity extends BaseEntity implement
         toggleBtnTouchListener);
     addToScene(hostTrayCallback.getTrayIconsHolderRectangle(), iconSpriteClose);
 
-    refreshDimensions();*/
+    refreshDimensions();
   }
 
   public void onIconsTrayDimensionsChanged() {
@@ -146,8 +140,6 @@ public abstract class TrayOpenCloseButtonBaseEntity extends BaseEntity implement
     iconSpriteClose.setWidth(getButtonSpecInternal().iconSizePx);
     iconSpriteClose.setHeight(getButtonSpecInternal().iconSizePx);
     iconSpriteClose.setVisible(false);
-
-    //setUpPhysics();
   }
 
   private void setIconPosition(float x, float y) {
@@ -172,17 +164,6 @@ public abstract class TrayOpenCloseButtonBaseEntity extends BaseEntity implement
       iconSpriteClose.setVisible(false);
 
     }
-  }
-
-  private void setUpPhysics() {
-    final FixtureDef iconFixtureDef = GameFixtureDefs.ICON_BOX_FIXTURE_DEF;
-    iconFixtureDef.setFilter(CollisionFilters.BUBBLE_FILTER);
-    final Body openBody = PhysicsFactory
-        .createBoxBody(physicsWorld, iconSpriteOpen, BodyType.STATIC, iconFixtureDef);
-    final Body closeBody = PhysicsFactory
-        .createBoxBody(physicsWorld, iconSpriteClose, BodyType.STATIC, iconFixtureDef);
-    linkReversePhysics(iconSpriteOpen, openBody);
-    linkReversePhysics(iconSpriteClose, closeBody);
   }
 
   private void onOpenBtnTouch() {
