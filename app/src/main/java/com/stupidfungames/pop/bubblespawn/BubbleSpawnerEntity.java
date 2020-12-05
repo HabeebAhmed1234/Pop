@@ -35,7 +35,7 @@ import org.jbox2d.dynamics.FixtureDef;
 
 public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscriber {
 
-  private static final float BUBBLE_GRAVITY_SCALE = 0.5f;
+  public static final float BUBBLE_GRAVITY_SCALE = 0.5f;
   // Value to define how much smaller as a percentage the bubble physics circle will be from the sprite
   private static final float BUBBLE_PHYSICS_BODY_SCALE_FACTOR = 0.8f;
 

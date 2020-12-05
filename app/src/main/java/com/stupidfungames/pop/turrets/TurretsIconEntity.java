@@ -34,6 +34,8 @@ import static org.andengine.input.touch.TouchEvent.ACTION_UP;
  */
 class TurretsIconEntity extends InventoryIconBaseEntity implements EventBus.Subscriber, GameSceneTouchListenerEntity.SceneTouchListener {
 
+    private static final int NUM_UPGRADES = 3;
+
     // True if we are currently spawning
     private boolean isSpawning;
 
@@ -143,6 +145,11 @@ class TurretsIconEntity extends InventoryIconBaseEntity implements EventBus.Subs
     @Override
     protected float getGameProgressPercentageUnlockThreshold() {
         return TURRETS_DIFFICULTY_UNLOCK_THRESHOLD;
+    }
+
+    @Override
+    protected int getIconUpgradesQuantity() {
+        return NUM_UPGRADES;
     }
 
     @Override

@@ -104,7 +104,6 @@ public class TurretColoringEntity extends BaseEntity implements Listener<State> 
     }
     AndengineColor from = AndengineColor.GREEN;
     AndengineColor to = AndengineColor.RED;
-    Log.d("asdasd", "p = " + p);
     return new AndengineColor(
         from.getRed() + (to.getRed() - from.getRed()) * p,
         from.getGreen() + (to.getGreen() - from.getGreen()) * p,

@@ -25,6 +25,8 @@ import static com.stupidfungames.pop.walls.WallsConstants.MAX_WALLS_INVENTORY;
 
 public class WallsIconEntity extends InventoryIconBaseEntity implements BaseStateMachine.Listener<WallsStateMachine.State> {
 
+    private static final int NUM_UPGRADES = 3;
+
     public WallsIconEntity(BinderEnity parent) {
         super(parent);
     }
@@ -107,6 +109,11 @@ public class WallsIconEntity extends InventoryIconBaseEntity implements BaseStat
     @Override
     protected float getGameProgressPercentageUnlockThreshold() {
         return WALLS_DIFFICULTY_UNLOCK_THRESHOLD;
+    }
+
+    @Override
+    protected int getIconUpgradesQuantity() {
+        return NUM_UPGRADES;
     }
 
     @Override

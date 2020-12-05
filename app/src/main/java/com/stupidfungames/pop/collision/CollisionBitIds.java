@@ -8,4 +8,5 @@ public class CollisionBitIds {
     public static final int WALL_MASK_BIT = 0x0004;
     public static final int BULLET_MASK_BIT = 0x0008;
     public static final int ICON_MASK_BIT = 0x0010;
+    public static final int UPGRADES_MASK_BIT = 0x0020;
 }

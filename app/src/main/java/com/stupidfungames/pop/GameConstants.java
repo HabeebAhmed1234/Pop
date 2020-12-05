@@ -9,7 +9,7 @@ public class GameConstants {
 
   // Difficulty
   public static final float MAX_BUBBLES_PER_SPAWN = 3;
-  public static final float TIME_TO_MAX_DIFFICULTY_SECONDS = 3;// TimeUnit.MINUTES.toSeconds(1);
+  public static final float TIME_TO_MAX_DIFFICULTY_SECONDS = 3;// TimeUnit.MINUTES.toSeconds(3);
   public static final float MAX_SPAWN_INTERVAL = 5;
   public static final float MIN_SPAWN_INTERVAL = 1f;
 

@@ -19,6 +19,8 @@ import static com.stupidfungames.pop.GameConstants.BALL_AND_CHAIN_DIFFICULTY_UNL
  */
 class BallAndChainIconEntity extends IconBaseEntity implements BallAndChainStateMachine.Listener<BallAndChainStateMachine.State> {
 
+    private static final int NUM_UPGRADES = 3;
+
     private final IOnAreaTouchListener touchListener = new IOnAreaTouchListener() {
         @Override
         public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
@@ -60,6 +62,11 @@ class BallAndChainIconEntity extends IconBaseEntity implements BallAndChainState
     @Override
     protected float getGameProgressPercentageUnlockThreshold() {
         return BALL_AND_CHAIN_DIFFICULTY_UNLOCK_THRESHOLD;
+    }
+
+    @Override
+    protected int getIconUpgradesQuantity() {
+        return NUM_UPGRADES;
     }
 
     @Override

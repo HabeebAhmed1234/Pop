@@ -1,5 +1,7 @@
 package com.stupidfungames.pop.icons;
 
+import static com.stupidfungames.pop.eventbus.GameEvent.ICON_UNLOCKED;
+
 import android.content.Context;
 import androidx.annotation.Nullable;
 import com.stupidfungames.pop.BaseEntity;
@@ -8,6 +10,7 @@ import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.GameProgressEventPayload;
+import com.stupidfungames.pop.eventbus.IconUnlockedEventPayload;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
@@ -89,6 +92,8 @@ public abstract class IconBaseEntity extends BaseEntity implements EventBus.Subs
       setIconColor(getUnlockedIconColor());
       addIconToTray();
       onIconUnlocked();
+      EventBus.get()
+          .sendEvent(ICON_UNLOCKED, new IconUnlockedEventPayload(getIconUpgradesQuantity()));
     }
   }
 
@@ -124,6 +129,11 @@ public abstract class IconBaseEntity extends BaseEntity implements EventBus.Subs
   protected abstract GameIconsHostTrayEntity.IconId getIconId();
 
   protected abstract float getGameProgressPercentageUnlockThreshold();
+
+  /**
+   * Number of upgrades this icon can take.
+   */
+  protected abstract int getIconUpgradesQuantity();
 
   protected abstract void onIconUnlocked();
 

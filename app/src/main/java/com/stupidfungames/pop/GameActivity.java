@@ -42,6 +42,7 @@ import com.stupidfungames.pop.settingstray.SaveGameQuickSettingsIconEntity;
 import com.stupidfungames.pop.settingstray.SaveGameQuickSettingsIconEntity.SaveGameButtonCallback;
 import com.stupidfungames.pop.tooltips.GameTooltipsEntity;
 import com.stupidfungames.pop.turrets.TurretsManagerEntity;
+import com.stupidfungames.pop.upgrades.UpgradeSpawner;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import com.stupidfungames.pop.walls.WallsManagerBaseEntity;
 import org.andengine.audio.music.MusicManager;
@@ -116,6 +117,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(GameFontsManager.class, new GameFontsManager(this))
             .bind(GameAnimationManager.class, new GameAnimationManager(this))
             .bind(LevelEntity.class, new LevelEntity(this))
+            .bind(UpgradeSpawner.class, new UpgradeSpawner(this))
 
             .bind(GamePhysicsContactsEntity.class, new GamePhysicsContactsEntity(this))
             .bind(GameSceneTouchListenerEntity.class, new GameSceneTouchListenerEntity(this))

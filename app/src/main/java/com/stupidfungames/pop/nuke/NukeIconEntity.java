@@ -21,6 +21,8 @@ import static com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconI
 
 public class NukeIconEntity extends IconBaseEntity implements BaseStateMachine.Listener<NukeStateMachine.State> {
 
+    private static final int NUM_UPGRADES = 3;
+
     private final ButtonUpTouchListener touchListener = new ButtonUpTouchListener() {
         @Override
         protected boolean onButtonPressed(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
@@ -86,6 +88,11 @@ public class NukeIconEntity extends IconBaseEntity implements BaseStateMachine.L
     @Override
     protected float getGameProgressPercentageUnlockThreshold() {
         return NUKE_UNLOCK_THRESHOLD;
+    }
+
+    @Override
+    protected int getIconUpgradesQuantity() {
+        return NUM_UPGRADES;
     }
 
     @Override
