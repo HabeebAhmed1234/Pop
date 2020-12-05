@@ -7,6 +7,9 @@ public class CollisionFilters {
     public static final Filter BUBBLE_FILTER = new Filter(
             CollisionBitIds.BUBBLE_MASK_BIT,
             CollisionBitIds.ALL_COLLISION_MASK);
+    public static final Filter ICON_FILTER = new Filter(
+        CollisionBitIds.ICON_MASK_BIT,
+        CollisionBitIds.BUBBLE_MASK_BIT);
     public static final Filter BALL_AND_CHAIN_FILTER = new Filter(
             CollisionBitIds.BALL_AND_CHAIN_MASK_BIT,
             CollisionBitIds.BUBBLE_MASK_BIT);
