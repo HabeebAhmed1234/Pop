@@ -1,5 +1,6 @@
 package org.jbox2d.particle;
 
+import androidx.core.util.Preconditions;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
@@ -547,7 +548,7 @@ public class ParticleSystem {
   }
 
   public void addContact(int a, int b) {
-    assert(a != b);
+    Preconditions.checkArgument(a != b);
     Vec2 pa = m_positionBuffer.data[a];
     Vec2 pb = m_positionBuffer.data[b];
     float dx = pb.x - pa.x;

@@ -23,6 +23,7 @@
  ******************************************************************************/
 package org.jbox2d.common;
 
+import androidx.core.util.Preconditions;
 import java.io.Serializable;
 
 /**
@@ -102,7 +103,7 @@ public class Sweep implements Serializable {
    * @param alpha the new initial time.
    */
   public final void advance(final float alpha) {
-    assert(alpha0 < 1.0f);
+    Preconditions.checkArgument(alpha0 < 1.0f);
     // float32 beta = (alpha - alpha0) / (1.0f - alpha0);
     // c0 += beta * (c - c0);
     // a0 += beta * (a - a0);

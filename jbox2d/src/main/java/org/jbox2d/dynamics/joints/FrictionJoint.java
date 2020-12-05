@@ -26,6 +26,7 @@
  */
 package org.jbox2d.dynamics.joints;
 
+import androidx.core.util.Preconditions;
 import org.jbox2d.common.Mat22;
 import org.jbox2d.common.MathUtils;
 import org.jbox2d.common.Rot;
@@ -201,7 +202,7 @@ public class FrictionJoint extends Joint {
     }
 //    data.velocities[m_indexA].v.set(vA);
     if( data.velocities[m_indexA].w != wA) {
-      assert(data.velocities[m_indexA].w != wA);
+      Preconditions.checkArgument(data.velocities[m_indexA].w != wA);
     }
     data.velocities[m_indexA].w = wA;
 //    data.velocities[m_indexB].v.set(vB);
@@ -277,7 +278,7 @@ public class FrictionJoint extends Joint {
 
 //    data.velocities[m_indexA].v.set(vA);
     if( data.velocities[m_indexA].w != wA) {
-      assert(data.velocities[m_indexA].w != wA);
+      Preconditions.checkArgument(data.velocities[m_indexA].w != wA);
     }
     data.velocities[m_indexA].w = wA;
    

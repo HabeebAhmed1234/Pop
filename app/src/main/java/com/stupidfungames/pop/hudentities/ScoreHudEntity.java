@@ -90,14 +90,14 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
         scoreValue = loadedScore;
         updateScoreText();
 
-        EventBus.get().sendEvent(GameEvent.SCORE_CHANGED, new ScoreChangeEventPayload(scoreValue));
+        //EventBus.get().sendEvent(GameEvent.SCORE_CHANGED, new ScoreChangeEventPayload(scoreValue));
     }
 
     private void incrementScore(IncrementScoreEventPayload payload) {
         scoreValue += payload.incrementAmmount;
         updateScoreText();
 
-        EventBus.get().sendEvent(GameEvent.SCORE_CHANGED, new ScoreChangeEventPayload(scoreValue));
+        //EventBus.get().sendEvent(GameEvent.SCORE_CHANGED, new ScoreChangeEventPayload(scoreValue));
     }
 
     private void decrementScore(DecrementScoreEventPayload payload) {

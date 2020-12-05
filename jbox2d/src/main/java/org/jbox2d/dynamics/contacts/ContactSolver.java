@@ -154,7 +154,7 @@ public class ContactSolver {
         VelocityConstraintPoint vcp = vc.points[j];
 
         if (m_step.warmStarting) {
-          // assert(cp.normalImpulse == 0);
+          // Preconditions.checkArgument(cp.normalImpulse == 0);
           // System.out.println("contact normal impulse: " + cp.normalImpulse);
           vcp.normalImpulse = m_step.dtRatio * cp.normalImpulse;
           vcp.tangentImpulse = m_step.dtRatio * cp.tangentImpulse;
@@ -556,7 +556,7 @@ public class ContactSolver {
              * 
              * // Compute normal velocity vn1 = Dot(dv1, normal); vn2 = Dot(dv2, normal);
              * 
-             * assert(Abs(vn1 - cp1.velocityBias) < k_errorTol); assert(Abs(vn2 - cp2.velocityBias)
+             * Preconditions.checkArgument(Abs(vn1 - cp1.velocityBias) < k_errorTol); assert(Abs(vn2 - cp2.velocityBias)
              * < k_errorTol); #endif
              */
             if (DEBUG_SOLVER) {

@@ -23,6 +23,7 @@
  ******************************************************************************/
 package org.jbox2d.common;
 
+import androidx.core.util.Preconditions;
 import java.io.Serializable;
 
 // updated to rev 100
@@ -113,7 +114,7 @@ public class Transform implements Serializable {
   }
   
   public final static void mulTransToOutUnsafe(final Transform T, final Vec2 v, final Vec2 out) {
-    assert(v != out);
+    Preconditions.checkArgument(v != out);
     final float px = v.x - T.p.x;
     final float py = v.y - T.p.y;
     out.x = (T.q.c * px + T.q.s * py);

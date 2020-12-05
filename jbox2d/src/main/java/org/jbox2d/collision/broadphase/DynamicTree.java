@@ -23,6 +23,7 @@
  ******************************************************************************/
 package org.jbox2d.collision.broadphase;
 
+import androidx.core.util.Preconditions;
 import org.jbox2d.callbacks.DebugDraw;
 import org.jbox2d.callbacks.TreeCallback;
 import org.jbox2d.callbacks.TreeRayCastCallback;
@@ -77,7 +78,7 @@ public class DynamicTree implements BroadPhaseStrategy {
 
   @Override
   public final int createProxy(final AABB aabb, Object userData) {
-    assert(aabb.isValid());
+    Preconditions.checkArgument(aabb.isValid());
     final DynamicTreeNode node = allocateNode();
     int proxyId = node.id;
     // Fatten the aabb
@@ -105,7 +106,7 @@ public class DynamicTree implements BroadPhaseStrategy {
 
   @Override
   public final boolean moveProxy(int proxyId, final AABB aabb, Vec2 displacement) {
-    assert(aabb.isValid());
+    Preconditions.checkArgument(aabb.isValid());
     assert (0 <= proxyId && proxyId < m_nodeCapacity);
     final DynamicTreeNode node = m_nodes[proxyId];
     assert (node.child1 == null);
@@ -160,7 +161,7 @@ public class DynamicTree implements BroadPhaseStrategy {
 
   @Override
   public final void query(TreeCallback callback, AABB aabb) {
-    assert(aabb.isValid());
+    Preconditions.checkArgument(aabb.isValid());
     nodeStackIndex = 0;
     nodeStack[nodeStackIndex++] = m_root;
 

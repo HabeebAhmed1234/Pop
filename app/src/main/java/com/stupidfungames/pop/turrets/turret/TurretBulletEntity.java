@@ -195,8 +195,8 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
       isDestroyed = true;
 
       unregisterUpdateHandlers();
-      physicsWorld.destroyBody(targetingMouseJoint.getBodyA());
       physicsWorld.destroyJoint(targetingMouseJoint);
+      physicsWorld.destroyBody(targetingMouseJoint.getBodyA());
 
       targetBubble = null;
       targetingMouseJoint = null;
