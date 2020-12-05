@@ -16,7 +16,7 @@ public class WallsManagerBaseEntity extends BaseEntity {
     @Override
     protected void createBindings(Binder binder) {
         binder.bind(WallsStateMachine.class, new WallsStateMachine());
-        binder.bind(WallsIconEntity.class, new WallsIconEntity(this));
+        binder.bind(WallsInventoryIconEntity.class, new WallsInventoryIconEntity(this));
         binder.bind(WallsDeletionHandlerFactoryEntity.class, new WallsDeletionHandlerFactoryEntity(this));
         binder.bind(WallsCreatorEntity.class, new WallsCreatorEntity(this));
         binder.bind(WallsDeleteIconsManagerEntity.class, new WallsDeleteIconsManagerEntity(this));

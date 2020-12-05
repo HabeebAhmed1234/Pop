@@ -116,7 +116,7 @@ public class WallsCreatorEntity extends BaseEntity implements
         .getIcon(GameIconsHostTrayEntity.IconId.WALLS_ICON);
     return !isWallBeingPlaced() &&
         get(WallsStateMachine.class).getCurrentState() == WallsStateMachine.State.TOGGLED_ON &&
-        get(WallsIconEntity.class).hasInventory() &&
+        get(WallsInventoryIconEntity.class).hasInventory() &&
         !wallsIcon.contains(touchEvent.getX(), touchEvent.getY()) &&
         !isTouchingWallDeleteIcon(touchEvent);
   }

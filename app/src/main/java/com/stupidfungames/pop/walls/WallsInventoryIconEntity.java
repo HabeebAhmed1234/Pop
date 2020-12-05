@@ -7,7 +7,7 @@ import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
-import com.stupidfungames.pop.icons.InventoryIconBaseEntity;
+import com.stupidfungames.pop.icons.BaseInventoryIconEntity;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import com.stupidfungames.pop.resources.sounds.SoundId;
 import com.stupidfungames.pop.resources.textures.TextureId;
@@ -23,11 +23,11 @@ import org.andengine.util.color.AndengineColor;
 import static com.stupidfungames.pop.GameConstants.WALLS_DIFFICULTY_UNLOCK_THRESHOLD;
 import static com.stupidfungames.pop.walls.WallsConstants.MAX_WALLS_INVENTORY;
 
-public class WallsIconEntity extends InventoryIconBaseEntity implements BaseStateMachine.Listener<WallsStateMachine.State> {
+public class WallsInventoryIconEntity extends BaseInventoryIconEntity implements BaseStateMachine.Listener<WallsStateMachine.State> {
 
     private static final int NUM_UPGRADES = 3;
 
-    public WallsIconEntity(BinderEnity parent) {
+    public WallsInventoryIconEntity(BinderEnity parent) {
         super(parent);
     }
 

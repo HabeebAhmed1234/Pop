@@ -21,6 +21,6 @@ public class TurretsManagerEntity extends BaseEntity {
     binder.bind(BulletExplosionsEntity.class, new BulletExplosionsEntity(this));
     binder.bind(TurretEntityCreator.class, new TurretEntityCreator(this));
     binder.bind(TurretsBulletsCollisionManager.class, new TurretsBulletsCollisionManager(this));
-    binder.bind(TurretsIconEntity.class, new TurretsIconEntity(this));
+    binder.bind(TurretsInventoryIconEntity.class, new TurretsInventoryIconEntity(this));
   }
 }

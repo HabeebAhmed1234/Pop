@@ -2,7 +2,7 @@ package com.stupidfungames.pop.ballandchain;
 
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
-import com.stupidfungames.pop.icons.IconBaseEntity;
+import com.stupidfungames.pop.icons.BaseUpgradeableIconEntity;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.tooltips.TooltipId;
 
@@ -17,7 +17,7 @@ import static com.stupidfungames.pop.GameConstants.BALL_AND_CHAIN_DIFFICULTY_UNL
  * Appears when the ball and chain tool is unlocked. The user can tap and hold the icon to start
  * using the ball and chain.
  */
-class BallAndChainIconEntity extends IconBaseEntity implements BallAndChainStateMachine.Listener<BallAndChainStateMachine.State> {
+class BallAndChainIconEntity extends BaseUpgradeableIconEntity implements BallAndChainStateMachine.Listener<BallAndChainStateMachine.State> {
 
     private static final int NUM_UPGRADES = 3;
 

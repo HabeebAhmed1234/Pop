@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
-import com.stupidfungames.pop.icons.IconBaseEntity;
+import com.stupidfungames.pop.icons.BaseUpgradeableIconEntity;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.statemachine.BaseStateMachine;
 import com.stupidfungames.pop.tooltips.TooltipId;
@@ -19,7 +19,7 @@ import org.andengine.util.color.AndengineColor;
 import static com.stupidfungames.pop.GameConstants.NUKE_UNLOCK_THRESHOLD;
 import static com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId.NUKE_ICON;
 
-public class NukeIconEntity extends IconBaseEntity implements BaseStateMachine.Listener<NukeStateMachine.State> {
+public class NukeIconEntity extends BaseUpgradeableIconEntity implements BaseStateMachine.Listener<NukeStateMachine.State> {
 
     private static final int NUM_UPGRADES = 3;
 

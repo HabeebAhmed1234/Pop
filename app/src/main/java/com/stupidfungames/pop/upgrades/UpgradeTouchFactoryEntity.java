@@ -1,9 +1,13 @@
 package com.stupidfungames.pop.upgrades;
 
+import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADE_ACQUIRED;
+
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
+import com.stupidfungames.pop.eventbus.EventBus;
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
+import org.andengine.entity.shape.IShape;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 
@@ -33,14 +37,15 @@ public class UpgradeTouchFactoryEntity extends BaseEntity {
         if (entity.getUserData() == null) {
           return false;
         }
-        onUpgradeTouched();
+        onUpgradeTouched(entity);
         return true;
       }
       return false;
     }
   }
 
-  private void onUpgradeTouched() {
-
+  private void onUpgradeTouched(IShape upgradeSprite) {
+    EventBus.get().sendEvent(UPGRADE_ACQUIRED);
+    removeFromScene(upgradeSprite);
   }
 }

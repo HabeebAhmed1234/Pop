@@ -6,7 +6,7 @@ import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
-import com.stupidfungames.pop.icons.InventoryIconBaseEntity;
+import com.stupidfungames.pop.icons.BaseInventoryIconEntity;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import com.stupidfungames.pop.resources.sounds.SoundId;
 import com.stupidfungames.pop.resources.textures.TextureId;
@@ -32,14 +32,14 @@ import static org.andengine.input.touch.TouchEvent.ACTION_UP;
  * want it. The icon has a number on it to show the number of turrets in stock. The user can drag
  * turrets back onto the icon to store them this increasing the number turrets in stock on the icon.
  */
-class TurretsIconEntity extends InventoryIconBaseEntity implements EventBus.Subscriber, GameSceneTouchListenerEntity.SceneTouchListener {
+class TurretsInventoryIconEntity extends BaseInventoryIconEntity implements EventBus.Subscriber, GameSceneTouchListenerEntity.SceneTouchListener {
 
     private static final int NUM_UPGRADES = 3;
 
     // True if we are currently spawning
     private boolean isSpawning;
 
-    public TurretsIconEntity(BinderEnity parent) {
+    public TurretsInventoryIconEntity(BinderEnity parent) {
         super(parent);
     }
 

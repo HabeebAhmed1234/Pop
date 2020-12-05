@@ -1,7 +1,5 @@
 package com.stupidfungames.pop.icons;
 
-import static com.stupidfungames.pop.eventbus.GameEvent.ICON_UNLOCKED;
-
 import android.content.Context;
 import androidx.annotation.Nullable;
 import com.stupidfungames.pop.BaseEntity;
@@ -10,7 +8,6 @@ import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.GameProgressEventPayload;
-import com.stupidfungames.pop.eventbus.IconUnlockedEventPayload;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
@@ -27,7 +24,7 @@ import org.andengine.util.color.AndengineColor;
 /**
  * The base class for all unlockable {@link GameIconsHostTrayEntity} icons in the game.
  */
-public abstract class IconBaseEntity extends BaseEntity implements EventBus.Subscriber {
+public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subscriber {
 
   private static final IOnAreaTouchListener NO_OP_AREA_TOUCH_LISTENER = new IOnAreaTouchListener() {
     @Override
@@ -42,7 +39,7 @@ public abstract class IconBaseEntity extends BaseEntity implements EventBus.Subs
   private Sprite iconSprite;
   private boolean isUnlocked;
 
-  public IconBaseEntity(BinderEnity parent) {
+  public BaseIconEntity(BinderEnity parent) {
     super(parent);
   }
 
@@ -92,8 +89,6 @@ public abstract class IconBaseEntity extends BaseEntity implements EventBus.Subs
       setIconColor(getUnlockedIconColor());
       addIconToTray();
       onIconUnlocked();
-      EventBus.get()
-          .sendEvent(ICON_UNLOCKED, new IconUnlockedEventPayload(getIconUpgradesQuantity()));
     }
   }
 
@@ -129,11 +124,6 @@ public abstract class IconBaseEntity extends BaseEntity implements EventBus.Subs
   protected abstract GameIconsHostTrayEntity.IconId getIconId();
 
   protected abstract float getGameProgressPercentageUnlockThreshold();
-
-  /**
-   * Number of upgrades this icon can take.
-   */
-  protected abstract int getIconUpgradesQuantity();
 
   protected abstract void onIconUnlocked();
 
