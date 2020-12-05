@@ -102,9 +102,24 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
   }
 
   protected void addIconToTray() {
-    @Nullable IOnAreaTouchListener touchListener = getTouchListener();
+    @Nullable final IOnAreaTouchListener overrideTouchListener = getOverrideTouchListener();
+    @Nullable final IOnAreaTouchListener touchListener = getTouchListener();
     get(GameIconsHostTrayEntity.class).addIcon(getIconId(), iconSprite,
-        touchListener == null ? NO_OP_AREA_TOUCH_LISTENER : touchListener);
+        overrideTouchListener == null && touchListener == null ? NO_OP_AREA_TOUCH_LISTENER
+            : new IOnAreaTouchListener() {
+              @Override
+              public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
+                  ITouchArea pTouchArea, float pTouchAreaLocalX,
+                  float pTouchAreaLocalY) {
+                if ((overrideTouchListener != null && overrideTouchListener.onAreaTouched(pSceneTouchEvent, pTouchArea, pTouchAreaLocalX, pTouchAreaLocalY))
+                    || (touchListener != null && touchListener.onAreaTouched(pSceneTouchEvent, pTouchArea, pTouchAreaLocalX, pTouchAreaLocalY))) {
+                  return true;
+                }
+                return NO_OP_AREA_TOUCH_LISTENER
+                    .onAreaTouched(pSceneTouchEvent, pTouchArea, pTouchAreaLocalX,
+                        pTouchAreaLocalY);
+              }
+            });
   }
 
   protected Sprite getIconSprite() {
@@ -117,6 +132,14 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
 
   protected boolean isUnlocked() {
     return isUnlocked;
+  }
+
+  /**
+   * Called before the {@link IOnAreaTouchListener} returned by getTouchListener. If touch is
+   * handled in this listener then the touch even will not propagate to the getTouchListener
+   */
+  protected IOnAreaTouchListener getOverrideTouchListener() {
+    return null;
   }
 
   protected abstract TextureId getIconTextureId();
