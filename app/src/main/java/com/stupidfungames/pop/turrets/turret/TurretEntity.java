@@ -30,17 +30,18 @@ public class TurretEntity extends BaseEntity implements
     super(parent);
     this.turretBodySprite = turretBodySprite;
     this.turretCannonSprite = turretCannonSprite;
+    get(TurretColoringEntity.class).setSprites(turretBodySprite, turretCannonSprite);
     init();
   }
 
   @Override
   protected void createBindings(Binder binder) {
-    binder.bind(HostTurretCallback.class, this);
-    binder.bind(TurretStateMachine.class, new TurretStateMachine());
-    binder.bind(TurretFiringEntity.class, new TurretFiringEntity(this));
-    binder.bind(TurretTargetingEntity.class, new TurretTargetingEntity(this));
-    binder.bind(TurretDraggingManager.class, new TurretDraggingManager(this));
-    binder
+    binder.bind(HostTurretCallback.class, this)
+        .bind(TurretStateMachine.class, new TurretStateMachine())
+        .bind(TurretFiringEntity.class, new TurretFiringEntity(this))
+        .bind(TurretTargetingEntity.class, new TurretTargetingEntity(this))
+        .bind(TurretColoringEntity.class, new TurretColoringEntity(this))
+        .bind(TurretDraggingManager.class, new TurretDraggingManager(this))
         .bind(TurretCannonRotationManagerEntity.class, new TurretCannonRotationManagerEntity(this));
   }
 
@@ -79,26 +80,11 @@ public class TurretEntity extends BaseEntity implements
 
   @Override
   public void onEnterState(TurretStateMachine.State newState) {
-    AndengineColor color = AndengineColor.WHITE;
-    switch (newState) {
-      case DRAGGING:
-        color = AndengineColor.YELLOW;
-        break;
-      case FIRING:
-        color = AndengineColor.RED;
-        break;
-      case DOCKED:
-        color = AndengineColor.TRANSPARENT;
-        break;
-      case TARGETING:
-        color = AndengineColor.GREEN;
-        break;
+    if (newState == TurretStateMachine.State.DRAGGING) {
+      turretBodySprite.setScale(TURRET_DRAGGING_SCALE_MULTIPLIER);
+    } else {
+      turretBodySprite.setScale(1);
     }
-
-    turretBodySprite.setColor(color);
-    turretCannonSprite.setColor(color);
-
-    updateScale(newState);
   }
 
   @Override
@@ -114,13 +100,5 @@ public class TurretEntity extends BaseEntity implements
         .asList(turretBodySprite.getX() + turretBodySprite.getWidthScaled() / 2,
             turretBodySprite.getY() + turretBodySprite.getHeightScaled() / 2);
     saveGame.turretPostitions.add(position);
-  }
-
-  private void updateScale(TurretStateMachine.State state) {
-    if (state == TurretStateMachine.State.DRAGGING) {
-      turretBodySprite.setScale(TURRET_DRAGGING_SCALE_MULTIPLIER);
-    } else {
-      turretBodySprite.setScale(1);
-    }
   }
 }
