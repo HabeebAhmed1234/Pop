@@ -5,6 +5,7 @@ import static com.stupidfungames.pop.eventbus.GameEvent.BUBBLE_POPPED;
 import static com.stupidfungames.pop.eventbus.GameEvent.GAME_PROGRESS_CHANGED;
 import static com.stupidfungames.pop.eventbus.GameEvent.ICON_UNLOCKED;
 
+import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameConstants;
 import com.stupidfungames.pop.GameFixtureDefs;
@@ -100,6 +101,7 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
     // If the current time has passed the first interval required to spawn an upgrade then spawn
     // an upgrade.
     if (now >= lastTimeUpgradeWasSpawned + upgradeSpawnInterval) {
+      // spawn an upgrade.
       spawnUpgrade(bubblePoppedEventPayload);
     }
   }

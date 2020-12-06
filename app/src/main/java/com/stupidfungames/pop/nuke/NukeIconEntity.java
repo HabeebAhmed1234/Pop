@@ -97,7 +97,13 @@ public class NukeIconEntity extends BaseUpgradeableIconEntity implements BaseSta
 
     @Override
     protected void onIconUnlocked() {
+        super.onIconUnlocked();
         get(NukeStateMachine.class).transitionState(NukeStateMachine.State.READY);
+    }
+
+    @Override
+    protected void onUpgraded(int upgradeLevel) {
+
     }
 
     @Override

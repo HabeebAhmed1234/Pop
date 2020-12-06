@@ -42,14 +42,14 @@ class BallAndChainCollisionManagerEntity extends BaseEntity implements
         .removeContactListener(WreckingBallEntityUserData.class, BubbleEntityUserData.class, this);
   }
 
+
   @Override
   public void onBeginContact(Fixture fixture1, Fixture fixture2) {
-    Log.d("asdasd", fixture1.hashCode() + fixture2.hashCode() + " onBeginContact");
+    /** NOOP */
   }
 
   @Override
   public void onEndContact(Fixture fixture1, Fixture fixture2) {
-    Log.d("asdasd", fixture1.hashCode() + fixture2.hashCode() + " onEndContact");
     if (!shouldBallAndChainPop(get(BallAndChainStateMachine.class).getCurrentState())) {
       return;
     }

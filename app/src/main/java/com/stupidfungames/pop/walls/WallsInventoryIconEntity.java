@@ -97,6 +97,11 @@ public class WallsInventoryIconEntity extends BaseInventoryIconEntity implements
     }
 
     @Override
+    protected void onUpgraded(int upgradeLevel) {
+
+    }
+
+    @Override
     protected TextureId getIconTextureId() {
         return TextureId.WALLS_ICON;
     }
@@ -118,6 +123,7 @@ public class WallsInventoryIconEntity extends BaseInventoryIconEntity implements
 
     @Override
     protected void onIconUnlocked() {
+        super.onIconUnlocked();
         get(WallsStateMachine.class).transitionState(WallsStateMachine.State.UNLOCKED_TOGGLED_OFF);
     }
 

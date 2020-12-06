@@ -75,6 +75,11 @@ class TurretsInventoryIconEntity extends BaseInventoryIconEntity implements Even
     }
 
     @Override
+    protected void onUpgraded(int upgradeLevel) {
+
+    }
+
+    @Override
     public void onCreateScene() {
         super.onCreateScene();
         EventBus.get().subscribe(GameEvent.TURRET_DOCKED, this);
@@ -153,7 +158,9 @@ class TurretsInventoryIconEntity extends BaseInventoryIconEntity implements Even
     }
 
     @Override
-    protected void onIconUnlocked() {}
+    protected void onIconUnlocked() {
+        super.onIconUnlocked();
+    }
 
     @Override
     protected AndengineColor getUnlockedIconColor() {

@@ -104,10 +104,6 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
     }
   }
 
-  protected int getUpgradeLevel() {
-    return upgradeLevel;
-  }
-
   protected abstract void onUpgraded(int upgradeLevel);
 
   /**

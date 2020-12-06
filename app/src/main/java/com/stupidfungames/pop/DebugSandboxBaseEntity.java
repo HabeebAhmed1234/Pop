@@ -51,7 +51,6 @@ public class DebugSandboxBaseEntity extends BaseEntity implements GameSceneTouch
         addToSceneWithTouch(bubbleSprite1, new IOnAreaTouchListener() {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-                // Log.d("asdasd", "1 touched action = " + pSceneTouchEvent.getAction());
                 if (pSceneTouchEvent.isActionDown() || pSceneTouchEvent.isActionMove() || pSceneTouchEvent.isActionUp()) {
                     return true;
                 }
@@ -61,7 +60,6 @@ public class DebugSandboxBaseEntity extends BaseEntity implements GameSceneTouch
         addToSceneWithTouch(bubbleSprite2, new IOnAreaTouchListener() {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-                // Log.d("asdasd", "2 touched action = " + pSceneTouchEvent.getAction());
                 if (pSceneTouchEvent.isActionDown() || pSceneTouchEvent.isActionMove() || pSceneTouchEvent.isActionUp()) {
                     return true;
                 }

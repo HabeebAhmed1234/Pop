@@ -71,7 +71,13 @@ class BallAndChainIconEntity extends BaseUpgradeableIconEntity implements BallAn
 
     @Override
     protected void onIconUnlocked() {
+        super.onIconUnlocked();
         get(BallAndChainStateMachine.class).transitionState(BallAndChainStateMachine.State.UNLOCKED_CHARGED);
+    }
+
+    @Override
+    protected void onUpgraded(int upgradeLevel) {
+        get(BallAndChainDurabilityEntity.class).onUpgraded(upgradeLevel);
     }
 
     @Override

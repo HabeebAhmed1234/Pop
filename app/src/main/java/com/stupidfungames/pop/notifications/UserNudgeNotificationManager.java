@@ -78,7 +78,6 @@ public class UserNudgeNotificationManager extends BroadcastReceiver {
 
     int notificationId = intent.getIntExtra(EXTRA_NOTIFICATION_ID, 0);
     notificationManager.notify(notificationId, builder.build());
-    Log.d("asdasd", "showing notification with id " + notificationId);
   }
 
   private PendingIntent getAppLaunchIntent(Context context) {

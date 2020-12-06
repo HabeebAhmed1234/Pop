@@ -16,7 +16,6 @@ public class GameTooltipsEntity extends BaseEntity {
 
     @Override
     protected void createBindings(Binder binder) {
-        Log.d("asdasd", "GameTooltipsEntity.createBindings " + hashCode());
         binder.bind(TooltipTexts.class, new TooltipTexts());
         binder.bind(TooltipPreferences.class, new TooltipPreferences(this));
     }
@@ -36,7 +35,6 @@ public class GameTooltipsEntity extends BaseEntity {
 
     public void maybeShowTooltip(TooltipId id, float anchorX, float anchorY) {
         TooltipPreferences tooltipPreferences = get(TooltipPreferences.class);
-        Log.d("asdasd", "maybeShowTooltip " + hashCode());
         if (tooltipPreferences.shouldShowTooltip(id)) {
             tooltipPreferences.tooltipShown(id);
             showAnchoredTooltip(id, anchorX, anchorY);

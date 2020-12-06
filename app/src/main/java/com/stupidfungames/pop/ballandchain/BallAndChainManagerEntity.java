@@ -23,8 +23,8 @@ public class BallAndChainManagerEntity extends BaseEntity {
     binder.bind(BallAndChainCollisionManagerEntity.class,
         new BallAndChainCollisionManagerEntity(this));
     binder.bind(BallAndChainHandleEntity.class, new BallAndChainHandleEntity(this));
-    binder.bind(BallAndChainIconEntity.class, new BallAndChainIconEntity(this));
     binder.bind(BallAndChainDurabilityEntity.class, new BallAndChainDurabilityEntity(this));
+    binder.bind(BallAndChainIconEntity.class, new BallAndChainIconEntity(this));
     binder.bind(BallAndChainColorEntity.class, new BallAndChainColorEntity(this));
   }
 
