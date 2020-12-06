@@ -38,6 +38,7 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
 
   private Sprite iconSprite;
   private boolean isUnlocked;
+  private boolean overrideTouchListenerEnabled = false;
 
   public BaseIconEntity(BinderEnity parent) {
     super(parent);
@@ -111,7 +112,7 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
               public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
                   ITouchArea pTouchArea, float pTouchAreaLocalX,
                   float pTouchAreaLocalY) {
-                if ((overrideTouchListener != null && overrideTouchListener.onAreaTouched(pSceneTouchEvent, pTouchArea, pTouchAreaLocalX, pTouchAreaLocalY))
+                if ((overrideTouchListenerEnabled && overrideTouchListener != null && overrideTouchListener.onAreaTouched(pSceneTouchEvent, pTouchArea, pTouchAreaLocalX, pTouchAreaLocalY))
                     || (touchListener != null && touchListener.onAreaTouched(pSceneTouchEvent, pTouchArea, pTouchAreaLocalX, pTouchAreaLocalY))) {
                   return true;
                 }
@@ -120,6 +121,10 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
                         pTouchAreaLocalY);
               }
             });
+  }
+
+  protected void enableOverrideTouchListener(boolean overrideTouchListenerEnabled) {
+    this.overrideTouchListenerEnabled = overrideTouchListenerEnabled;
   }
 
   protected Sprite getIconSprite() {

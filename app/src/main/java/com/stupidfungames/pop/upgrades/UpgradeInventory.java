@@ -5,6 +5,7 @@ import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADES_AVAILABLE;
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADE_ACQUIRED;
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADE_CONSUMED;
 
+import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
@@ -65,8 +66,10 @@ public class UpgradeInventory extends BaseEntity implements Subscriber {
 
   private void onUpgradesInventoryChanged() {
     if (numAvailableUpgrades > 0) {
+      Log.d("asdasd", numAvailableUpgrades + " UPGRADES_AVAILABLE");
       EventBus.get().sendEvent(UPGRADES_AVAILABLE);
     } else {
+      Log.d("asdasd", "NO_UPGRADES_AVAILABLE");
       EventBus.get().sendEvent(NO_UPGRADES_AVAILABLE);
     }
   }

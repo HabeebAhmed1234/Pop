@@ -10,6 +10,7 @@ import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.IconUnlockedEventPayload;
+import com.stupidfungames.pop.touchlisteners.ButtonUpTouchListener;
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.input.touch.TouchEvent;
@@ -80,6 +81,7 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
     if (!isInUpgradeState) {
       isInUpgradeState = true;
       setIconColor(AndengineColor.CYAN);
+      enableOverrideTouchListener(true);
     }
 
   }
@@ -88,6 +90,7 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
     if (isInUpgradeState) {
       isInUpgradeState = false;
       setIconColor(getUnlockedIconColor());
+      enableOverrideTouchListener(false);
     }
   }
 
@@ -113,9 +116,9 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
 
   @Override
   protected IOnAreaTouchListener getOverrideTouchListener() {
-    return new IOnAreaTouchListener() {
+    return new ButtonUpTouchListener() {
       @Override
-      public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea,
+      protected boolean onButtonPressed(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea,
           float pTouchAreaLocalX, float pTouchAreaLocalY) {
         if (isInUpgradeState) {
           upgrade();
