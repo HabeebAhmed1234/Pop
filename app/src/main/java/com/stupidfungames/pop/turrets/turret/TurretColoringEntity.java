@@ -93,7 +93,7 @@ public class TurretColoringEntity extends BaseEntity implements Listener<State> 
     }
   }
 
-  private AndengineColor turretColor = AndengineColor.GREEN;
+  private AndengineColor turretColor = new AndengineColor(AndengineColor.GREEN);
 
   private AndengineColor getTargetingColor() {
     if (lastTimeFiredMillis == -1) {

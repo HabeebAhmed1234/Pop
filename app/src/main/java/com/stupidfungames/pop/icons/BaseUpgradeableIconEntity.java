@@ -5,18 +5,27 @@ import static com.stupidfungames.pop.eventbus.GameEvent.NO_UPGRADES_AVAILABLE;
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADES_AVAILABLE;
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADE_CONSUMED;
 
+import android.content.Context;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.IconUnlockedEventPayload;
+import com.stupidfungames.pop.resources.textures.GameTexturesManager;
+import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.touchlisteners.ButtonUpTouchListener;
+import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.color.AndengineColor;
 
 public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
+
+  private static final int UPGRADE_CHEVRON_SIZE_DP = 12;
+  private static final int UPGRADE_CHEVRON_RIGHT_MARGIN_DP = 16;
+  private static final int UPGRADE_CHEVRON_TOP_MARGIN_DP = 0;
 
   /**
    * Number of upgrades this icon has consumed.
@@ -100,6 +109,7 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
         EventBus.get().sendEvent(UPGRADE_CONSUMED);
         int previousUpgradeLevel = upgradeLevel;
         upgradeLevel++;
+        addUpgradeChevron();
         onUpgraded(previousUpgradeLevel, upgradeLevel);
       }
     }
@@ -108,12 +118,20 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
     }
   }
 
-  protected abstract void onUpgraded(int previousUpgradeLevel, int newUpgradeLevel);
+  private void addUpgradeChevron() {
+    final Sprite chevronSprite = new Sprite(
+        0,
+        0,
+        get(GameTexturesManager.class).getTextureRegion(TextureId.UPGRADE_CHEVRON),
+        vertexBufferObjectManager);
 
-  /**
-   * Number of upgrades this icon can take.
-   */
-  protected abstract int getIconUpgradesQuantity();
+    Context context = get(Context.class);
+    chevronSprite.setScale(ScreenUtils.dpToPx(UPGRADE_CHEVRON_SIZE_DP, context) / chevronSprite.getWidth());
+    chevronSprite.setColor(AndengineColor.YELLOW);
+    chevronSprite.setX(-(chevronSprite.getWidthScaled() + ScreenUtils.dpToPx(UPGRADE_CHEVRON_RIGHT_MARGIN_DP, context)));
+    chevronSprite.setY((upgradeLevel - 1) * chevronSprite.getHeightScaled() + ScreenUtils.dpToPx(UPGRADE_CHEVRON_TOP_MARGIN_DP, context));
+    addToScene(getIconSprite(), chevronSprite);
+  }
 
   @Override
   protected IOnAreaTouchListener getOverrideTouchListener() {
@@ -130,4 +148,11 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
       }
     };
   }
+
+  protected abstract void onUpgraded(int previousUpgradeLevel, int newUpgradeLevel);
+
+  /**
+   * Number of upgrades this icon can take.
+   */
+  protected abstract int getIconUpgradesQuantity();
 }

@@ -82,6 +82,7 @@ public class GameTexturesManager extends BaseEntity {
         new ImageResource(TextureId.OPEN_BTN, "open_button.png", 300, 300),
         new ImageResource(TextureId.X_BTN, "x_button.png", 300, 300),
         new ImageResource(TextureId.UPGRADE, "upgrade.png", 300, 300),
+        new ImageResource(TextureId.UPGRADE_CHEVRON, "upgrade_chevron.png", 123, 123),
         new ImageResource(TextureId.QUICK_SETTINGS_BTN, "quick_settings_button.png", 300, 300),
         new ImageResource(TextureId.MUSIC_QUICK_SETTING_ICON, "music_setting_button.png", 200, 200),
         new ImageResource(TextureId.PAUSE_BTN, "pause_button.png", 200, 200),
