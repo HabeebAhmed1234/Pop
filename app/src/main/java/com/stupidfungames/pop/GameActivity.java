@@ -26,7 +26,7 @@ import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
 import com.stupidfungames.pop.hudentities.ScoreHudEntity;
 import com.stupidfungames.pop.hudentities.TimerHudEntity;
-import com.stupidfungames.pop.nuke.NukeManagerBaseEntity;
+import com.stupidfungames.pop.nuke.NukeManagerEntity;
 import com.stupidfungames.pop.resources.fonts.GameFontsManager;
 import com.stupidfungames.pop.resources.music.GameMusicResourceManagerBaseEntity;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
@@ -153,7 +153,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(BallAndChainManagerEntity.class, new BallAndChainManagerEntity(this))
             .bind(TurretsManagerEntity.class, new TurretsManagerEntity(this))
             .bind(WallsManagerBaseEntity.class, new WallsManagerBaseEntity(this))
-            .bind(NukeManagerBaseEntity.class, new NukeManagerBaseEntity(this))
+            .bind(NukeManagerEntity.class, new NukeManagerEntity(this))
 
             .bind(RecursiveBubblePopper.class, new RecursiveBubblePopper(this));
       }

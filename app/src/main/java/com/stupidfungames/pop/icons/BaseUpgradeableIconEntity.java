@@ -98,8 +98,9 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
     if (isInUpgradeState) {
       if (canTakeMoreUpgrades()) {
         EventBus.get().sendEvent(UPGRADE_CONSUMED);
+        int previousUpgradeLevel = upgradeLevel;
         upgradeLevel++;
-        onUpgraded(upgradeLevel);
+        onUpgraded(previousUpgradeLevel, upgradeLevel);
       }
     }
     if (!canTakeMoreUpgrades()) {
@@ -107,7 +108,7 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
     }
   }
 
-  protected abstract void onUpgraded(int upgradeLevel);
+  protected abstract void onUpgraded(int previousUpgradeLevel, int newUpgradeLevel);
 
   /**
    * Number of upgrades this icon can take.

@@ -1,12 +1,11 @@
 package com.stupidfungames.pop.turrets.turret;
 
+import static com.stupidfungames.pop.turrets.turret.TurretFiringEntity.TURRETS_FIRING_DELAY_SECONDS;
 import static com.stupidfungames.pop.turrets.turret.TurretTargetingEntity.TARGETING_TIMER_UPDATE_INTERVAL_SECONDS;
 
-import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.statemachine.BaseStateMachine.Listener;
-import com.stupidfungames.pop.turrets.TurretsConstants;
 import com.stupidfungames.pop.turrets.turret.TurretStateMachine.State;
 import java.util.concurrent.TimeUnit;
 import org.andengine.engine.handler.timer.ITimerCallback;
@@ -98,7 +97,7 @@ public class TurretColoringEntity extends BaseEntity implements Listener<State> 
       return AndengineColor.GREEN;
     }
     float p = (float) (System.currentTimeMillis() - lastTimeFiredMillis) / ((float) TimeUnit.SECONDS
-        .toMillis(TurretsConstants.TURRETS_FIRING_DELAY_SECONDS));
+        .toMillis(TURRETS_FIRING_DELAY_SECONDS));
     if (p > 1) {
       p = 1;
     }

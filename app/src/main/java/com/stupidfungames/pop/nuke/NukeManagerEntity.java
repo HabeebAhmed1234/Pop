@@ -4,9 +4,9 @@ import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 
-public class NukeManagerBaseEntity extends BaseEntity {
+public class NukeManagerEntity extends BaseEntity {
 
-    public NukeManagerBaseEntity(BinderEnity parent) {
+    public NukeManagerEntity(BinderEnity parent) {
         super(parent);
     }
 

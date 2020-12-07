@@ -1,7 +1,5 @@
 package com.stupidfungames.pop.turrets.turret;
 
-import static com.stupidfungames.pop.turrets.TurretsConstants.TURRET_DRAGGING_SCALE_MULTIPLIER;
-
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
@@ -12,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.util.color.AndengineColor;
 
 /**
  * Contains the components of the TurretEntity. Can be used to set the position and rotation of the
@@ -20,6 +17,8 @@ import org.andengine.util.color.AndengineColor;
  */
 public class TurretEntity extends BaseEntity implements
     HostTurretCallback, BaseStateMachine.Listener<State> {
+
+  public static final float TURRET_DRAGGING_SCALE_MULTIPLIER = 1.3f;
 
   private Sprite turretBodySprite;
   private Sprite turretCannonSprite;

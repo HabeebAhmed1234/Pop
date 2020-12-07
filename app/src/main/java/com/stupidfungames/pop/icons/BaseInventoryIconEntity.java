@@ -1,6 +1,6 @@
 package com.stupidfungames.pop.icons;
 
-import static com.stupidfungames.pop.turrets.TurretsConstants.MAX_TURRET_INVENTORY;
+import static com.stupidfungames.pop.turrets.TurretsInventoryIconEntity.STARTING_TURRET_INVENTORY;
 
 import android.content.Context;
 import com.stupidfungames.pop.binder.BinderEnity;
@@ -23,13 +23,11 @@ public abstract class BaseInventoryIconEntity extends BaseUpgradeableIconEntity 
   private static final float INVENTORY_TEXT_MAX_HEIGHT_DP = 16;
 
   private Text inventoryText;
-  private int inventoryCount = getMaxInventoryCount();
+  private int inventoryCount = getStartingInventoryCount();
 
   public BaseInventoryIconEntity(BinderEnity parent) {
     super(parent);
   }
-
-  protected abstract int getMaxInventoryCount();
 
   @Override
   public void onLoadGame(SaveGame saveGame) {
@@ -66,7 +64,7 @@ public abstract class BaseInventoryIconEntity extends BaseUpgradeableIconEntity 
         0,
         get(GameFontsManager.class).getFont(FontId.INVENTORY_ICON_FONT),
         Integer.toString(inventoryCount),
-        (Integer.toString(MAX_TURRET_INVENTORY)).length(),
+        (Integer.toString(STARTING_TURRET_INVENTORY)).length(),
         vertexBufferObjectManager);
     iconSprite.attachChild(inventoryText);
 
@@ -105,8 +103,23 @@ public abstract class BaseInventoryIconEntity extends BaseUpgradeableIconEntity 
     return inventoryCount;
   }
 
+  @Override
+  protected void onUpgraded(int previousUpgradeLevel, int newUpgradeLevel) {
+    increaseInventory(
+        (newUpgradeLevel - previousUpgradeLevel) * getInventoryCountIncrementPerUpgrade());
+  }
+
+  private void increaseInventory(int increment) {
+    inventoryCount += increment;
+    onInventoryChanged();
+  }
+
   private void setInventoryCount(int count) {
     inventoryCount = count;
     onInventoryChanged();
   }
+
+  protected abstract int getStartingInventoryCount();
+
+  protected abstract int getInventoryCountIncrementPerUpgrade();
 }

@@ -1,7 +1,5 @@
 package com.stupidfungames.pop.turrets.turret;
 
-import static com.stupidfungames.pop.turrets.TurretsConstants.TURRETS_FIRING_DELAY_SECONDS;
-
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
@@ -17,6 +15,8 @@ import org.andengine.entity.sprite.Sprite;
  * TARGETING
  */
 public class TurretFiringEntity extends BaseEntity {
+
+  public static final int TURRETS_FIRING_DELAY_SECONDS = 2;
 
   private boolean isReadyToFire = true;
 

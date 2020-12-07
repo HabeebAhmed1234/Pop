@@ -76,8 +76,8 @@ class BallAndChainIconEntity extends BaseUpgradeableIconEntity implements BallAn
     }
 
     @Override
-    protected void onUpgraded(int upgradeLevel) {
-        get(BallAndChainDurabilityEntity.class).onUpgraded(upgradeLevel);
+    protected void onUpgraded(int previousUpgradeLevel, int newUpgradeLevel) {
+        get(BallAndChainDurabilityEntity.class).onUpgraded(newUpgradeLevel);
     }
 
     @Override

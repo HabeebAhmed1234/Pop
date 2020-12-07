@@ -1,10 +1,6 @@
 package com.stupidfungames.pop.nuke;
 
-import static com.stupidfungames.pop.nuke.NukeConstants.NUKE_DURATION_INTERVALS;
-import static com.stupidfungames.pop.nuke.NukeConstants.NUKE_INTERVAL_SECONDS;
-
 import com.stupidfungames.pop.BaseEntity;
-import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
 import com.stupidfungames.pop.entitymatchers.BubblesEntityMatcher;
@@ -21,7 +17,12 @@ import org.andengine.entity.sprite.Sprite;
  */
 public class NukerEntity extends BaseEntity {
 
+  public static final int NUM_NUKES_STARTING = 1;
+  public static final int NUM_NUKES_DELTA_PER_UPGRADE = 1;
+  public static final int NUKE_INTERVAL_SECONDS = 1;
+
   private TimerHandler nuke;
+  private int numNukes = NUM_NUKES_STARTING;
 
   private class NukeWaveTimerHandler implements ITimerCallback {
 
@@ -60,16 +61,15 @@ public class NukerEntity extends BaseEntity {
     super(parent);
   }
 
-  @Override
-  protected void createBindings(Binder binder) {
-
+  public void onUpgrade(int upgradeLevel) {
+    numNukes = NUM_NUKES_STARTING + upgradeLevel * NUM_NUKES_DELTA_PER_UPGRADE;
   }
 
   public void startNuke() {
     get(GameSoundsManager.class).getSound(SoundId.NUKE_START).play();
     get(NukeStateMachine.class).transitionState(NukeStateMachine.State.NUKING);
     nuke = new TimerHandler(NUKE_INTERVAL_SECONDS,
-        new NukeWaveTimerHandler(NUKE_DURATION_INTERVALS));
+        new NukeWaveTimerHandler(numNukes));
     scene.postRunnable(new Runnable() {
       @Override
       public void run() {
