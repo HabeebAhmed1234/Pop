@@ -1,9 +1,11 @@
 package com.stupidfungames.pop;
 
+import static com.stupidfungames.pop.GameFixtureDefs.FLOOR_SENSOR_FIXTURE_DEF;
 import static com.stupidfungames.pop.GameFixtureDefs.WALL_FIXTURE_DEF;
 
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.collision.CollisionFilters;
+import com.stupidfungames.pop.fixturedefdata.FloorEntityUserData;
 import com.stupidfungames.pop.fixturedefdata.LevelWallEntityUserData;
 import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
@@ -39,6 +41,7 @@ public class LevelEntity extends BaseEntity {
     createRightFunnelWall();
     createLeftLevelWall();
     createRightLevelWall();
+    createFloorDetectorWall();
 
     createBackground();
   }
@@ -81,6 +84,16 @@ public class LevelEntity extends BaseEntity {
             vertexBufferObjectManager),
         BodyType.STATIC,
         levelWallFixtureDef);
+  }
+
+  private void createFloorDetectorWall() {
+    final Rectangle floorDetector = new Rectangle(0, levelHeight, levelWidth, 10,
+        vertexBufferObjectManager);
+    floorDetector.setAlpha(0);
+    final FixtureDef floorFixtureDef = FLOOR_SENSOR_FIXTURE_DEF;
+    floorFixtureDef.setUserData(new FloorEntityUserData());
+    floorFixtureDef.setFilter(CollisionFilters.WALL_FILTER);
+    PhysicsFactory.createBoxBody(physicsWorld, floorDetector, BodyType.STATIC, floorFixtureDef);
   }
 
   private Sprite getBackgroundSprite() {

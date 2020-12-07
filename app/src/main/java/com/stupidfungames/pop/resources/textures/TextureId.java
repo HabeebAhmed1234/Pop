@@ -11,6 +11,7 @@ public enum TextureId {
     CHAIN_LINK,
     LINE,
     BULLET,
+    UPGRADE,
     BALL_AND_CHAIN_ICON,
     TURRETS_ICON,
     WALLS_ICON,

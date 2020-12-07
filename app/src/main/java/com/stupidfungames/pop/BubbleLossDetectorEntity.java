@@ -1,74 +1,41 @@
 package com.stupidfungames.pop;
 
-import static com.stupidfungames.pop.GameFixtureDefs.FLOOR_SENSOR_FIXTURE_DEF;
-
 import android.opengl.GLES20;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpritePool;
-import com.stupidfungames.pop.collision.CollisionFilters;
 import com.stupidfungames.pop.eventbus.DecrementScoreEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
-import com.stupidfungames.pop.fixturedefdata.FixtureDefDataUtil;
-import com.stupidfungames.pop.fixturedefdata.FloorEntityUserData;
-import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.resources.fonts.FontId;
 import com.stupidfungames.pop.resources.fonts.GameFontsManager;
 import org.andengine.entity.modifier.AlphaModifier;
 import org.andengine.entity.modifier.ParallelEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
-import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.text.Text;
-import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
-import org.jbox2d.dynamics.FixtureDef;
 
 /**
  * This entity detects whether or not any bubbles have fallen below the screen. Thus resulting in
  * points lost.
  */
-public class BubbleLossDetectorEntity extends BaseEntity {
+public class BubbleLossDetectorEntity extends BaseLossDetectorEntity {
 
   private static final int SCORE_DECREMENT_AMOUNT = 5;
 
-  private final GamePhysicsContactsEntity.GameContactListener contactListener = new GamePhysicsContactsEntity.GameContactListener() {
-    @Override
-    public void onBeginContact(Fixture fixture1, Fixture fixture2) {
-    }
-
-    @Override
-    public void onEndContact(Fixture fixture1, Fixture fixture2) {
-      processBubbleFellBelowScreen(FixtureDefDataUtil.getBubbleFixture(fixture1, fixture2));
-    }
-  };
 
   public BubbleLossDetectorEntity(BinderEnity parent) {
     super(parent);
   }
 
+
   @Override
-  public void onCreateScene() {
-    final Rectangle floorDetector = new Rectangle(0, levelHeight, levelWidth, 10,
-        vertexBufferObjectManager);
-    floorDetector.setAlpha(0);
-    final FixtureDef floorFixtureDef = FLOOR_SENSOR_FIXTURE_DEF;
-    floorFixtureDef.setUserData(new FloorEntityUserData());
-    floorFixtureDef.setFilter(CollisionFilters.WALL_FILTER);
-    PhysicsFactory.createBoxBody(physicsWorld, floorDetector, BodyType.STATIC, floorFixtureDef);
-    get(GamePhysicsContactsEntity.class)
-        .addContactListener(BubbleEntityUserData.class, FloorEntityUserData.class,
-            contactListener);
+  protected Class getUserDataClassToDetectLossOf() {
+    return BubbleEntityUserData.class;
   }
 
   @Override
-  public void onDestroy() {
-    get(GamePhysicsContactsEntity.class)
-        .removeContactListener(BubbleEntityUserData.class, FloorEntityUserData.class,
-            contactListener);
-  }
-
-  private void processBubbleFellBelowScreen(Fixture bubbleFixture) {
+  protected void processLoss(Fixture bubbleFixture) {
     BubbleEntityUserData data = (BubbleEntityUserData) bubbleFixture.getUserData();
     if (!data.bubbleSprite.isVisible()) {
       return;
@@ -76,7 +43,7 @@ public class BubbleLossDetectorEntity extends BaseEntity {
     if (data.isScoreLossBubble) {
       createScoreLossText(
           data.bubbleSprite.getX(),
-          levelHeight - 50);
+          levelHeight - 80);
       EventBus.get().sendEvent(GameEvent.DECREMENT_SCORE,
           new DecrementScoreEventPayload(SCORE_DECREMENT_AMOUNT));
     }

@@ -92,6 +92,9 @@ public class TurretColoringEntity extends BaseEntity implements Listener<State> 
       turretCannonSprite.setColor(color);
     }
   }
+
+  private AndengineColor turretColor = AndengineColor.GREEN;
+
   private AndengineColor getTargetingColor() {
     if (lastTimeFiredMillis == -1) {
       return AndengineColor.GREEN;
@@ -103,10 +106,10 @@ public class TurretColoringEntity extends BaseEntity implements Listener<State> 
     }
     AndengineColor from = AndengineColor.GREEN;
     AndengineColor to = AndengineColor.RED;
-    return new AndengineColor(
-        from.getRed() + (to.getRed() - from.getRed()) * p,
-        from.getGreen() + (to.getGreen() - from.getGreen()) * p,
-        from.getBlue() + (to.getBlue() - from.getBlue()) * p,
-        1.0f);
+    turretColor.setRed(from.getRed() + (to.getRed() - from.getRed()) * p);
+    turretColor.setGreen(from.getGreen() + (to.getGreen() - from.getGreen()) * p);
+    turretColor.setBlue(from.getBlue() + (to.getBlue() - from.getBlue()) * p);
+
+    return turretColor;
   }
 }

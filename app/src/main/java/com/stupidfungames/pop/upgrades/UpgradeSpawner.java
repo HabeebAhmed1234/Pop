@@ -5,6 +5,7 @@ import static com.stupidfungames.pop.eventbus.GameEvent.BUBBLE_POPPED;
 import static com.stupidfungames.pop.eventbus.GameEvent.GAME_PROGRESS_CHANGED;
 import static com.stupidfungames.pop.eventbus.GameEvent.ICON_UNLOCKED;
 
+import android.content.Context;
 import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameConstants;
@@ -23,8 +24,10 @@ import com.stupidfungames.pop.fixturedefdata.UpgradeUserData;
 import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
+import com.stupidfungames.pop.utils.ScreenUtils;
 import java.util.concurrent.TimeUnit;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.util.color.AndengineColor;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
@@ -35,6 +38,10 @@ import org.jbox2d.dynamics.FixtureDef;
  * difficulty / Remaining upgrades.
  */
 public class UpgradeSpawner extends BaseEntity implements Subscriber {
+
+  private static final AndengineColor UPGRADE_COLOUR = new AndengineColor(241f / 255f, 10f / 255f,
+      245f / 255f);
+  private static final int UPGRADE_SIZE_DP = 80;
 
   private int numUpgradesRemaining = 0;
   private long lastTimeUpgradeWasSpawned = -1;
@@ -83,6 +90,15 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
     }
   }
 
+  /**
+   * Called when an upgrade falls below the screen. We want it get added back into the available
+   * upgrades.
+   */
+  public void onUpgradeLost() {
+    numUpgradesRemaining++;
+    Log.d("asdasd", "numUpgradesRemaining = " + numUpgradesRemaining);
+  }
+
   private void maybeSpawnUpgrade(BubblePoppedEventPayload bubblePoppedEventPayload) {
     if (lastTimeUpgradeWasSpawned == -1
         || currentGameDifficultyPercentProgress == -1
@@ -108,13 +124,18 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
 
   private void spawnUpgrade(BubblePoppedEventPayload bubblePoppedEventPayload) {
     numUpgradesRemaining--;
+    Log.d("asdasd", "numUpgradesRemaining = " + numUpgradesRemaining);
     lastTimeUpgradeWasSpawned = System.currentTimeMillis();
     final Sprite upgradeSprite = new Sprite(
         bubblePoppedEventPayload.poppedBubbleX,
         bubblePoppedEventPayload.poppedBubbleY,
-        get(GameTexturesManager.class).getTextureRegion(TextureId.X_BTN),
+        get(GameTexturesManager.class).getTextureRegion(TextureId.UPGRADE),
         vertexBufferObjectManager);
     upgradeSprite.setUserData(new UpgradeUserData());
+
+    float upgradeSizePx = ScreenUtils.dpToPx(UPGRADE_SIZE_DP, get(Context.class));
+    upgradeSprite.setScale(upgradeSizePx / upgradeSprite.getWidth());
+    upgradeSprite.setColor(UPGRADE_COLOUR);
 
     final FixtureDef bubbleFixtureDef = GameFixtureDefs.UPGRADE_FIXTURE_DEF;
     bubbleFixtureDef.setFilter(CollisionFilters.UPGRADES_FILTER);
@@ -133,5 +154,6 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
       lastTimeUpgradeWasSpawned = System.currentTimeMillis();
     }
     numUpgradesRemaining += iconUnlockedEventPayload.iconUpgradesQuantity;
+    Log.d("asdasd", "numUpgradesRemaining = " + numUpgradesRemaining);
   }
 }
