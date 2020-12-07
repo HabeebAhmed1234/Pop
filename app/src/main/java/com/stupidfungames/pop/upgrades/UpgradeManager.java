@@ -18,6 +18,7 @@ public class UpgradeManager extends BaseEntity {
     super.createBindings(binder);
     binder.bind(UpgradeInventory.class, new UpgradeInventory(this))
         .bind(UpgradeSpawner.class, new UpgradeSpawner(this))
-        .bind(UpgradeLossDetector.class, new UpgradeLossDetector(this));
+        .bind(UpgradeLossDetector.class, new UpgradeLossDetector(this))
+        .bind(UpgradeCleanerEntity.class, new UpgradeCleanerEntity(this));
   }
 }

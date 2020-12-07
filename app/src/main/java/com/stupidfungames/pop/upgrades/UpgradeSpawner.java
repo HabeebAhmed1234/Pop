@@ -6,7 +6,6 @@ import static com.stupidfungames.pop.eventbus.GameEvent.GAME_PROGRESS_CHANGED;
 import static com.stupidfungames.pop.eventbus.GameEvent.ICON_UNLOCKED;
 
 import android.content.Context;
-import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameConstants;
 import com.stupidfungames.pop.GameFixtureDefs;
@@ -96,7 +95,6 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
    */
   public void onUpgradeLost() {
     numUpgradesRemaining++;
-    Log.d("asdasd", "numUpgradesRemaining = " + numUpgradesRemaining);
   }
 
   private void maybeSpawnUpgrade(BubblePoppedEventPayload bubblePoppedEventPayload) {
@@ -124,14 +122,13 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
 
   private void spawnUpgrade(BubblePoppedEventPayload bubblePoppedEventPayload) {
     numUpgradesRemaining--;
-    Log.d("asdasd", "numUpgradesRemaining = " + numUpgradesRemaining);
     lastTimeUpgradeWasSpawned = System.currentTimeMillis();
     final Sprite upgradeSprite = new Sprite(
         bubblePoppedEventPayload.poppedBubbleX,
         bubblePoppedEventPayload.poppedBubbleY,
         get(GameTexturesManager.class).getTextureRegion(TextureId.UPGRADE),
         vertexBufferObjectManager);
-    upgradeSprite.setUserData(new UpgradeUserData());
+    upgradeSprite.setUserData(new UpgradeUserData(upgradeSprite));
 
     float upgradeSizePx = ScreenUtils.dpToPx(UPGRADE_SIZE_DP, get(Context.class));
     upgradeSprite.setScale(upgradeSizePx / upgradeSprite.getWidth());
@@ -154,6 +151,5 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
       lastTimeUpgradeWasSpawned = System.currentTimeMillis();
     }
     numUpgradesRemaining += iconUnlockedEventPayload.iconUpgradesQuantity;
-    Log.d("asdasd", "numUpgradesRemaining = " + numUpgradesRemaining);
   }
 }
