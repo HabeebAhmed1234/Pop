@@ -34,7 +34,7 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
   private int upgradeLevel = 0;
   private boolean isInUpgradeState = false;
   // the icon color before we entered the upgrade state
-  private AndengineColor previousIconColor = null;
+  private AndengineColor previousIconColor = new AndengineColor(getUnlockedIconColor());
 
   public BaseUpgradeableIconEntity(BinderEnity parent) {
     super(parent);
@@ -92,7 +92,7 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
   private void enterUpgradeState() {
     if (!isInUpgradeState) {
       isInUpgradeState = true;
-      previousIconColor = getCurrentIconColor();
+      previousIconColor.set(getCurrentIconColor());
       setIconColor(AndengineColor.CYAN);
       enableOverrideTouchListener(true);
     }

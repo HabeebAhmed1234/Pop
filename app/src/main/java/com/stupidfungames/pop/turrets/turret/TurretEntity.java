@@ -29,7 +29,7 @@ public class TurretEntity extends BaseEntity implements
     super(parent);
     this.turretBodySprite = turretBodySprite;
     this.turretCannonSprite = turretCannonSprite;
-    get(TurretColoringEntity.class).setSprites(turretBodySprite, turretCannonSprite);
+    //get(TurretColoringEntity.class).setSprites(turretBodySprite, turretCannonSprite);
     init();
   }
 
