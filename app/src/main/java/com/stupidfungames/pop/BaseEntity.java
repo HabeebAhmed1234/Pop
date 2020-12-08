@@ -95,8 +95,13 @@ public abstract class BaseEntity extends BinderEnity implements
 
   protected void addToSceneWithTouch(IAreaShape entity, Body body,
       IOnAreaTouchListener areaTouchListener) {
+    addToSceneWithTouch(entity, body, areaTouchListener, true);
+  }
+
+  protected void addToSceneWithTouch(IAreaShape entity, Body body,
+      IOnAreaTouchListener areaTouchListener, boolean updateRotation) {
     setUpTouch(entity, areaTouchListener);
-    addToScene(entity, body);
+    addToScene(entity, body, updateRotation);
   }
 
   protected void addToScene(IEntity parent, IEntity sprite) {
@@ -110,12 +115,20 @@ public abstract class BaseEntity extends BinderEnity implements
   }
 
   protected void addToScene(IAreaShape entity, Body body) {
-    linkPhysics(entity, body);
+    addToScene(entity, body, true);
+  }
+
+  protected void addToScene(IAreaShape entity, Body body, boolean updateRotation) {
+    linkPhysics(entity, body, updateRotation);
     addToScene(entity);
   }
 
   protected void linkPhysics(final IAreaShape entity, final Body body) {
-    physicsWorld.registerPhysicsConnector(new PhysicsConnectorImpl(entity, body, true, true));
+    linkPhysics(entity, body, true);
+  }
+
+  protected void linkPhysics(final IAreaShape entity, final Body body, boolean updateRotation) {
+    physicsWorld.registerPhysicsConnector(new PhysicsConnectorImpl(entity, body, true, updateRotation));
   }
 
   protected void linkReversePhysics(final IAreaShape entity, final Body body) {

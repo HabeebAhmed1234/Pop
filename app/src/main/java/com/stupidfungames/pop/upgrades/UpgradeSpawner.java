@@ -141,7 +141,7 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
         .createBoxBody(physicsWorld, upgradeSprite, BodyType.DYNAMIC, bubbleFixtureDef);
     body.setGravityScale(BUBBLE_GRAVITY_SCALE);
     addToSceneWithTouch(upgradeSprite, body,
-        get(UpgradeTouchFactoryEntity.class).getNewTouchListener());
+        get(UpgradeTouchFactoryEntity.class).getNewTouchListener(), false);
   }
 
   private void onIconUnlocked(IconUnlockedEventPayload iconUnlockedEventPayload) {

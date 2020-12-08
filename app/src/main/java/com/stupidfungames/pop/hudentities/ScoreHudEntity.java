@@ -6,9 +6,7 @@ import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.IncrementScoreEventPayload;
-import com.stupidfungames.pop.eventbus.ScoreChangeEventPayload;
 import com.stupidfungames.pop.savegame.SaveGame;
-
 import org.andengine.util.color.AndengineColor;
 
 /**
