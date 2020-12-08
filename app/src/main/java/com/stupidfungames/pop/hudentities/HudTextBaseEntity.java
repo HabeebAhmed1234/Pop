@@ -24,7 +24,7 @@ public abstract class HudTextBaseEntity extends BaseEntity {
     text = new Text(position[0], position[1],
         get(GameFontsManager.class).getFont(FontId.SCORE_TICKER_FONT), "", getMaxStringLength(),
         vertexBufferObjectManager);
-    text.setColor(getTextColor());
+    text.setColor(getInitialTextColor());
     updateText(getInitialText());
     scene.attachChild(text);
   }
@@ -37,11 +37,15 @@ public abstract class HudTextBaseEntity extends BaseEntity {
     text.setColor(color);
   }
 
+  protected AndengineColor currentTextColor() {
+    return text.getColor();
+  }
+
   abstract String getInitialText();
 
   abstract int[] getTextPosition();
 
   abstract int getMaxStringLength();
 
-  abstract AndengineColor getTextColor();
+  abstract AndengineColor getInitialTextColor();
 }

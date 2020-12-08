@@ -15,6 +15,8 @@ import org.andengine.util.color.AndengineColor;
 public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscriber {
 
     private static final String SCORE_TEXT_PREFIX = "Score: ";
+    private static final AndengineColor NEGATIVE_SCORE_COLOR = AndengineColor.RED;
+    private static final AndengineColor POSITIVE_SCORE_COLOR = AndengineColor.GREEN;
 
     private int scoreValue = 0;
 
@@ -64,7 +66,7 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
     }
 
     @Override
-    AndengineColor getTextColor() {
+    AndengineColor getInitialTextColor() {
         return AndengineColor.GREEN;
     }
 
@@ -105,5 +107,10 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
 
     private void updateScoreText() {
         updateText(SCORE_TEXT_PREFIX + scoreValue);
+        if (scoreValue < 0 && !currentTextColor().equals(NEGATIVE_SCORE_COLOR)) {
+            updateColor(NEGATIVE_SCORE_COLOR);
+        } else if (!currentTextColor().equals(POSITIVE_SCORE_COLOR)) {
+            updateColor(POSITIVE_SCORE_COLOR);
+        }
     }
 }
