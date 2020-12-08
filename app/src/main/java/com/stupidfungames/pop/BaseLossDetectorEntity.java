@@ -1,5 +1,6 @@
 package com.stupidfungames.pop;
 
+import androidx.annotation.Nullable;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.fixturedefdata.FixtureDefDataUtil;
 import com.stupidfungames.pop.fixturedefdata.FloorEntityUserData;
@@ -18,7 +19,14 @@ public abstract class BaseLossDetectorEntity extends BaseEntity {
 
     @Override
     public void onEndContact(Fixture fixture1, Fixture fixture2) {
-      processLoss(FixtureDefDataUtil.getNonFloorFixture(fixture1, fixture2));
+      @Nullable Fixture lossFixture = FixtureDefDataUtil.getNonFloorFixture(fixture1, fixture2);
+      if (lossFixture != null) {
+        @Nullable Object userData = lossFixture.getUserData();
+        Class lossUserDataClass = getUserDataClassToDetectLossOf();
+        if (userData != null && lossUserDataClass.isInstance(userData)) {
+          processLoss(lossFixture);
+        }
+      }
     }
   };
 
