@@ -11,20 +11,22 @@ import com.stupidfungames.pop.eventbus.EventBus.Subscriber;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
+import java.util.ArrayList;
 import java.util.List;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.sprite.Sprite;
 
 /**
- * Endgame tool that listens to the BUBBLE_TOUCHED event and pops all the bubbles around it
- * recursively.
+ * Either an Endgame tool that listens to the BUBBLE_TOUCHED event and pops all the bubbles around it
+ * recursively or single touch pop tool.
  */
-public class RecursiveBubblePopper extends BaseEntity implements Subscriber {
+public class TouchBubblePopper extends BaseEntity implements Subscriber {
 
   private final float BUBBLE_EDGE_SEARCH_RADIUS_PERCENT = 0.2f;
   private BubblePopperEntity bubblePopperEntity;
+  private boolean isRecursiveEnabled = true;
 
-  public RecursiveBubblePopper(BinderEnity parent) {
+  public TouchBubblePopper(BinderEnity parent) {
     super(parent);
   }
 
@@ -45,10 +47,20 @@ public class RecursiveBubblePopper extends BaseEntity implements Subscriber {
   public void onEvent(GameEvent event, EventPayload payload) {
     if (event == GameEvent.BUBBLE_TOUCHED) {
       BubbleTouchedEventPayload touchedEventPayload = (BubbleTouchedEventPayload) payload;
+      if (!isRecursiveEnabled) {
+        bubblePopperEntity.popBubble(touchedEventPayload.sprite);
+        return;
+      }
       // First mark all the bubbles on the screen
       markAllBubblesOfSameType(touchedEventPayload.type);
-      // Recursively pop only the marked bubbles
-      popRecursively(touchedEventPayload.sprite, touchedEventPayload.type);
+      // Recursively finds all the bubbles in transitive contact with the given bubble and assembles
+      // a list.
+      List<Sprite> bubblesToPop = new ArrayList<>();
+      recursivelyQueryAllBubblesInContact(bubblesToPop, touchedEventPayload.sprite,
+          touchedEventPayload.type);
+      for (Sprite bubble : bubblesToPop) {
+        bubblePopperEntity.popBubble(bubble);
+      }
     }
   }
 
@@ -59,13 +71,18 @@ public class RecursiveBubblePopper extends BaseEntity implements Subscriber {
     }
   }
 
-  private void popRecursively(Sprite toPop, BubbleType type) {
-    bubblePopperEntity.popBubble(toPop);
+  private void recursivelyQueryAllBubblesInContact(List<Sprite> bubblesToPop, Sprite toPop,
+      BubbleType type) {
+    // Add this bubble to the poppable list
+    bubblesToPop.add(toPop);
+    // Make sure to unmark this for recursive popping
+    BubbleEntityUserData userData = (BubbleEntityUserData) toPop.getUserData();
+    userData.isMarkedForRecursivePopping = false;
     List<IEntity> neighboringBubbles = scene
         .query(new NeighboringBubblesMarkedForRecursivePoppingEntityMatcher(
             toPop.getWidthScaled() * BUBBLE_EDGE_SEARCH_RADIUS_PERCENT, toPop, type));
     for (IEntity bubble : neighboringBubbles) {
-      popRecursively((Sprite) bubble, type);
+      recursivelyQueryAllBubblesInContact(bubblesToPop, (Sprite) bubble, type);
     }
   }
 }

@@ -34,7 +34,7 @@ import org.andengine.entity.text.Text;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
-public class BubblePopperEntity extends BaseEntity implements EventBus.Subscriber {
+public class BubblePopperEntity extends BaseEntity {
 
   public static final int SCORE_INCREMENT_PER_BUBBLE_POP = 10;
   public static final int MAX_SCORE_INCREASE_PER_NEW_SPAWNED_BUBBLE = 70; // Since there are three bubble sizes a total of 7 bubbles can be popped from one spawned bubble
@@ -45,21 +45,9 @@ public class BubblePopperEntity extends BaseEntity implements EventBus.Subscribe
   }
 
   @Override
-  public void onCreateScene() {
-    super.onCreateScene();
-    EventBus.get().subscribe(GameEvent.BUBBLE_TOUCHED, this);
-  }
-
-  @Override
   protected void createBindings(Binder binder) {
     super.createBindings(binder);
     binder.bind(ScoreTickerSpritePool.class, new ScoreTickerSpritePool(this));
-  }
-
-  @Override
-  public void onDestroy() {
-    super.onDestroy();
-    EventBus.get().unSubscribe(GameEvent.BUBBLE_TOUCHED, this);
   }
 
   /**
@@ -169,13 +157,5 @@ public class BubblePopperEntity extends BaseEntity implements EventBus.Subscribe
         return soundsManager.getSound(SoundId.POP_5);
     }
     throw new IllegalStateException("No sound for index " + random);
-  }
-
-  @Override
-  public void onEvent(GameEvent event, EventPayload payload) {
-    if (event == GameEvent.BUBBLE_TOUCHED) {
-      BubbleTouchedEventPayload touchedEventPayload = (BubbleTouchedEventPayload) payload;
-      popBubble(touchedEventPayload.sprite);
-    }
   }
 }

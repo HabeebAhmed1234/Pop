@@ -109,7 +109,7 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
         updateText(SCORE_TEXT_PREFIX + scoreValue);
         if (scoreValue < 0 && !currentTextColor().equals(NEGATIVE_SCORE_COLOR)) {
             updateColor(NEGATIVE_SCORE_COLOR);
-        } else if (!currentTextColor().equals(POSITIVE_SCORE_COLOR)) {
+        } else if (scoreValue >= 0 && !currentTextColor().equals(POSITIVE_SCORE_COLOR)) {
             updateColor(POSITIVE_SCORE_COLOR);
         }
     }

@@ -9,7 +9,7 @@ import android.hardware.SensorManager;
 import android.util.Pair;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameFixtureDefs;
-import com.stupidfungames.pop.TouchPopperFactoryEntity;
+import com.stupidfungames.pop.BubbleTouchFactoryEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpritePool.SpritePoolParams;
 import com.stupidfungames.pop.collision.CollisionFilters;
@@ -147,7 +147,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         .createCircleBody(physicsWorld, bubbleSprite, 0.8f, BodyType.DYNAMIC, bubbleFixtureDef);
     body.setGravityScale(BUBBLE_GRAVITY_SCALE);
     addToSceneWithTouch(bubbleSprite, body,
-        get(TouchPopperFactoryEntity.class).getNewTouchBubblePopper());
+        get(BubbleTouchFactoryEntity.class).getNewTouchBubblePopper());
     notifyBubbleSpawned(bubbleSprite);
     return body;
   }

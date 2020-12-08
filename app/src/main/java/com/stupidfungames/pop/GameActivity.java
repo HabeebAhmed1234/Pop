@@ -17,7 +17,7 @@ import com.stupidfungames.pop.ballandchain.BallAndChainManagerEntity;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
-import com.stupidfungames.pop.bubblepopper.RecursiveBubblePopper;
+import com.stupidfungames.pop.bubblepopper.TouchBubblePopper;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpritePool;
 import com.stupidfungames.pop.bubbletimeout.BubblesLifecycleManagerEntity;
@@ -42,9 +42,7 @@ import com.stupidfungames.pop.settingstray.SaveGameQuickSettingsIconEntity;
 import com.stupidfungames.pop.settingstray.SaveGameQuickSettingsIconEntity.SaveGameButtonCallback;
 import com.stupidfungames.pop.tooltips.GameTooltipsEntity;
 import com.stupidfungames.pop.turrets.TurretsManagerEntity;
-import com.stupidfungames.pop.upgrades.UpgradeInventory;
 import com.stupidfungames.pop.upgrades.UpgradeManager;
-import com.stupidfungames.pop.upgrades.UpgradeSpawner;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import com.stupidfungames.pop.walls.WallsManagerBaseEntity;
 import org.andengine.audio.music.MusicManager;
@@ -146,7 +144,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(BubbleSpawnerEntity.class, new BubbleSpawnerEntity(this))
             .bind(BubbleCleanerEntity.class, new BubbleCleanerEntity(this))
             .bind(BubbleLossDetectorEntity.class, new BubbleLossDetectorEntity(this))
-            .bind(TouchPopperFactoryEntity.class, new TouchPopperFactoryEntity(this))
+            .bind(BubbleTouchFactoryEntity.class, new BubbleTouchFactoryEntity(this))
             .bind(BubblePopperEntity.class, new BubblePopperEntity(this))
 
             .bind(GameIconsHostTrayEntity.class, new GameIconsHostTrayEntity(this))
@@ -155,7 +153,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(WallsManagerBaseEntity.class, new WallsManagerBaseEntity(this))
             .bind(NukeManagerEntity.class, new NukeManagerEntity(this))
 
-            .bind(RecursiveBubblePopper.class, new RecursiveBubblePopper(this));
+            .bind(TouchBubblePopper.class, new TouchBubblePopper(this));
       }
     };
   }

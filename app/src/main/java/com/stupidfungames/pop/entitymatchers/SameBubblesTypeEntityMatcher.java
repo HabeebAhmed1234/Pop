@@ -16,6 +16,9 @@ public class SameBubblesTypeEntityMatcher extends BubblesEntityMatcher {
 
   @Override
   public boolean matches(IEntity pEntity) {
+    if (!super.matches(pEntity)) {
+      return false;
+    }
     Object userData = pEntity.getUserData();
     if (userData instanceof BubbleEntityUserData) {
       BubbleEntityUserData bubbleEntityUserData = (BubbleEntityUserData) userData;

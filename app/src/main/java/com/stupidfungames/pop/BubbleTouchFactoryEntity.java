@@ -14,19 +14,19 @@ import org.andengine.input.touch.TouchEvent;
 /**
  * This class enables the user to pop bubbles that they tap on the screen
  */
-public class TouchPopperFactoryEntity extends BaseEntity {
+public class BubbleTouchFactoryEntity extends BaseEntity {
 
-    public TouchPopperFactoryEntity(BinderEnity parent) {
+    public BubbleTouchFactoryEntity(BinderEnity parent) {
         super(parent);
     }
 
-    public TouchBubblePopper getNewTouchBubblePopper() {
-        return new TouchBubblePopper();
+    public BubbleTouchedListener getNewTouchBubblePopper() {
+        return new BubbleTouchedListener();
     }
 
-    public static class TouchBubblePopper implements IOnAreaTouchListener {
+    public static class BubbleTouchedListener implements IOnAreaTouchListener {
 
-        private TouchBubblePopper() {}
+        private BubbleTouchedListener() {}
 
         @Override
         public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
