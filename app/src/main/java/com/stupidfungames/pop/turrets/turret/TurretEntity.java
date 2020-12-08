@@ -39,7 +39,7 @@ public class TurretEntity extends BaseEntity implements
         .bind(TurretStateMachine.class, new TurretStateMachine())
         .bind(TurretFiringEntity.class, new TurretFiringEntity(this))
         .bind(TurretTargetingEntity.class, new TurretTargetingEntity(this))
-        .bind(TurretColoringEntity.class, new TurretColoringEntity(this))
+        // .bind(TurretColoringEntity.class, new TurretColoringEntity(this))
         .bind(TurretDraggingManager.class, new TurretDraggingManager(this))
         .bind(TurretCannonRotationManagerEntity.class, new TurretCannonRotationManagerEntity(this));
   }

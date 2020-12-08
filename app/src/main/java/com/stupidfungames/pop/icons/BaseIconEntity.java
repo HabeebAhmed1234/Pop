@@ -135,6 +135,10 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
     iconSprite.setColor(color);
   }
 
+  protected AndengineColor getCurrentIconColor() {
+    return iconSprite.getColor();
+  }
+
   protected boolean isUnlocked() {
     return isUnlocked;
   }

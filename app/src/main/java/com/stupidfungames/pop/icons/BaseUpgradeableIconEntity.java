@@ -6,6 +6,7 @@ import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADES_AVAILABLE;
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADE_CONSUMED;
 
 import android.content.Context;
+import androidx.annotation.Nullable;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
@@ -32,6 +33,8 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
    */
   private int upgradeLevel = 0;
   private boolean isInUpgradeState = false;
+  // the icon color before we entered the upgrade state
+  private AndengineColor previousIconColor = null;
 
   public BaseUpgradeableIconEntity(BinderEnity parent) {
     super(parent);
@@ -89,6 +92,7 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
   private void enterUpgradeState() {
     if (!isInUpgradeState) {
       isInUpgradeState = true;
+      previousIconColor = getCurrentIconColor();
       setIconColor(AndengineColor.CYAN);
       enableOverrideTouchListener(true);
     }
@@ -98,7 +102,7 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
   private void exitUpgradeState() {
     if (isInUpgradeState) {
       isInUpgradeState = false;
-      setIconColor(getUnlockedIconColor());
+      setIconColor(previousIconColor);
       enableOverrideTouchListener(false);
     }
   }
