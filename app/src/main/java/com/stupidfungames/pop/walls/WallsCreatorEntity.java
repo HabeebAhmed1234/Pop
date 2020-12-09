@@ -142,7 +142,10 @@ public class WallsCreatorEntity extends BaseEntity implements
   private boolean onActionDown(TouchEvent touchEvent) {
     if (shouldStartPlacingWall(touchEvent)) {
       get(GameSoundsManager.class).getSound(SoundId.HAMMER_UP).play();
-      initialPoint = Vec2Pool.obtain(touchEvent.getX(), touchEvent.getY());
+      if (initialPoint == null) {
+        initialPoint = Vec2Pool.obtain();
+      }
+      initialPoint.set(touchEvent.getX(), touchEvent.getY());
       pendingWallData = createWall();
       spanWall(touchEvent);
       return true;
@@ -169,6 +172,7 @@ public class WallsCreatorEntity extends BaseEntity implements
     bakeWall(pendingWallData.first, pendingWallData.second, true, true);
 
     pendingWallData = null;
+    Vec2Pool.recycle(initialPoint);
     initialPoint = null;
 
     return true;

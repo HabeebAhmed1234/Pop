@@ -53,13 +53,17 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
       true, new ITimerCallback() {
     @Override
     public void onTimePassed(TimerHandler pTimerHandler) {
-      if (isDestroyed) return;
+      if (isDestroyed) {
+        return;
+      }
       if (targetBubble != null && targetBubble.isVisible()) {
-        targetingMouseJoint.setTarget(
+        Vec2 target =
             CoordinateConversionUtil.sceneToPhysicsWorld(
                 Vec2Pool.obtain(
                     targetBubble.getX() + targetBubble.getWidthScaled() / 2,
-                    targetBubble.getY() + targetBubble.getHeightScaled() / 2)));
+                    targetBubble.getY() + targetBubble.getHeightScaled() / 2));
+        targetingMouseJoint.setTarget(target);
+        Vec2Pool.recycle(target);
       } else {
         findNextTarget();
       }
@@ -123,7 +127,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
 
   private MouseJoint createBulletTargetingMouseJoint(final Sprite sprite, final Body body) {
     final Vec2 physicsWorldPoint = CoordinateConversionUtil.sceneToPhysicsWorld(
-        new Vec2(sprite.getX() + sprite.getWidth() / 2,
+        Vec2Pool.obtain(sprite.getX() + sprite.getWidth() / 2,
             sprite.getY() + sprite.getHeight() / 2));
 
     final MouseJointDef mouseJointDef = new MouseJointDef();
@@ -135,6 +139,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
     mouseJointDef.collideConnected = true;
 
     mouseJointDef.target.set(physicsWorldPoint);
+    Vec2Pool.recycle(physicsWorldPoint);
 
     return (MouseJoint) physicsWorld.createJoint(mouseJointDef);
   }

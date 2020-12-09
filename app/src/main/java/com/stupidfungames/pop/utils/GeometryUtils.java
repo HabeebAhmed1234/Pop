@@ -18,7 +18,10 @@ public class GeometryUtils {
   public static float getAngleOfCenters(Sprite s1, Sprite s2) {
     Vec2 s1C = getCenter(s1);
     Vec2 s2C = getCenter(s2);
-    return getAngle(s1C.x, s1C.y, s2C.x, s2C.y);
+    float angle = getAngle(s1C.x, s1C.y, s2C.x, s2C.y);
+    Vec2Pool.recycle(s1C);
+    Vec2Pool.recycle(s2C);
+    return angle;
   }
 
   public static float getAngle(Vec2 vec2) {

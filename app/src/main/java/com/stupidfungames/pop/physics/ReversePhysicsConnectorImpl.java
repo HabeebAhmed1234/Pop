@@ -106,18 +106,21 @@ public class ReversePhysicsConnectorImpl implements IPhysicsConnector {
     final IShape shape = this.mShape;
     final Body body = this.mBody;
 
-    Vec2 position = body.getPosition();
-    if (this.mUpdatePosition) {
-      final float pixelToMeterRatio = this.mPixelToMeterRatio;
-      position = Vec2Pool.obtain((shape.getX() + this.mShapeHalfBaseWidth) / pixelToMeterRatio,
-          (shape.getY() + this.mShapeHalfBaseHeight) / pixelToMeterRatio);
-    }
-
     float rotationRads = body.getAngle();
     if (this.mUpdateRotation) {
       rotationRads = MathUtils.degToRad(shape.getRotation());
     }
-    body.setTransform(position, rotationRads);
+
+    if (this.mUpdatePosition) {
+      final float pixelToMeterRatio = this.mPixelToMeterRatio;
+      Vec2 position = Vec2Pool.obtain((shape.getX() + this.mShapeHalfBaseWidth) / pixelToMeterRatio,
+          (shape.getY() + this.mShapeHalfBaseHeight) / pixelToMeterRatio);
+      body.setTransform(position, rotationRads);
+      Vec2Pool.recycle(position);
+    } else {
+      body.setTransform(body.getPosition(), rotationRads);
+    }
+
     body.setActive(shape.isVisible());
   }
 

@@ -11,7 +11,10 @@ public class CoordinateConversionUtil {
     }
 
     public static Vec2 sceneToPhysicsWorld(Vec2 vec2) {
-        return new Vec2(sceneToPhysicsWorld(vec2.x), sceneToPhysicsWorld(vec2.y));
+        float newX = sceneToPhysicsWorld(vec2.x);
+        float newY = sceneToPhysicsWorld(vec2.y);
+        vec2.set(newX, newY);
+        return vec2;
     }
 
     public static float physicsWorldToScene(float length) {

@@ -81,6 +81,7 @@ public class BubblePopperEntity extends BaseEntity {
         new BubblePoppedEventPayload(((BaseEntityUserData) previousBubble.getUserData()).getId(),
             oldBubbleScenePosition.x, oldBubbleScenePosition.y));
 
+    Vec2Pool.recycle(oldBubbleScenePosition);
     // Remove the popped bubble
     get(BubbleSpritePool.class).recycle(previousBubble);
     return true;
