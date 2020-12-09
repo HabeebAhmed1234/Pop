@@ -6,7 +6,7 @@ import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADES_AVAILABLE;
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADE_CONSUMED;
 
 import android.content.Context;
-import androidx.annotation.Nullable;
+import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
@@ -17,6 +17,7 @@ import com.stupidfungames.pop.resources.sounds.SoundId;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.touchlisteners.ButtonUpTouchListener;
+import com.stupidfungames.pop.upgrades.UpgradesParticleEmitterEntity;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
@@ -40,6 +41,12 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
 
   public BaseUpgradeableIconEntity(BinderEnity parent) {
     super(parent);
+  }
+
+  @Override
+  protected void createBindings(Binder binder) {
+    super.createBindings(binder);
+    binder.bind(UpgradesParticleEmitterEntity.class, new UpgradesParticleEmitterEntity(this));
   }
 
   @Override
@@ -117,7 +124,7 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
         upgradeLevel++;
         addUpgradeChevron();
         onUpgraded(previousUpgradeLevel, upgradeLevel);
-        get(GameSoundsManager.class).getSound(SoundId.UPGRADE).play();
+        triggerEffects();
       }
     }
     if (!canTakeMoreUpgrades()) {
@@ -133,11 +140,22 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
         vertexBufferObjectManager);
 
     Context context = get(Context.class);
-    chevronSprite.setScale(ScreenUtils.dpToPx(UPGRADE_CHEVRON_SIZE_DP, context) / chevronSprite.getWidth());
+    chevronSprite
+        .setScale(ScreenUtils.dpToPx(UPGRADE_CHEVRON_SIZE_DP, context) / chevronSprite.getWidth());
     chevronSprite.setColor(AndengineColor.YELLOW);
-    chevronSprite.setX(-(chevronSprite.getWidthScaled() + ScreenUtils.dpToPx(UPGRADE_CHEVRON_RIGHT_MARGIN_DP, context)));
-    chevronSprite.setY((upgradeLevel - 1) * chevronSprite.getHeightScaled() + ScreenUtils.dpToPx(UPGRADE_CHEVRON_TOP_MARGIN_DP, context));
+    chevronSprite.setX(-(chevronSprite.getWidthScaled() + ScreenUtils
+        .dpToPx(UPGRADE_CHEVRON_RIGHT_MARGIN_DP, context)));
+    chevronSprite.setY((upgradeLevel - 1) * chevronSprite.getHeightScaled() + ScreenUtils
+        .dpToPx(UPGRADE_CHEVRON_TOP_MARGIN_DP, context));
     addToScene(getIconSprite(), chevronSprite);
+  }
+
+  private void triggerEffects() {
+    // Play the upgrade sound
+    get(GameSoundsManager.class).getSound(SoundId.UPGRADE).play();
+    // Spawn upgrade particles
+    float[] position = getIconSprite().getSceneCenterCoordinates();
+    get(UpgradesParticleEmitterEntity.class).emit(position[0], position[1]);
   }
 
   @Override

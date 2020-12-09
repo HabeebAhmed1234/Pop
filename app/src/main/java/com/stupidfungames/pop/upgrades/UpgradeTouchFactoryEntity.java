@@ -5,6 +5,8 @@ import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADE_ACQUIRED;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
+import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
+import com.stupidfungames.pop.resources.sounds.SoundId;
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.shape.IShape;
@@ -47,5 +49,7 @@ public class UpgradeTouchFactoryEntity extends BaseEntity {
   private void onUpgradeTouched(IShape upgradeSprite) {
     EventBus.get().sendEvent(UPGRADE_ACQUIRED);
     removeFromScene(upgradeSprite);
+    // Play the upgrade sound
+    get(GameSoundsManager.class).getSound(SoundId.UPGRADE).play();
   }
 }

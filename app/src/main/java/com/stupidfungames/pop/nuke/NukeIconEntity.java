@@ -39,10 +39,6 @@ public class NukeIconEntity extends BaseUpgradeableIconEntity implements
   }
 
   @Override
-  protected void createBindings(Binder binder) {
-  }
-
-  @Override
   public void onCreateScene() {
     super.onCreateScene();
     get(NukeStateMachine.class).addAllStateTransitionListener(this);

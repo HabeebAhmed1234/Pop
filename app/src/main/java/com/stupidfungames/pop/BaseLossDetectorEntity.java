@@ -46,5 +46,8 @@ public abstract class BaseLossDetectorEntity extends BaseEntity {
 
   protected abstract Class getUserDataClassToDetectLossOf();
 
+  /**
+   * TODO can be called multiple times for the same fixture. FIX IT
+   */
   protected abstract void processLoss(Fixture lostFixture);
 }
