@@ -18,8 +18,11 @@ public class UpgradeLossDetector extends BaseLossDetectorEntity {
 
   @Override
   protected void processLoss(Fixture upgradeFixture) {
-    get(UpgradeSpawner.class).onUpgradeLost();
     UpgradeUserData userData = (UpgradeUserData) upgradeFixture.getUserData();
-    removeFromScene(userData.upgradeSprite);
+    if (userData != null && userData.upgradeSprite != null && userData.upgradeSprite.isAttached()
+        && userData.upgradeSprite.isVisible()) {
+      removeFromScene(userData.upgradeSprite);
+      get(UpgradeSpawner.class).onUpgradeLost();
+    }
   }
 }

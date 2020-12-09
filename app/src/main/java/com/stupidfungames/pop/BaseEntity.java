@@ -186,12 +186,12 @@ public abstract class BaseEntity extends BinderEnity implements
     if (entity instanceof ITouchArea) {
       scene.unregisterTouchArea((ITouchArea) entity);
     }
-    scene.detachChild(entity);
     Object userData = entity.getUserData();
     if (userData instanceof BaseEntityUserData) {
       ((BaseEntityUserData) userData).reset();
     }
     entity.setUserData(null);
+    scene.detachChild(entity);
   }
 
   private void setUpTouch(IAreaShape shape, IOnAreaTouchListener areaTouchListener) {

@@ -76,6 +76,7 @@ public class GameTexturesManager extends BaseEntity {
         new ImageResource(TextureId.TURRETS_ICON, "turrets_icon.png", 300, 300),
         new ImageResource(TextureId.WALLS_ICON, "walls_icon.png", 300, 300),
         new ImageResource(TextureId.BULLET, "bullet.png", 30, 30),
+        new ImageResource(TextureId.STAR, "star_particle.png", 30, 30),
         new ImageResource(TextureId.WHITE_PIXEL, "white_pixel.png", 1, 1),
         new ImageResource(TextureId.NUKE_ICON, "nuke_icon.png", 300, 300),
         new ImageResource(TextureId.BACKGROUND, getBackgroundFileName(), 1080, 1920),
