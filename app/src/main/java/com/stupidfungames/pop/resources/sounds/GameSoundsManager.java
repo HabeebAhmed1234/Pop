@@ -47,6 +47,7 @@ public class GameSoundsManager extends BaseEntity {
             loadSound(SoundId.BEEP,"beep.wav", 0.7f);
             loadSound(SoundId.PAUSE,"pause.wav");
             loadSound(SoundId.UNPAUSE,"unpause.wav");
+            loadSound(SoundId.UPGRADE, "upgrade.wav", 0.5f);
         } catch (final IOException e) {
             Debug.e(e);
         }

@@ -53,6 +53,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
       true, new ITimerCallback() {
     @Override
     public void onTimePassed(TimerHandler pTimerHandler) {
+      if (isDestroyed) return;
       if (targetBubble != null && targetBubble.isVisible()) {
         targetingMouseJoint.setTarget(
             CoordinateConversionUtil.sceneToPhysicsWorld(
@@ -141,7 +142,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
   @Override
   public void onEvent(GameEvent event, EventPayload payload) {
     switch (event) {
-      case BUBBLE_SPAWNED:
+      case BUBBLE_POPPED:
         if (targetBubble != null
             && ((BubblePoppedEventPayload) payload).bubbleId == ((BubbleEntityUserData) targetBubble
             .getUserData()).getId()) {

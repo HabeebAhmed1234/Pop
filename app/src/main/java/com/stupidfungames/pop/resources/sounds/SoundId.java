@@ -21,4 +21,5 @@ public enum SoundId {
     BEEP,
     PAUSE,
     UNPAUSE,
+    UPGRADE,
 }

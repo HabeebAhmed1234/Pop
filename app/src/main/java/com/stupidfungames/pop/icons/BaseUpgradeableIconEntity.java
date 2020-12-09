@@ -12,6 +12,8 @@ import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.IconUnlockedEventPayload;
+import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
+import com.stupidfungames.pop.resources.sounds.SoundId;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.touchlisteners.ButtonUpTouchListener;
@@ -115,6 +117,7 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
         upgradeLevel++;
         addUpgradeChevron();
         onUpgraded(previousUpgradeLevel, upgradeLevel);
+        get(GameSoundsManager.class).getSound(SoundId.UPGRADE).play();
       }
     }
     if (!canTakeMoreUpgrades()) {
