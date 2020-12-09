@@ -1,5 +1,6 @@
 package com.stupidfungames.pop.turrets.turret;
 
+import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
@@ -29,7 +30,7 @@ public class TurretEntity extends BaseEntity implements
     super(parent);
     this.turretBodySprite = turretBodySprite;
     this.turretCannonSprite = turretCannonSprite;
-    //get(TurretColoringEntity.class).setSprites(turretBodySprite, turretCannonSprite);
+    get(TurretColoringEntity.class).setSprites(turretBodySprite, turretCannonSprite);
     init();
   }
 
@@ -39,7 +40,7 @@ public class TurretEntity extends BaseEntity implements
         .bind(TurretStateMachine.class, new TurretStateMachine())
         .bind(TurretFiringEntity.class, new TurretFiringEntity(this))
         .bind(TurretTargetingEntity.class, new TurretTargetingEntity(this))
-        // .bind(TurretColoringEntity.class, new TurretColoringEntity(this))
+        .bind(TurretColoringEntity.class, new TurretColoringEntity(this))
         .bind(TurretDraggingManager.class, new TurretDraggingManager(this))
         .bind(TurretCannonRotationManagerEntity.class, new TurretCannonRotationManagerEntity(this));
   }

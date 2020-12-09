@@ -132,6 +132,7 @@ public class TurretDraggingManager extends BaseEntity implements
     // Into the icon
     if (touchEvent.isActionUp() && isTouchOverTurretsIcon(touchEvent)) {
       get(TurretStateMachine.class).transitionState(TurretStateMachine.State.DOCKED);
+      Log.d("asdasd", "setState DOCKED actual = " + get(TurretStateMachine.class).getCurrentState());
       EventBus.get().sendEvent(TURRET_DOCKED);
       return true;
     }
