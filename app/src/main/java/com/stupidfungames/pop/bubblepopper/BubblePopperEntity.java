@@ -56,7 +56,6 @@ public class BubblePopperEntity extends BaseEntity {
   public boolean popBubble(Sprite previousBubble) {
     if (!previousBubble.isVisible() && previousBubble
         .getUserData() instanceof BubbleEntityUserData) {
-      Log.d("BubblePopperEntity", "tried to pop the same bubble more than once");
       return false;
     }
 

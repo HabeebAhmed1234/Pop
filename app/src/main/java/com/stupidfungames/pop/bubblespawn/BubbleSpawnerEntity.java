@@ -8,8 +8,8 @@ import android.content.Context;
 import android.hardware.SensorManager;
 import android.util.Pair;
 import com.stupidfungames.pop.BaseEntity;
-import com.stupidfungames.pop.GameFixtureDefs;
 import com.stupidfungames.pop.BubbleTouchFactoryEntity;
+import com.stupidfungames.pop.GameFixtureDefs;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpritePool.SpritePoolParams;
 import com.stupidfungames.pop.collision.CollisionFilters;
@@ -24,11 +24,14 @@ import com.stupidfungames.pop.utils.BubblePhysicsUtil;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.util.color.AndengineColor;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
@@ -37,17 +40,23 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
 
   public static final float BUBBLE_GRAVITY_SCALE = 0.5f;
   // Value to define how much smaller as a percentage the bubble physics circle will be from the sprite
-  private static final float BUBBLE_PHYSICS_BODY_SCALE_FACTOR = 0.8f;
+  public static final float BUBBLE_BODY_SCALE_FACTOR = 0.8f;
 
   public enum BubbleType {
-    RED,
-    GREEN,
-    BLUE;
+    RED(AndengineColor.RED),
+    GREEN(AndengineColor.GREEN),
+    BLUE(AndengineColor.BLUE);
 
     private static final List<BubbleType> VALUES =
         Collections.unmodifiableList(Arrays.asList(values()));
     private static final int SIZE = VALUES.size();
     private static final Random RANDOM = new Random();
+
+    public final AndengineColor color;
+
+    BubbleType(AndengineColor color) {
+      this.color = color;
+    }
 
     public static BubbleType random() {
       return VALUES.get(RANDOM.nextInt(SIZE));
@@ -59,10 +68,18 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
     MEDIUM(120),
     SMALL(80);
 
-    public final float sizeDp;
+    private final float sizeDp;
+    private final Map<BubbleSize, Float> sizeToPxMap = new HashMap<>();
 
     BubbleSize(final float dp) {
       this.sizeDp = dp;
+    }
+
+    public float getSizePx(Context context) {
+      if (!sizeToPxMap.containsKey(this)) {
+        sizeToPxMap.put(this, (float) ScreenUtils.dpToPx(sizeDp, context));
+      }
+      return sizeToPxMap.get(this);
     }
 
     public BubbleSize nextPoppedSize() {
@@ -93,7 +110,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
             List<Pair<Float, Float>> startingBubblePositions = BubblePacker
                 .getSpawnBubblesLocations(
                     numBubbles,
-                    ScreenUtils.dpToPx(BubbleSize.LARGE.sizeDp, get(Context.class)));
+                    BubbleSize.LARGE.getSizePx(get(Context.class)));
             for (Pair<Float, Float> position : startingBubblePositions) {
               spawnStartingBubble(position.first, position.second);
             }
@@ -144,7 +161,8 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
     bubbleFixtureDef.setFilter(CollisionFilters.BUBBLE_FILTER);
     bubbleFixtureDef.setUserData(bubbleSprite.getUserData());
     final Body body = PhysicsFactory
-        .createCircleBody(physicsWorld, bubbleSprite, 0.8f, BodyType.DYNAMIC, bubbleFixtureDef);
+        .createCircleBody(physicsWorld, bubbleSprite, BUBBLE_BODY_SCALE_FACTOR, BodyType.DYNAMIC,
+            bubbleFixtureDef);
     body.setGravityScale(BUBBLE_GRAVITY_SCALE);
     addToSceneWithTouch(bubbleSprite, body,
         get(BubbleTouchFactoryEntity.class).getNewTouchBubblePopper());
