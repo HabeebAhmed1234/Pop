@@ -23,8 +23,8 @@ class BallAndChainHandleEntity extends BaseEntity implements
 
   public static final Vec2 OFF_SCREEN_HANDLE_POSITION =
       CoordinateConversionUtil
-          .sceneToPhysicsWorld(Vec2Pool.obtain(ScreenUtils.getSreenSize().widthPx,
-              ScreenUtils.getSreenSize().heightPx * 1.1f));
+          .sceneToPhysicsWorld(Vec2Pool.obtain(ScreenUtils.getSreenSize().widthPx * 1.5f,
+              ScreenUtils.getSreenSize().heightPx / 2));
 
   @Nullable
   private MouseJoint handleJoint;
@@ -119,10 +119,5 @@ class BallAndChainHandleEntity extends BaseEntity implements
       return;
     }
     handleJoint.setTarget(position);
-  }
-
-  @Override
-  protected void createBindings(Binder binder) {
-
   }
 }

@@ -49,12 +49,7 @@ class BallAndChainCreatorEntity extends BaseEntity {
 
   public BallAndChain createBallAndChain() {
     Set<Sprite> components = new HashSet<>();
-    Vec2 ballOffset = Vec2Pool.obtain(
-        0 - ScreenUtils.getSreenSize().widthPx,
-        ScreenUtils.getSreenSize().heightPx / 3);
-    Pair<Sprite, Body> wreckingBall = createBall(
-        OFF_SCREEN_HANDLE_POSITION.add(ballOffset));
-    Vec2Pool.recycle(ballOffset);
+    Pair<Sprite, Body> wreckingBall = createBall(OFF_SCREEN_HANDLE_POSITION);
     components.add(wreckingBall.first);
 
     Pair<Sprite, Body> previousChainLink = createChainLinkAndJoin(wreckingBall.first,
@@ -73,10 +68,7 @@ class BallAndChainCreatorEntity extends BaseEntity {
   }
 
   private Pair<Sprite, Body> createBall(final Vec2 position) {
-    ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
     ITextureRegion ballTexture = get(GameTexturesManager.class).getTextureRegion(TextureId.BALL);
-    float x = 0;
-    float y = screenSize.heightPx / 2;
     WreckingBallEntityUserData wreckingBallEntityUserData = new WreckingBallEntityUserData();
     final Sprite ballSprite = new Sprite(
         position.x,
