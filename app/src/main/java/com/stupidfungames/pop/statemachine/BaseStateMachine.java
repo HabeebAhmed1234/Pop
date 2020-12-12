@@ -1,6 +1,5 @@
 package com.stupidfungames.pop.statemachine;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +26,10 @@ public abstract class BaseStateMachine<StateType extends Enum> {
   protected abstract List<StateType> getAllStatesList();
 
   protected abstract Map<StateType, Set<StateType>> getAllValidStateTransitions();
+
+  protected boolean allowSelfStateTransitions() {
+    return false;
+  }
 
   public BaseStateMachine(StateType initialState) {
     this.initialState = initialState;
@@ -108,6 +111,10 @@ public abstract class BaseStateMachine<StateType extends Enum> {
         validTransitions.containsKey(currentState)
             ? validTransitions.get(currentState).contains(newState)
             : false;
+
+    if (newState == currentState && allowSelfStateTransitions()) {
+      isValidTransition = true;
+    }
 
     if (isValidTransition) {
       currentState = newState;

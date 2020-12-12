@@ -87,15 +87,20 @@ class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, List
     }
     if (nextState != null) {
       float[] bubbleCenter = bubbleSprite.getCenter();
-      if (nextState == BLINKING_SLOWLY && !ScreenUtils.getScreenRect()
-          .contains(bubbleCenter[0], bubbleCenter[1])) {
-        // Only transition to BLINKING_SLOWLY if the bubble is on the screen.
-        currentStateTransition = new TimerHandler(STABLE.duration, new NextStateDriver(STABLE));
-      } else if (nextState == EXPLODING && bubbleSprite.getY() > ScreenUtils
-          .getSreenSize().heightPx) {
+      boolean isBubbleInScreen = ScreenUtils.getScreenRect()
+          .contains(bubbleCenter[0], bubbleCenter[1]);
+
+      if (nextState == EXPLODING && bubbleCenter[1] > ScreenUtils.getSreenSize().heightPx) {
         // If the bubble has already passed the bottom of the screen it shouldn't explode
         // Should just disappear
         return;
+      } else if ((nextState == BLINKING_SLOWLY
+          || nextState == BLINKING_FAST
+          || nextState == BLINKING_IMMINENT
+          || nextState == EXPLODING) && !isBubbleInScreen) {
+        // If bubble if not on the screen and we want to transition to some end bubble state then
+        // make it stable again since its not fair to the player if its off screen and about to explode
+        currentStateTransition = new TimerHandler(STABLE.duration, new NextStateDriver(STABLE));
       } else {
         currentStateTransition = new TimerHandler(newState.duration,
             new NextStateDriver(nextState));

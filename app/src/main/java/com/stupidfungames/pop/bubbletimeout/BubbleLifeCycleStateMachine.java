@@ -74,9 +74,10 @@ class BubbleLifeCycleStateMachine extends BaseStateMachine<BubbleLifeCycleStateM
     Map<State, Set<State>> validTransitions = new HashMap<>();
     validTransitions.put(IDLE, new HashSet<>(Arrays.asList(STABLE)));
     validTransitions.put(STABLE, new HashSet<>(Arrays.asList(IDLE, BLINKING_SLOWLY, STABLE)));
-    validTransitions.put(BLINKING_SLOWLY, new HashSet<>(Arrays.asList(IDLE, BLINKING_FAST)));
-    validTransitions.put(BLINKING_FAST, new HashSet<>(Arrays.asList(IDLE, BLINKING_IMMINENT)));
-    validTransitions.put(BLINKING_IMMINENT, new HashSet<>(Arrays.asList(IDLE, EXPLODING)));
+    validTransitions.put(BLINKING_SLOWLY, new HashSet<>(Arrays.asList(IDLE, STABLE, BLINKING_FAST)));
+    validTransitions.put(BLINKING_FAST, new HashSet<>(Arrays.asList(IDLE, STABLE, BLINKING_IMMINENT)));
+    validTransitions.put(BLINKING_IMMINENT, new HashSet<>(Arrays.asList(IDLE, STABLE, EXPLODING)));
+    validTransitions.put(EXPLODING, new HashSet<>(Arrays.asList(STABLE)));
     return validTransitions;
   }
 
