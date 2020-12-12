@@ -5,7 +5,6 @@ import static com.stupidfungames.pop.GameFixtureDefs.BASE_WRECKING_BALL_DEF;
 import static com.stupidfungames.pop.ballandchain.BallAndChainHandleEntity.OFF_SCREEN_HANDLE_POSITION;
 
 import android.util.Pair;
-import androidx.annotation.Nullable;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.collision.CollisionFilters;
@@ -16,7 +15,6 @@ import com.stupidfungames.pop.physics.util.Vec2Pool;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.utils.CoordinateConversionUtil;
-import com.stupidfungames.pop.utils.ScreenUtils;
 import java.util.HashSet;
 import java.util.Set;
 import org.andengine.entity.sprite.Sprite;
@@ -49,7 +47,8 @@ class BallAndChainCreatorEntity extends BaseEntity {
 
   public BallAndChain createBallAndChain() {
     Set<Sprite> components = new HashSet<>();
-    Pair<Sprite, Body> wreckingBall = createBall(OFF_SCREEN_HANDLE_POSITION);
+    Pair<Sprite, Body> wreckingBall = createBall(
+        CoordinateConversionUtil.physicsWorldToScene(OFF_SCREEN_HANDLE_POSITION));
     components.add(wreckingBall.first);
 
     Pair<Sprite, Body> previousChainLink = createChainLinkAndJoin(wreckingBall.first,
@@ -95,16 +94,13 @@ class BallAndChainCreatorEntity extends BaseEntity {
    * link.
    */
   private Pair<Sprite, Body> createChainLinkAndJoin(
-      @Nullable Sprite previousChainLinkSprite,
-      @Nullable Body previousChainLinkBody) {
+      Sprite previousChainLinkSprite,
+      Body previousChainLinkBody) {
 
     ITextureRegion chainLinkTexture = get(GameTexturesManager.class)
         .getTextureRegion(TextureId.CHAIN_LINK);
-    ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
-    float previousChainLinkX = previousChainLinkSprite != null ? previousChainLinkSprite.getX()
-        : screenSize.widthPx / 2 - chainLinkTexture.getWidth() / 2;
-    float previousChainLinkY = previousChainLinkSprite != null ? previousChainLinkSprite.getY()
-        : screenSize.heightPx / 2 - chainLinkTexture.getHeight() / 2;
+    float previousChainLinkX = previousChainLinkSprite.getX();
+    float previousChainLinkY = previousChainLinkSprite.getY();
 
     // The distance from the left or right edge of the chain link that we will place the anchor
     float jointPixelsFromEdge = JOINT_ANCHOR_PERCENT_FROM_EDGE * chainLinkTexture.getWidth();
@@ -133,20 +129,17 @@ class BallAndChainCreatorEntity extends BaseEntity {
     addToScene(chainLinkSprite, chainLinkBody);
 
     // We don't need a joint if this is the first chain link
-    boolean shouldCreateJoint = previousChainLinkBody != null;
-    if (shouldCreateJoint) {
-      RevoluteJointDef jointDef = new RevoluteJointDef();
+    RevoluteJointDef jointDef = new RevoluteJointDef();
 
-      Vec2 newChainLinkAnchorPos = Vec2Pool.obtain(newChainLinkAnchorX, newChainLinkAnchorY);
-      CoordinateConversionUtil.sceneToPhysicsWorld(newChainLinkAnchorPos);
-      jointDef.initialize(
-          previousChainLinkBody,
-          chainLinkBody,
-          newChainLinkAnchorPos);
-      Vec2Pool.recycle(newChainLinkAnchorPos);
-      jointDef.collideConnected = false;
-      physicsWorld.createJoint(jointDef);
-    }
+    Vec2 newChainLinkAnchorPos = Vec2Pool.obtain(newChainLinkAnchorX, newChainLinkAnchorY);
+    CoordinateConversionUtil.sceneToPhysicsWorld(newChainLinkAnchorPos);
+    jointDef.initialize(
+        previousChainLinkBody,
+        chainLinkBody,
+        newChainLinkAnchorPos);
+    Vec2Pool.recycle(newChainLinkAnchorPos);
+    jointDef.collideConnected = false;
+    physicsWorld.createJoint(jointDef);
     return new Pair<>(chainLinkSprite, chainLinkBody);
   }
 
