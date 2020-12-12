@@ -138,7 +138,7 @@ public class ContinueGameBtnView {
           public void onActivityResult(ActivityResult result) {
             if (result.getResultCode() == ContinueGameChoiceDialogActivity.RESULT_TOKEN_ACQUIRED) {
               checkIfUserHasContinueToken();
-            } else if (result.getResultCode() == ContinueGameChoiceDialogActivity.RESULT_AD_WATCHED) {
+            } else if (result.getResultCode() == ContinueGameChoiceDialogActivity.RESULT_USER_CAN_CONTINUE) {
               promptUserToContinueGame();
               setGameButtonState(ContinueGameBtnState.ALLOW_CONTINUE_GAME);
             } else {

@@ -1,5 +1,6 @@
 package com.stupidfungames.pop.continuegame;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,13 +16,14 @@ import com.android.billingclient.api.SkuDetails;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.stupidfungames.pop.HostActivity;
 import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.ads.AdRoomActivity;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.dialog.GameNeonDialogActivity;
 import com.stupidfungames.pop.inapppurchase.GooglePlayServicesBillingManager;
 import com.stupidfungames.pop.inapppurchase.ProductSKUManager.ProductSKU;
+import com.stupidfungames.pop.share.ShareHostActivity;
+import com.stupidfungames.pop.share.SharingManager;
 import java.util.Arrays;
 import java.util.List;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
@@ -31,13 +33,17 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * game.
  */
 public class ContinueGameChoiceDialogActivity extends GameNeonDialogActivity implements
-    HostActivity {
+    ShareHostActivity {
 
+  // Set if the user earned a game continue token
   public static final int RESULT_TOKEN_ACQUIRED = 1;
-  public static final int RESULT_AD_WATCHED = 2;
+  // Set if the user didn't earn a game continue token but completed another action to be able to
+  // Continue the game (such as ad watch or share).
+  public static final int RESULT_USER_CAN_CONTINUE = 2;
 
   private GooglePlayServicesAuthManager authManager;
   private GooglePlayServicesBillingManager googlePlayServicesBillingManager;
+  private SharingManager sharingManager;
 
   public static Intent createIntent(Context context) {
     return new Intent(context, ContinueGameChoiceDialogActivity.class);
@@ -61,6 +67,16 @@ public class ContinueGameChoiceDialogActivity extends GameNeonDialogActivity imp
           public void onClick(View v) {
             buyGameContinueToken();
           }
+        }), new ButtonModel(R.string.share_the_game_fb, new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            shareGameFb();
+          }
+        }), new ButtonModel(R.string.share_the_game_other, new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            shareGameOther();
+          }
         }));
   }
 
@@ -69,6 +85,7 @@ public class ContinueGameChoiceDialogActivity extends GameNeonDialogActivity imp
     super.onCreate(savedInstanceState);
     authManager = new GooglePlayServicesAuthManager(this);
     googlePlayServicesBillingManager = new GooglePlayServicesBillingManager(this);
+    sharingManager = new SharingManager(this);
   }
 
   private void watchAd() {
@@ -76,7 +93,7 @@ public class ContinueGameChoiceDialogActivity extends GameNeonDialogActivity imp
       @Override
       public void onActivityResult(ActivityResult result) {
         if (result.getResultCode() == AdRoomActivity.RESULT_AD_WATCHED) {
-          onAdWatched();
+          onUserCanContinue();
         } else {
           showMustChooseOptionError();
         }
@@ -102,6 +119,42 @@ public class ContinueGameChoiceDialogActivity extends GameNeonDialogActivity imp
         showGenericError();
       }
     }, ContextCompat.getMainExecutor(this));
+  }
+
+  private void shareGameFb() {
+    Futures.addCallback(sharingManager.shareToFacebook(), new FutureCallback<Boolean>() {
+      @Override
+      public void onSuccess(@NullableDecl Boolean result) {
+        onShareCompleted(result);
+      }
+
+      @Override
+      public void onFailure(Throwable t) {
+        showGenericError();
+      }
+    }, ContextCompat.getMainExecutor(this));
+  }
+
+  private void shareGameOther() {
+    Futures.addCallback(sharingManager.shareToAndroid(), new FutureCallback<Boolean>() {
+      @Override
+      public void onSuccess(@NullableDecl Boolean result) {
+        onShareCompleted(result);
+      }
+
+      @Override
+      public void onFailure(Throwable t) {
+        showGenericError();
+      }
+    }, ContextCompat.getMainExecutor(this));
+  }
+
+  private void onShareCompleted(@Nullable Boolean shareSuccess) {
+    if (shareSuccess != null && shareSuccess) {
+      onUserCanContinue();
+    } else {
+      showMustChooseOptionError();
+    }
   }
 
   private void purchaseGameContinueToken(SkuDetails gameContinueTokenSkuDetails) {
@@ -148,8 +201,8 @@ public class ContinueGameChoiceDialogActivity extends GameNeonDialogActivity imp
     finish();
   }
 
-  private void onAdWatched() {
-    setResult(RESULT_AD_WATCHED);
+  private void onUserCanContinue() {
+    setResult(RESULT_USER_CAN_CONTINUE);
     finish();
   }
 
@@ -161,5 +214,16 @@ public class ContinueGameChoiceDialogActivity extends GameNeonDialogActivity imp
   @Override
   public GooglePlayServicesAuthManager getAuthManager() {
     return authManager;
+  }
+
+  @Override
+  public Activity getActivity() {
+    return this;
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    sharingManager.onActivityResult(requestCode, resultCode, data);
   }
 }

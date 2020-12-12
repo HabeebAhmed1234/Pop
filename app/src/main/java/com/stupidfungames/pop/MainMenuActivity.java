@@ -20,6 +20,8 @@ import com.stupidfungames.pop.inapppurchase.EquipActivity;
 import com.stupidfungames.pop.inapppurchase.StoreActivity;
 import com.stupidfungames.pop.notifications.UserNudgeNotificationManager;
 import com.stupidfungames.pop.savegame.SaveGameManager;
+import com.stupidfungames.pop.share.ShareBtnView;
+import com.stupidfungames.pop.share.ShareHostActivity;
 
 public class MainMenuActivity extends AppCompatActivity implements ShareHostActivity {
 
