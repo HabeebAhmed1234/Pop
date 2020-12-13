@@ -179,7 +179,7 @@ public abstract class BaseEntity extends BinderEnity implements
   }
 
   protected boolean isInScene(final IEntity entity) {
-    return entity != null && entity.isAttached();
+    return entity != null && entity.isVisible();
   }
 
   private void removeFromSceneInternal(IEntity entity) {

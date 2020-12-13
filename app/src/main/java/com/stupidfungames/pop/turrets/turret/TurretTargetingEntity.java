@@ -9,6 +9,7 @@ import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
 import com.stupidfungames.pop.statemachine.BaseStateMachine;
 import com.stupidfungames.pop.turrets.TurretUtils;
 import com.stupidfungames.pop.turrets.turret.TurretStateMachine.State;
+import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.sprite.Sprite;
@@ -62,7 +63,7 @@ public class TurretTargetingEntity extends BaseEntity implements
 
   private void stopTargeting() {
     engine.unregisterUpdateHandler(targetingUpdateHandler);
-    maybeStopTargetingBubble();
+    stopTargetingBubble();
   }
 
   /**
@@ -72,8 +73,9 @@ public class TurretTargetingEntity extends BaseEntity implements
     if (get(TurretStateMachine.class).getCurrentState() != State.TARGETING) {
       return;
     }
-    if (!isInScene(targetBubbleSprite)) {
-      maybeStopTargetingBubble();
+    if (!isInScene(targetBubbleSprite)
+        || targetBubbleSprite.getCenter()[1] > ScreenUtils.getSreenSize().heightPx) {
+      stopTargetingBubble();
     }
     if (targetBubbleSprite == null) {
       maybeAquireNewBubbleTarget();
@@ -92,7 +94,7 @@ public class TurretTargetingEntity extends BaseEntity implements
     BubbleEntityUserData.markTargeted(targetBubbleSprite, true);
   }
 
-  private void maybeStopTargetingBubble() {
+  private void stopTargetingBubble() {
     BubbleEntityUserData.markTargeted(targetBubbleSprite, false);
     targetBubbleSprite = null;
   }

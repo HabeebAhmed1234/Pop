@@ -63,8 +63,9 @@ public class TurretCannonRotationManagerEntity extends BaseEntity implements ITi
 
   private boolean isAtTargetAngleRotation(float tolerance) {
     Sprite turretCannon = get(HostTurretCallback.class).getTurretCannonSprite();
+    float currentRotation = turretCannon.getRotation();
     return turretCannon != null
-        && turretCannon.getRotation() >= (targetRotation - tolerance)
-        && turretCannon.getRotation() <= (targetRotation + tolerance);
+        && currentRotation >= (targetRotation - tolerance)
+        && currentRotation <= (targetRotation + tolerance);
   }
 }

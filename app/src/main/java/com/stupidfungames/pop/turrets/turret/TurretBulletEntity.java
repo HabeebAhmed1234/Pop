@@ -40,6 +40,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
   private static final int MAX_RETARGET_COUNT = 2;
 
   private static final float TARGETING_UPDATE_INTERVAL = 1f / 10f;
+  private static final float BULLET_INITIAL_FIRING_FORCE_NEWTONS = 50;
 
   private int id = -1;
   private int retargetCount = 0;
@@ -107,17 +108,17 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
     bulletBody = PhysicsFactory
         .createCircleBody(physicsWorld, bulletSprite, BodyType.DYNAMIC, bulletFixtureDef);
     bulletBody.setGravityScale(0);
-    /*setInitialBulletVelocity(
+    setInitialBulletVelocity(
         Vec2Pool.obtain(bulletSprite.getCenter()),
         Vec2Pool.obtain(targetBubble.getCenter()),
-        bulletBody);*/
+        bulletBody);
 
     targetingMouseJoint = createBulletTargetingMouseJoint(bulletSprite, bulletBody);
     addToScene(bulletSprite, bulletBody);
   }
 
   private void setInitialBulletVelocity(Vec2 bulletPosition, Vec2 targetPosition, Body bulletBody) {
-    Vec2 forceVector = getVector(bulletPosition, targetPosition, 10);
+    Vec2 forceVector = getVector(bulletPosition, targetPosition, BULLET_INITIAL_FIRING_FORCE_NEWTONS);
     Vec2Pool.recycle(bulletPosition);
     Vec2Pool.recycle(targetPosition);
     bulletBody.applyLinearImpulse(forceVector, bulletBody.getWorldCenter(), true);

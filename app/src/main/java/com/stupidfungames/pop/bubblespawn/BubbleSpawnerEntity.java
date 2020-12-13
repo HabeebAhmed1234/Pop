@@ -95,7 +95,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
     }
   }
 
-  private float bubbleSpawnInterval = MAX_SPAWN_INTERVAL;
+  private float bubbleSpawnInterval = 3;// MAX_SPAWN_INTERVAL;
   private TimerHandler bubbleSpawnTimerHandler = new TimerHandler(
       bubbleSpawnInterval,
       false,
@@ -178,7 +178,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
   public void onEvent(GameEvent event, EventPayload payload) {
     if (event == GameEvent.SPAWN_INTERVAL_CHANGED) {
       DifficultyChangedEventPayload difficultyChangedEventPayload = (DifficultyChangedEventPayload) payload;
-      bubbleSpawnInterval = difficultyChangedEventPayload.newSpawnInterval;
+      //bubbleSpawnInterval = difficultyChangedEventPayload.newSpawnInterval;
     }
   }
 }
