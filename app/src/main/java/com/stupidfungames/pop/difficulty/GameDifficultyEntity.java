@@ -77,7 +77,6 @@ public class GameDifficultyEntity extends BaseEntity {
         if (currentSpawnInterval < MIN_SPAWN_INTERVAL) {
             currentSpawnInterval = MIN_SPAWN_INTERVAL;
         }
-        // Log.d("GameDifficultyEntity", "currentSpawnInterval = " + currentSpawnInterval);
         EventBus.get().sendEvent(GameEvent.SPAWN_INTERVAL_CHANGED, new DifficultyChangedEventPayload(currentSpawnInterval));
         EventBus.get().sendEvent(GameEvent.GAME_PROGRESS_CHANGED, new GameProgressEventPayload(getGameProgress()));
     }

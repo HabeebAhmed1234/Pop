@@ -2,6 +2,7 @@ package com.stupidfungames.pop.icons;
 
 import static com.stupidfungames.pop.eventbus.GameEvent.ICON_UNLOCKED;
 import static com.stupidfungames.pop.eventbus.GameEvent.NO_UPGRADES_AVAILABLE;
+import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADEABLE_ICON_LOADED;
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADES_AVAILABLE;
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADE_CONSUMED;
 
@@ -12,13 +13,16 @@ import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.IconUnlockedEventPayload;
+import com.stupidfungames.pop.eventbus.UpgradeableIconLoadedEventPayload;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import com.stupidfungames.pop.resources.sounds.SoundId;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
+import com.stupidfungames.pop.savegame.SaveGame;
 import com.stupidfungames.pop.touchlisteners.ButtonUpTouchListener;
 import com.stupidfungames.pop.upgrades.UpgradesParticleEmitterEntity;
 import com.stupidfungames.pop.utils.ScreenUtils;
+import java.util.HashMap;
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.sprite.Sprite;
@@ -84,6 +88,36 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
     }
   }
 
+  @Override
+  public void onSaveGame(SaveGame saveGame) {
+    super.onSaveGame(saveGame);
+    if (saveGame.iconUpgradeLevels == null) {
+      saveGame.iconUpgradeLevels = new HashMap<>();
+    }
+    saveGame.iconUpgradeLevels.put(getIconId(), upgradeLevel);
+  }
+
+  @Override
+  public void onLoadGame(SaveGame saveGame) {
+    super.onLoadGame(saveGame);
+    if (saveGame.iconUpgradeLevels != null && saveGame.iconUpgradeLevels.containsKey(getIconId())) {
+      int upgradeToLevel = saveGame.iconUpgradeLevels.get(getIconId());
+      if (upgradeToLevel == upgradeLevel) {
+        return;
+      }
+      int numLevelsToUpgrade = upgradeToLevel - upgradeLevel;
+      for (int i = 0; i < numLevelsToUpgrade; i++) {
+        int previousUpgradeLevel = upgradeLevel;
+        upgradeLevel++;
+        addUpgradeChevron();
+        onUpgraded(previousUpgradeLevel, upgradeLevel);
+      }
+      // Send the new loaded state of this icon to the UpgradeSpawner
+      EventBus.get()
+          .sendEvent(UPGRADEABLE_ICON_LOADED, new UpgradeableIconLoadedEventPayload(upgradeLevel));
+    }
+  }
+
   private boolean canTakeMoreUpgrades() {
     return upgradeLevel < getIconUpgradesQuantity();
   }
@@ -126,9 +160,9 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
         onUpgraded(previousUpgradeLevel, upgradeLevel);
         triggerEffects();
       }
-    }
-    if (!canTakeMoreUpgrades()) {
-      exitUpgradeState();
+      if (!canTakeMoreUpgrades()) {
+        exitUpgradeState();
+      }
     }
   }
 

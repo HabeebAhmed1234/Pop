@@ -4,6 +4,7 @@ import static com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BUBBLE_GRAV
 import static com.stupidfungames.pop.eventbus.GameEvent.BUBBLE_POPPED;
 import static com.stupidfungames.pop.eventbus.GameEvent.GAME_PROGRESS_CHANGED;
 import static com.stupidfungames.pop.eventbus.GameEvent.ICON_UNLOCKED;
+import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADEABLE_ICON_LOADED;
 
 import android.content.Context;
 import com.stupidfungames.pop.BaseEntity;
@@ -19,6 +20,7 @@ import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.GameProgressEventPayload;
 import com.stupidfungames.pop.eventbus.IconUnlockedEventPayload;
+import com.stupidfungames.pop.eventbus.UpgradeableIconLoadedEventPayload;
 import com.stupidfungames.pop.fixturedefdata.UpgradeUserData;
 import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
@@ -62,7 +64,8 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
     EventBus.get()
         .subscribe(BUBBLE_POPPED, this)
         .subscribe(ICON_UNLOCKED, this)
-        .subscribe(GAME_PROGRESS_CHANGED, this);
+        .subscribe(GAME_PROGRESS_CHANGED, this)
+        .subscribe(UPGRADEABLE_ICON_LOADED, this);
   }
 
   @Override
@@ -71,7 +74,8 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
     EventBus.get()
         .unSubscribe(BUBBLE_POPPED, this)
         .unSubscribe(ICON_UNLOCKED, this)
-        .unSubscribe(GAME_PROGRESS_CHANGED, this);
+        .unSubscribe(GAME_PROGRESS_CHANGED, this)
+        .unSubscribe(UPGRADEABLE_ICON_LOADED, this);
   }
 
   @Override
@@ -85,6 +89,9 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
         break;
       case GAME_PROGRESS_CHANGED:
         currentGameDifficultyPercentProgress = ((GameProgressEventPayload) payload).percentProgress;
+        break;
+      case UPGRADEABLE_ICON_LOADED:
+        onIconLoadedAndUpgradesAdjusted((UpgradeableIconLoadedEventPayload) payload);
         break;
     }
   }
@@ -151,5 +158,12 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
       lastTimeUpgradeWasSpawned = System.currentTimeMillis();
     }
     numUpgradesRemaining += iconUnlockedEventPayload.iconUpgradesQuantity;
+  }
+
+  /**
+   * This is needed so we don't spawn too many upgrades (more than what can be applied to the tools
+   */
+  private void onIconLoadedAndUpgradesAdjusted(UpgradeableIconLoadedEventPayload payload) {
+    numUpgradesRemaining -= payload.upgradeLevel;
   }
 }

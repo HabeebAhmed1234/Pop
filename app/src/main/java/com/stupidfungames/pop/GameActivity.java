@@ -118,8 +118,6 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(GameAnimationManager.class, new GameAnimationManager(this))
             .bind(LevelEntity.class, new LevelEntity(this))
 
-            .bind(UpgradeManager.class, new UpgradeManager(this))
-
             .bind(GamePhysicsContactsEntity.class, new GamePhysicsContactsEntity(this))
             .bind(GameSceneTouchListenerEntity.class, new GameSceneTouchListenerEntity(this))
 
@@ -153,7 +151,9 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(WallsManagerBaseEntity.class, new WallsManagerBaseEntity(this))
             .bind(NukeManagerEntity.class, new NukeManagerEntity(this))
 
-            .bind(TouchBubblePopper.class, new TouchBubblePopper(this));
+            .bind(TouchBubblePopper.class, new TouchBubblePopper(this))
+
+            .bind(UpgradeManager.class, new UpgradeManager(this));
       }
     };
   }
