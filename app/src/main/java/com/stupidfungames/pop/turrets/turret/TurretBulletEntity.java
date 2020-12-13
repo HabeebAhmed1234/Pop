@@ -2,6 +2,7 @@ package com.stupidfungames.pop.turrets.turret;
 
 import static com.stupidfungames.pop.eventbus.GameEvent.BUBBLE_POPPED;
 import static com.stupidfungames.pop.eventbus.GameEvent.TURRET_BULLET_POPPED_BUBBLE;
+import static com.stupidfungames.pop.utils.GeometryUtils.getVector;
 
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameFixtureDefs;
@@ -106,9 +107,21 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
     bulletBody = PhysicsFactory
         .createCircleBody(physicsWorld, bulletSprite, BodyType.DYNAMIC, bulletFixtureDef);
     bulletBody.setGravityScale(0);
+    /*setInitialBulletVelocity(
+        Vec2Pool.obtain(bulletSprite.getCenter()),
+        Vec2Pool.obtain(targetBubble.getCenter()),
+        bulletBody);*/
 
     targetingMouseJoint = createBulletTargetingMouseJoint(bulletSprite, bulletBody);
     addToScene(bulletSprite, bulletBody);
+  }
+
+  private void setInitialBulletVelocity(Vec2 bulletPosition, Vec2 targetPosition, Body bulletBody) {
+    Vec2 forceVector = getVector(bulletPosition, targetPosition, 10);
+    Vec2Pool.recycle(bulletPosition);
+    Vec2Pool.recycle(targetPosition);
+    bulletBody.applyLinearImpulse(forceVector, bulletBody.getWorldCenter(), true);
+    Vec2Pool.recycle(forceVector);
   }
 
   private void findNextTarget() {

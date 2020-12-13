@@ -107,4 +107,17 @@ public class GeometryUtils {
   public static Vec2 getVector(float angle, float magnitude) {
     return Vec2Pool.obtain((float) sin(angle) * magnitude, (float) cos(angle) * magnitude);
   }
+
+  public static float getMagnitude(float x, float y) {
+    return (float) Math.sqrt(Math.pow(x, 2) + Math.pow(y,2));
+  }
+
+  public static Vec2 getVector(Vec2 point1, Vec2 point2, float magnitude) {
+    float newX = point2.x - point1.x;
+    float newY = point2.y - point1.y;
+    float mag = getMagnitude(newX, newY);
+    newX = newX * magnitude / mag;
+    newY = newY * magnitude / mag;
+    return Vec2Pool.obtain(newX, newY);
+  }
 }

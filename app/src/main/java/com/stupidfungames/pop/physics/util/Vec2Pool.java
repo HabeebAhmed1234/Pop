@@ -46,6 +46,10 @@ public class Vec2Pool {
 		return POOL.obtainPoolItem().set(pCopyFrom);
 	}
 
+	public static Vec2 obtain(final float[] coords) {
+		return obtain(coords[0], coords[1]);
+	}
+
 	public static Vec2 obtain(final float pX, final float pY) {
 		return POOL.obtainPoolItem().set(pX, pY);
 	}
