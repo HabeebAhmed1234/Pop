@@ -6,10 +6,10 @@ import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.S
 import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.EXPLODING;
 import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.IDLE;
 import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.STABLE;
-import static com.stupidfungames.pop.eventbus.GameEvent.BUBBLE_POPPED;
+import static com.stupidfungames.pop.eventbus.GameEvent.BUBBLE_RECYCLED;
 
 import com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State;
-import com.stupidfungames.pop.eventbus.BubblePoppedEventPayload;
+import com.stupidfungames.pop.eventbus.BubbleRecycledEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventBus.Subscriber;
 import com.stupidfungames.pop.eventbus.EventPayload;
@@ -53,13 +53,13 @@ class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, List
 
   private void addListeners() {
     stateMachine.addAllStateTransitionListener(this);
-    EventBus.get().subscribe(BUBBLE_POPPED, this);
+    EventBus.get().subscribe(BUBBLE_RECYCLED, this);
   }
 
   private void removeListeners() {
     removeCurrentUpdateHandler();
     stateMachine.removeAllStateTransitionListener(this);
-    EventBus.get().unSubscribe(BUBBLE_POPPED, this);
+    EventBus.get().unSubscribe(BUBBLE_RECYCLED, this);
   }
 
   @Override
@@ -117,10 +117,10 @@ class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, List
 
   @Override
   public void onEvent(GameEvent event, EventPayload payload) {
-    if (event == BUBBLE_POPPED && bubbleSprite != null) {
+    if (event == BUBBLE_RECYCLED && bubbleSprite != null) {
       BubbleEntityUserData userData = (BubbleEntityUserData) bubbleSprite.getUserData();
-      if (userData != null && ((BubblePoppedEventPayload) payload).bubbleId == userData.getId()
-          && stateMachine.getCurrentState() != IDLE) {
+      BubbleRecycledEventPayload recycledEventPayload = (BubbleRecycledEventPayload) payload;
+      if (userData != null && recycledEventPayload.bubbleId == userData.getId()) {
         stateMachine.transitionState(IDLE);
       }
     }

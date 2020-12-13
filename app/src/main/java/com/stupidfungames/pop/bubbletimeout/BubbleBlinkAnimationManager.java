@@ -71,20 +71,18 @@ class BubbleBlinkAnimationManager implements BubbleLifecycleController, BaseStat
         if (currentBlinkModifier != null) {
             bubble.unregisterEntityModifier(currentBlinkModifier);
         }
-        if (newState != IDLE && newState != STABLE && newState != BubbleLifeCycleStateMachine.State.EXPLODING) {
+        if (stateToModifiersMap.containsKey(newState)) {
             // We have entered a blinking state. set the correct modifier and remove the existing modifier
-            currentBlinkModifier = stateToModifiersMap.get(newState);
+          currentBlinkModifier = stateToModifiersMap.get(newState);
             bubble.registerEntityModifier(currentBlinkModifier);
         }
     }
 
     private void setUpBlinkers() {
         final float[] blinkingPattern = getBlinkingPattern(NUM_BLINKS);
-        stateToModifiersMap.put(STABLE, null);
         stateToModifiersMap.put(BLINKING_SLOWLY, new BlinkerModifier(blinkingPattern, BLINKING_SLOWLY.duration, newSegmentCallback));
         stateToModifiersMap.put(BLINKING_FAST, new BlinkerModifier(blinkingPattern, BLINKING_FAST.duration, newSegmentCallback));
         stateToModifiersMap.put(BLINKING_IMMINENT, new BlinkerModifier(blinkingPattern, BLINKING_IMMINENT.duration, newSegmentCallback));
-        stateToModifiersMap.put(EXPLODING, null);
     }
 
     private float[] getBlinkingPattern(int numBlinks) {

@@ -9,6 +9,7 @@ public enum GameEvent {
   INCREMENT_SCORE, // Fired when score is incrementd. Accompanied by score increment amount in payload
   SCORE_CHANGED, // Fired anytime the score changes. Payload contains score
   BUBBLE_SPAWNED, // Fired when a bubble is spawned
+  BUBBLE_RECYCLED, // Fired when a bubble gets recycled into the BubbleSpritePool
   BUBBLE_POPPED, // Fired when a bubble is popped
   BUBBLE_TOUCHED, // Fired when a bubble is touched by a user's finger
   SPAWN_INTERVAL_CHANGED, // Fired when the bubble spawn interval changes as determined by GameDifficultyEntity

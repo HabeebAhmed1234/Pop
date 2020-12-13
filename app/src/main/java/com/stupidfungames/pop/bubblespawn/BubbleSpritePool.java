@@ -4,6 +4,10 @@ import android.content.Context;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleSize;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleType;
+import com.stupidfungames.pop.eventbus.BubblePoppedEventPayload;
+import com.stupidfungames.pop.eventbus.BubbleRecycledEventPayload;
+import com.stupidfungames.pop.eventbus.EventBus;
+import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.fixturedefdata.BaseEntityUserData;
 import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
 import com.stupidfungames.pop.pool.BaseSpriteItemInitializer;
@@ -62,6 +66,7 @@ public class BubbleSpritePool extends ItemPool {
       userData.isTargeted = false;
       userData.isMarkedForRecursivePopping = false;
       removePhysics(item);
+      EventBus.get().sendEvent(GameEvent.BUBBLE_RECYCLED, new BubbleRecycledEventPayload(userData.getId()));
     }
   };
 
