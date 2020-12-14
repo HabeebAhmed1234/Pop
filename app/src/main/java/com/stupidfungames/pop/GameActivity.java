@@ -25,11 +25,12 @@ import com.stupidfungames.pop.bubbletimeout.BubblesLifecycleManagerEntity;
 import com.stupidfungames.pop.difficulty.GameDifficultyEntity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
+import com.stupidfungames.pop.gamesettings.GamePreferencesManager;
+import com.stupidfungames.pop.gamesettings.Setting;
 import com.stupidfungames.pop.hudentities.ScoreHudEntity;
 import com.stupidfungames.pop.hudentities.TimerHudEntity;
 import com.stupidfungames.pop.nuke.NukeManagerEntity;
 import com.stupidfungames.pop.resources.fonts.GameFontsManager;
-import com.stupidfungames.pop.resources.music.GameMusicResourceManagerBaseEntity;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import com.stupidfungames.pop.resources.sounds.SoundId;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
@@ -114,8 +115,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
             .bind(GameTexturesManager.class, new GameTexturesManager(this))
             .bind(GameSoundsManager.class, new GameSoundsManager(this))
-            .bind(GameMusicResourceManagerBaseEntity.class,
-                new GameMusicResourceManagerBaseEntity(this))
+            .bind(MusicPlayer.class, musicPlayer)
             .bind(BackgroundMusicEntity.class, new BackgroundMusicEntity(this))
             .bind(GameFontsManager.class, new GameFontsManager(this))
             .bind(GameAnimationManager.class, new GameAnimationManager(this))
@@ -223,7 +223,9 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
   @Override
   protected void onResume() {
     super.onResume();
-    musicPlayer.onResume();
+    musicPlayer.onResume(GamePreferencesManager.getBoolean(
+        this,
+        Setting.IS_MUSIC_DISABLED_SETTING_BOOLEAN));
   }
 
   @Override

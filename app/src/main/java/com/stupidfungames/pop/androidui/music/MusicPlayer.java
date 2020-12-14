@@ -22,6 +22,7 @@ public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
 
   private Context context;
   private MediaPlayer mediaPlayer;
+  private boolean isPaused = false;
 
   private static final Integer[] musicResId = new Integer[]{
       R.raw.track_0,
@@ -55,7 +56,54 @@ public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
     playNextTrack();
   }
 
+  @Override
+  public void onPrepared(MediaPlayer mp) {
+    if (!isPaused) {
+      mediaPlayer.start();
+    }
+  }
+
+  public void resume() {
+    isPaused = false;
+    if (mediaPlayer == null) {
+      initializeMediaPlayer(-1);
+    } else {
+      try {
+        mediaPlayer.start();
+      } catch (IllegalStateException e) {
+        playNextTrack();
+      }
+    }
+  }
+
+  public void pause() {
+    isPaused = true;
+    mediaPlayer.pause();
+  }
+
+  public void onResume() {
+    isPaused = false;
+    playNextTrack();
+  }
+
+  public void onResume(boolean isPaused) {
+    this.isPaused = isPaused;
+    playNextTrack();
+  }
+
+  public void onPause() {
+    mediaPlayer.stop();
+    mediaPlayer.setOnPreparedListener(null);
+    mediaPlayer.setOnCompletionListener(null);
+    mediaPlayer.release();
+    mediaPlayer = null;
+    isPaused = false;
+  }
+
   private void initializeMediaPlayer(int firstTrackIndex) {
+    if (playableMusicList.isEmpty()) {
+      swapLists();
+    }
     mediaPlayer = MediaPlayer.create(
         context,
         firstTrackIndex != -1 ? playableMusicList.get(firstTrackIndex) : getNextTrackToPlayResId());
@@ -72,6 +120,9 @@ public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
   }
 
   private void playNextTrack() {
+    if (isPaused) {
+      return;
+    }
     if (mediaPlayer == null) {
       initializeMediaPlayer(-1);
     } else {
@@ -91,23 +142,6 @@ public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
         e.printStackTrace();
       }
     }
-  }
-
-  public void onResume() {
-    playNextTrack();
-  }
-
-  public void onPause() {
-    mediaPlayer.stop();
-    mediaPlayer.setOnPreparedListener(null);
-    mediaPlayer.setOnCompletionListener(null);
-    mediaPlayer.release();
-    mediaPlayer = null;
-  }
-
-  @Override
-  public void onPrepared(MediaPlayer mp) {
-    mediaPlayer.start();
   }
 
   private int getNextTrackToPlayResId() {
