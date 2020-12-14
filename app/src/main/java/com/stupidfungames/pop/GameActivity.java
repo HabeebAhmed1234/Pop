@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import com.stupidfungames.pop.androidui.music.MusicPlayer;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.backgroundmusic.BackgroundMusicEntity;
 import com.stupidfungames.pop.ballandchain.BallAndChainManagerEntity;
@@ -70,6 +71,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
   private GameLifeCycleCalllbackManager gameLifeCycleCalllbackManager = new GameLifeCycleCalllbackManager();
   private GooglePlayServicesAuthManager authManager;
   private SaveGameManager saveGameManager;
+  private MusicPlayer musicPlayer;
 
   BinderEnity mRootBinder;
 
@@ -88,6 +90,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
     super.onCreate(pSavedInstanceState);
     authManager = new GooglePlayServicesAuthManager(this);
     saveGameManager = new SaveGameManager(this, this);
+    musicPlayer = new MusicPlayer(this);
 
     // The root binder
     mRootBinder = new BinderEnity(null) {
@@ -209,6 +212,18 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
     getEngine().registerUpdateHandler(new FPSLogger());
     return mRootBinder.get(GameResources.class).scene;
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    musicPlayer.onPause();
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    musicPlayer.onResume();
   }
 
   @Override

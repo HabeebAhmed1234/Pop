@@ -15,6 +15,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.stupidfungames.pop.androidui.BlinkAnimator;
 import com.stupidfungames.pop.androidui.GameMenuButton;
 import com.stupidfungames.pop.androidui.LoadingSpinner;
+import com.stupidfungames.pop.androidui.music.MusicPlayer;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.inapppurchase.EquipActivity;
 import com.stupidfungames.pop.inapppurchase.StoreActivity;
@@ -31,6 +32,7 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
 
   private GooglePlayServicesAuthManager authManager;
   private SaveGameManager saveGameManager;
+  private MusicPlayer musicPlayer;
 
   private GoogleAuthPopupView popupView;
   private PlayerProfileView playerProfileView;
@@ -48,6 +50,7 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
 
     authManager = new GooglePlayServicesAuthManager(this);
     saveGameManager = new SaveGameManager(this, this);
+    musicPlayer = new MusicPlayer(0, this);
 
     setContentView(R.layout.main_menu_layout);
 
@@ -118,6 +121,18 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
   protected void onDestroy() {
     super.onDestroy();
     blinkAnimator.onDestroy();
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    musicPlayer.onPause();
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    musicPlayer.onResume();
   }
 
   @Override
