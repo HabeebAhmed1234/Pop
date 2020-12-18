@@ -290,7 +290,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
     prepareCall(new StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
       @Override
       public void onActivityResult(ActivityResult result) {
-        if (goToMainMenuAfter) {
+        if (goToMainMenuAfter && result.getResultCode() != SaveGameFlowDialog.RESULT_DISMISSED) {
           goBackToMainMenu();
         }
         if (result.getResultCode() == SaveGameFlowDialog.RESULT_SUCCESS) {
