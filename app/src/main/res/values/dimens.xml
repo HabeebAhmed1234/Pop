@@ -9,6 +9,7 @@
     <dimen name="main_menu_padding_horizontal">32dp</dimen>
     <dimen name="main_menu_padding_top">120dp</dimen>
     <dimen name="between_btn_padding">16dp</dimen>
+    <dimen name="socials_btn_bottom_padding">20dp</dimen>
     <dimen name="player_profile_top_padding">20dp</dimen>
     <dimen name="title_margin_bottom">40dp</dimen>
     <dimen name="menu_btn_padding_vertical">12dp</dimen>

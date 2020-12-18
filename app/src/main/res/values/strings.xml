@@ -13,6 +13,7 @@
   <string name="vertical_divider">|</string>
   <string name="share">Share</string>
   <string name="share_facebook">[ f ]</string>
+  <string name="review">Review</string>
   <string name="game_share_string_title">Share Pop! with</string>
   <string name="game_share_hashtag">#PopStupidFunGames</string>
   <string name="game_share_link">https://play.google.com/store/apps/details?id=com.stupidfungames.pop</string>
@@ -32,6 +33,7 @@
   <string name="resume_btn_text">Resume</string>
   <string name="quit_btn_text">Quit</string>
   <string name="dismiss">Dismiss</string>
+  <string name="dont_show_again">Don\'t show again.</string>
   <string name="update_btn_text">Update</string>
   <string name="signin_other_error">There was an error signing in. Try again another time.</string>
   <string name="signin_canceled">Sign in was canceled.</string>

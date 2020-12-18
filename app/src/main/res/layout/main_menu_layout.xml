@@ -46,10 +46,9 @@
         <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginBottom="@dimen/between_btn_padding"
+          android:layout_marginBottom="@dimen/socials_btn_bottom_padding"
           android:gravity="center"
           android:orientation="horizontal">
-
 
           <com.stupidfungames.pop.androidui.GameMenuText
             android:id="@+id/share_btn_android"
@@ -78,6 +77,26 @@
             android:clipToPadding="false"
             android:padding="4dp"
             android:text="@string/share_facebook"
+            android:textSize="20sp"
+            app:glow_color="@color/menu_button_color" />
+
+          <com.stupidfungames.pop.androidui.GameMenuText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:clipToPadding="false"
+            android:padding="4dp"
+            android:text="@string/vertical_divider"
+            android:textSize="20sp"
+            app:glow_color="@color/menu_button_color" />
+
+          <com.stupidfungames.pop.androidui.GameMenuText
+            android:id="@+id/review_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:padding="4dp"
+            android:text="@string/review"
             android:textSize="20sp"
             app:glow_color="@color/menu_button_color" />
         </LinearLayout>

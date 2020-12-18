@@ -44,31 +44,27 @@ public class ReviewAppDialogActivity extends GameNeonDialogActivity {
             new ButtonModel(R.string.review_app_btn_text, new OnClickListener() {
               @Override
               public void onClick(View v) {
-                sendToPlayStore();
+                AppReviewUtil.userLeftReviewOrFeedback(ReviewAppDialogActivity.this);
+                AppReviewUtil.sendUserToPlayStore(ReviewAppDialogActivity.this);
               }
             }), new ButtonModel(R.string.send_feedback_btn_text, new OnClickListener() {
               @Override
               public void onClick(View v) {
+                AppReviewUtil.userLeftReviewOrFeedback(ReviewAppDialogActivity.this);
                 sendFeedback();
               }
-            }),
-            new ButtonModel(R.string.dismiss, new OnClickListener() {
+            }), new ButtonModel(R.string.dismiss, new OnClickListener() {
               @Override
               public void onClick(View v) {
                 finish();
               }
+            }), new ButtonModel(R.string.dont_show_again, new OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                AppReviewUtil.dontShowAgain(ReviewAppDialogActivity.this);
+                finish();
+              }
             })));
-  }
-
-  private void sendToPlayStore() {
-    final String appPackageName = getPackageName();
-    try {
-      startActivity(
-          new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-    } catch (android.content.ActivityNotFoundException anfe) {
-      startActivity(new Intent(Intent.ACTION_VIEW,
-          Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-    }
   }
 
   private void sendFeedback() {

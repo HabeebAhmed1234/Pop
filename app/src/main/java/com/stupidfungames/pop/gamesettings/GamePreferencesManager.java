@@ -77,7 +77,11 @@ public class GamePreferencesManager {
   }
 
   public static boolean getBoolean(Context context, final String key) {
-    return getSharedPreferences(context).getBoolean(key, false);
+    return getBoolean(context, key, false);
+  }
+
+  public static boolean getBoolean(Context context, final String key, boolean defaultValue) {
+    return getSharedPreferences(context).getBoolean(key, defaultValue);
   }
 
   public static int getInt(Context context, final String key) {

@@ -16,14 +16,14 @@ import com.stupidfungames.pop.androidui.BlinkAnimator;
 import com.stupidfungames.pop.androidui.GameMenuButton;
 import com.stupidfungames.pop.androidui.LoadingSpinner;
 import com.stupidfungames.pop.androidui.music.MusicPlayer;
-import com.stupidfungames.pop.appreviews.ReviewAppDialogActivity;
+import com.stupidfungames.pop.appreviews.AppReviewUtil;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.inapppurchase.EquipActivity;
 import com.stupidfungames.pop.inapppurchase.StoreActivity;
 import com.stupidfungames.pop.notifications.UserNudgeNotificationManager;
 import com.stupidfungames.pop.savegame.SaveGameManager;
-import com.stupidfungames.pop.share.ShareBtnView;
 import com.stupidfungames.pop.share.ShareHostActivity;
+import com.stupidfungames.pop.share.SocialsBtnView;
 
 public class MainMenuActivity extends AppCompatActivity implements ShareHostActivity {
 
@@ -39,13 +39,14 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
   private PlayerProfileView playerProfileView;
   private NewGameBtnView newGameBtnView;
   private LoadGameBtnView loadGameBtnView;
-  private ShareBtnView shareBtnView;
+  private SocialsBtnView socialsBtnView;
 
   private BlinkAnimator blinkAnimator = new BlinkAnimator();
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    AppReviewUtil.maybeShowAppReviewDialog(this);
     scheduleNudgeNotifications();
     MobileAds.initialize(this);
 
@@ -87,15 +88,16 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
         (GameMenuButton) findViewById(R.id.load_game_btn),
         this);
 
-    shareBtnView = new ShareBtnView(findViewById(R.id.share_btn_android),
-        findViewById(R.id.share_btn_fb), this);
+    socialsBtnView = new SocialsBtnView(
+        findViewById(R.id.share_btn_android),
+        findViewById(R.id.share_btn_fb),
+        findViewById(R.id.review_btn),
+        this);
 
     animate();
     authManager.maybeLoginOnAppStart(this);
 
     ((AdView) findViewById(R.id.adView)).loadAd(((new AdRequest.Builder()).build()));
-
-    startActivity(ReviewAppDialogActivity.newIntent(this));
   }
 
   private void scheduleNudgeNotifications() {
