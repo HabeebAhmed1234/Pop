@@ -46,6 +46,10 @@ public class BackgroundMusicEntity extends BaseEntity implements EventBus.Subscr
     }
   }
 
+  public void playNextSong() {
+    musicPlayer.playNextTrack();
+  }
+
   private void onSettingChanged(GameSettingChangedEventPayload payload) {
     String key = payload.settingKey;
     if (key.equals(Setting.IS_MUSIC_DISABLED_SETTING_BOOLEAN)) {

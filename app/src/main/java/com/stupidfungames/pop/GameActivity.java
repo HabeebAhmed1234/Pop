@@ -40,6 +40,7 @@ import com.stupidfungames.pop.savegame.SaveGameManager;
 import com.stupidfungames.pop.settingstray.GamePauseQuickSettingsIconEntity;
 import com.stupidfungames.pop.settingstray.GameQuickSettingsHostTrayBaseEntity;
 import com.stupidfungames.pop.settingstray.MusicQuickSettingIconEntity;
+import com.stupidfungames.pop.settingstray.NextSongQuickSettingsIconEntity;
 import com.stupidfungames.pop.settingstray.SaveGameQuickSettingsIconEntity;
 import com.stupidfungames.pop.settingstray.SaveGameQuickSettingsIconEntity.SaveGameButtonCallback;
 import com.stupidfungames.pop.tooltips.GameTooltipsEntity;
@@ -130,6 +131,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(GameQuickSettingsHostTrayBaseEntity.class,
                 new GameQuickSettingsHostTrayBaseEntity(this))
             .bind(MusicQuickSettingIconEntity.class, new MusicQuickSettingIconEntity(this))
+            .bind(NextSongQuickSettingsIconEntity.class, new NextSongQuickSettingsIconEntity(this))
             .bind(GamePauseQuickSettingsIconEntity.class,
                 new GamePauseQuickSettingsIconEntity(this))
             .bind(SaveGameQuickSettingsIconEntity.class, new SaveGameQuickSettingsIconEntity(this))

@@ -119,7 +119,7 @@ public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
 
   }
 
-  private void playNextTrack() {
+  public void playNextTrack() {
     if (isPaused) {
       return;
     }

@@ -35,11 +35,6 @@ public class MusicQuickSettingIconEntity extends QuickSettingsIconBaseEntity imp
     }
 
     @Override
-    protected void createBindings(Binder binder) {
-
-    }
-
-    @Override
     public void onCreateScene() {
         super.onCreateScene();
         EventBus.get().subscribe(SETTING_CHANGED, this);

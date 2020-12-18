@@ -17,6 +17,7 @@ public class GameQuickSettingsHostTrayBaseEntity extends HostTrayBaseEntity<Game
 
     public enum IconId {
         SETTING_MUSIC_TOGGLE,
+        SETTING_MUSIC_NEXT,
         GAME_PAUSE_BUTTON,
         GAME_SAVE_BUTTON,
     }
