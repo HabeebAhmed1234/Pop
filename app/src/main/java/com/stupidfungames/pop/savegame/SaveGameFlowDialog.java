@@ -21,10 +21,9 @@ import java.util.List;
 public class SaveGameFlowDialog extends GameNeonDialogActivity implements HostActivity,
     LoginListener {
 
-  public static final int RESULT_DECLINED = 1;
-  public static final int RESULT_DECLINED_PERMANENT = 2;
-  public static final int RESULT_SUCCESS = 3;
-  public static final int RESULT_DISMISSED = 4;
+  public static final int RESULT_DECLINED_PERMANENT = 1;
+  public static final int RESULT_SUCCESS = 2;
+  public static final int RESULT_DISMISSED = 3;
 
   private static final String EXTRA_ALLOW_PERMANENT_DISMISS = "allow_permanent_dismiss";
   private static final String EXTRA_SAVE_GAME = "save_game";
@@ -53,13 +52,6 @@ public class SaveGameFlowDialog extends GameNeonDialogActivity implements HostAc
     @Override
     public void onClick(View v) {
       authManager.initiateLogin(SaveGameFlowDialog.this);
-    }
-  };
-
-  private final OnClickListener declineClickListener = new OnClickListener() {
-    @Override
-    public void onClick(View v) {
-      onDeclined();
     }
   };
 
@@ -95,9 +87,7 @@ public class SaveGameFlowDialog extends GameNeonDialogActivity implements HostAc
   @Override
   protected List<ButtonModel> getButtonModels() {
     List<ButtonModel> buttonModels = new ArrayList<>(
-        Arrays.asList(
-            new ButtonModel(R.string.sign_in, signInClickListener),
-            new ButtonModel(R.string.no, declineClickListener)));
+        Arrays.asList(new ButtonModel(R.string.sign_in, signInClickListener)));
     if (getIntent().getBooleanExtra(EXTRA_ALLOW_PERMANENT_DISMISS, true)) {
       buttonModels.add(new ButtonModel(R.string.no_permanent, declinePermanentClickListener));
     }
@@ -137,11 +127,6 @@ public class SaveGameFlowDialog extends GameNeonDialogActivity implements HostAc
 
   private void showGenericError() {
     Toast.makeText(this, R.string.generic_error, Toast.LENGTH_LONG);
-  }
-
-  private void onDeclined() {
-    setResult(RESULT_DECLINED);
-    finish();
   }
 
   private void onDeclinedPermanent() {
