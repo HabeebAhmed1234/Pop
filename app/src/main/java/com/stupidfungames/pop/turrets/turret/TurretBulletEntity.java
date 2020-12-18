@@ -18,7 +18,7 @@ import com.stupidfungames.pop.fixturedefdata.TurretBulletUserData;
 import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.physics.util.Vec2Pool;
 import com.stupidfungames.pop.pool.SpriteInitializerParams;
-import com.stupidfungames.pop.turrets.BulletExplosionsEntity;
+import com.stupidfungames.pop.turrets.BulletExplosionsEffectEntity;
 import com.stupidfungames.pop.turrets.TurretUtils;
 import com.stupidfungames.pop.utils.CoordinateConversionUtil;
 import org.andengine.engine.handler.timer.ITimerCallback;
@@ -202,7 +202,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
 
   private void destroyBullet() {
     if (!isDestroyed) {
-      get(BulletExplosionsEntity.class).explode(
+      get(BulletExplosionsEffectEntity.class).explode(
           bulletSprite.getX() + bulletSprite.getWidthScaled() / 2,
           bulletSprite.getY() + bulletSprite.getHeightScaled() / 2);
       get(TurretBulletSpritePool.class).recycle(bulletSprite);

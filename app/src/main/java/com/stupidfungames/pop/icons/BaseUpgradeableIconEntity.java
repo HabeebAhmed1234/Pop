@@ -20,7 +20,7 @@ import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.savegame.SaveGame;
 import com.stupidfungames.pop.touchlisteners.ButtonUpTouchListener;
-import com.stupidfungames.pop.upgrades.UpgradesParticleEmitterEntity;
+import com.stupidfungames.pop.upgrades.UpgradesParticleEffectEntity;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import java.util.HashMap;
 import org.andengine.entity.scene.IOnAreaTouchListener;
@@ -50,7 +50,7 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
   @Override
   protected void createBindings(Binder binder) {
     super.createBindings(binder);
-    binder.bind(UpgradesParticleEmitterEntity.class, new UpgradesParticleEmitterEntity(this));
+    binder.bind(UpgradesParticleEffectEntity.class, new UpgradesParticleEffectEntity(this));
   }
 
   @Override
@@ -189,7 +189,7 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
     get(GameSoundsManager.class).getSound(SoundId.UPGRADE).play();
     // Spawn upgrade particles
     float[] position = getIconSprite().getSceneCenterCoordinates();
-    get(UpgradesParticleEmitterEntity.class).emit(position[0], position[1]);
+    get(UpgradesParticleEffectEntity.class).emit(position[0], position[1]);
   }
 
   @Override

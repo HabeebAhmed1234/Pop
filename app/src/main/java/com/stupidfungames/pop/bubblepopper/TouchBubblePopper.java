@@ -36,7 +36,7 @@ public class TouchBubblePopper extends BaseEntity implements Subscriber {
   @Override
   protected void createBindings(Binder binder) {
     super.createBindings(binder);
-    binder.bind(BubblePopParticleEmitter.class, new BubblePopParticleEmitter(this));
+    binder.bind(BubblePopParticleEffectEntity.class, new BubblePopParticleEffectEntity(this));
   }
 
   @Override
@@ -98,7 +98,7 @@ public class TouchBubblePopper extends BaseEntity implements Subscriber {
 
   private void showBubbleTouchPopParticleEffect(BubbleTouchedEventPayload touchedEventPayload) {
     float[] poppedBubbleCenter = touchedEventPayload.sprite.getCenter();
-    get(BubblePopParticleEmitter.class)
+    get(BubblePopParticleEffectEntity.class)
         .emit(poppedBubbleCenter[0], poppedBubbleCenter[1],
             touchedEventPayload.type,
             touchedEventPayload.sprite.getWidthScaled() / 2 * BUBBLE_BODY_SCALE_FACTOR);

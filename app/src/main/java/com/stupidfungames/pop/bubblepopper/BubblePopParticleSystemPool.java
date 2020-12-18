@@ -1,99 +1,92 @@
 package com.stupidfungames.pop.bubblepopper;
 
 import com.stupidfungames.pop.binder.BinderEnity;
-import com.stupidfungames.pop.bubblepopper.BubblePopParticleSystemPool.BubblePopParticleSystemParams;
-import com.stupidfungames.pop.pool.ItemPool;
-import com.stupidfungames.pop.resources.textures.GameTexturesManager;
+import com.stupidfungames.pop.bubblepopper.BubblePopParticleSystemPool.BubblePopParticleSystemPoolParams;
+import com.stupidfungames.pop.particles.BaseParticleSystemPool;
+import com.stupidfungames.pop.particles.BaseParticleSystemPoolParams;
 import com.stupidfungames.pop.resources.textures.TextureId;
-import org.andengine.entity.particle.BatchedSpriteParticleSystem;
+import java.util.ArrayList;
+import java.util.List;
 import org.andengine.entity.particle.ParticleSystem;
-import org.andengine.entity.particle.emitter.BaseCircleParticleEmitter;
 import org.andengine.entity.particle.emitter.CircleOutlineParticleEmitter;
 import org.andengine.entity.particle.emitter.IParticleEmitter;
-import org.andengine.entity.particle.modifier.AlphaParticleModifier;
 import org.andengine.entity.particle.modifier.ColorParticleModifier;
-import org.andengine.entity.particle.modifier.ExpireParticleInitializer;
+import org.andengine.entity.particle.modifier.IParticleModifier;
 import org.andengine.entity.particle.modifier.ScaleParticleModifier;
 import org.andengine.util.color.AndengineColor;
 
 public class BubblePopParticleSystemPool extends
-    ItemPool<ParticleSystem, BubblePopParticleSystemParams> {
+    BaseParticleSystemPool<BubblePopParticleSystemPoolParams> {
 
   public static final float PARTICLE_DURATION_SECONDS = 0.3f;
-
   private static final float RATE_MIN = 40;
   private static final float RATE_MAX = 50;
   private static final int PARTICLES_MAX = 90;
 
-  public static class BubblePopParticleSystemParams {
+  public static class BubblePopParticleSystemPoolParams extends BaseParticleSystemPoolParams {
 
-    private final float x, y;
     private final float radius;
     private final AndengineColor color;
 
-    public BubblePopParticleSystemParams(float x, float y, float radius,
-        AndengineColor color) {
-      this.x = x;
-      this.y = y;
+    public BubblePopParticleSystemPoolParams(float x, float y, float radius, AndengineColor color) {
+      super(x, y);
       this.radius = radius;
       this.color = color;
     }
   }
-
-  private final ItemInitializer itemInitializer = new ItemInitializer<ParticleSystem, BubblePopParticleSystemParams>() {
-
-    @Override
-    public ParticleSystem createNew(BubblePopParticleSystemParams params) {
-      IParticleEmitter emitter = new CircleOutlineParticleEmitter(params.x, params.y,
-          params.radius);
-      ParticleSystem particleSystem = new BatchedSpriteParticleSystem(
-          emitter,
-          RATE_MIN,
-          RATE_MAX,
-          PARTICLES_MAX,
-          get(GameTexturesManager.class).getTextureRegion(TextureId.BULLET),
-          vertexBufferObjectManager);
-
-      particleSystem
-          .addParticleInitializer(new ExpireParticleInitializer(PARTICLE_DURATION_SECONDS));
-      particleSystem
-          .addParticleModifier(new AlphaParticleModifier(0, PARTICLE_DURATION_SECONDS, 1, 0));
-      particleSystem
-          .addParticleModifier(new ScaleParticleModifier(0, PARTICLE_DURATION_SECONDS, 1, 0));
-      scene.attachChild(particleSystem);
-      return particleSystem;
-    }
-
-    @Override
-    public void update(ParticleSystem system, BubblePopParticleSystemParams params) {
-      BaseCircleParticleEmitter particleEmitter = ((BaseCircleParticleEmitter) system
-          .getParticleEmitter());
-      particleEmitter.setCenter(params.x, params.y);
-      particleEmitter.setRadius(params.radius);
-      system.removeParticleModifiers(ColorParticleModifier.class);
-      system.addParticleModifier(
-          new ColorParticleModifier(0, PARTICLE_DURATION_SECONDS, params.color,
-              AndengineColor.WHITE));
-      system.setParticlesSpawnEnabled(true);
-    }
-
-    @Override
-    public void onRecycle(ParticleSystem item) {
-      item.setParticlesSpawnEnabled(false);
-    }
-
-    @Override
-    public void destroy(ParticleSystem item) {
-      /** NOOP **/
-    }
-  };
 
   public BubblePopParticleSystemPool(BinderEnity parent) {
     super(parent);
   }
 
   @Override
-  protected ItemInitializer getInitializer() {
-    return itemInitializer;
+  protected void updateParticleSystem(
+      ParticleSystem particleSystem,
+      IParticleEmitter particleEmitter,
+      BubblePopParticleSystemPoolParams params) {
+    CircleOutlineParticleEmitter circleParticleEmitter = (CircleOutlineParticleEmitter) particleEmitter;
+    circleParticleEmitter.setRadius(params.radius);
+    particleSystem.removeParticleModifiers(ColorParticleModifier.class);
+    particleSystem.addParticleModifier(
+        new ColorParticleModifier(0, PARTICLE_DURATION_SECONDS, params.color,
+            AndengineColor.WHITE));
+
+  }
+
+  @Override
+  protected IParticleEmitter createNewParticleEmitter(BubblePopParticleSystemPoolParams params) {
+    return new CircleOutlineParticleEmitter(params.emitterX, params.emitterY, params.radius);
+  }
+
+  @Override
+  protected List<IParticleModifier> getParticleModifiers() {
+    List<IParticleModifier> modifiers = new ArrayList<>();
+    modifiers.add(new ScaleParticleModifier(0, PARTICLE_DURATION_SECONDS, 1, 0));
+    return modifiers;
+  }
+
+  @Override
+  protected TextureId getParticleTexture() {
+    return TextureId.BULLET;
+  }
+
+  @Override
+  protected float getRateMin() {
+    return RATE_MIN;
+  }
+
+  @Override
+  protected float getRateMax() {
+    return RATE_MAX;
+  }
+
+  @Override
+  protected int getParticlesMax() {
+    return PARTICLES_MAX;
+  }
+
+  @Override
+  protected float getParticleDuration() {
+    return PARTICLE_DURATION_SECONDS;
   }
 }
