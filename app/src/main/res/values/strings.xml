@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY appname "Pop!">]>
+
 <resources>
   <string name="app_id">120569614320</string>
   <string name="facebook_app_id">430199825050664</string>
-  <string name="app_name">Pop</string>
+  <string name="app_name">&appname;</string>
   <string name="test_banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
   <string name="test_interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
   <string name="test_rewarded_ad_unit_id">ca-app-pub-3940256099942544/5224354917</string>
@@ -68,6 +69,13 @@
   <string name="continue_game_token_not_aquired">You must acquire a continue game token to continue your game.</string>
   <string name="must_choose_option_to_continue">You must choose one of the options to continue your game.</string>
   <string name="prompt_user_to_continue">You can continue to resume your game!</string>
+
+  <!-- Reviews -->
+  <string name="review_app_dialog_title">Do you like &appname; so far?</string>
+  <string name="review_app_btn_text">Yes! I\'d like to leave a review.</string>
+  <string name="send_feedback_btn_text">No. I\'d like to send feedback.</string>
+  <string name="feedback_title">Send Feedback.</string>
+  <string name="feedback_send_btn">Send</string>
 
   <!-- Notifications -->
   <string name="notification_channel_name">Pop game notifications</string>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/root_view"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <ImageView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scaleType="centerCrop"
+    android:src="@drawable/main_menu_background" />
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.stupidfungames.pop.androidui.GameMenuText
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="@dimen/list_vertical_padding"
+      android:text="@string/feedback_title"
+      android:textSize="@dimen/text_size_large" />
+
+    <EditText
+      android:id="@+id/feedback_edit_text"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1" />
+
+    <com.stupidfungames.pop.androidui.GameMenuButton
+      android:id="@+id/send_btn"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="right"
+      android:layout_marginHorizontal="@dimen/list_horizontal_padding"
+      android:layout_marginBottom="@dimen/list_vertical_padding"
+      android:padding="@dimen/button_horizontal_padding"
+      android:background="@drawable/rounded_border_button"
+      android:text="@string/feedback_send_btn"
+      android:textSize="@dimen/text_size_large" />
+  </LinearLayout>
+</FrameLayout>

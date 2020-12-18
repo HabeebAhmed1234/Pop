@@ -16,6 +16,7 @@ import com.stupidfungames.pop.androidui.BlinkAnimator;
 import com.stupidfungames.pop.androidui.GameMenuButton;
 import com.stupidfungames.pop.androidui.LoadingSpinner;
 import com.stupidfungames.pop.androidui.music.MusicPlayer;
+import com.stupidfungames.pop.appreviews.ReviewAppDialogActivity;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.inapppurchase.EquipActivity;
 import com.stupidfungames.pop.inapppurchase.StoreActivity;
@@ -93,6 +94,8 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
     authManager.maybeLoginOnAppStart(this);
 
     ((AdView) findViewById(R.id.adView)).loadAd(((new AdRequest.Builder()).build()));
+
+    startActivity(ReviewAppDialogActivity.newIntent(this));
   }
 
   private void scheduleNudgeNotifications() {
