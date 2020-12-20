@@ -50,6 +50,6 @@ public class UpgradeTouchFactoryEntity extends BaseEntity {
     EventBus.get().sendEvent(UPGRADE_ACQUIRED);
     removeFromScene(upgradeSprite);
     // Play the upgrade sound
-    get(GameSoundsManager.class).getSound(SoundId.UPGRADE).play();
+    get(GameSoundsManager.class).getSound(SoundId.UPGRADE_POP).play();
   }
 }

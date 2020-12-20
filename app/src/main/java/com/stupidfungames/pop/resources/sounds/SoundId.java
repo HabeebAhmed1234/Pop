@@ -7,7 +7,6 @@ public enum SoundId {
     POP_4,
     POP_5,
     EXPOSION,
-    NEON_BUZZ,
     LAZER_BURST,
     OPEN,
     CLOSE,
@@ -21,5 +20,6 @@ public enum SoundId {
     BEEP,
     PAUSE,
     UNPAUSE,
+    UPGRADE_POP,
     UPGRADE,
 }

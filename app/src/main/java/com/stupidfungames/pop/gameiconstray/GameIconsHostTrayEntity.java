@@ -77,7 +77,7 @@ public class GameIconsHostTrayEntity extends HostTrayBaseEntity<GameIconsHostTra
 
     @Override
     protected SoundId getOpenSound() {
-        return SoundId.OPEN;
+        return null;
     }
 
     @Override
