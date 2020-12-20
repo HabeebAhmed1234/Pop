@@ -84,7 +84,7 @@ public abstract class BaseInventoryIconEntity extends BaseUpgradeableIconEntity 
     inventoryText.setY(-ScreenUtils.dpToPx(INVENTORY_TEXT_MAX_HEIGHT_DP, get(Context.class)));
   }
 
-  private void onInventoryChanged() {
+  protected void onInventoryChanged() {
     inventoryText.setText(Integer.toString(inventoryCount));
     inventoryText.setColor(isUnlocked() ? getUnlockedIconColor() : AndengineColor.TRANSPARENT);
   }
@@ -94,7 +94,7 @@ public abstract class BaseInventoryIconEntity extends BaseUpgradeableIconEntity 
     onInventoryChanged();
   }
 
-  protected void decreaseInventory() {
+  public void decreaseInventory() {
     inventoryCount--;
     onInventoryChanged();
   }

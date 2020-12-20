@@ -27,7 +27,6 @@ public class TouchBubblePopper extends BaseEntity implements Subscriber {
 
   private final float BUBBLE_EDGE_SEARCH_RADIUS_PERCENT = 0.2f;
   private BubblePopperEntity bubblePopperEntity;
-  private boolean isRecursiveEnabled = true;
 
   public TouchBubblePopper(BinderEnity parent) {
     super(parent);
@@ -57,10 +56,12 @@ public class TouchBubblePopper extends BaseEntity implements Subscriber {
     if (event == GameEvent.BUBBLE_TOUCHED) {
       BubbleTouchedEventPayload touchedEventPayload = (BubbleTouchedEventPayload) payload;
       showBubbleTouchPopParticleEffect(touchedEventPayload);
-      if (!isRecursiveEnabled) {
+      MultiTouchPopperIcon multiTouchPopperIcon = get(MultiTouchPopperIcon.class);
+      if (!multiTouchPopperIcon.hasInventory()) {
         bubblePopperEntity.popBubble(touchedEventPayload.sprite);
         return;
       }
+      multiTouchPopperIcon.decreaseInventory();
       // First mark all the bubbles on the screen
       markAllBubblesOfSameType(touchedEventPayload.type);
       // Recursively finds all the bubbles in transitive contact with the given bubble and assembles

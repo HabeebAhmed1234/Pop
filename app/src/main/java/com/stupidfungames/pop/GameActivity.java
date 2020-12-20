@@ -18,6 +18,7 @@ import com.stupidfungames.pop.ballandchain.BallAndChainManagerEntity;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
+import com.stupidfungames.pop.bubblepopper.MultiTouchPopperIcon;
 import com.stupidfungames.pop.bubblepopper.TouchBubblePopper;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpritePool;
@@ -156,6 +157,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(WallsManagerBaseEntity.class, new WallsManagerBaseEntity(this))
             .bind(NukeManagerEntity.class, new NukeManagerEntity(this))
 
+            .bind(MultiTouchPopperIcon.class, new MultiTouchPopperIcon(this))
             .bind(TouchBubblePopper.class, new TouchBubblePopper(this))
 
             .bind(UpgradeManager.class, new UpgradeManager(this));

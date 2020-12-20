@@ -22,6 +22,7 @@ public class GameIconsHostTrayEntity extends HostTrayBaseEntity<GameIconsHostTra
         TURRETS_ICON,
         WALLS_ICON,
         NUKE_ICON,
+        MULTI_POP_ICON,
     }
 
     private final EventBus.Subscriber openGameIconsTrayEventSubscriber = new EventBus.Subscriber() {

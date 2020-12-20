@@ -79,6 +79,7 @@ public class GameTexturesManager extends BaseEntity {
         new ImageResource(TextureId.STAR, "star_particle.png", 30, 30),
         new ImageResource(TextureId.WHITE_PIXEL, "white_pixel.png", 1, 1),
         new ImageResource(TextureId.NUKE_ICON, "nuke_icon.png", 300, 300),
+        new ImageResource(TextureId.MULTI_POP_ICON, "multi_pop_icon.png", 300, 300),
         new ImageResource(TextureId.BACKGROUND, getBackgroundFileName(), 1080, 1920),
         new ImageResource(TextureId.OPEN_BTN, "open_button.png", 300, 300),
         new ImageResource(TextureId.X_BTN, "x_button.png", 300, 300),

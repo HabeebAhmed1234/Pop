@@ -18,6 +18,7 @@ public enum TextureId {
   TURRETS_ICON,
   WALLS_ICON,
   NUKE_ICON,
+  MULTI_POP_ICON,
   OPEN_BTN,
   X_BTN,
   QUICK_SETTINGS_BTN,

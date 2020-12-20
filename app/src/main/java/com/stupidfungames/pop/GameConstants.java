@@ -1,6 +1,6 @@
 package com.stupidfungames.pop;
 
-import java.util.concurrent.TimeUnit;
+import com.stupidfungames.pop.settingstray.GameQuickSettingsHostTrayBaseEntity.IconId;
 
 public class GameConstants {
 
@@ -14,8 +14,23 @@ public class GameConstants {
   public static final float MIN_SPAWN_INTERVAL = 1f;
 
   // Unlocks
-  public static final float BALL_AND_CHAIN_DIFFICULTY_UNLOCK_THRESHOLD = 0.25f;
-  public static final float TURRETS_DIFFICULTY_UNLOCK_THRESHOLD = 0.5f;
-  public static final float WALLS_DIFFICULTY_UNLOCK_THRESHOLD = 0.75f;
-  public static final float NUKE_UNLOCK_THRESHOLD = 1.0f;
+  /**
+   * The point of difficulty where all icons should be unlocked.
+   */
+  private static final float ALL_ICON_UNLOCK_DIFFICULTY_PERCENTAGE = 0.5f;
+  /**
+   * Total number of icons.
+   */
+  private static final int TOTAL_NUM_ICONS = IconId.values().length;
+
+  public static final float BALL_AND_CHAIN_DIFFICULTY_UNLOCK_THRESHOLD =
+      1 * ALL_ICON_UNLOCK_DIFFICULTY_PERCENTAGE / (float) TOTAL_NUM_ICONS;
+  public static final float TURRETS_DIFFICULTY_UNLOCK_THRESHOLD =
+      2 * ALL_ICON_UNLOCK_DIFFICULTY_PERCENTAGE / (float) TOTAL_NUM_ICONS;
+  public static final float WALLS_DIFFICULTY_UNLOCK_THRESHOLD =
+      3 * ALL_ICON_UNLOCK_DIFFICULTY_PERCENTAGE / (float) TOTAL_NUM_ICONS;
+  public static final float NUKE_UNLOCK_THRESHOLD =
+      4 * ALL_ICON_UNLOCK_DIFFICULTY_PERCENTAGE / (float) TOTAL_NUM_ICONS;
+  public static final float MULTI_POP_UNLOCK_THRESHOLD =
+      5 * ALL_ICON_UNLOCK_DIFFICULTY_PERCENTAGE / (float) TOTAL_NUM_ICONS;
 }
