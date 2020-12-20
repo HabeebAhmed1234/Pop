@@ -2,11 +2,12 @@ package com.stupidfungames.pop.list;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.stupidfungames.pop.androidui.GlideUtils.loadWithImageAssetFileName;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.core.util.Preconditions;
 import com.bumptech.glide.Glide;
@@ -32,27 +33,37 @@ public abstract class LoadableListWithPreviewBaseActivity<T> extends
 
   @Override
   protected void onClick(T item) {
-    int resId = getPreviewResId(item);
-    if (resId > 0) {
-      showPreview(resId);
-      if (background != null) {
-        // Set this as the current background of the activity if background view is there
-        Glide.with(this).load(resId).into(background);
-      }
+    String previewFileName = getPreviewImageFileName(item);
+    if (!TextUtils.isEmpty(previewFileName)) {
+      showPreview(previewFileName);
     } else {
       hidePreview();
-      if (background != null) {
+    }
+
+    if (background != null) {
+      String backgroundFileName = getPreviewBackgroundImageFileName(item);
+      if (!TextUtils.isEmpty(backgroundFileName)) {
+        // Set this as the current background of the activity if background view is there
+        loadWithImageAssetFileName(this, background, previewFileName);
+      } else {
         Glide.with(this).load(R.drawable.main_menu_background).into(background);
       }
     }
   }
 
-  protected abstract @DrawableRes
-  int getPreviewResId(T item);
+  /**
+   * Return the file name for the image to be used in the preview window of this activity.
+   */
+  protected abstract String getPreviewImageFileName(T item);
 
-  private void showPreview(@DrawableRes int previewDrawableId) {
+  /**
+   * Return the file name for the image to be used in the background of this activity.
+   */
+  protected abstract String getPreviewBackgroundImageFileName(T item);
+
+  private void showPreview(String imageFileName) {
     previewImageFrame.setVisibility(VISIBLE);
-    Glide.with(this).load(previewDrawableId).into(previewImageView);
+    loadWithImageAssetFileName(this, previewImageView, imageFileName);
   }
 
   private void hidePreview() {

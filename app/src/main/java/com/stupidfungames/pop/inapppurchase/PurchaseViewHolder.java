@@ -1,5 +1,8 @@
 package com.stupidfungames.pop.inapppurchase;
 
+import static com.stupidfungames.pop.androidui.GlideUtils.loadWithImageAssetFileName;
+
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -80,7 +83,7 @@ public class PurchaseViewHolder extends BindableViewHolder<Purchase> {
     @Nullable GameProduct product = ProductSKUManager.get().skuToProductsMap
         .get(model.getSku());
     if (product != null) {
-      Glide.with(itemView).load(product.image).into(image);
+      loadWithImageAssetFileName(itemView, image, product.imageFileName);
     } else {
       Glide.with(itemView).load(R.drawable.ic_launcher).into(image);
     }

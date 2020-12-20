@@ -13,6 +13,7 @@ import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.Purchase.PurchasesResult;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -23,7 +24,6 @@ import com.stupidfungames.pop.list.BindableViewHolder;
 import com.stupidfungames.pop.list.BindableViewHolderFactory;
 import com.stupidfungames.pop.list.LoadableListLoadingCoordinator.LoaderCallback;
 import com.stupidfungames.pop.list.LoadableListWithPreviewBaseActivity;
-import com.stupidfungames.pop.purchasedbackground.PurchaseSkuToBackgroundResId;
 import java.util.List;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
@@ -87,13 +87,26 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<Purchase>
   }
 
   @Override
-  protected int getPreviewResId(Purchase purchase) {
-    @DrawableRes int drawableResId = 0;
+  protected String getPreviewImageFileName(Purchase purchase) {
     String purchaseSku = purchase.getSku();
-    if (PurchaseSkuToBackgroundResId.get().map.containsKey(purchaseSku)) {
-      drawableResId = PurchaseSkuToBackgroundResId.get().map.get(purchaseSku);
+    ImmutableMap<String, GameProduct> skuToProductsMap = ProductSKUManager.get().skuToProductsMap;
+    if (skuToProductsMap.containsKey(purchaseSku)) {
+      return skuToProductsMap.get(purchaseSku).imageFileName;
     }
-    return drawableResId;
+    return null;
+  }
+
+  @Override
+  protected String getPreviewBackgroundImageFileName(Purchase purchase) {
+    String purchaseSku = purchase.getSku();
+    // only show a background preview for bg images
+    if (purchaseSku.contains("bg_")) {
+      ImmutableMap<String, GameProduct> skuToProductsMap = ProductSKUManager.get().skuToProductsMap;
+      if (skuToProductsMap.containsKey(purchaseSku)) {
+        return skuToProductsMap.get(purchaseSku).imageFileName;
+      }
+    }
+    return null;
   }
 
   @Override

@@ -4,12 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ViewGroup;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil.ItemCallback;
 import com.android.billingclient.api.SkuDetails;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.androidui.music.MusicPlayer;
@@ -17,7 +17,6 @@ import com.stupidfungames.pop.list.BindableViewHolder;
 import com.stupidfungames.pop.list.BindableViewHolderFactory;
 import com.stupidfungames.pop.list.LoadableListLoadingCoordinator.LoaderCallback;
 import com.stupidfungames.pop.list.LoadableListWithPreviewBaseActivity;
-import com.stupidfungames.pop.purchasedbackground.PurchaseSkuToBackgroundResId;
 import java.util.List;
 
 /**
@@ -62,7 +61,7 @@ public class StoreActivity extends LoadableListWithPreviewBaseActivity<SkuDetail
     billingManager = new GooglePlayServicesBillingManager(this);
     super.onCreate(savedInstanceState);
 
-    ((AdView)findViewById(R.id.adView)).loadAd(((new AdRequest.Builder()).build()));
+    ((AdView) findViewById(R.id.adView)).loadAd(((new AdRequest.Builder()).build()));
     musicPlayer = new MusicPlayer(this);
   }
 
@@ -87,13 +86,26 @@ public class StoreActivity extends LoadableListWithPreviewBaseActivity<SkuDetail
   }
 
   @Override
-  protected int getPreviewResId(SkuDetails item) {
-    @DrawableRes int drawableResId = 0;
+  protected String getPreviewImageFileName(SkuDetails item) {
     String purchaseSku = item.getSku();
-    if (PurchaseSkuToBackgroundResId.get().map.containsKey(purchaseSku)) {
-      drawableResId = PurchaseSkuToBackgroundResId.get().map.get(purchaseSku);
+    ImmutableMap<String, GameProduct> skuToProductsMap = ProductSKUManager.get().skuToProductsMap;
+    if (skuToProductsMap.containsKey(purchaseSku)) {
+      return skuToProductsMap.get(purchaseSku).imageFileName;
     }
-    return drawableResId;
+    return null;
+  }
+
+  @Override
+  protected String getPreviewBackgroundImageFileName(SkuDetails item) {
+    String purchaseSku = item.getSku();
+    // only show a background preview for bg images
+    if (purchaseSku.contains("bg_")) {
+      ImmutableMap<String, GameProduct> skuToProductsMap = ProductSKUManager.get().skuToProductsMap;
+      if (skuToProductsMap.containsKey(purchaseSku)) {
+        return skuToProductsMap.get(purchaseSku).imageFileName;
+      }
+    }
+    return null;
   }
 
   @Override
