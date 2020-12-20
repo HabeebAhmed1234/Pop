@@ -1,6 +1,5 @@
 package com.stupidfungames.pop.tooltips;
 
-import com.stupidfungames.pop.bubblepopper.MultiTouchPopperIcon;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,8 +17,7 @@ class TooltipTexts {
     texts.put(TooltipId.NUKE_ICON_TOOLTIP,
         "Tap this icon to pop all bubbles on the screen in waves");
     texts.put(TooltipId.MULTI_TOUCH_ICON_TOOLTIP,
-        "Touch bubbles to pop them and all surrounding bubbles of the same colour. Uses up charges. Charges replenish every "
-            + MultiTouchPopperIcon.TIME_TO_REPLENISH_CHARGE_SECONDS + " seconds.");
+        "Touch bubbles to pop them and all surrounding bubbles of the same colour");
     texts.put(TooltipId.TOUCH_POP_TOOLTIP,
         "Touch the bubbles to pop them before they reach the bottom of the screen!");
   }

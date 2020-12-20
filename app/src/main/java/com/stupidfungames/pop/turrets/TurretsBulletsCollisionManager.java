@@ -41,9 +41,6 @@ public class TurretsBulletsCollisionManager extends BaseEntity implements
   public void onBeginContact(Fixture fixture1, Fixture fixture2) {
     Fixture bubbleFixture = FixtureDefDataUtil.getBubbleFixture(fixture1, fixture2);
     BubbleEntityUserData bubbleEntityUserData = (BubbleEntityUserData) bubbleFixture.getUserData();
-    if (!bubbleEntityUserData.isPoppable()) {
-      return;
-    }
     if (get(BubblePopperEntity.class).popBubble(bubbleEntityUserData.bubbleSprite)) {
       Fixture bulletFixture = FixtureDefDataUtil.getBulletFixture(fixture1, fixture2);
       TurretBulletUserData bulletUserData = (TurretBulletUserData) bulletFixture.getUserData();

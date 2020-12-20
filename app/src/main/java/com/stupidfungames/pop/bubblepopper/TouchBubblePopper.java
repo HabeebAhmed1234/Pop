@@ -57,11 +57,10 @@ public class TouchBubblePopper extends BaseEntity implements Subscriber {
       BubbleTouchedEventPayload touchedEventPayload = (BubbleTouchedEventPayload) payload;
       showBubbleTouchPopParticleEffect(touchedEventPayload);
       MultiTouchPopperIcon multiTouchPopperIcon = get(MultiTouchPopperIcon.class);
-      if (!multiTouchPopperIcon.hasInventory()) {
+      if (!multiTouchPopperIcon.isUnlocked()) {
         bubblePopperEntity.popBubble(touchedEventPayload.sprite);
         return;
       }
-      multiTouchPopperIcon.decreaseInventory();
       // First mark all the bubbles on the screen
       markAllBubblesOfSameType(touchedEventPayload.type);
       // Recursively finds all the bubbles in transitive contact with the given bubble and assembles

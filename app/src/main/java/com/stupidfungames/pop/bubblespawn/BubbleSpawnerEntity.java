@@ -2,7 +2,6 @@ package com.stupidfungames.pop.bubblespawn;
 
 import static com.stupidfungames.pop.GameConstants.MAX_BUBBLES_ON_SCREEN;
 import static com.stupidfungames.pop.GameConstants.MAX_BUBBLES_PER_SPAWN;
-import static com.stupidfungames.pop.GameConstants.MAX_SPAWN_INTERVAL;
 
 import android.content.Context;
 import android.hardware.SensorManager;
@@ -22,8 +21,6 @@ import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.utils.BubblePhysicsUtil;
 import com.stupidfungames.pop.utils.ScreenUtils;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,11 +42,10 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
   public enum BubbleType {
     RED(AndengineColor.RED),
     GREEN(AndengineColor.GREEN),
-    BLUE(AndengineColor.BLUE);
+    BLUE(AndengineColor.BLUE),
+    CYAN(AndengineColor.CYAN),
+    PINK(AndengineColor.PINK);
 
-    private static final List<BubbleType> VALUES =
-        Collections.unmodifiableList(Arrays.asList(values()));
-    private static final int SIZE = VALUES.size();
     private static final Random RANDOM = new Random();
 
     public final AndengineColor color;
@@ -58,8 +54,14 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
       this.color = color;
     }
 
-    public static BubbleType random() {
-      return VALUES.get(RANDOM.nextInt(SIZE));
+    /**
+     * Returns a random bubble type
+     *
+     * @param withExtraBubbles whether or not to include the extra 2 bubble types
+     */
+    public static BubbleType random(boolean withExtraBubbles) {
+      int size = values().length;
+      return values()[RANDOM.nextInt(withExtraBubbles ? size : size - 2)];
     }
   }
 
@@ -96,6 +98,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
   }
 
   private float bubbleSpawnInterval = 3;// MAX_SPAWN_INTERVAL;
+  private boolean shouldIncludeExtraBubblesInSpawn = false;
   private TimerHandler bubbleSpawnTimerHandler = new TimerHandler(
       bubbleSpawnInterval,
       false,
@@ -125,14 +128,18 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
 
   @Override
   public void onCreateScene() {
-    EventBus.get().subscribe(GameEvent.SPAWN_INTERVAL_CHANGED, this, true);
+    EventBus.get()
+        .subscribe(GameEvent.SPAWN_INTERVAL_CHANGED, this, true)
+        .subscribe(GameEvent.ICON_UNLOCKED, this, true);
     engine.registerUpdateHandler(bubbleSpawnTimerHandler);
   }
 
   @Override
   public void onDestroy() {
     engine.unregisterUpdateHandler(bubbleSpawnTimerHandler);
-    EventBus.get().unSubscribe(GameEvent.SPAWN_INTERVAL_CHANGED, this);
+    EventBus.get()
+        .unSubscribe(GameEvent.SPAWN_INTERVAL_CHANGED, this)
+        .unSubscribe(GameEvent.ICON_UNLOCKED, this);
   }
 
   private boolean isBubbleLimitReached() {
@@ -141,7 +148,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
   }
 
   private void spawnStartingBubble(final float x, final float y) {
-    BubbleType bubbleType = BubbleType.random();
+    BubbleType bubbleType = BubbleType.random(shouldIncludeExtraBubblesInSpawn);
     Body body = spawnBubble(bubbleType, x, y, BubbleSize.LARGE);
     BubblePhysicsUtil.applyVelocity(body, 0f, (float) (SensorManager.GRAVITY_EARTH * 0.3 * 2));
   }
@@ -176,9 +183,14 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
 
   @Override
   public void onEvent(GameEvent event, EventPayload payload) {
-    if (event == GameEvent.SPAWN_INTERVAL_CHANGED) {
-      DifficultyChangedEventPayload difficultyChangedEventPayload = (DifficultyChangedEventPayload) payload;
-      //bubbleSpawnInterval = difficultyChangedEventPayload.newSpawnInterval;
+    switch (event) {
+      case SPAWN_INTERVAL_CHANGED:
+        DifficultyChangedEventPayload difficultyChangedEventPayload = (DifficultyChangedEventPayload) payload;
+        bubbleSpawnInterval = difficultyChangedEventPayload.newSpawnInterval;
+        break;
+      case ICON_UNLOCKED:
+        shouldIncludeExtraBubblesInSpawn = true;
+        break;
     }
   }
 }

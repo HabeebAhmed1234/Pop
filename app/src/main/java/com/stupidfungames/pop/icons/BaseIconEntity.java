@@ -8,6 +8,7 @@ import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.GameProgressEventPayload;
+import com.stupidfungames.pop.eventbus.IconUnlockedEventPayload;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
@@ -84,12 +85,17 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
     }
   }
 
+  public boolean isUnlocked() {
+    return isUnlocked;
+  }
+
   private void onGameProgressChanged(float newProgressPercentage) {
     if (newProgressPercentage >= getGameProgressPercentageUnlockThreshold() && !isUnlocked) {
       isUnlocked = true;
       setIconColor(getUnlockedIconColor());
       addIconToTray();
       onIconUnlocked();
+      broadcastIconUnlock();
     }
   }
 
@@ -102,6 +108,10 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
     return anchor;
   }
 
+  private void broadcastIconUnlock() {
+    EventBus.get().sendEvent(GameEvent.ICON_UNLOCKED, new IconUnlockedEventPayload(getIconId()));
+  }
+
   protected void addIconToTray() {
     @Nullable final IOnAreaTouchListener overrideTouchListener = getOverrideTouchListener();
     @Nullable final IOnAreaTouchListener touchListener = getTouchListener();
@@ -112,8 +122,13 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
               public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
                   ITouchArea pTouchArea, float pTouchAreaLocalX,
                   float pTouchAreaLocalY) {
-                if ((overrideTouchListenerEnabled && overrideTouchListener != null && overrideTouchListener.onAreaTouched(pSceneTouchEvent, pTouchArea, pTouchAreaLocalX, pTouchAreaLocalY))
-                    || (touchListener != null && touchListener.onAreaTouched(pSceneTouchEvent, pTouchArea, pTouchAreaLocalX, pTouchAreaLocalY))) {
+                if ((overrideTouchListenerEnabled && overrideTouchListener != null
+                    && overrideTouchListener
+                    .onAreaTouched(pSceneTouchEvent, pTouchArea, pTouchAreaLocalX,
+                        pTouchAreaLocalY))
+                    || (touchListener != null && touchListener
+                    .onAreaTouched(pSceneTouchEvent, pTouchArea, pTouchAreaLocalX,
+                        pTouchAreaLocalY))) {
                   return true;
                 }
                 return NO_OP_AREA_TOUCH_LISTENER
@@ -137,10 +152,6 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
 
   protected AndengineColor getCurrentIconColor() {
     return iconSprite.getColor();
-  }
-
-  protected boolean isUnlocked() {
-    return isUnlocked;
   }
 
   /**

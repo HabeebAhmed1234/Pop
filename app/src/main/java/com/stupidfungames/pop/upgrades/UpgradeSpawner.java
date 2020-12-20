@@ -3,7 +3,7 @@ package com.stupidfungames.pop.upgrades;
 import static com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BUBBLE_GRAVITY_SCALE;
 import static com.stupidfungames.pop.eventbus.GameEvent.BUBBLE_POPPED;
 import static com.stupidfungames.pop.eventbus.GameEvent.GAME_PROGRESS_CHANGED;
-import static com.stupidfungames.pop.eventbus.GameEvent.ICON_UNLOCKED;
+import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADEABLE_ICON_UNLOCKED;
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADEABLE_ICON_LOADED;
 
 import android.content.Context;
@@ -19,7 +19,7 @@ import com.stupidfungames.pop.eventbus.EventBus.Subscriber;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.GameProgressEventPayload;
-import com.stupidfungames.pop.eventbus.IconUnlockedEventPayload;
+import com.stupidfungames.pop.eventbus.UpgradeableIconUnlockedEventPayload;
 import com.stupidfungames.pop.eventbus.UpgradeableIconLoadedEventPayload;
 import com.stupidfungames.pop.fixturedefdata.UpgradeUserData;
 import com.stupidfungames.pop.physics.PhysicsFactory;
@@ -63,7 +63,7 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
     super.onCreateScene();
     EventBus.get()
         .subscribe(BUBBLE_POPPED, this)
-        .subscribe(ICON_UNLOCKED, this)
+        .subscribe(UPGRADEABLE_ICON_UNLOCKED, this)
         .subscribe(GAME_PROGRESS_CHANGED, this)
         .subscribe(UPGRADEABLE_ICON_LOADED, this);
   }
@@ -73,7 +73,7 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
     super.onDestroy();
     EventBus.get()
         .unSubscribe(BUBBLE_POPPED, this)
-        .unSubscribe(ICON_UNLOCKED, this)
+        .unSubscribe(UPGRADEABLE_ICON_UNLOCKED, this)
         .unSubscribe(GAME_PROGRESS_CHANGED, this)
         .unSubscribe(UPGRADEABLE_ICON_LOADED, this);
   }
@@ -84,8 +84,8 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
       case BUBBLE_POPPED:
         maybeSpawnUpgrade((BubblePoppedEventPayload) payload);
         break;
-      case ICON_UNLOCKED:
-        onIconUnlocked((IconUnlockedEventPayload) payload);
+      case UPGRADEABLE_ICON_UNLOCKED:
+        onIconUnlocked((UpgradeableIconUnlockedEventPayload) payload);
         break;
       case GAME_PROGRESS_CHANGED:
         currentGameDifficultyPercentProgress = ((GameProgressEventPayload) payload).percentProgress;
@@ -151,13 +151,14 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
         get(UpgradeTouchFactoryEntity.class).getNewTouchListener(), false);
   }
 
-  private void onIconUnlocked(IconUnlockedEventPayload iconUnlockedEventPayload) {
-    if (numUpgradesRemaining == 0 && iconUnlockedEventPayload.iconUpgradesQuantity > 0) {
+  private void onIconUnlocked(
+      UpgradeableIconUnlockedEventPayload upgradeableIconUnlockedEventPayload) {
+    if (numUpgradesRemaining == 0 && upgradeableIconUnlockedEventPayload.iconUpgradesQuantity > 0) {
       // Assume that we spawned an upgrade so that there is a bit of a delay (first interval) before
       // we actually spawn an upgrade.
       lastTimeUpgradeWasSpawned = System.currentTimeMillis();
     }
-    numUpgradesRemaining += iconUnlockedEventPayload.iconUpgradesQuantity;
+    numUpgradesRemaining += upgradeableIconUnlockedEventPayload.iconUpgradesQuantity;
   }
 
   /**

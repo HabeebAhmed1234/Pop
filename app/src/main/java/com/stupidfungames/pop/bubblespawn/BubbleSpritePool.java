@@ -4,11 +4,9 @@ import android.content.Context;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleSize;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleType;
-import com.stupidfungames.pop.eventbus.BubblePoppedEventPayload;
 import com.stupidfungames.pop.eventbus.BubbleRecycledEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.GameEvent;
-import com.stupidfungames.pop.fixturedefdata.BaseEntityUserData;
 import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
 import com.stupidfungames.pop.pool.BaseSpriteItemInitializer;
 import com.stupidfungames.pop.pool.ItemPool;
@@ -18,8 +16,6 @@ import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.entity.shape.Shape;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.util.color.AndengineColor;
 
 public class BubbleSpritePool extends ItemPool {
 
@@ -45,9 +41,14 @@ public class BubbleSpritePool extends ItemPool {
       Sprite sprite = new Sprite(
           params.x,
           params.y,
-          getBubbleTexture(params.bubbleType),
+          get(GameTexturesManager.class).getTextureRegion(TextureId.BALL),
           vertexBufferObjectManager);
-      sprite.setUserData(getBubbleUserData(sprite, params.bubbleType, params.bubbleSize));
+      sprite.setUserData(
+          new BubbleEntityUserData(
+              true,
+              params.bubbleSize,
+              params.bubbleType,
+              sprite));
       adjustBubbleSprite(sprite, params.bubbleSize, params.bubbleType);
       return sprite;
     }
@@ -66,7 +67,8 @@ public class BubbleSpritePool extends ItemPool {
       userData.isTargeted = false;
       userData.isMarkedForRecursivePopping = false;
       removePhysics(item);
-      EventBus.get().sendEvent(GameEvent.BUBBLE_RECYCLED, new BubbleRecycledEventPayload(userData.getId()));
+      EventBus.get()
+          .sendEvent(GameEvent.BUBBLE_RECYCLED, new BubbleRecycledEventPayload(userData.getId()));
     }
   };
 
@@ -81,57 +83,13 @@ public class BubbleSpritePool extends ItemPool {
 
   private void adjustBubbleSprite(Shape sprite, BubbleSize bubbleSize, BubbleType bubbleType) {
     adjustBubbleScale(sprite, bubbleSize);
-    colorBubble(bubbleType, sprite);
+    sprite.setColor(bubbleType.color);
     clipBubblePosition(sprite);
-  }
-
-  private ITextureRegion getBubbleTexture(BubbleType bubbleType) {
-    switch (bubbleType) {
-      case RED:
-      case GREEN:
-      case BLUE:
-        return get(GameTexturesManager.class).getTextureRegion(TextureId.BALL);
-      default:
-        throw new IllegalStateException(
-            "there is no bubble texture for bubbleType = " + bubbleType);
-
-    }
-  }
-
-  private BaseEntityUserData getBubbleUserData(Shape bubbleSprite, BubbleType bubbleType,
-      BubbleSize bubbleSize) {
-    switch (bubbleType) {
-      case RED:
-      case GREEN:
-      case BLUE:
-        return new BubbleEntityUserData(true, bubbleSize, bubbleType, (Sprite) bubbleSprite);
-    }
-    throw new IllegalStateException("there is no bubble user data for bubbleType = " + bubbleType);
   }
 
   private void updateBubbleEntityUserData(Shape bubbleSprite, BubbleSize size, BubbleType type) {
     BubbleEntityUserData userData = (BubbleEntityUserData) bubbleSprite.getUserData();
     userData.update(size, type);
-  }
-
-  private void colorBubble(BubbleType type, Shape bubble) {
-    AndengineColor color = AndengineColor.WHITE;
-    switch (type) {
-      case RED:
-        color = AndengineColor.RED;
-        break;
-      case GREEN:
-        color = AndengineColor.GREEN;
-        break;
-      case BLUE:
-        color = AndengineColor.BLUE;
-        break;
-      default:
-        throw new IllegalStateException("there is no bubble color for bubbleType = " + type);
-    }
-    if (color != null) {
-      bubble.setColor(color);
-    }
   }
 
   private void clipBubblePosition(Shape bubbleSprite) {

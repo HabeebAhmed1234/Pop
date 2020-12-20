@@ -26,7 +26,8 @@ public enum GameEvent {
   GAME_ICONS_TRAY_OPENED, // Called when the game icons tray is opening or opened
   QUICK_SETTINGS_TRAY_OPEN, // Called when the quick settings tray is opening
   QUICK_SETTINGS_TRAY_CLOSE, // Called when the quick settings tray is closing
-  ICON_UNLOCKED, // Called when an icon gets unlocked. Contains the amount that icon adds to the number of upgrades available to spawn
+  ICON_UNLOCKED, // Called when any icon gets unlocked. Contains the IconId of the icon that was unlocked
+  UPGRADEABLE_ICON_UNLOCKED, // Called when an upgradeable icon gets unlocked. Contains the amount that icon adds to the number of upgrades available to spawn
   UPGRADE_ACQUIRED, // Called when an upgrade is touched and acquired. Adds one upgrade to the upgrade inventory.
   UPGRADES_AVAILABLE, // Called when upgrades are available to be applied to tools
   UPGRADE_CONSUMED, // Called when an upgrade has been applied to a tool

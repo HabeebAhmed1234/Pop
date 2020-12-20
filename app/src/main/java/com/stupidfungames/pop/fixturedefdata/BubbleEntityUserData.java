@@ -38,12 +38,6 @@ public class BubbleEntityUserData extends BaseEntityUserData {
     this.bubbleType = bubbleType;
   }
 
-  public boolean isPoppable() {
-    return bubbleType == BubbleType.RED
-        || bubbleType == BubbleType.BLUE
-        || bubbleType == BubbleType.GREEN;
-  }
-
   public static void markTargeted(@Nullable Sprite sprite, boolean isTargeted) {
     if (sprite != null) {
       @Nullable Object userdata = sprite.getUserData();

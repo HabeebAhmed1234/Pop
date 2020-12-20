@@ -1,10 +1,12 @@
 package com.stupidfungames.pop.eventbus;
 
-public class IconUnlockedEventPayload implements EventPayload{
+import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId;
 
-  public final int iconUpgradesQuantity;
+public class IconUnlockedEventPayload implements EventPayload {
 
-  public IconUnlockedEventPayload(int iconUpgradesQuantity) {
-    this.iconUpgradesQuantity = iconUpgradesQuantity;
+  public final IconId unlockedIconId;
+
+  public IconUnlockedEventPayload(IconId unlockedIconId) {
+    this.unlockedIconId = unlockedIconId;
   }
 }

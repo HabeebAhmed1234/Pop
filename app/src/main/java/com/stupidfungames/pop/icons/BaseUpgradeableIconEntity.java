@@ -1,6 +1,6 @@
 package com.stupidfungames.pop.icons;
 
-import static com.stupidfungames.pop.eventbus.GameEvent.ICON_UNLOCKED;
+import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADEABLE_ICON_UNLOCKED;
 import static com.stupidfungames.pop.eventbus.GameEvent.NO_UPGRADES_AVAILABLE;
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADEABLE_ICON_LOADED;
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADES_AVAILABLE;
@@ -12,7 +12,7 @@ import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
-import com.stupidfungames.pop.eventbus.IconUnlockedEventPayload;
+import com.stupidfungames.pop.eventbus.UpgradeableIconUnlockedEventPayload;
 import com.stupidfungames.pop.eventbus.UpgradeableIconLoadedEventPayload;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import com.stupidfungames.pop.resources.sounds.SoundId;
@@ -72,7 +72,7 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
   @Override
   protected void onIconUnlocked() {
     EventBus.get()
-        .sendEvent(ICON_UNLOCKED, new IconUnlockedEventPayload(getIconUpgradesQuantity()));
+        .sendEvent(UPGRADEABLE_ICON_UNLOCKED, new UpgradeableIconUnlockedEventPayload(getIconUpgradesQuantity()));
   }
 
   @Override
