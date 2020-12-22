@@ -9,17 +9,19 @@ class TooltipTexts {
 
   {
     texts.put(TooltipId.TURRET_ICON_TOOLTIP,
-        "Drag and drop turrets from this icon onto the play field");
+        "Drag and drop turrets from this icon onto the play field.");
     texts.put(TooltipId.BALL_AND_CHAIN_ICON_TOOLTIP,
-        "Press and hold this icon to get a mace to pop bubbles with");
+        "Press and hold this icon to get a mace to pop bubbles with.");
     texts.put(TooltipId.WALLS_ICON_TOOLTIP,
-        "Toggle this icon to start placing walls onto the screen. To place a wall press and drag on the screen");
+        "Toggle this icon to start placing walls onto the screen. To place a wall press and drag on the screen.");
     texts.put(TooltipId.NUKE_ICON_TOOLTIP,
         "Tap this icon to pop all bubbles on the screen in waves");
     texts.put(TooltipId.MULTI_TOUCH_ICON_TOOLTIP,
-        "Touch bubbles to pop them and all surrounding bubbles of the same colour");
+        "Touch bubbles to pop them and all surrounding bubbles of the same colour.");
     texts.put(TooltipId.TOUCH_POP_TOOLTIP,
         "Touch the bubbles to pop them before they reach the bottom of the screen!");
+    texts.put(TooltipId.UPGRADE_TOOLTIP,
+        "Tap on this to acquire an upgrade. You can then tap on a tool on the right to upgrade it. Every tool has a max of 3 upgrades.");
   }
 
   public String getTooltipText(TooltipId id) {

@@ -3,8 +3,8 @@ package com.stupidfungames.pop.upgrades;
 import static com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BUBBLE_GRAVITY_SCALE;
 import static com.stupidfungames.pop.eventbus.GameEvent.BUBBLE_POPPED;
 import static com.stupidfungames.pop.eventbus.GameEvent.GAME_PROGRESS_CHANGED;
-import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADEABLE_ICON_UNLOCKED;
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADEABLE_ICON_LOADED;
+import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADEABLE_ICON_UNLOCKED;
 
 import android.content.Context;
 import com.stupidfungames.pop.BaseEntity;
@@ -19,12 +19,14 @@ import com.stupidfungames.pop.eventbus.EventBus.Subscriber;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.GameProgressEventPayload;
-import com.stupidfungames.pop.eventbus.UpgradeableIconUnlockedEventPayload;
 import com.stupidfungames.pop.eventbus.UpgradeableIconLoadedEventPayload;
+import com.stupidfungames.pop.eventbus.UpgradeableIconUnlockedEventPayload;
 import com.stupidfungames.pop.fixturedefdata.UpgradeUserData;
 import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
+import com.stupidfungames.pop.tooltips.GameTooltipsEntity;
+import com.stupidfungames.pop.tooltips.TooltipId;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import java.util.concurrent.TimeUnit;
 import org.andengine.entity.sprite.Sprite;
@@ -149,6 +151,10 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
     body.setGravityScale(BUBBLE_GRAVITY_SCALE);
     addToSceneWithTouch(upgradeSprite, body,
         get(UpgradeTouchFactoryEntity.class).getNewTouchListener(), false);
+
+    float[] upgradeSpritePos = upgradeSprite.getCenter();
+    get(GameTooltipsEntity.class)
+        .maybeShowTooltip(TooltipId.UPGRADE_TOOLTIP, upgradeSpritePos[0], upgradeSpritePos[1]);
   }
 
   private void onIconUnlocked(
