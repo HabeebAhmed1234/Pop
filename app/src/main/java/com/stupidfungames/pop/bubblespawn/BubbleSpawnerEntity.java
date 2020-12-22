@@ -136,7 +136,6 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
 
   @Override
   public void onDestroy() {
-    engine.unregisterUpdateHandler(bubbleSpawnTimerHandler);
     EventBus.get()
         .unSubscribe(GameEvent.SPAWN_INTERVAL_CHANGED, this)
         .unSubscribe(GameEvent.ICON_UNLOCKED, this);

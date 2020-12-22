@@ -189,9 +189,8 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
   }
 
   private void unregisterUpdateHandlers() {
-    if (engine.containsUpdateHandler(bulletTargetingUpdater)) {
-      engine.unregisterUpdateHandler(bulletTargetingUpdater);
-    }
+    bulletTargetingUpdater.reset();
+    bulletTargetingUpdater.pause();
     if (EventBus.get().containsSubscriber(BUBBLE_POPPED, this)) {
       EventBus.get().unSubscribe(BUBBLE_POPPED, this);
     }

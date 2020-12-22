@@ -521,6 +521,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		this.mTextureManager.onDestroy();
 		this.mFontManager.onDestroy();
 		this.mShaderProgramManager.onDestroy();
+		clearUpdateHandlers();
 	}
 
 	public void onReloadResources() {

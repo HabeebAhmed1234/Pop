@@ -321,13 +321,12 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
   @Override
   protected void onDestroy() {
-    super.onDestroy();
-
     // Destroy the game
     gameLifeCycleCalllbackManager.onDestroy();
     gameLifeCycleCalllbackManager = null;
 
     EventBus.get().onDestroy();
+    super.onDestroy();
   }
 
   @Override

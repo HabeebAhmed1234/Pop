@@ -30,7 +30,8 @@ public class TurretCannonRotationManagerEntity extends BaseEntity implements ITi
 
   @Override
   public void onDestroy() {
-    engine.unregisterUpdateHandler(smoothRotationUpdater);
+    smoothRotationUpdater.reset();
+    smoothRotationUpdater.pause();
   }
 
   public boolean setRotation(float angle) {

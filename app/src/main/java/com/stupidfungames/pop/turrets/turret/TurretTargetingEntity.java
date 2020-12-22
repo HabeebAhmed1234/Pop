@@ -58,11 +58,15 @@ public class TurretTargetingEntity extends BaseEntity implements
 
   private void startTargeting() {
     maybeAquireNewBubbleTarget();
-    engine.registerUpdateHandler(targetingUpdateHandler);
+    if (!engine.containsUpdateHandler(targetingUpdateHandler)) {
+      engine.registerUpdateHandler(targetingUpdateHandler);
+    }
+    targetingUpdateHandler.reset();
   }
 
   private void stopTargeting() {
-    engine.unregisterUpdateHandler(targetingUpdateHandler);
+    targetingUpdateHandler.reset();
+    targetingUpdateHandler.pause();
     stopTargetingBubble();
   }
 

@@ -54,12 +54,6 @@ public class GameDifficultyEntity extends BaseEntity {
     setCurrentSpawnInterval(saveGame.spawnInterval);
   }
 
-  @Override
-  public void onDestroy() {
-    super.onDestroy();
-    engine.unregisterUpdateHandler(updateIntervalUpdater);
-  }
-
   public void initUpdateInterval() {
     EventBus.get().sendEvent(GameEvent.SPAWN_INTERVAL_CHANGED,
         new DifficultyChangedEventPayload(MAX_SPAWN_INTERVAL));
