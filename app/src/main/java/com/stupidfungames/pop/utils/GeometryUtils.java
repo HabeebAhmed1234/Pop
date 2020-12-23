@@ -120,4 +120,24 @@ public class GeometryUtils {
     newY = newY * magnitude / mag;
     return Vec2Pool.obtain(newX, newY);
   }
+
+  public static void constrainToScreen(Vec2 position, float width, float height) {
+    float newX = position.x;
+    float newY = position.y;
+    if (newX < 0) {
+      newX = 0;
+    }
+    float screenWidth = ScreenUtils.getSreenSize().widthPx;
+    if (newX + width > screenWidth) {
+      newX = screenWidth - width;
+    }
+    if (newY < 0) {
+      newY = 0;
+    }
+    float screenHeight = ScreenUtils.getSreenSize().heightPx;
+    if (newY + height > screenHeight) {
+      newY = screenHeight - height;
+    }
+    position.set(newX, newY);
+  }
 }
