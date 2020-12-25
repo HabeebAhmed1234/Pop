@@ -66,7 +66,7 @@ public abstract class BaseInventoryIconEntity extends BaseUpgradeableIconEntity 
         Integer.toString(inventoryCount),
         (Integer.toString(STARTING_TURRET_INVENTORY)).length(),
         vertexBufferObjectManager);
-    iconSprite.attachChild(inventoryText);
+    addToScene(iconSprite, inventoryText);
 
     onInventoryChanged();
   }
@@ -82,6 +82,8 @@ public abstract class BaseInventoryIconEntity extends BaseUpgradeableIconEntity 
         iconSprite.getWidthScaled() / 2 -
             ScreenUtils.dpToPx(INVENTORY_TEXT_MAX_WIDTH_DP, get(Context.class)));
     inventoryText.setY(-ScreenUtils.dpToPx(INVENTORY_TEXT_MAX_HEIGHT_DP, get(Context.class)));
+
+    onInventoryChanged();
   }
 
   protected void onInventoryChanged() {
