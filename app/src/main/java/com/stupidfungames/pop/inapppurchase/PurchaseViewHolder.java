@@ -80,7 +80,7 @@ public class PurchaseViewHolder extends BindableViewHolder<Purchase> {
     sku = model.getSku();
     @Nullable GameProduct product = ProductSKUManager.get().skuToProductsMap
         .get(model.getSku());
-    
+
     if (product != null && !TextUtils.isEmpty(product.imageFileName)) {
       GlideUtils.loadWithImageAssetFileName(itemView, image, product.imageFileName);
     } else if (product != null && product.imageDrawableRes != -1) {

@@ -59,7 +59,7 @@ public class ProductSKUManager {
     ImmutableMap.Builder<String, GameProduct> builder = ImmutableMap.builder();
     return builder
         .put(ProductSKU.SKU_NO_ADS.skuString,
-            new GameProduct(null, R.string.title_no_ads,
+            new GameProduct(R.drawable.no_ads, R.string.title_no_ads,
                 R.string.description_no_ads))
         .put(ProductSKU.SKU_GAME_CONTINUE.skuString,
             new GameProduct(R.drawable.continue_game_token, R.string.title_game_continue_token,
