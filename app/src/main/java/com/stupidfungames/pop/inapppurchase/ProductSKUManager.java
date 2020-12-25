@@ -62,7 +62,7 @@ public class ProductSKUManager {
             new GameProduct(null, R.string.title_no_ads,
                 R.string.description_no_ads))
         .put(ProductSKU.SKU_GAME_CONTINUE.skuString,
-            new GameProduct(null, R.string.title_game_continue_token,
+            new GameProduct(R.drawable.continue_game_token, R.string.title_game_continue_token,
                 R.string.description_game_continue_token))
         .put(ProductSKU.SKU_BG_1.skuString,
             new GameProduct("bg_1.png", R.string.title_bg_1,

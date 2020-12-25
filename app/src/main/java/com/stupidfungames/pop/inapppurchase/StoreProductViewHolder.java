@@ -1,7 +1,7 @@
 package com.stupidfungames.pop.inapppurchase;
 
 import android.app.Activity;
-import android.net.Uri;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.android.billingclient.api.SkuDetails;
 import com.bumptech.glide.Glide;
 import com.stupidfungames.pop.R;
+import com.stupidfungames.pop.androidui.GlideUtils;
 import com.stupidfungames.pop.list.BindableViewHolder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -67,9 +68,10 @@ public class StoreProductViewHolder extends BindableViewHolder<SkuDetails> {
     String sku = skuDetails.getSku();
     if (ProductSKUManager.get().skuToProductsMap.containsKey(sku)) {
       GameProduct product = ProductSKUManager.get().skuToProductsMap.get(sku);
-      if (product != null) {
-        Glide.with(itemView).load(Uri.parse("file:///android_asset/gfx/" + product.imageFileName))
-            .into(imageView);
+      if (product != null && !TextUtils.isEmpty(product.imageFileName)) {
+        GlideUtils.loadWithImageAssetFileName(itemView, imageView, product.imageFileName);
+      } else if (product != null && product.imageDrawableRes != -1) {
+        Glide.with(itemView).load(product.imageDrawableRes).into(imageView);
       } else {
         Glide.with(itemView).load(R.drawable.ic_launcher).into(imageView);
       }

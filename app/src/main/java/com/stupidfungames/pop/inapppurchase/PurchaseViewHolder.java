@@ -1,8 +1,5 @@
 package com.stupidfungames.pop.inapppurchase;
 
-import static com.stupidfungames.pop.androidui.GlideUtils.loadWithImageAssetFileName;
-
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,6 +12,7 @@ import androidx.annotation.Nullable;
 import com.android.billingclient.api.Purchase;
 import com.bumptech.glide.Glide;
 import com.stupidfungames.pop.R;
+import com.stupidfungames.pop.androidui.GlideUtils;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventBus.Subscriber;
 import com.stupidfungames.pop.eventbus.EventPayload;
@@ -82,11 +80,15 @@ public class PurchaseViewHolder extends BindableViewHolder<Purchase> {
     sku = model.getSku();
     @Nullable GameProduct product = ProductSKUManager.get().skuToProductsMap
         .get(model.getSku());
-    if (product != null) {
-      loadWithImageAssetFileName(itemView, image, product.imageFileName);
+    
+    if (product != null && !TextUtils.isEmpty(product.imageFileName)) {
+      GlideUtils.loadWithImageAssetFileName(itemView, image, product.imageFileName);
+    } else if (product != null && product.imageDrawableRes != -1) {
+      Glide.with(itemView).load(product.imageDrawableRes).into(image);
     } else {
       Glide.with(itemView).load(R.drawable.ic_launcher).into(image);
     }
+
     name.setText(
         product != null ? itemView.getContext().getString(product.name) : "Product Name Not Found");
     description.setText(

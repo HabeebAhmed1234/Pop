@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.core.util.Preconditions;
 import com.bumptech.glide.Glide;
@@ -33,9 +34,12 @@ public abstract class LoadableListWithPreviewBaseActivity<T> extends
 
   @Override
   protected void onClick(T item) {
-    String previewFileName = getPreviewImageFileName(item);
+    @Nullable String previewFileName = getPreviewImageFileName(item);
+    @DrawableRes int drawableRes =  getPreviewImageDrawableResId(item);
     if (!TextUtils.isEmpty(previewFileName)) {
       showPreview(previewFileName);
+    } else if (drawableRes != -1){
+      showPreview(drawableRes);
     } else {
       hidePreview();
     }
@@ -57,6 +61,14 @@ public abstract class LoadableListWithPreviewBaseActivity<T> extends
   protected abstract String getPreviewImageFileName(T item);
 
   /**
+   * Return the drawable for the image to be used in the preview window of this activity. if no file
+   * path was provided via getPreviewImageFileName.
+   */
+  protected @DrawableRes int getPreviewImageDrawableResId(T item) {
+    return -1;
+  }
+
+  /**
    * Return the file name for the image to be used in the background of this activity.
    */
   protected abstract String getPreviewBackgroundImageFileName(T item);
@@ -64,6 +76,11 @@ public abstract class LoadableListWithPreviewBaseActivity<T> extends
   private void showPreview(String imageFileName) {
     previewImageFrame.setVisibility(VISIBLE);
     loadWithImageAssetFileName(this, previewImageView, imageFileName);
+  }
+
+  private void showPreview(@DrawableRes int imageDrawableRes) {
+    previewImageFrame.setVisibility(VISIBLE);
+    Glide.with(this).load(imageDrawableRes).into(previewImageView);
   }
 
   private void hidePreview() {

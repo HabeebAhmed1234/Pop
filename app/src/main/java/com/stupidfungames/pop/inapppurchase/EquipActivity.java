@@ -97,6 +97,16 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<Purchase>
   }
 
   @Override
+  protected int getPreviewImageDrawableResId(Purchase purchase) {
+    String purchaseSku = purchase.getSku();
+    ImmutableMap<String, GameProduct> skuToProductsMap = ProductSKUManager.get().skuToProductsMap;
+    if (skuToProductsMap.containsKey(purchaseSku)) {
+      return skuToProductsMap.get(purchaseSku).imageDrawableRes;
+    }
+    return -1;
+  }
+
+  @Override
   protected String getPreviewBackgroundImageFileName(Purchase purchase) {
     String purchaseSku = purchase.getSku();
     // only show a background preview for bg images
