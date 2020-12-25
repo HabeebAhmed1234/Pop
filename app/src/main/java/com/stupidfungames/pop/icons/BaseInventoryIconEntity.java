@@ -20,7 +20,7 @@ import org.andengine.util.color.AndengineColor;
 public abstract class BaseInventoryIconEntity extends BaseUpgradeableIconEntity {
 
   private static final float INVENTORY_TEXT_MAX_WIDTH_DP = 8;
-  private static final float INVENTORY_TEXT_MAX_HEIGHT_DP = 16;
+  private static final float INVENTORY_TEXT_MAX_HEIGHT_DP = 20;
 
   private Text inventoryText;
   private int inventoryCount = getStartingInventoryCount();
