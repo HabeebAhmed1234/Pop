@@ -78,12 +78,15 @@ public class LongPressGesture extends BaseEntity implements GameSceneTouchListen
     private void startLongPressCheck() {
         cancelLongPressCheck();
         longPressCheck.reset();
-        engine.registerUpdateHandler(longPressCheck);
+        if (!isCheckingLongPress()) {
+            engine.registerUpdateHandler(longPressCheck);
+        }
     }
 
     private void cancelLongPressCheck() {
         if (isCheckingLongPress()) {
-            engine.unregisterUpdateHandler(longPressCheck);
+            longPressCheck.reset();
+            longPressCheck.pause();
         }
     }
 

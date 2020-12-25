@@ -109,7 +109,10 @@ class BallAndChainDurabilityEntity extends BaseEntity implements EventBus.Subscr
   private void startChargingBallAndChain() {
     if (!isCharging) {
       isCharging = true;
-      engine.registerUpdateHandler(chargeHandler);
+      if (!engine.containsUpdateHandler(chargeHandler)) {
+        engine.registerUpdateHandler(chargeHandler);
+      }
+      chargeHandler.reset();
     }
   }
 
@@ -133,6 +136,7 @@ class BallAndChainDurabilityEntity extends BaseEntity implements EventBus.Subscr
         == BallAndChainStateMachine.State.UNLOCKED_DISCHARGED) {
       stateMachine.transitionState(BallAndChainStateMachine.State.UNLOCKED_CHARGED);
     }
-    engine.unregisterUpdateHandler(chargeHandler);
+    chargeHandler.reset();
+    chargeHandler.pause();
   }
 }

@@ -37,11 +37,6 @@ public class TimerHudEntity extends BaseEntity {
         scene.attachChild(timerText);
     }
 
-    @Override
-    public void onDestroy() {
-        engine.unregisterUpdateHandler(timerHandler);
-    }
-
     private String getFormattedTimerText() {
         return "Timer: " + timerValue;
     }

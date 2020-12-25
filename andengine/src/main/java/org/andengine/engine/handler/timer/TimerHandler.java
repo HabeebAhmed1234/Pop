@@ -23,6 +23,7 @@ public class TimerHandler implements IUpdateHandler {
 	private boolean mTimerCallbackTriggered;
 	protected final ITimerCallback mTimerCallback;
 	private boolean mAutoReset;
+	private boolean isPaused;
 
 	// ===========================================================
 	// Constructors
@@ -84,6 +85,7 @@ public class TimerHandler implements IUpdateHandler {
 
 	@Override
 	public void onUpdate(final float pSecondsElapsed) {
+		if (isPaused) return;
 		if(this.mAutoReset) {
 			this.mTimerSecondsElapsed += pSecondsElapsed;
 			while(this.mTimerSecondsElapsed >= this.mTimerSeconds) {
@@ -105,6 +107,14 @@ public class TimerHandler implements IUpdateHandler {
 	public void reset() {
 		this.mTimerCallbackTriggered = false;
 		this.mTimerSecondsElapsed = 0;
+		this.isPaused = false;
+	}
+
+	/**
+	 * Internal state won't be updated and no updates will be delivered to callbacks.
+	 */
+	public void pause() {
+		this.isPaused = true;
 	}
 
 	// ===========================================================

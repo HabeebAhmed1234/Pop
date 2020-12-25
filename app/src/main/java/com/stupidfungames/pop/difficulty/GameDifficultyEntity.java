@@ -1,8 +1,8 @@
 package com.stupidfungames.pop.difficulty;
 
-import static com.stupidfungames.pop.GameConstants.MAX_SPAWN_INTERVAL;
-import static com.stupidfungames.pop.GameConstants.MIN_SPAWN_INTERVAL;
-import static com.stupidfungames.pop.difficulty.DifficultyConstants.SPAWN_INTERVAL_DECREASE_SPEED;
+import static com.stupidfungames.pop.GameConstants.MAX_SPAWN_INTERVAL_SECONDS;
+import static com.stupidfungames.pop.GameConstants.MIN_SPAWN_INTERVAL_SECONDS;
+import static com.stupidfungames.pop.difficulty.DifficultyConstants.SPAWN_INTERVAL_DECREASE_SPEED_SECONDS;
 import static com.stupidfungames.pop.difficulty.DifficultyConstants.SPAWN_INTERVAL_UPDATE_SECONDS;
 
 import com.stupidfungames.pop.BaseEntity;
@@ -20,7 +20,7 @@ import org.andengine.engine.handler.timer.TimerHandler;
  */
 public class GameDifficultyEntity extends BaseEntity {
 
-  private float currentSpawnInterval = MAX_SPAWN_INTERVAL;
+  private float currentSpawnInterval = MAX_SPAWN_INTERVAL_SECONDS;
 
 
   private TimerHandler updateIntervalUpdater =
@@ -54,26 +54,20 @@ public class GameDifficultyEntity extends BaseEntity {
     setCurrentSpawnInterval(saveGame.spawnInterval);
   }
 
-  @Override
-  public void onDestroy() {
-    super.onDestroy();
-    engine.unregisterUpdateHandler(updateIntervalUpdater);
-  }
-
   public void initUpdateInterval() {
     EventBus.get().sendEvent(GameEvent.SPAWN_INTERVAL_CHANGED,
-        new DifficultyChangedEventPayload(MAX_SPAWN_INTERVAL));
+        new DifficultyChangedEventPayload(MAX_SPAWN_INTERVAL_SECONDS));
     EventBus.get().sendEvent(GameEvent.GAME_PROGRESS_CHANGED, new GameProgressEventPayload(0));
   }
 
   public void updateInterval() {
-    setCurrentSpawnInterval(currentSpawnInterval - SPAWN_INTERVAL_DECREASE_SPEED);
+    setCurrentSpawnInterval(currentSpawnInterval - SPAWN_INTERVAL_DECREASE_SPEED_SECONDS);
   }
 
   private void setCurrentSpawnInterval(float newInterval) {
     currentSpawnInterval = newInterval;
-    if (currentSpawnInterval < MIN_SPAWN_INTERVAL) {
-      currentSpawnInterval = MIN_SPAWN_INTERVAL;
+    if (currentSpawnInterval < MIN_SPAWN_INTERVAL_SECONDS) {
+      currentSpawnInterval = MIN_SPAWN_INTERVAL_SECONDS;
     }
     EventBus.get().sendEvent(GameEvent.SPAWN_INTERVAL_CHANGED,
         new DifficultyChangedEventPayload(currentSpawnInterval));
@@ -86,7 +80,7 @@ public class GameDifficultyEntity extends BaseEntity {
    * intervals
    */
   private float getGameProgress() {
-    return 1 - (currentSpawnInterval - MIN_SPAWN_INTERVAL) / (MAX_SPAWN_INTERVAL
-        - MIN_SPAWN_INTERVAL);
+    return 1 - (currentSpawnInterval - MIN_SPAWN_INTERVAL_SECONDS) / (MAX_SPAWN_INTERVAL_SECONDS
+        - MIN_SPAWN_INTERVAL_SECONDS);
   }
 }

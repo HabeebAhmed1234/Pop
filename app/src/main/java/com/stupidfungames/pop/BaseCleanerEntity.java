@@ -37,12 +37,6 @@ public abstract class BaseCleanerEntity extends BaseEntity {
     engine.registerUpdateHandler(checkerTimerHandler);
   }
 
-  @Override
-  public void onDestroy() {
-    super.onDestroy();
-    engine.unregisterUpdateHandler(checkerTimerHandler);
-  }
-
   private void cleanUpEntities() {
     List<IEntity> entities = getAllEntities();
     for (int i = 0; i < entities.size(); i++) {

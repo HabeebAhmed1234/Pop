@@ -3,6 +3,7 @@ package com.stupidfungames.pop.turrets.turret;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
+import com.stupidfungames.pop.physics.util.Vec2Pool;
 import com.stupidfungames.pop.savegame.SaveGame;
 import com.stupidfungames.pop.statemachine.BaseStateMachine;
 import com.stupidfungames.pop.turrets.turret.TurretStateMachine.State;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.andengine.entity.sprite.Sprite;
+import org.jbox2d.common.Vec2;
 
 /**
  * Contains the components of the TurretEntity. Can be used to set the position and rotation of the
