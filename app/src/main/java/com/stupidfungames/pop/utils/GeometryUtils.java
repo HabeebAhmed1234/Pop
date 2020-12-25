@@ -120,4 +120,32 @@ public class GeometryUtils {
     newY = newY * magnitude / mag;
     return Vec2Pool.obtain(newX, newY);
   }
+
+  /**
+   * Returns a new X position such that the object with position x and objectwidth won't appear off
+   * screen.
+   */
+  public static float constrainXToScreenWidth(float x, float objectWidth) {
+    if (x < 0) {
+      x = 0;
+    }
+    if (x + objectWidth > ScreenUtils.getSreenSize().widthPx) {
+      x = ScreenUtils.getSreenSize().widthPx - objectWidth;
+    }
+    return x;
+  }
+
+  /**
+   * Returns a new Y position such that the object with position y and objectHeight won't appear off
+   * screen.
+   */
+  public static float constrainYToScreenHeight(float y, float objectHeight) {
+    if (y < 0) {
+      y = 0;
+    }
+    if (y + objectHeight > ScreenUtils.getSreenSize().heightPx) {
+      y = ScreenUtils.getSreenSize().heightPx - objectHeight;
+    }
+    return y;
+  }
 }

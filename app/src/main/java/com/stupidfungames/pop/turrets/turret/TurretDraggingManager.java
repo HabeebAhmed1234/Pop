@@ -114,12 +114,12 @@ public class TurretDraggingManager extends BaseEntity implements
   private void dropTurret(TouchEvent touchEvent) {
     get(GameSoundsManager.class).getSound(SoundId.CLICK_DOWN).play();
     get(TurretStateMachine.class).transitionState(TurretStateMachine.State.TARGETING);
-    get(HostTurretCallback.class).setTurretPosition(touchEvent.getX(), touchEvent.getY());
+    get(HostTurretCallback.class).setTurretPositionCenter(touchEvent.getX(), touchEvent.getY());
   }
 
   private void trackTurretToPointerOnDrag(float x, float y) {
     int offsetPx = ScreenUtils.dpToPx(DRAGGING_OFFSET_DISTANCE_DP, get(Context.class));
-    get(HostTurretCallback.class).setTurretPosition(x - offsetPx, y - offsetPx);
+    get(HostTurretCallback.class).setTurretPositionCenter(x - offsetPx, y - offsetPx);
   }
 
   /**
@@ -132,7 +132,6 @@ public class TurretDraggingManager extends BaseEntity implements
     // Into the icon
     if (touchEvent.isActionUp() && isTouchOverTurretsIcon(touchEvent)) {
       get(TurretStateMachine.class).transitionState(TurretStateMachine.State.DOCKED);
-      Log.d("asdasd", "setState DOCKED actual = " + get(TurretStateMachine.class).getCurrentState());
       EventBus.get().sendEvent(TURRET_DOCKED);
       return true;
     }

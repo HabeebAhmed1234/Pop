@@ -108,6 +108,7 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
     blinkAnimator.animate(findViewById(R.id.logo));
     blinkAnimator.animate(findViewById(R.id.share_btn_android));
     blinkAnimator.animate(findViewById(R.id.share_btn_fb));
+    blinkAnimator.animate(findViewById(R.id.review_btn));
   }
 
   private void openStore() {

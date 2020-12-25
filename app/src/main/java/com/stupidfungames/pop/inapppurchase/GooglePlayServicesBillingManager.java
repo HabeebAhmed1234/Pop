@@ -354,8 +354,6 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
                 .build(), new AcknowledgePurchaseResponseListener() {
               @Override
               public void onAcknowledgePurchaseResponse(BillingResult billingResult) {
-                Log.d(TAG,
-                    "Purchase " + purchase.getOrderId() + " acknowledged result " + billingResult);
               }
             });
       }
