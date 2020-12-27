@@ -97,7 +97,8 @@ public class TurretDraggingManager extends BaseEntity implements
 
   @Override
   public void onLongPress(float touchX, float touchY) {
-    if (get(TurretStateMachine.class).getCurrentState() != TurretStateMachine.State.DRAGGING) {
+    if (get(TurretStateMachine.class).getCurrentState() != TurretStateMachine.State.DRAGGING
+        && !get(TurretsMutex.class).isDragging()) {
       pickUpTurret(touchX, touchY);
     } else {
       Log.e("TurretDragginManager", "Long press registered while we are dragging the turret!");
