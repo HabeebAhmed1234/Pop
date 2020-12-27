@@ -1,5 +1,8 @@
 package org.andengine.util;
 
+import android.os.Build;
+import android.view.View;
+import android.view.WindowManager.LayoutParams;
 import org.andengine.util.call.AsyncCallable;
 import org.andengine.util.call.Callable;
 import org.andengine.util.call.Callback;
@@ -54,6 +57,14 @@ public class ActivityUtils {
 		window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 		window.requestFeature(Window.FEATURE_NO_TITLE);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+			LayoutParams params = window.getAttributes();
+			params.layoutInDisplayCutoutMode = LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+			window.setAttributes(params);
+
+			window.getDecorView().setSystemUiVisibility(
+					View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+		}
 	}
 
 	/**
