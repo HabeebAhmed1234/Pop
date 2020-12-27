@@ -107,19 +107,27 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
   }
 
   private void maybeSpawnUpgrade(BubblePoppedEventPayload bubblePoppedEventPayload) {
-    if (lastTimeUpgradeWasSpawned == -1
-        || currentGameDifficultyPercentProgress == -1
+    if (currentGameDifficultyPercentProgress == -1
+        || currentGameDifficultyPercentProgress <= GameConstants.MIN_UPGRADE_SPAWN_START_THRESHOLD_DIFFICULTY
         || numUpgradesRemaining == 0) {
-      // Only start spawning upgrades of all these values are set.
+      // Only start spawning upgrades if all these values are set.
       return;
     }
+
     long now = System.currentTimeMillis();
-    // First get the ammount of time remaining until game reaches max difficulty. Once the game hits
+
+    if (lastTimeUpgradeWasSpawned == -1) {
+      // Set the last time upgrade was spawned to now so that when the first interval passes we will
+      // spawn an upgrade.
+      lastTimeUpgradeWasSpawned = now;
+    }
+
+    // First get the amount of time remaining until game reaches max difficulty. Once the game hits
     // max difficulty the user should have all the upgrades.
-    float timeRemainingToMaxDifficultyMillis =
-        (1.0f - currentGameDifficultyPercentProgress) * TimeUnit.SECONDS
-            .toMillis((long) GameConstants.TIME_TO_MAX_DIFFICULTY_SECONDS);
-    float upgradeSpawnInterval = timeRemainingToMaxDifficultyMillis / numUpgradesRemaining;
+    long timeRemainingToMaxDifficultyMillis = (long) (
+        (1.0f - currentGameDifficultyPercentProgress)
+            * TimeUnit.SECONDS.toMillis((long) GameConstants.TIME_TO_MAX_DIFFICULTY_SECONDS));
+    long upgradeSpawnInterval = timeRemainingToMaxDifficultyMillis / numUpgradesRemaining;
 
     // If the current time has passed the first interval required to spawn an upgrade then spawn
     // an upgrade.
@@ -161,11 +169,6 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
 
   private void onIconUnlocked(
       UpgradeableIconUnlockedEventPayload upgradeableIconUnlockedEventPayload) {
-    if (numUpgradesRemaining == 0 && upgradeableIconUnlockedEventPayload.iconUpgradesQuantity > 0) {
-      // Assume that we spawned an upgrade so that there is a bit of a delay (first interval) before
-      // we actually spawn an upgrade.
-      lastTimeUpgradeWasSpawned = System.currentTimeMillis();
-    }
     numUpgradesRemaining += upgradeableIconUnlockedEventPayload.iconUpgradesQuantity;
   }
 

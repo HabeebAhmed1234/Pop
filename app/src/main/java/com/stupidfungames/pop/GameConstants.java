@@ -20,11 +20,13 @@ public class GameConstants {
       5 * (ALL_ICON_UNLOCK_DIFFICULTY_PERCENTAGE / (float) IconId.values().length);
 
   // Limits
-  public static final int MAX_BUBBLES_ON_SCREEN = 60;
+  public static final int MAX_BUBBLES_ON_SCREEN = 70;
 
   // Difficulty
   public static final float MAX_BUBBLES_PER_SPAWN = 3;
   public static final float TIME_TO_MAX_DIFFICULTY_SECONDS = TimeUnit.MINUTES.toSeconds(8);
-  public static final float MAX_SPAWN_INTERVAL_SECONDS = 4;
+  // Once all icons are unlocked open up upgrades
+  public static final float MIN_UPGRADE_SPAWN_START_THRESHOLD_DIFFICULTY = 0.5f;
+  public static final float MAX_SPAWN_INTERVAL_SECONDS = 3.5f;
   public static final float MIN_SPAWN_INTERVAL_SECONDS = 0.5f;
 }

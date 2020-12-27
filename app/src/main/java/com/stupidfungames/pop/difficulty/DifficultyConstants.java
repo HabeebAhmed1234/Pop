@@ -6,6 +6,6 @@ import static com.stupidfungames.pop.GameConstants.TIME_TO_MAX_DIFFICULTY_SECOND
 
 public class DifficultyConstants {
 
-    public static final float SPAWN_INTERVAL_UPDATE_SECONDS = 2;
+    public static final float SPAWN_INTERVAL_UPDATE_SECONDS = 1;
     public static final float SPAWN_INTERVAL_DECREASE_SPEED_SECONDS = (MAX_SPAWN_INTERVAL_SECONDS - MIN_SPAWN_INTERVAL_SECONDS) / (TIME_TO_MAX_DIFFICULTY_SECONDS / SPAWN_INTERVAL_UPDATE_SECONDS);
 }
