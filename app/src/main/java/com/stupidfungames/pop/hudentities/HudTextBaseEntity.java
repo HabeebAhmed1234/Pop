@@ -19,11 +19,12 @@ public abstract class HudTextBaseEntity extends BaseEntity {
   public void onCreateScene() {
     super.onCreateScene();
 
-    int[] position = getTextPosition();
-
-    text = new Text(position[0], position[1],
+    text = new Text(0, 0,
         get(GameFontsManager.class).getFont(FontId.SCORE_TICKER_FONT), "", getMaxStringLength(),
         vertexBufferObjectManager);
+
+    int[] position = getTextPositionPx(new int[]{(int) text.getWidth(), (int) text.getHeight()});
+    text.setPosition(position[0], position[1]);
     text.setColor(getInitialTextColor());
     updateText(getInitialText());
     scene.attachChild(text);
@@ -43,7 +44,7 @@ public abstract class HudTextBaseEntity extends BaseEntity {
 
   abstract String getInitialText();
 
-  abstract int[] getTextPosition();
+  abstract int[] getTextPositionPx(int[] textDimensPx);
 
   abstract int getMaxStringLength();
 

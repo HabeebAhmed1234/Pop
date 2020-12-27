@@ -7,6 +7,7 @@ import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.IncrementScoreEventPayload;
 import com.stupidfungames.pop.savegame.SaveGame;
+import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.util.color.AndengineColor;
 
 /**
@@ -14,103 +15,104 @@ import org.andengine.util.color.AndengineColor;
  */
 public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscriber {
 
-    private static final String SCORE_TEXT_PREFIX = "Score: ";
-    private static final AndengineColor NEGATIVE_SCORE_COLOR = AndengineColor.RED;
-    private static final AndengineColor POSITIVE_SCORE_COLOR = AndengineColor.GREEN;
+  private static final String SCORE_TEXT_PREFIX = "Score: ";
+  private static final AndengineColor NEGATIVE_SCORE_COLOR = AndengineColor.RED;
+  private static final AndengineColor POSITIVE_SCORE_COLOR = AndengineColor.GREEN;
 
-    private int scoreValue = 0;
+  private int scoreValue = 0;
 
-    public ScoreHudEntity(BinderEnity parent) {
-        super(parent);
+  public ScoreHudEntity(BinderEnity parent) {
+    super(parent);
+  }
+
+  @Override
+  public void onCreateScene() {
+    super.onCreateScene();
+    EventBus.get()
+        .subscribe(GameEvent.INCREMENT_SCORE, this)
+        .subscribe(GameEvent.DECREMENT_SCORE, this);
+  }
+
+  @Override
+  public void onSaveGame(SaveGame saveGame) {
+    super.onSaveGame(saveGame);
+    saveGame.score = scoreValue;
+  }
+
+  @Override
+  public void onLoadGame(SaveGame saveGame) {
+    super.onLoadGame(saveGame);
+    setScoreOnLoadGame(saveGame.score);
+  }
+
+  @Override
+  String getInitialText() {
+    return SCORE_TEXT_PREFIX + "-------";
+  }
+
+  @Override
+  int[] getTextPositionPx(int[] textDimensPx) {
+    return new int[]{20, ScreenUtils.getSreenSize().heightPx - textDimensPx[1]};
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    EventBus.get().unSubscribe(GameEvent.INCREMENT_SCORE, this)
+        .unSubscribe(GameEvent.DECREMENT_SCORE, this);
+  }
+
+  @Override
+  int getMaxStringLength() {
+    return 30;
+  }
+
+  @Override
+  AndengineColor getInitialTextColor() {
+    return AndengineColor.GREEN;
+  }
+
+  public int getScore() {
+    return scoreValue;
+  }
+
+  @Override
+  public void onEvent(GameEvent event, EventPayload payload) {
+    switch (event) {
+      case DECREMENT_SCORE:
+        decrementScore((DecrementScoreEventPayload) payload);
+        break;
+      case INCREMENT_SCORE:
+        incrementScore((IncrementScoreEventPayload) payload);
+        break;
     }
+  }
 
-    @Override
-    public void onCreateScene() {
-        super.onCreateScene();
-        EventBus.get()
-                .subscribe(GameEvent.INCREMENT_SCORE, this)
-                .subscribe(GameEvent.DECREMENT_SCORE, this);
+  private void setScoreOnLoadGame(int loadedScore) {
+    scoreValue = loadedScore;
+    updateScoreText();
+
+    //EventBus.get().sendEvent(GameEvent.SCORE_CHANGED, new ScoreChangeEventPayload(scoreValue));
+  }
+
+  private void incrementScore(IncrementScoreEventPayload payload) {
+    scoreValue += payload.incrementAmmount;
+    updateScoreText();
+
+    //EventBus.get().sendEvent(GameEvent.SCORE_CHANGED, new ScoreChangeEventPayload(scoreValue));
+  }
+
+  private void decrementScore(DecrementScoreEventPayload payload) {
+    scoreValue -= payload.decrementAmmount;
+    updateScoreText();
+  }
+
+  private void updateScoreText() {
+    updateText(SCORE_TEXT_PREFIX + scoreValue);
+    if (scoreValue < 0 && !currentTextColor().equals(NEGATIVE_SCORE_COLOR)) {
+      updateColor(NEGATIVE_SCORE_COLOR);
+    } else if (scoreValue >= 0 && !currentTextColor().equals(POSITIVE_SCORE_COLOR)) {
+      updateColor(POSITIVE_SCORE_COLOR);
     }
-
-    @Override
-    public void onSaveGame(SaveGame saveGame) {
-        super.onSaveGame(saveGame);
-        saveGame.score = scoreValue;
-    }
-
-    @Override
-    public void onLoadGame(SaveGame saveGame) {
-        super.onLoadGame(saveGame);
-        setScoreOnLoadGame(saveGame.score);
-    }
-
-    @Override
-    String getInitialText() {
-        return SCORE_TEXT_PREFIX + "-------";
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.get().unSubscribe(GameEvent.INCREMENT_SCORE, this).unSubscribe(GameEvent.DECREMENT_SCORE, this);
-    }
-
-    @Override
-    int[] getTextPosition() {
-        return new int[] {20, 20};
-    }
-
-    @Override
-    int getMaxStringLength() {
-        return 30;
-    }
-
-    @Override
-    AndengineColor getInitialTextColor() {
-        return AndengineColor.GREEN;
-    }
-
-    public int getScore() {
-        return scoreValue;
-    }
-
-    @Override
-    public void onEvent(GameEvent event, EventPayload payload) {
-        switch (event) {
-            case DECREMENT_SCORE:
-                decrementScore((DecrementScoreEventPayload) payload);
-                break;
-            case INCREMENT_SCORE:
-                incrementScore((IncrementScoreEventPayload) payload);
-                break;
-        }
-    }
-
-    private void setScoreOnLoadGame(int loadedScore) {
-        scoreValue = loadedScore;
-        updateScoreText();
-
-        //EventBus.get().sendEvent(GameEvent.SCORE_CHANGED, new ScoreChangeEventPayload(scoreValue));
-    }
-
-    private void incrementScore(IncrementScoreEventPayload payload) {
-        scoreValue += payload.incrementAmmount;
-        updateScoreText();
-
-        //EventBus.get().sendEvent(GameEvent.SCORE_CHANGED, new ScoreChangeEventPayload(scoreValue));
-    }
-
-    private void decrementScore(DecrementScoreEventPayload payload) {
-        scoreValue -= payload.decrementAmmount;
-        updateScoreText();
-    }
-
-    private void updateScoreText() {
-        updateText(SCORE_TEXT_PREFIX + scoreValue);
-        if (scoreValue < 0 && !currentTextColor().equals(NEGATIVE_SCORE_COLOR)) {
-            updateColor(NEGATIVE_SCORE_COLOR);
-        } else if (scoreValue >= 0 && !currentTextColor().equals(POSITIVE_SCORE_COLOR)) {
-            updateColor(POSITIVE_SCORE_COLOR);
-        }
-    }
+  }
 }
