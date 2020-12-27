@@ -6,7 +6,6 @@ import android.graphics.Point;
 import android.graphics.RectF;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.DisplayCutout;
@@ -22,12 +21,17 @@ public class ScreenUtils {
     public final int heightPx;
     public final int widthDp;
     public final int heightDp;
+    public final int safeInsetTopHeightPx;
+    public final int safeInsetTopHeightDp;
 
-    public ScreenSize(int widthPx, int heightPx, int widthDp, int heightDp) {
+    public ScreenSize(int widthPx, int heightPx, int widthDp, int heightDp,
+        int safeInsetTopHeightPx, int safeInsetTopHeightDp) {
       this.widthPx = widthPx;
       this.heightPx = heightPx;
       this.widthDp = widthDp;
       this.heightDp = heightDp;
+      this.safeInsetTopHeightPx = safeInsetTopHeightPx;
+      this.safeInsetTopHeightDp = safeInsetTopHeightDp;
     }
   }
 
@@ -42,12 +46,13 @@ public class ScreenUtils {
     if (Integer.valueOf(VERSION.SDK_INT) < 13) {
       Display display = activity.getWindowManager().getDefaultDisplay();
       sScreenSize = new ScreenSize(display.getWidth(), display.getHeight(),
-          pxToDp(display.getWidth(), activity), pxToDp(display.getHeight(), activity));
+          pxToDp(display.getWidth(), activity), pxToDp(display.getHeight(), activity), 0, 0);
     } else {
       Point size = getAppWindowSize(activity);
 
       int screenWidthPx;
       int screenHeightPx;
+      int safeInsetTopHeightPx = 0;
       screenWidthPx = size.x;
       screenHeightPx = size.y;
 
@@ -55,11 +60,16 @@ public class ScreenUtils {
         DisplayCutout displayCutout = activity.getWindowManager().getDefaultDisplay().getCutout();
         if (displayCutout != null) {
           screenHeightPx += displayCutout.getSafeInsetTop() + displayCutout.getSafeInsetBottom();
+          safeInsetTopHeightPx = displayCutout.getSafeInsetTop();
         }
       }
 
-      sScreenSize = new ScreenSize(screenWidthPx, screenHeightPx, pxToDp(screenWidthPx, activity),
-          pxToDp(screenHeightPx, activity));
+      sScreenSize = new ScreenSize(
+          screenWidthPx, screenHeightPx,
+          pxToDp(screenWidthPx, activity),
+          pxToDp(screenHeightPx, activity),
+          safeInsetTopHeightPx,
+          pxToDp(safeInsetTopHeightPx, activity));
     }
 
     sScreenRect = new RectF(0, 0, sScreenSize.widthPx, sScreenSize.heightPx);

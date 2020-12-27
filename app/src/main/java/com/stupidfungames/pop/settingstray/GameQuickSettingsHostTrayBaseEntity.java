@@ -31,7 +31,7 @@ public class GameQuickSettingsHostTrayBaseEntity extends
     return new Spec(
         get(Context.class),
         4,
-        ScreenUtils.getSreenSize().heightDp - 22,
+        ScreenUtils.getSreenSize().safeInsetTopHeightDp + 16,
         ScreenUtils.getSreenSize().widthDp,
         0.2f);
   }
