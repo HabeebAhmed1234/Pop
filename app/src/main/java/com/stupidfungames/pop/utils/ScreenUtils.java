@@ -40,9 +40,9 @@ public class ScreenUtils {
   private static IShape sScreenShape;
 
   /**
-   * Initializes when onCreateEngineOptions is called
+   * Initializes when initialize is called
    */
-  public static void onCreateEngineOptions(Activity activity) {
+  public static void initialize(Activity activity) {
     if (Integer.valueOf(VERSION.SDK_INT) < 13) {
       Display display = activity.getWindowManager().getDefaultDisplay();
       sScreenSize = new ScreenSize(display.getWidth(), display.getHeight(),
@@ -88,7 +88,7 @@ public class ScreenUtils {
   public static ScreenSize getSreenSize() {
     if (sScreenSize == null) {
       throw new IllegalStateException(
-          "Cannot get screen size without ScreenUtils.onCreateEngineOptions being called");
+          "Cannot get screen size without ScreenUtils.initialize being called");
     }
     return sScreenSize;
   }
@@ -96,7 +96,7 @@ public class ScreenUtils {
   public static RectF getScreenRect() {
     if (sScreenRect == null) {
       throw new IllegalStateException(
-          "Cannot get screen rect without ScreenUtils.onCreateEngineOptions being called");
+          "Cannot get screen rect without ScreenUtils.initialize being called");
     }
     return sScreenRect;
   }

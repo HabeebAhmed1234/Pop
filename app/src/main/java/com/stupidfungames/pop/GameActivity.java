@@ -185,7 +185,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
   @Override
   public EngineOptions onCreateEngineOptions() {
-    ScreenUtils.onCreateEngineOptions(this);
+    ScreenUtils.initialize(this);
     ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
     camera = new ShakeCamera(0, 0, screenSize.widthPx, screenSize.heightPx);
     final EngineOptions engineOptions = new EngineOptions(

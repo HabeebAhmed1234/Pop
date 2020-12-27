@@ -92,10 +92,12 @@ public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
   }
 
   public void onPause() {
-    mediaPlayer.stop();
-    mediaPlayer.setOnPreparedListener(null);
-    mediaPlayer.setOnCompletionListener(null);
-    mediaPlayer.release();
+    if (mediaPlayer != null) {
+      mediaPlayer.stop();
+      mediaPlayer.setOnPreparedListener(null);
+      mediaPlayer.setOnCompletionListener(null);
+      mediaPlayer.release();
+    }
     mediaPlayer = null;
     isPaused = false;
   }

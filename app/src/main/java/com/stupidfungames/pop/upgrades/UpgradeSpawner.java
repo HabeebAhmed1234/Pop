@@ -152,9 +152,11 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
     addToSceneWithTouch(upgradeSprite, body,
         get(UpgradeTouchFactoryEntity.class).getNewTouchListener(), false);
 
-    float[] upgradeSpritePos = upgradeSprite.getCenter();
-    get(GameTooltipsEntity.class)
-        .maybeShowTooltip(TooltipId.UPGRADE_TOOLTIP, upgradeSpritePos[0], upgradeSpritePos[1]);
+    if (ScreenUtils.isInScreen(upgradeSprite)) {
+      float[] upgradeSpritePos = upgradeSprite.getCenter();
+      get(GameTooltipsEntity.class)
+          .maybeShowTooltip(TooltipId.UPGRADE_TOOLTIP, upgradeSpritePos[0], upgradeSpritePos[1]);
+    }
   }
 
   private void onIconUnlocked(
