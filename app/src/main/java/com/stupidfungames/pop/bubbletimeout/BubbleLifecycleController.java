@@ -5,5 +5,5 @@ interface BubbleLifecycleController {
     /**
      * The bubble has popped.
      */
-    void onDestroy();
+    void onLifeycleControllersDestroy();
 }

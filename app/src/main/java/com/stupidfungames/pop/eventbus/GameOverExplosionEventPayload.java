@@ -1,15 +1,12 @@
 package com.stupidfungames.pop.eventbus;
 
-import org.andengine.entity.sprite.Sprite;
+import org.jbox2d.common.Vec2;
 
 public class GameOverExplosionEventPayload implements EventPayload {
 
-    /**
-     * The bubble which exploded
-     */
-    public final Sprite bubble;
+  public final Vec2 explosionLocationCenter;
 
-    public GameOverExplosionEventPayload(Sprite bubble) {
-        this.bubble = bubble;
-    }
+  public GameOverExplosionEventPayload(Vec2 explosionLocationCenter) {
+    this.explosionLocationCenter = explosionLocationCenter;
+  }
 }

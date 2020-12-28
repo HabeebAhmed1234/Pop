@@ -1,5 +1,6 @@
 package com.stupidfungames.pop.bubbletimeout;
 
+import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import java.util.HashSet;
@@ -11,19 +12,20 @@ import org.andengine.entity.sprite.Sprite;
  * Stores all of the {@link BubbleLifecycleController}s needed to update the life of a bubble. Gets
  * set within the userdata of a bubble sprite.
  */
-class BubbleLifecycleControllersManager {
+class BubbleLifecycleControllersManager extends BaseEntity {
 
   private final Set<BubbleLifecycleController> lifecycleControllers = new HashSet<>();
   private final BubbleLifeCycleStateMachine stateMachine;
 
   public BubbleLifecycleControllersManager(GameSoundsManager soundsManager, Engine engine,
-      Sprite bubbleSprite) {
+      Sprite bubbleSprite, BaseEntity parent) {
+    super(parent);
     stateMachine = new BubbleLifeCycleStateMachine();
     lifecycleControllers
         .add(new BubbleBlinkAnimationManager(bubbleSprite, stateMachine, soundsManager));
     lifecycleControllers
         .add(new BubbleLifecycleTransitionDriver(bubbleSprite, engine, stateMachine));
-    lifecycleControllers.add(new BubbleLifecycleGameOverEntity(bubbleSprite, stateMachine));
+    lifecycleControllers.add(new BubbleLifecycleGameOverEntity(bubbleSprite, stateMachine, this));
   }
 
   /**
@@ -36,10 +38,9 @@ class BubbleLifecycleControllersManager {
     }
   }
 
-  public void onDestroy() {
+  public void onLifeycleControllersDestroy() {
     for (BubbleLifecycleController controller : lifecycleControllers) {
-      controller.onDestroy();
+      controller.onLifeycleControllersDestroy();
     }
-
   }
 }

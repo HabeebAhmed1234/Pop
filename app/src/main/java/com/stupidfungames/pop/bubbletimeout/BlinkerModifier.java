@@ -12,7 +12,7 @@ import javax.microedition.khronos.opengles.GL10;
  * Splines between the given alpha values for the specified duration with an equal amount of time
  * between each transition.
  */
-class BlinkerModifier extends BaseDurationModifier<IEntity> implements IEntityModifier{
+class BlinkerModifier extends BaseDurationModifier<IEntity> implements IEntityModifier {
 
     /**
      * Callback everytime we start a new segment. First callback is at 1 last callback is

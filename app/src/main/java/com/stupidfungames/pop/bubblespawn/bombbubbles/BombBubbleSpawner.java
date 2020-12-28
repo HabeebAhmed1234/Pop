@@ -45,7 +45,9 @@ public class BombBubbleSpawner extends BaseEntity implements Subscriber {
   @Override
   protected void createBindings(Binder binder) {
     super.createBindings(binder);
-    binder.bind(BombBubbleSpritePool.class, new BombBubbleSpritePool(this));
+    binder
+        .bind(BombBubbleExpiredListenerEntity.class, new BombBubbleExpiredListenerEntity(this))
+        .bind(BombBubbleSpritePool.class, new BombBubbleSpritePool(this));
   }
 
   @Override

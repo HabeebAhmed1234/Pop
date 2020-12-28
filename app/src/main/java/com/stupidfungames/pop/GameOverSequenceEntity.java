@@ -8,6 +8,7 @@ import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.GameOverExplosionEventPayload;
 import com.stupidfungames.pop.hudentities.ScoreHudEntity;
+import com.stupidfungames.pop.physics.util.Vec2Pool;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import com.stupidfungames.pop.resources.sounds.SoundId;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
@@ -62,10 +63,10 @@ public class GameOverSequenceEntity extends BaseEntity {
       return;
     }
     isGameOverStarted = true;
-    final Sprite bubble = payload.bubble;
-
-    IParticleEmitter emitter = new PointParticleEmitter(bubble.getX() + bubble.getWidthScaled() / 2,
-        bubble.getY() + bubble.getHeightScaled() / 2);
+    IParticleEmitter emitter = new PointParticleEmitter(
+        payload.explosionLocationCenter.x,
+        payload.explosionLocationCenter.y);
+    Vec2Pool.recycle(payload.explosionLocationCenter);
     final ParticleSystem explosionParticleSystem = new BatchedSpriteParticleSystem(
         emitter,
         RATE_MIN,
@@ -96,10 +97,6 @@ public class GameOverSequenceEntity extends BaseEntity {
         onGameover();
       }
     }));
-
-    if (bubble.isVisible()) {
-      get(BubbleSpritePool.class).recycle(bubble);
-    }
   }
 
   private void onGameover() {

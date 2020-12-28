@@ -47,7 +47,7 @@ class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, List
   }
 
   @Override
-  public void onDestroy() {
+  public void onLifeycleControllersDestroy() {
     removeListeners();
   }
 

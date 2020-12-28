@@ -30,7 +30,7 @@ public class BubblesLifecycleManagerEntity extends BaseEntity implements EventBu
     super.onDestroy();
     EventBus.get().unSubscribe(GameEvent.BUBBLE_SPAWNED, this);
     for (BubbleLifecycleControllersManager manager : controllersManagerMap.values()) {
-      manager.onDestroy();
+      manager.onLifeycleControllersDestroy();
     }
     controllersManagerMap.clear();
   }
@@ -48,7 +48,8 @@ public class BubblesLifecycleManagerEntity extends BaseEntity implements EventBu
             new BubbleLifecycleControllersManager(
                 get(GameSoundsManager.class),
                 engine,
-                bubbleSprite));
+                bubbleSprite,
+                this));
       }
     }
   }

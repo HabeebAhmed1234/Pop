@@ -1,6 +1,11 @@
 package com.stupidfungames.pop.bubblespawn.bombbubbles;
 
+import static com.stupidfungames.pop.GameConstants.BOMB_BUBBLE_LIFESPAN_SECONDS;
+import static com.stupidfungames.pop.GameConstants.BOMB_STATES_DURATION_SECONDS;
+
+import android.content.Context;
 import com.stupidfungames.pop.binder.BinderEnity;
+import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleSize;
 import com.stupidfungames.pop.fixturedefdata.BombBubbleEntityUserData;
 import com.stupidfungames.pop.pool.BaseSpriteInitializerParams;
 import com.stupidfungames.pop.pool.BaseSpriteItemInitializer;
@@ -14,7 +19,9 @@ import org.andengine.util.color.AndengineColor;
 
 public class BombBubbleSpritePool extends ItemPool {
 
-  private static final AndengineColor STARTING_BOMB_BUBBLE_COLOR = AndengineColor.RED;
+  public static final AndengineColor DIFFUSE_BOMB_COLOUR = AndengineColor.GREEN;
+  public static final AndengineColor EXPLODING_BOMB_COLOUR = AndengineColor.RED;
+  private final float BOMB_BUBBLE_SIZE_PX;
 
   private final ItemInitializer<Sprite, BaseSpriteInitializerParams> initializer = new BaseSpriteItemInitializer<BaseSpriteInitializerParams>() {
     @Override
@@ -25,20 +32,30 @@ public class BombBubbleSpritePool extends ItemPool {
           get(GameTexturesManager.class).getTextureRegion(TextureId.BOMB_BUBBLE),
           vertexBufferObjectManager);
       sprite.setUserData(new BombBubbleEntityUserData());
-      sprite.setColor(STARTING_BOMB_BUBBLE_COLOR);
+      sprite.setColor(EXPLODING_BOMB_COLOUR);
       clipBubblePosition(sprite);
+      sprite.setScale(BOMB_BUBBLE_SIZE_PX / sprite.getWidth());
       return sprite;
+    }
+
+    @Override
+    public void update(Sprite sprite, BaseSpriteInitializerParams params) {
+      super.update(sprite, params);
+      sprite.setColor(EXPLODING_BOMB_COLOUR);
+      registerColorModifier(sprite);
     }
 
     @Override
     public void onRecycle(Sprite item) {
       super.onRecycle(item);
+      item.clearEntityModifiers();
       removePhysics(item);
     }
   };
 
   public BombBubbleSpritePool(BinderEnity parent) {
     super(parent);
+    BOMB_BUBBLE_SIZE_PX = BubbleSize.MEDIUM.getSizePx(get(Context.class));
   }
 
   @Override
@@ -54,5 +71,15 @@ public class BombBubbleSpritePool extends ItemPool {
     if (bubbleSprite.getX() + bubbleWidth > ScreenUtils.getSreenSize().widthPx) {
       bubbleSprite.setX(ScreenUtils.getSreenSize().widthPx - bubbleWidth);
     }
+  }
+
+  private void registerColorModifier(Sprite bombBubble) {
+    bombBubble.registerEntityModifier(
+        new BombStateToggleEntityModifier(
+            BOMB_STATES_DURATION_SECONDS,
+            BOMB_BUBBLE_LIFESPAN_SECONDS,
+            EXPLODING_BOMB_COLOUR,
+            DIFFUSE_BOMB_COLOUR,
+            get(BombBubbleExpiredListenerEntity.class)));
   }
 }
