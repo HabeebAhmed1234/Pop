@@ -72,7 +72,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
     MEDIUM(120),
     SMALL(80);
 
-    private final float sizeDp;
+    public final float sizeDp;
     private final Map<BubbleSize, Float> sizeToPxMap = new HashMap<>();
 
     BubbleSize(final float dp) {

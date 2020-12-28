@@ -2,6 +2,7 @@ package com.stupidfungames.pop.bubblespawn.bombbubbles;
 
 import static com.stupidfungames.pop.GameConstants.BOMB_BUBBLE_LIFESPAN_SECONDS;
 import static com.stupidfungames.pop.GameConstants.BOMB_STATES_DURATION_SECONDS;
+import static com.stupidfungames.pop.utils.ScreenUtils.dpToPx;
 
 import android.content.Context;
 import com.stupidfungames.pop.binder.BinderEnity;
@@ -21,7 +22,8 @@ public class BombBubbleSpritePool extends ItemPool {
 
   public static final AndengineColor DIFFUSE_BOMB_COLOUR = AndengineColor.GREEN;
   public static final AndengineColor EXPLODING_BOMB_COLOUR = AndengineColor.RED;
-  private final float BOMB_BUBBLE_SIZE_PX;
+  public static final float BOMB_BUBBLE_SIZE_DP = BubbleSize.MEDIUM.sizeDp;
+  private final float bombBubbleSizePx;
 
   private final ItemInitializer<Sprite, BaseSpriteInitializerParams> initializer = new BaseSpriteItemInitializer<BaseSpriteInitializerParams>() {
     @Override
@@ -34,7 +36,7 @@ public class BombBubbleSpritePool extends ItemPool {
       sprite.setUserData(new BombBubbleEntityUserData());
       sprite.setColor(EXPLODING_BOMB_COLOUR);
       clipBubblePosition(sprite);
-      sprite.setScale(BOMB_BUBBLE_SIZE_PX / sprite.getWidth());
+      sprite.setScale(bombBubbleSizePx / sprite.getWidth());
       return sprite;
     }
 
@@ -55,7 +57,7 @@ public class BombBubbleSpritePool extends ItemPool {
 
   public BombBubbleSpritePool(BinderEnity parent) {
     super(parent);
-    BOMB_BUBBLE_SIZE_PX = BubbleSize.MEDIUM.getSizePx(get(Context.class));
+    bombBubbleSizePx = dpToPx(BOMB_BUBBLE_SIZE_DP, get(Context.class));
   }
 
   @Override

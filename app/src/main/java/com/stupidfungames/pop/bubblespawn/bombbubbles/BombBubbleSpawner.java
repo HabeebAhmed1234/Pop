@@ -47,6 +47,7 @@ public class BombBubbleSpawner extends BaseEntity implements Subscriber {
     super.createBindings(binder);
     binder
         .bind(BombBubbleExpiredListenerEntity.class, new BombBubbleExpiredListenerEntity(this))
+        .bind(BombBubbleTouchFactoryEntity.class, new BombBubbleTouchFactoryEntity(this))
         .bind(BombBubbleSpritePool.class, new BombBubbleSpritePool(this));
   }
 
@@ -81,7 +82,10 @@ public class BombBubbleSpawner extends BaseEntity implements Subscriber {
             BodyType.DYNAMIC,
             bubbleFixtureDef);
     body.setGravityScale(BUBBLE_GRAVITY_SCALE);
-    addToScene(bubbleSprite, body);
+    addToSceneWithTouch(
+        bubbleSprite,
+        body,
+        get(BombBubbleTouchFactoryEntity.class).getBombBubbleTouchListener());
   }
 
   @Override
