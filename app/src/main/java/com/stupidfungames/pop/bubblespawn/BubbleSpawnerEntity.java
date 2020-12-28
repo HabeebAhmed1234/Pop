@@ -12,7 +12,7 @@ import com.stupidfungames.pop.GameFixtureDefs;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpritePool.BubbleSpritePoolParams;
-import com.stupidfungames.pop.bubblespawn.bombbubbles.BombBubbleSpawner;
+import com.stupidfungames.pop.bubblespawn.bombbubbles.BombBubbleSpawnerEntity;
 import com.stupidfungames.pop.collision.CollisionFilters;
 import com.stupidfungames.pop.entitymatchers.BubblesEntityMatcher;
 import com.stupidfungames.pop.eventbus.BubbleSpawnedEventPayload;
@@ -117,7 +117,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
                     numBubbles,
                     BubbleSize.LARGE.getSizePx(get(Context.class)));
             for (Pair<Float, Float> position : startingBubblePositions) {
-              if (!get(BombBubbleSpawner.class)
+              if (!get(BombBubbleSpawnerEntity.class)
                   .maybeSpawnBombBubble(position.first, position.second)) {
                 spawnStartingBubble(position.first, position.second);
               }
@@ -142,7 +142,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
   @Override
   protected void createBindings(Binder binder) {
     super.createBindings(binder);
-    binder.bind(BombBubbleSpawner.class, new BombBubbleSpawner(this));
+    binder.bind(BombBubbleSpawnerEntity.class, new BombBubbleSpawnerEntity(this));
   }
 
   @Override

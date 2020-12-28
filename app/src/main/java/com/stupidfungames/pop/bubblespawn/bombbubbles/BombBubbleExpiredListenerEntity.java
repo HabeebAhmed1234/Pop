@@ -6,6 +6,7 @@ import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.GameOverExplosionEventPayload;
 import com.stupidfungames.pop.physics.util.Vec2Pool;
+import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.sprite.Sprite;
 
@@ -17,13 +18,16 @@ public class BombBubbleExpiredListenerEntity extends BaseEntity implements
   }
 
   @Override
-  public void onBombBubbleExpired(IEntity bombBubbleSprite) {
-    if (bombBubbleSprite.isVisible()) {
-      get(BombBubbleSpritePool.class).recycle(bombBubbleSprite);
+  public void onBombBubbleExpired(IEntity bombBubbleEntity) {
+    Sprite sprite = (Sprite) bombBubbleEntity;
+    if (ScreenUtils.isInScreen(sprite)) {
+      EventBus.get().sendEvent(
+          GameEvent.GAME_OVER_ON_EXPLOSION_EVENT,
+          new GameOverExplosionEventPayload(
+              Vec2Pool.obtain(sprite.getCenter())));
     }
-    EventBus.get().sendEvent(
-        GameEvent.GAME_OVER_ON_EXPLOSION_EVENT,
-        new GameOverExplosionEventPayload(
-            Vec2Pool.obtain(((Sprite) bombBubbleSprite).getCenter())));
+    if (bombBubbleEntity.isVisible()) {
+      get(BombBubbleSpritePool.class).recycle(bombBubbleEntity);
+    }
   }
 }

@@ -33,6 +33,7 @@ public class GameConstants {
   public static final float MAX_SPAWN_INTERVAL_SECONDS = 3.5f;
   public static final float MIN_SPAWN_INTERVAL_SECONDS = 0.5f;
 
+  public static final float BOMB_BUBBLE_SPAWN_DIFFICULTY_THRESHOLD = 0.5f;
   // The amount of time a bomb bubble is green/red
   public static final float BOMB_STATES_DURATION_SECONDS = 1f;
   // The amount of time before a bomb bubble explodes and ends the game

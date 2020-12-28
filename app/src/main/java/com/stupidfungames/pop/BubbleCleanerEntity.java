@@ -25,5 +25,4 @@ public class BubbleCleanerEntity extends BaseCleanerEntity {
   protected void clean(IEntity entity) {
     get(BubbleSpritePool.class).recycle(entity);
   }
-
 }

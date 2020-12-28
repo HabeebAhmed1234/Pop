@@ -1,5 +1,6 @@
 package com.stupidfungames.pop.bubblespawn.bombbubbles;
 
+import static com.stupidfungames.pop.GameConstants.BOMB_BUBBLE_SPAWN_DIFFICULTY_THRESHOLD;
 import static com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BUBBLE_GRAVITY_SCALE;
 import static com.stupidfungames.pop.eventbus.GameEvent.GAME_PROGRESS_CHANGED;
 
@@ -26,19 +27,19 @@ import org.jbox2d.dynamics.FixtureDef;
  * Gets delegated to by the {@link BubbleSpawnerEntity} to maybe spawn a BubbleSize.LARGE or smaller
  * bomb bubble in the given location.
  */
-public class BombBubbleSpawner extends BaseEntity implements Subscriber {
+public class BombBubbleSpawnerEntity extends BaseEntity implements Subscriber {
 
   // Value to define how much smaller as a percentage the bubble physics circle will be from the sprite
   public static final float BOMB_BUBBLE_BODY_SCALE_FACTOR = 0.8f;
   // The probability of a bomb spawning at max difficulty
-  public static final float MAX_BOMB_BUBBLE_PROBABILITY = 0.4f;
+  public static final float MAX_BOMB_BUBBLE_PROBABILITY = 0.2f;
   // The probability of a bomb spawning at min difficulty
-  public static final float MIN_BOMB_BUBBLE_PROBABILITY = 0.1f;
+  public static final float MIN_BOMB_BUBBLE_PROBABILITY = 0.05f;
 
   private float currentBombBubbleSpawnChance = MIN_BOMB_BUBBLE_PROBABILITY;
   private final Random random = new Random();
 
-  public BombBubbleSpawner(BinderEnity parent) {
+  public BombBubbleSpawnerEntity(BinderEnity parent) {
     super(parent);
   }
 
@@ -48,7 +49,8 @@ public class BombBubbleSpawner extends BaseEntity implements Subscriber {
     binder
         .bind(BombBubbleExpiredListenerEntity.class, new BombBubbleExpiredListenerEntity(this))
         .bind(BombBubbleTouchFactoryEntity.class, new BombBubbleTouchFactoryEntity(this))
-        .bind(BombBubbleSpritePool.class, new BombBubbleSpritePool(this));
+        .bind(BombBubbleSpritePool.class, new BombBubbleSpritePool(this))
+        .bind(BombBubbleCleanerEntity.class, new BombBubbleCleanerEntity(this));
   }
 
   @Override
@@ -93,8 +95,11 @@ public class BombBubbleSpawner extends BaseEntity implements Subscriber {
     if (event == GAME_PROGRESS_CHANGED) {
       GameProgressEventPayload gameProgressEventPayload = (GameProgressEventPayload) payload;
       currentBombBubbleSpawnChance =
-          (MAX_BOMB_BUBBLE_PROBABILITY - MIN_BOMB_BUBBLE_PROBABILITY)
-              * gameProgressEventPayload.percentProgress + MIN_BOMB_BUBBLE_PROBABILITY;
+          gameProgressEventPayload.percentProgress >= BOMB_BUBBLE_SPAWN_DIFFICULTY_THRESHOLD
+              ? (MAX_BOMB_BUBBLE_PROBABILITY - MIN_BOMB_BUBBLE_PROBABILITY) * (
+              gameProgressEventPayload.percentProgress - BOMB_BUBBLE_SPAWN_DIFFICULTY_THRESHOLD)
+              + MIN_BOMB_BUBBLE_PROBABILITY
+              : 0;
     }
   }
 }
