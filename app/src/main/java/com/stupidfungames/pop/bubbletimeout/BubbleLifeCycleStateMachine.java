@@ -40,17 +40,17 @@ class BubbleLifeCycleStateMachine extends BaseStateMachine<BubbleLifeCycleStateM
     /**
      * The bubble has started blinking slowly
      */
-    BLINKING_SLOWLY(2f),
+    BLINKING_SLOWLY(3f),
 
     /**
      * The bubble blinking has sped up
      */
-    BLINKING_FAST(1f),
+    BLINKING_FAST(2f),
 
     /**
      * The bubble is about to explode
      */
-    BLINKING_IMMINENT(0.5f),
+    BLINKING_IMMINENT(1f),
 
     /**
      * The bubble has exploded

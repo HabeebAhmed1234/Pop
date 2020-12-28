@@ -4,7 +4,7 @@ import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.fixturedefdata.TurretBulletUserData;
 import com.stupidfungames.pop.pool.BaseSpriteItemInitializer;
 import com.stupidfungames.pop.pool.ItemPool;
-import com.stupidfungames.pop.pool.SpriteInitializerParams;
+import com.stupidfungames.pop.pool.BaseSpriteInitializerParams;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import org.andengine.entity.sprite.Sprite;
@@ -15,10 +15,10 @@ import org.andengine.util.color.AndengineColor;
  */
 public class TurretBulletSpritePool extends ItemPool {
 
-  private final ItemInitializer initializer = new BaseSpriteItemInitializer<SpriteInitializerParams>() {
+  private final ItemInitializer initializer = new BaseSpriteItemInitializer<BaseSpriteInitializerParams>() {
 
     @Override
-    public Sprite createNew(SpriteInitializerParams params) {
+    public Sprite createNew(BaseSpriteInitializerParams params) {
       Sprite sprite = new Sprite(
           params.x,
           params.y,

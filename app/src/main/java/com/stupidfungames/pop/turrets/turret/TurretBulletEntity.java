@@ -17,7 +17,7 @@ import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
 import com.stupidfungames.pop.fixturedefdata.TurretBulletUserData;
 import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.physics.util.Vec2Pool;
-import com.stupidfungames.pop.pool.SpriteInitializerParams;
+import com.stupidfungames.pop.pool.BaseSpriteInitializerParams;
 import com.stupidfungames.pop.turrets.BulletExplosionsEffectEntity;
 import com.stupidfungames.pop.turrets.TurretUtils;
 import com.stupidfungames.pop.utils.CoordinateConversionUtil;
@@ -97,7 +97,7 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
         turretCannonSprite.getHeightScaled() / 2};
     turretCannonSprite.getLocalToSceneTransformation().transform(turretCannonTipLocalPosition);
     bulletSprite = (Sprite) get(TurretBulletSpritePool.class).get(
-        new SpriteInitializerParams(turretCannonTipLocalPosition[0],
+        new BaseSpriteInitializerParams(turretCannonTipLocalPosition[0],
             turretCannonTipLocalPosition[1]));
 
     id = ((TurretBulletUserData) bulletSprite.getUserData()).getId();

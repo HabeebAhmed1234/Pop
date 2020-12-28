@@ -9,8 +9,10 @@ import android.util.Pair;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.BubbleTouchFactoryEntity;
 import com.stupidfungames.pop.GameFixtureDefs;
+import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
-import com.stupidfungames.pop.bubblespawn.BubbleSpritePool.SpritePoolParams;
+import com.stupidfungames.pop.bubblespawn.BubbleSpritePool.BubbleSpritePoolParams;
+import com.stupidfungames.pop.bubblespawn.bombbubbles.BombBubbleSpawner;
 import com.stupidfungames.pop.collision.CollisionFilters;
 import com.stupidfungames.pop.entitymatchers.BubblesEntityMatcher;
 import com.stupidfungames.pop.eventbus.BubbleSpawnedEventPayload;
@@ -115,7 +117,10 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
                     numBubbles,
                     BubbleSize.LARGE.getSizePx(get(Context.class)));
             for (Pair<Float, Float> position : startingBubblePositions) {
-              spawnStartingBubble(position.first, position.second);
+              if (!get(BombBubbleSpawner.class)
+                  .maybeSpawnBombBubble(position.first, position.second)) {
+                spawnStartingBubble(position.first, position.second);
+              }
             }
           }
           engine.registerUpdateHandler(new TimerHandler(bubbleSpawnInterval, false, this));
@@ -132,6 +137,12 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         .subscribe(GameEvent.SPAWN_INTERVAL_CHANGED, this, true)
         .subscribe(GameEvent.ICON_UNLOCKED, this, true);
     engine.registerUpdateHandler(bubbleSpawnTimerHandler);
+  }
+
+  @Override
+  protected void createBindings(Binder binder) {
+    super.createBindings(binder);
+    binder.bind(BombBubbleSpawner.class, new BombBubbleSpawner(this));
   }
 
   @Override
@@ -161,7 +172,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
       BubbleSize bubbleSize) {
     //add object
     final Sprite bubbleSprite = (Sprite) get(BubbleSpritePool.class)
-        .get(new SpritePoolParams(x, y, bubbleType, bubbleSize));
+        .get(new BubbleSpritePoolParams(x, y, bubbleType, bubbleSize));
 
     final FixtureDef bubbleFixtureDef = GameFixtureDefs.BASE_BUBBLE_FIXTURE_DEF;
     bubbleFixtureDef.setFilter(CollisionFilters.BUBBLE_FILTER);

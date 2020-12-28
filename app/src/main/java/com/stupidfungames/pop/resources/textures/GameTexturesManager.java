@@ -70,6 +70,7 @@ public class GameTexturesManager extends BaseEntity {
   private void initImageResources() {
     IMAGE_RESOURCES = Arrays.asList(
         new ImageResource(TextureId.BALL, "ball.png", 300, 300),
+        new ImageResource(TextureId.BOMB_BUBBLE, "bomb_bubble.png", 300, 300),
         new ImageResource(TextureId.CHAIN_LINK, "chain_link.png", 150, 75),
         new ImageResource(TextureId.BALL_AND_CHAIN_ICON, "ball_and_chain_icon.png", 300, 300),
         new ImageResource(TextureId.LINE, "line.png", 110, 30),

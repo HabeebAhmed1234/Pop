@@ -10,7 +10,7 @@ import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
 import com.stupidfungames.pop.pool.BaseSpriteItemInitializer;
 import com.stupidfungames.pop.pool.ItemPool;
-import com.stupidfungames.pop.pool.SpriteInitializerParams;
+import com.stupidfungames.pop.pool.BaseSpriteInitializerParams;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.utils.ScreenUtils;
@@ -19,12 +19,12 @@ import org.andengine.entity.sprite.Sprite;
 
 public class BubbleSpritePool extends ItemPool {
 
-  public static class SpritePoolParams extends SpriteInitializerParams {
+  public static class BubbleSpritePoolParams extends BaseSpriteInitializerParams {
 
     public final BubbleType bubbleType;
     public final BubbleSize bubbleSize;
 
-    public SpritePoolParams(
+    public BubbleSpritePoolParams(
         float x,
         float y,
         BubbleType bubbleType,
@@ -35,9 +35,9 @@ public class BubbleSpritePool extends ItemPool {
     }
   }
 
-  private final ItemInitializer<Sprite, SpritePoolParams> initializer = new BaseSpriteItemInitializer<SpritePoolParams>() {
+  private final ItemInitializer<Sprite, BubbleSpritePoolParams> initializer = new BaseSpriteItemInitializer<BubbleSpritePoolParams>() {
     @Override
-    public Sprite createNew(SpritePoolParams params) {
+    public Sprite createNew(BubbleSpritePoolParams params) {
       Sprite sprite = new Sprite(
           params.x,
           params.y,
@@ -54,7 +54,7 @@ public class BubbleSpritePool extends ItemPool {
     }
 
     @Override
-    public void update(Sprite item, SpritePoolParams params) {
+    public void update(Sprite item, BubbleSpritePoolParams params) {
       super.update(item, params);
       adjustBubbleSprite(item, params.bubbleSize, params.bubbleType);
       updateBubbleEntityUserData(item, params.bubbleSize, params.bubbleType);

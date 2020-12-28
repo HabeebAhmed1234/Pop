@@ -2,7 +2,6 @@ package com.stupidfungames.pop.bubblepopper;
 
 import static com.stupidfungames.pop.eventbus.GameEvent.BUBBLE_POPPED;
 
-import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameAnimationManager;
 import com.stupidfungames.pop.GameAnimationManager.AnimationListener;
@@ -13,15 +12,13 @@ import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleSize;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleType;
 import com.stupidfungames.pop.bubblespawn.BubbleSpritePool;
 import com.stupidfungames.pop.eventbus.BubblePoppedEventPayload;
-import com.stupidfungames.pop.eventbus.BubbleTouchedEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
-import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.IncrementScoreEventPayload;
 import com.stupidfungames.pop.fixturedefdata.BaseEntityUserData;
 import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
 import com.stupidfungames.pop.physics.util.Vec2Pool;
-import com.stupidfungames.pop.pool.SpriteInitializerParams;
+import com.stupidfungames.pop.pool.BaseSpriteInitializerParams;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import com.stupidfungames.pop.resources.sounds.SoundId;
 import com.stupidfungames.pop.utils.BubblePhysicsUtil;
@@ -125,7 +122,7 @@ public class BubblePopperEntity extends BaseEntity {
   private void showScoretickerText(float x, float y) {
     final ScoreTickerSpritePool scoreTickerSpritePool = get(ScoreTickerSpritePool.class);
     final Text scorePlus10Text = (Text) scoreTickerSpritePool
-        .get(new SpriteInitializerParams(x, y));
+        .get(new BaseSpriteInitializerParams(x, y));
     if (!scorePlus10Text.isAttached()) {
       addToScene(scorePlus10Text);
     }

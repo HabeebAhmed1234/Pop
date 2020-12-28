@@ -8,6 +8,7 @@ public enum TextureId {
   WHITE_PIXEL,
   BACKGROUND,
   BALL,
+  BOMB_BUBBLE,
   CHAIN_LINK,
   LINE,
   BULLET,

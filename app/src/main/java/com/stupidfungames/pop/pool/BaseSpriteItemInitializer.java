@@ -4,7 +4,7 @@ import com.stupidfungames.pop.fixturedefdata.BaseEntityUserData;
 import com.stupidfungames.pop.pool.ItemPool.ItemInitializer;
 import org.andengine.entity.sprite.Sprite;
 
-public class BaseSpriteItemInitializer<P extends SpriteInitializerParams> implements
+public class BaseSpriteItemInitializer<P extends BaseSpriteInitializerParams> implements
     ItemInitializer<Sprite, P> {
 
   @Override
