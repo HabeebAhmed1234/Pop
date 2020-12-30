@@ -33,7 +33,7 @@ public class BulletExplosionsParticleSystemPoolEntity extends
   }
 
   @Override
-  protected List<IParticleInitializer> getParticleInitializers() {
+  protected List<IParticleInitializer> getParticleInitializers(BaseParticleSystemPoolParams p) {
     List<IParticleInitializer> initializers = new ArrayList<>();
     initializers.add(new VelocityParticleInitializer(
         -PARTICLE_EXPLOSION_VELOCITY_MAGNITUDE,

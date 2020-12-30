@@ -36,7 +36,7 @@ public abstract class BaseParticleSystemPool<P extends BaseParticleSystemPoolPar
             get(GameTexturesManager.class).getTextureRegion(getParticleTexture()),
             vertexBufferObjectManager);
 
-        List<IParticleInitializer> initializers = getParticleInitializers();
+        List<IParticleInitializer> initializers = getParticleInitializers(params);
         if (initializers != null && !initializers.isEmpty()) {
           for (IParticleInitializer initializer : initializers) {
             particleSystem.addParticleInitializer(initializer);
@@ -85,7 +85,7 @@ public abstract class BaseParticleSystemPool<P extends BaseParticleSystemPoolPar
     return new PointParticleEmitter(params.emitterX, params.emitterY);
   }
 
-  protected List<IParticleInitializer> getParticleInitializers() {
+  protected List<IParticleInitializer> getParticleInitializers(P params) {
     return null;
   }
 

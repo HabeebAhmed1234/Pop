@@ -19,6 +19,8 @@ public class UpgradeCleanerEntity extends BaseCleanerEntity {
 
   @Override
   protected void clean(IEntity entity) {
-    removeFromScene(entity);
+    if (entity.isVisible()) {
+      removeFromScene(entity);
+    }
   }
 }

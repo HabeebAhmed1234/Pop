@@ -1,6 +1,5 @@
 package com.stupidfungames.pop.bubblespawn.bombbubbles;
 
-import android.util.Log;
 import androidx.core.util.Preconditions;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.IEntityModifier;

@@ -19,6 +19,8 @@ public class BombBubbleCleanerEntity extends BaseCleanerEntity {
 
   @Override
   protected void clean(IEntity entity) {
-    get(BombBubbleSpritePool.class).recycle(entity);
+    if (entity.isVisible()) {
+      get(BombBubbleSpritePool.class).recycle(entity);
+    }
   }
 }

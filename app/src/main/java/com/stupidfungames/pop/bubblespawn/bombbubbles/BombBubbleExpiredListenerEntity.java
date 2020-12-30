@@ -20,12 +20,12 @@ public class BombBubbleExpiredListenerEntity extends BaseEntity implements
   @Override
   public void onBombBubbleExpired(IEntity bombBubbleEntity) {
     Sprite sprite = (Sprite) bombBubbleEntity;
-    if (ScreenUtils.isInScreen(sprite)) {
+    /*if (ScreenUtils.isInScreen(sprite)) {
       EventBus.get().sendEvent(
           GameEvent.GAME_OVER_ON_EXPLOSION_EVENT,
           new GameOverExplosionEventPayload(
               Vec2Pool.obtain(sprite.getCenter())));
-    }
+    }*/
     if (bombBubbleEntity.isVisible()) {
       get(BombBubbleSpritePool.class).recycle(bombBubbleEntity);
     }

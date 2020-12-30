@@ -8,4 +8,5 @@ public enum FontId {
     COUNT_DOWN_FONT,
     NEON_FONT,
     TOOLTIP_TEXT_FONT,
+    BOMB_BUBBLE_COUNTDOWN_FONT
 }

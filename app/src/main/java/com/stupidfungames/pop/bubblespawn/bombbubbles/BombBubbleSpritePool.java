@@ -11,11 +11,14 @@ import com.stupidfungames.pop.fixturedefdata.BombBubbleEntityUserData;
 import com.stupidfungames.pop.pool.BaseSpriteInitializerParams;
 import com.stupidfungames.pop.pool.BaseSpriteItemInitializer;
 import com.stupidfungames.pop.pool.ItemPool;
+import com.stupidfungames.pop.resources.fonts.FontId;
+import com.stupidfungames.pop.resources.fonts.GameFontsManager;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.entity.shape.Shape;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
 import org.andengine.util.color.AndengineColor;
 
 public class BombBubbleSpritePool extends ItemPool {
@@ -23,6 +26,8 @@ public class BombBubbleSpritePool extends ItemPool {
   public static final AndengineColor DIFFUSE_BOMB_COLOUR = AndengineColor.GREEN;
   public static final AndengineColor EXPLODING_BOMB_COLOUR = AndengineColor.RED;
   public static final float BOMB_BUBBLE_SIZE_DP = BubbleSize.MEDIUM.sizeDp;
+  public static final float BOMB_BUBBLE_COUNTDOWN_TEXT_TOP_PADDING_DP =
+      BubbleSize.MEDIUM.sizeDp * 0.1f;
   private final float bombBubbleSizePx;
 
   private final ItemInitializer<Sprite, BaseSpriteInitializerParams> initializer = new BaseSpriteItemInitializer<BaseSpriteInitializerParams>() {
@@ -37,6 +42,14 @@ public class BombBubbleSpritePool extends ItemPool {
       sprite.setColor(EXPLODING_BOMB_COLOUR);
       clipBubblePosition(sprite);
       sprite.setScale(bombBubbleSizePx / sprite.getWidth());
+
+      Text countDownText = new Text(0, 0,
+          get(GameFontsManager.class).getFont(FontId.BOMB_BUBBLE_COUNTDOWN_FONT), "",
+          3,
+          vertexBufferObjectManager);
+      countDownText.setPosition(sprite.getWidth() / 2 - countDownText.getWidth() / 2,
+          dpToPx(BOMB_BUBBLE_COUNTDOWN_TEXT_TOP_PADDING_DP, get(Context.class)));
+      sprite.attachChild(countDownText);
       return sprite;
     }
 
@@ -45,6 +58,7 @@ public class BombBubbleSpritePool extends ItemPool {
       super.update(sprite, params);
       sprite.setColor(EXPLODING_BOMB_COLOUR);
       registerColorModifier(sprite);
+      registerCountdownTimerModifier((Text) sprite.getFirstChild());
     }
 
     @Override
@@ -83,5 +97,9 @@ public class BombBubbleSpritePool extends ItemPool {
             EXPLODING_BOMB_COLOUR,
             DIFFUSE_BOMB_COLOUR,
             get(BombBubbleExpiredListenerEntity.class)));
+  }
+
+  private void registerCountdownTimerModifier(Text timerText) {
+    timerText.registerEntityModifier(new BombTimerEntityModifier(BOMB_BUBBLE_LIFESPAN_SECONDS));
   }
 }

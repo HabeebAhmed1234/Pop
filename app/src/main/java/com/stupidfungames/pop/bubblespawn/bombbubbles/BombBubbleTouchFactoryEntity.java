@@ -5,6 +5,7 @@ import static com.stupidfungames.pop.utils.ScreenUtils.dpToPx;
 
 import android.content.Context;
 import com.stupidfungames.pop.BaseEntity;
+import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
 import com.stupidfungames.pop.entitymatchers.BubblesInRadiusEntityMatcher;
@@ -44,9 +45,9 @@ public class BombBubbleTouchFactoryEntity extends BaseEntity {
           return false;
         }
         if (sprite.getColor().equals(BombBubbleSpritePool.DIFFUSE_BOMB_COLOUR)) {
+          popBubblesInRadius(sprite);
           // User had diffused the bomb. make it disappear and pop all bubbles within a radius of it
           get(BombBubbleSpritePool.class).recycle(sprite);
-          popBubblesInRadius(sprite);
         } else {
           get(BombBubbleExpiredListenerEntity.class).onBombBubbleExpired(sprite);
         }
@@ -56,16 +57,26 @@ public class BombBubbleTouchFactoryEntity extends BaseEntity {
     }
   }
 
+  @Override
+  protected void createBindings(Binder binder) {
+    super.createBindings(binder);
+    binder.bind(BombBubbleExplosionEffectEntity.class, new BombBubbleExplosionEffectEntity(this));
+  }
+
   private void popBubblesInRadius(Sprite sprite) {
+    float explosionRadiusPx = dpToPx(BOMB_BUBBLE_EXPLOSION_RADIUS_DP, get(Context.class));
     List<IEntity> bubblesInRadius = scene.query(
         new BubblesInRadiusEntityMatcher(
             sprite.getCenter(),
-            dpToPx(BOMB_BUBBLE_EXPLOSION_RADIUS_DP, get(Context.class)),
+            explosionRadiusPx,
             false,
             true));
     BubblePopperEntity bubblePopperEntity = get(BubblePopperEntity.class);
     for (IEntity bubble : bubblesInRadius) {
-      bubblePopperEntity.popBubble((Sprite) bubble);
+      bubblePopperEntity.popBubble((Sprite) bubble, false);
     }
+    float[] spriteCenter = sprite.getCenter();
+    get(BombBubbleExplosionEffectEntity.class)
+        .explode(spriteCenter[0], spriteCenter[1], explosionRadiusPx);
   }
 }

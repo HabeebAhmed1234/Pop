@@ -1,6 +1,8 @@
 package com.stupidfungames.pop.bubblespawn.bombbubbles;
 
 import static com.stupidfungames.pop.GameConstants.BOMB_BUBBLE_SPAWN_DIFFICULTY_THRESHOLD;
+import static com.stupidfungames.pop.GameConstants.MAX_BOMB_BUBBLE_PROBABILITY;
+import static com.stupidfungames.pop.GameConstants.MIN_BOMB_BUBBLE_PROBABILITY;
 import static com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BUBBLE_GRAVITY_SCALE;
 import static com.stupidfungames.pop.eventbus.GameEvent.GAME_PROGRESS_CHANGED;
 
@@ -19,6 +21,7 @@ import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.pool.BaseSpriteInitializerParams;
 import java.util.Random;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
@@ -31,10 +34,6 @@ public class BombBubbleSpawnerEntity extends BaseEntity implements Subscriber {
 
   // Value to define how much smaller as a percentage the bubble physics circle will be from the sprite
   public static final float BOMB_BUBBLE_BODY_SCALE_FACTOR = 0.8f;
-  // The probability of a bomb spawning at max difficulty
-  public static final float MAX_BOMB_BUBBLE_PROBABILITY = 0.2f;
-  // The probability of a bomb spawning at min difficulty
-  public static final float MIN_BOMB_BUBBLE_PROBABILITY = 0.05f;
 
   private float currentBombBubbleSpawnChance = MIN_BOMB_BUBBLE_PROBABILITY;
   private final Random random = new Random();
@@ -87,7 +86,8 @@ public class BombBubbleSpawnerEntity extends BaseEntity implements Subscriber {
     addToSceneWithTouch(
         bubbleSprite,
         body,
-        get(BombBubbleTouchFactoryEntity.class).getBombBubbleTouchListener());
+        get(BombBubbleTouchFactoryEntity.class).getBombBubbleTouchListener(),
+        false);
   }
 
   @Override

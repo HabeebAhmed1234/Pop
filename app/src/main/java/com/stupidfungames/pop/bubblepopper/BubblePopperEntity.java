@@ -47,10 +47,15 @@ public class BubblePopperEntity extends BaseEntity {
     binder.bind(ScoreTickerSpritePool.class, new ScoreTickerSpritePool(this));
   }
 
+
+  public boolean popBubble(Sprite previousBubble) {
+    return popBubble(previousBubble, true);
+  }
+
   /**
    * Pops the given bubble. Returns true if bubble was popped false otherwise.
    */
-  public boolean popBubble(Sprite previousBubble) {
+  public boolean popBubble(Sprite previousBubble, boolean spawnChildBubbles) {
     if (!previousBubble.isVisible() && previousBubble
         .getUserData() instanceof BubbleEntityUserData) {
       return false;
@@ -65,7 +70,7 @@ public class BubblePopperEntity extends BaseEntity {
 
     Vec2 oldBubbleScenePosition = Vec2Pool.obtain(previousBubble.getX(), previousBubble.getY());
     // Spawn new bubbles if the one we popped not the smallest bubble
-    if (!oldBubbleSize.isSmallestBubble()) {
+    if (spawnChildBubbles && !oldBubbleSize.isSmallestBubble()) {
       spawnPoppedBubbles(previousBubble, oldBubbleSize, oldBubbleScenePosition, bubbleType);
     }
 

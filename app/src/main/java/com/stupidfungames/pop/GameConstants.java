@@ -33,11 +33,15 @@ public class GameConstants {
   public static final float MAX_SPAWN_INTERVAL_SECONDS = 3.5f;
   public static final float MIN_SPAWN_INTERVAL_SECONDS = 0.5f;
 
+  // The probability of a bomb spawning at max difficulty
+  public static final float MAX_BOMB_BUBBLE_PROBABILITY = 0.5f;
+  // The probability of a bomb spawning at min difficulty
+  public static final float MIN_BOMB_BUBBLE_PROBABILITY = 0.2f;
   public static final float BOMB_BUBBLE_SPAWN_DIFFICULTY_THRESHOLD = 0.5f;
   // The amount of time a bomb bubble is green/red
   public static final float BOMB_STATES_DURATION_SECONDS = 1f;
   // The amount of time before a bomb bubble explodes and ends the game
   public static final float BOMB_BUBBLE_LIFESPAN_SECONDS = 7f;
-  public static final float BOMB_BUBBLE_EXPLOSION_RADIUS_DP = BOMB_BUBBLE_SIZE_DP * 4;
+  public static final float BOMB_BUBBLE_EXPLOSION_RADIUS_DP = BOMB_BUBBLE_SIZE_DP * 2;
 
 }
