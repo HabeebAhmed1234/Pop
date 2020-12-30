@@ -10,7 +10,9 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import com.stupidfungames.pop.physics.util.Vec2Pool;
 import org.andengine.entity.IEntity;
+import org.andengine.entity.shape.IAreaShape;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
 import org.jbox2d.common.Vec2;
 
 public class GeometryUtils {
@@ -109,7 +111,7 @@ public class GeometryUtils {
   }
 
   public static float getMagnitude(float x, float y) {
-    return (float) Math.sqrt(Math.pow(x, 2) + Math.pow(y,2));
+    return (float) Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
   }
 
   public static Vec2 getVector(Vec2 point1, Vec2 point2, float magnitude) {
@@ -147,5 +149,9 @@ public class GeometryUtils {
       y = ScreenUtils.getSreenSize().heightPx - objectHeight;
     }
     return y;
+  }
+
+  public static void centerInHorizontal(IAreaShape parent, Text child) {
+    child.setX(parent.getWidthScaled() / 2 - child.getLineWidthMaximum());
   }
 }

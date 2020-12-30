@@ -60,7 +60,7 @@ public class GameFontsManager extends BaseEntity {
                 FontFactory.createFromAsset(fontManager, new BitmapTextureAtlas(textureManager,256,256), assetManager,"neon.ttf",60f,true, Color.WHITE));
         mFonts.put(
             FontId.BOMB_BUBBLE_COUNTDOWN_FONT,
-            FontFactory.createFromAsset(fontManager, new BitmapTextureAtlas(textureManager,256,256), assetManager,"neon.ttf",20f,true, Color.WHITE));
+            FontFactory.createFromAsset(fontManager, new BitmapTextureAtlas(textureManager,256,256), assetManager,"neon.ttf",45f,true, Color.WHITE));
         loadFonts();
     }
 

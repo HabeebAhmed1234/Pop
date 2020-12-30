@@ -1,8 +1,10 @@
 package com.stupidfungames.pop.bubblespawn.bombbubbles;
 
+import com.stupidfungames.pop.utils.GeometryUtils;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.IEntityModifier;
+import org.andengine.entity.shape.IAreaShape;
 import org.andengine.entity.shape.IShape;
 import org.andengine.entity.text.Text;
 import org.andengine.util.color.AndengineColor;
@@ -29,6 +31,7 @@ public class BombTimerEntityModifier extends BaseDurationModifier<IEntity> imple
       Text text = ((Text) iEntity);
       if (currentText != secondsLeft) {
         text.setText(Integer.toString(secondsLeft));
+        GeometryUtils.centerInHorizontal((IAreaShape) text.getParent(), text);
       }
       text.setColor(
           secondsLeft <= RED_TIMER_THRESHOLD_SECONDS ? AndengineColor.RED : AndengineColor.WHITE);
@@ -37,7 +40,7 @@ public class BombTimerEntityModifier extends BaseDurationModifier<IEntity> imple
 
   @Override
   protected void onManagedInitialize(IEntity text) {
-    ((Text) text).setText(Float.toString(getDuration()));
+    ((Text) text).setText(Integer.toString((int) getDuration()));
   }
 
   @Override

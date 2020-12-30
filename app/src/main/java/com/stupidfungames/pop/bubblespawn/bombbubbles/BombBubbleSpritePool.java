@@ -15,6 +15,7 @@ import com.stupidfungames.pop.resources.fonts.FontId;
 import com.stupidfungames.pop.resources.fonts.GameFontsManager;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
+import com.stupidfungames.pop.utils.GeometryUtils;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.entity.shape.Shape;
 import org.andengine.entity.sprite.Sprite;
@@ -26,8 +27,7 @@ public class BombBubbleSpritePool extends ItemPool {
   public static final AndengineColor DIFFUSE_BOMB_COLOUR = AndengineColor.GREEN;
   public static final AndengineColor EXPLODING_BOMB_COLOUR = AndengineColor.RED;
   public static final float BOMB_BUBBLE_SIZE_DP = BubbleSize.MEDIUM.sizeDp;
-  public static final float BOMB_BUBBLE_COUNTDOWN_TEXT_TOP_PADDING_DP =
-      BubbleSize.MEDIUM.sizeDp * 0.1f;
+  public static final float BOMB_BUBBLE_COUNTDOWN_TEXT_TOP_PADDING_DP = 14;
   private final float bombBubbleSizePx;
 
   private final ItemInitializer<Sprite, BaseSpriteInitializerParams> initializer = new BaseSpriteItemInitializer<BaseSpriteInitializerParams>() {
@@ -44,11 +44,11 @@ public class BombBubbleSpritePool extends ItemPool {
       sprite.setScale(bombBubbleSizePx / sprite.getWidth());
 
       Text countDownText = new Text(0, 0,
-          get(GameFontsManager.class).getFont(FontId.BOMB_BUBBLE_COUNTDOWN_FONT), "",
+          get(GameFontsManager.class).getFont(FontId.BOMB_BUBBLE_COUNTDOWN_FONT), "1",
           3,
           vertexBufferObjectManager);
-      countDownText.setPosition(sprite.getWidth() / 2 - countDownText.getWidth() / 2,
-          dpToPx(BOMB_BUBBLE_COUNTDOWN_TEXT_TOP_PADDING_DP, get(Context.class)));
+      GeometryUtils.centerInHorizontal(sprite, countDownText);
+      countDownText.setY(dpToPx(BOMB_BUBBLE_COUNTDOWN_TEXT_TOP_PADDING_DP, get(Context.class)));
       sprite.attachChild(countDownText);
       return sprite;
     }
