@@ -19,7 +19,7 @@ public class ScoreTickerSpritePool extends ItemPool {
     @Override
     public Text createNew(BaseSpriteInitializerParams params) {
       Text text = new Text(params.x, params.y,
-          get(GameFontsManager.class).getFont(FontId.SCORE_TICKER_FONT), "+10!",
+          get(GameFontsManager.class).getFont(FontId.SCORE_TICKER_FONT), "+1!",
           vertexBufferObjectManager);
       text.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
       text.setColor(0, 1, 0);

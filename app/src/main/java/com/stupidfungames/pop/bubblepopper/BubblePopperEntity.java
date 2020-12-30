@@ -33,8 +33,7 @@ import org.jbox2d.dynamics.Body;
 
 public class BubblePopperEntity extends BaseEntity {
 
-  public static final int SCORE_INCREMENT_PER_BUBBLE_POP = 10;
-  public static final int MAX_SCORE_INCREASE_PER_NEW_SPAWNED_BUBBLE = 70; // Since there are three bubble sizes a total of 7 bubbles can be popped from one spawned bubble
+  public static final int SCORE_INCREMENT_PER_BUBBLE_POP = 1;
   private static final float POPPED_BUBBLES_HORIZONTAL_OFFSET = 0.5f;
 
   public BubblePopperEntity(BinderEnity parent) {
