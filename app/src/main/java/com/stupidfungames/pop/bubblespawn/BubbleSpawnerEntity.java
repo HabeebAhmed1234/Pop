@@ -20,6 +20,8 @@ import com.stupidfungames.pop.eventbus.DifficultyChangedEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
+import com.stupidfungames.pop.eventbus.IconUnlockedEventPayload;
+import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId;
 import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.utils.BubblePhysicsUtil;
 import com.stupidfungames.pop.utils.ScreenUtils;
@@ -199,7 +201,9 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         bubbleSpawnInterval = difficultyChangedEventPayload.newSpawnInterval;
         break;
       case ICON_UNLOCKED:
-        shouldIncludeExtraBubblesInSpawn = true;
+        if (((IconUnlockedEventPayload) payload).unlockedIconId == IconId.MULTI_POP_ICON) {
+          shouldIncludeExtraBubblesInSpawn = true;
+        }
         break;
     }
   }
