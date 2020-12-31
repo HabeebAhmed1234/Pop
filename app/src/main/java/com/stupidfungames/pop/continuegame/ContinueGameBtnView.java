@@ -92,9 +92,6 @@ public class ContinueGameBtnView {
 
           @Override
           public void onFailure(Throwable t) {
-            Log.e(TAG, "Error checking continue token", t);
-            Toast.makeText(getContext(), R.string.error_checking_continue_token, Toast.LENGTH_LONG)
-                .show();
             setGameButtonState(ContinueGameBtnState.WATCH_AD_OR_BUY);
           }
         }, ContextCompat.getMainExecutor(getContext()));

@@ -58,7 +58,7 @@ public class TouchBubblePopper extends BaseEntity implements Subscriber {
       showBubbleTouchPopParticleEffect(touchedEventPayload);
       MultiTouchPopperIcon multiTouchPopperIcon = get(MultiTouchPopperIcon.class);
       if (!multiTouchPopperIcon.isUnlocked()) {
-        bubblePopperEntity.popBubble(touchedEventPayload.sprite);
+        bubblePopperEntity.popBubbleByTouch(touchedEventPayload.sprite);
         return;
       }
       // First mark all the bubbles on the screen
@@ -69,7 +69,7 @@ public class TouchBubblePopper extends BaseEntity implements Subscriber {
       recursivelyQueryAllBubblesInContact(bubblesToPop, touchedEventPayload.sprite,
           touchedEventPayload.type);
       for (Sprite bubble : bubblesToPop) {
-        bubblePopperEntity.popBubble(bubble);
+        bubblePopperEntity.popBubbleByTouch(bubble);
       }
     }
   }
@@ -85,7 +85,7 @@ public class TouchBubblePopper extends BaseEntity implements Subscriber {
       BubbleType type) {
     // Add this bubble to the poppable list
     bubblesToPop.add(toPop);
-    // Make sure to unmark this for recursive popping
+    // Make sure to un-mark this for recursive popping
     BubbleEntityUserData userData = (BubbleEntityUserData) toPop.getUserData();
     userData.isMarkedForRecursivePopping = false;
     List<IEntity> neighboringBubbles = scene

@@ -1,5 +1,6 @@
 package com.stupidfungames.pop.hudentities;
 
+import android.text.TextUtils;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.DecrementScoreEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
@@ -20,6 +21,7 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
   private static final AndengineColor POSITIVE_SCORE_COLOR = AndengineColor.GREEN;
 
   private int scoreValue = 0;
+  private final ScoreStreakModel streakModel = new ScoreStreakModel();
 
   public ScoreHudEntity(BinderEnity parent) {
     super(parent);
@@ -94,7 +96,10 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
   }
 
   private void incrementScore(IncrementScoreEventPayload payload) {
-    scoreValue += payload.incrementAmmount;
+    if (payload.isPoppedByTouch) {
+      updateStreak(payload);
+    }
+    scoreValue += (payload.incrementAmount * (payload.isPoppedByTouch ? streakModel.getScoreMultiplier() : 1));
     updateScoreText();
   }
 
@@ -103,12 +108,31 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
     updateScoreText();
   }
 
+  private void updateStreak(IncrementScoreEventPayload payload) {
+    if (streakModel.currentStreakBubbleType == null || streakModel.currentStreakBubbleType != payload.poppedBubbleType) {
+      // start tracking a new streak
+      streakModel.currentStreakBubbleType = payload.poppedBubbleType;
+      streakModel.numBubblesPoppedOfStreak = 1;
+    } else if (streakModel.currentStreakBubbleType == payload.poppedBubbleType) {
+      streakModel.numBubblesPoppedOfStreak += 1;
+    }
+  }
+
   private void updateScoreText() {
     updateText(SCORE_TEXT_PREFIX + scoreValue);
+
     if (scoreValue < 0 && !currentTextColor().equals(NEGATIVE_SCORE_COLOR)) {
       updateColor(NEGATIVE_SCORE_COLOR);
     } else if (scoreValue >= 0 && !currentTextColor().equals(POSITIVE_SCORE_COLOR)) {
       updateColor(POSITIVE_SCORE_COLOR);
+    }
+
+    String scoreMultString = streakModel.getScoreMultiplierString();
+    if (!TextUtils.isEmpty(scoreMultString)) {
+      get(StreakHudEntity.class).updateText(scoreMultString);
+      get(StreakHudEntity.class).updateColor(streakModel.currentStreakBubbleType.color);
+    } else {
+      get(StreakHudEntity.class).updateColor(AndengineColor.TRANSPARENT);
     }
   }
 }

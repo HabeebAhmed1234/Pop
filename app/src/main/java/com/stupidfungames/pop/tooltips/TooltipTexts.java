@@ -19,7 +19,7 @@ class TooltipTexts {
     texts.put(TooltipId.MULTI_TOUCH_ICON_TOOLTIP,
         "Touch bubbles to pop them and all surrounding bubbles of the same colour.");
     texts.put(TooltipId.TOUCH_POP_TOOLTIP,
-        "Touch the bubbles to pop them before they reach the bottom of the screen!");
+        "Touch the bubbles to pop them before they reach the bottom of the screen!\n\n Touch multiple bubbles of the same color to start a streak and earn more points!");
     texts.put(TooltipId.UPGRADE_TOOLTIP,
         "Tap on these bubbles to acquire an upgrade. You can then tap on a tool on the right to upgrade it. Every tool has a max of 3 upgrades. Tools will change color to cyan when they are upgradable");
     texts.put(TooltipId.BOMB_BUBBLE_TOOLTIP,

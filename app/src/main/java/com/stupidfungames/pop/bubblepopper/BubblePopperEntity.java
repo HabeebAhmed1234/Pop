@@ -48,13 +48,25 @@ public class BubblePopperEntity extends BaseEntity {
 
 
   public boolean popBubble(Sprite previousBubble) {
-    return popBubble(previousBubble, true);
+    return popBubble(previousBubble, false, true);
+  }
+
+  public boolean popBubbleByTouch(Sprite previousBubble) {
+    return popBubble(previousBubble, true, true);
+  }
+
+  /**
+   * Pops the bubble and doesn't spawn its child smaller bubbles
+   */
+  public boolean popBubbleWithNoChildren(Sprite previousBubble) {
+    return popBubble(previousBubble, false, false);
   }
 
   /**
    * Pops the given bubble. Returns true if bubble was popped false otherwise.
    */
-  public boolean popBubble(Sprite previousBubble, boolean spawnChildBubbles) {
+  private boolean popBubble(Sprite previousBubble, boolean isPoppedByTouch,
+      boolean spawnChildBubbles) {
     if (!previousBubble.isVisible() && previousBubble
         .getUserData() instanceof BubbleEntityUserData) {
       return false;
@@ -62,7 +74,7 @@ public class BubblePopperEntity extends BaseEntity {
 
     BubbleEntityUserData userData = (BubbleEntityUserData) previousBubble.getUserData();
     final BubbleSize oldBubbleSize = userData.size;
-    final BubbleType bubbleType = userData.bubbleType;
+    final BubbleType oldbubbleType = userData.bubbleType;
 
     // Play the pop sound
     getRandomPopSound().play();
@@ -70,11 +82,12 @@ public class BubblePopperEntity extends BaseEntity {
     Vec2 oldBubbleScenePosition = Vec2Pool.obtain(previousBubble.getX(), previousBubble.getY());
     // Spawn new bubbles if the one we popped not the smallest bubble
     if (spawnChildBubbles && !oldBubbleSize.isSmallestBubble()) {
-      spawnPoppedBubbles(previousBubble, oldBubbleSize, oldBubbleScenePosition, bubbleType);
+      spawnPoppedBubbles(previousBubble, oldBubbleSize, oldBubbleScenePosition, oldbubbleType);
     }
 
     // Increment the score
-    increaseScore(oldBubbleScenePosition.x, oldBubbleScenePosition.y);
+    increaseScore(oldBubbleScenePosition.x, oldBubbleScenePosition.y, oldbubbleType,
+        isPoppedByTouch);
 
     // Notify bubble popped
     EventBus.get().sendEvent(BUBBLE_POPPED,
@@ -117,10 +130,12 @@ public class BubblePopperEntity extends BaseEntity {
     BubblePhysicsUtil.applyVelocity(rightBubble, 3f, -1.2f);
   }
 
-  private void increaseScore(float sceneX, float sceneY) {
+  private void increaseScore(float sceneX, float sceneY, BubbleType bubbleType,
+      boolean isPoppedByTouch) {
     showScoretickerText(sceneX, sceneY);
     EventBus.get().sendEvent(GameEvent.INCREMENT_SCORE,
-        new IncrementScoreEventPayload(SCORE_INCREMENT_PER_BUBBLE_POP));
+        new IncrementScoreEventPayload(SCORE_INCREMENT_PER_BUBBLE_POP, bubbleType,
+            isPoppedByTouch));
   }
 
   private void showScoretickerText(float x, float y) {

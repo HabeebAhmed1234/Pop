@@ -73,7 +73,7 @@ public class BombBubbleTouchFactoryEntity extends BaseEntity {
             true));
     BubblePopperEntity bubblePopperEntity = get(BubblePopperEntity.class);
     for (IEntity bubble : bubblesInRadius) {
-      bubblePopperEntity.popBubble((Sprite) bubble, false);
+      bubblePopperEntity.popBubbleWithNoChildren((Sprite) bubble);
     }
     float[] spriteCenter = sprite.getCenter();
     get(BombBubbleExplosionEffectEntity.class)

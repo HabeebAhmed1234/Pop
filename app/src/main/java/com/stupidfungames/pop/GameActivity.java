@@ -29,6 +29,7 @@ import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
 import com.stupidfungames.pop.gamesettings.GamePreferencesManager;
 import com.stupidfungames.pop.gamesettings.Setting;
 import com.stupidfungames.pop.hudentities.ScoreHudEntity;
+import com.stupidfungames.pop.hudentities.StreakHudEntity;
 import com.stupidfungames.pop.hudentities.TimerHudEntity;
 import com.stupidfungames.pop.nuke.NukeManagerEntity;
 import com.stupidfungames.pop.resources.fonts.GameFontsManager;
@@ -138,6 +139,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(SaveGameQuickSettingsIconEntity.class, new SaveGameQuickSettingsIconEntity(this))
 
             .bind(ScoreHudEntity.class, new ScoreHudEntity(this))
+            .bind(StreakHudEntity.class, new StreakHudEntity(this))
             .bind(TimerHudEntity.class, new TimerHudEntity(this))
 
             .bind(BubbleSpritePool.class, new BubbleSpritePool(this))
