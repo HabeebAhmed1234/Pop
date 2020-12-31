@@ -69,7 +69,7 @@ public class StoreProductViewHolder extends BindableViewHolder<SkuDetails> {
     if (ProductSKUManager.get().skuToProductsMap.containsKey(sku)) {
       GameProduct product = ProductSKUManager.get().skuToProductsMap.get(sku);
       if (product != null && !TextUtils.isEmpty(product.imageFileName)) {
-        GlideUtils.loadWithImageAssetFileName(itemView, imageView, product.imageFileName);
+        GlideUtils.loadWithImageAssetFileName(imageView, product.imageFileName);
       } else if (product != null && product.imageDrawableRes != -1) {
         Glide.with(itemView).load(product.imageDrawableRes).into(imageView);
       } else {

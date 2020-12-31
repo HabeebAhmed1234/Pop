@@ -18,26 +18,15 @@ import org.andengine.util.time.TimeConstants;
 
 public class GameTooltipActivity extends Activity {
 
-  public static final String EXTRA_TEXT = "text";
-  public static final String EXTRA_IS_ANCHORED = "is_anchored";
-  public static final String EXTRA_ANCHOR_X = "anchor_x";
-  public static final String EXTRA_ANCHOR_Y = "anchor_y";
-
+  public static final String EXTRA_PARAMS = "activityParams";
   private static final int SHOW_DURATION = TimeConstants.MILLISECONDS_PER_SECOND * 60;
 
-  public static Intent forAnchoredTooltip(String text, int x, int y, Context context) {
-    Intent intent = new Intent(context, GameTooltipActivity.class);
-    intent.putExtra(EXTRA_TEXT, text);
-    intent.putExtra(EXTRA_IS_ANCHORED, true);
-    intent.putExtra(EXTRA_ANCHOR_X, x);
-    intent.putExtra(EXTRA_ANCHOR_Y, y);
-    return intent;
-  }
+  private GameTooltipActivityParams activityParams;
+  private final TooltipTexts tooltipTexts = new TooltipTexts();
 
-  public static Intent forUnAnchoredTooltip(String text, Context context) {
+  public static Intent newIntent(GameTooltipActivityParams params, Context context) {
     Intent intent = new Intent(context, GameTooltipActivity.class);
-    intent.putExtra(EXTRA_TEXT, text);
-    intent.putExtra(EXTRA_IS_ANCHORED, false);
+    intent.putExtra(EXTRA_PARAMS, params);
     return intent;
   }
 
@@ -46,18 +35,16 @@ public class GameTooltipActivity extends Activity {
     ActivityUtils.requestFullscreen(this);
     super.onCreate(savedInstanceState);
     setContentView(R.layout.game_tooltip_activity);
-
-    showTooltip(getIntent());
+    activityParams = (GameTooltipActivityParams) getIntent().getSerializableExtra(EXTRA_PARAMS);
+    showTooltip();
   }
 
-  private void showTooltip(Intent intent) {
+  private void showTooltip() {
     RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(10, 10);
-
-    Bundle extras = intent.getExtras();
-    boolean isAnchored = extras.getBoolean(EXTRA_IS_ANCHORED);
+    boolean isAnchored = activityParams.anchorX != -1 && activityParams.anchorY != -1;
     if (isAnchored) {
-      params.leftMargin = extras.getInt(EXTRA_ANCHOR_X);
-      params.topMargin = extras.getInt(EXTRA_ANCHOR_Y);
+      params.leftMargin = activityParams.anchorX;
+      params.topMargin = activityParams.anchorY;
     } else {
       params.leftMargin = getResources().getDisplayMetrics().widthPixels / 2;
       params.topMargin = getResources().getDisplayMetrics().heightPixels / 2;
@@ -69,15 +56,15 @@ public class GameTooltipActivity extends Activity {
 
     final Tooltip tooltip = new Tooltip.Builder(this)
         .anchor(anchor, 0, 0, true)
-        .text(extras.getString(EXTRA_TEXT))
+        .text(tooltipTexts.getTooltipText(activityParams.tooltipId))
         .styleId(R.style.ToolTipLayoutDefaultStyle)
         .typeface(ResourcesCompat.getFont(this, R.font.neon))
         .maxWidth((int) (getResources().getDisplayMetrics().widthPixels * 0.8f))
         .arrow(isAnchored)
         .closePolicy(new ClosePolicy.Builder().inside(true).outside(false).consume(true).build())
         .showDuration(SHOW_DURATION)
-        .overlay(isAnchored)
-        .create();
+        .overlay(isAnchored).create();
+
     tooltip.doOnHidden(new Function1<Tooltip, Unit>() {
       @Override
       public Unit invoke(Tooltip tooltip) {

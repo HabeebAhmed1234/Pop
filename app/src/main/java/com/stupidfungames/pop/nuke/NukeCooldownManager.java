@@ -10,8 +10,8 @@ import org.andengine.engine.handler.timer.TimerHandler;
 public class NukeCooldownManager extends BaseEntity implements
     BaseStateMachine.Listener<NukeStateMachine.State> {
 
-  public static final int NUKE_COOLDOWN_SECONDS_STARTING = 10;
-  public static final int NUKE_COOLDOWN_SECONDS_DELTA_PER_UPGRADE = 2;
+  public static final int NUKE_COOLDOWN_SECONDS_STARTING = 30;
+  public static final int NUKE_COOLDOWN_SECONDS_DELTA_PER_UPGRADE = 3;
 
   private int nukeCooldownSeconds = NUKE_COOLDOWN_SECONDS_STARTING;
 

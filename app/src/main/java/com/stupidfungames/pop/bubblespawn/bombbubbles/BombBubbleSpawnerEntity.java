@@ -21,7 +21,6 @@ import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.pool.BaseSpriteInitializerParams;
 import java.util.Random;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.entity.text.Text;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
@@ -49,7 +48,8 @@ public class BombBubbleSpawnerEntity extends BaseEntity implements Subscriber {
         .bind(BombBubbleExpiredListenerEntity.class, new BombBubbleExpiredListenerEntity(this))
         .bind(BombBubbleTouchFactoryEntity.class, new BombBubbleTouchFactoryEntity(this))
         .bind(BombBubbleSpritePool.class, new BombBubbleSpritePool(this))
-        .bind(BombBubbleCleanerEntity.class, new BombBubbleCleanerEntity(this));
+        .bind(BombBubbleCleanerEntity.class, new BombBubbleCleanerEntity(this))
+        .bind(BombBubbleTooltipEntity.class, new BombBubbleTooltipEntity(this));
   }
 
   @Override
@@ -94,8 +94,13 @@ public class BombBubbleSpawnerEntity extends BaseEntity implements Subscriber {
   public void onEvent(GameEvent event, EventPayload payload) {
     if (event == GAME_PROGRESS_CHANGED) {
       GameProgressEventPayload gameProgressEventPayload = (GameProgressEventPayload) payload;
+      boolean bombBubblesCanSpawn =
+          gameProgressEventPayload.percentProgress >= BOMB_BUBBLE_SPAWN_DIFFICULTY_THRESHOLD;
+      if (bombBubblesCanSpawn) {
+        get(BombBubbleTooltipEntity.class).maybeShowBombBubbleTooltip();
+      }
       currentBombBubbleSpawnChance =
-          gameProgressEventPayload.percentProgress >= BOMB_BUBBLE_SPAWN_DIFFICULTY_THRESHOLD
+          bombBubblesCanSpawn
               ? (MAX_BOMB_BUBBLE_PROBABILITY - MIN_BOMB_BUBBLE_PROBABILITY) * (
               gameProgressEventPayload.percentProgress - BOMB_BUBBLE_SPAWN_DIFFICULTY_THRESHOLD)
               + MIN_BOMB_BUBBLE_PROBABILITY

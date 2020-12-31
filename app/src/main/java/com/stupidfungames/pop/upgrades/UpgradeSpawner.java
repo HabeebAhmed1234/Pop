@@ -108,7 +108,8 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
 
   private void maybeSpawnUpgrade(BubblePoppedEventPayload bubblePoppedEventPayload) {
     if (currentGameDifficultyPercentProgress == -1
-        || currentGameDifficultyPercentProgress <= GameConstants.MIN_UPGRADE_SPAWN_START_THRESHOLD_DIFFICULTY
+        || currentGameDifficultyPercentProgress
+        <= GameConstants.MIN_UPGRADE_SPAWN_START_THRESHOLD_DIFFICULTY
         || numUpgradesRemaining == 0) {
       // Only start spawning upgrades if all these values are set.
       return;
@@ -161,9 +162,8 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
         get(UpgradeTouchFactoryEntity.class).getNewTouchListener(), false);
 
     if (ScreenUtils.isInScreen(upgradeSprite)) {
-      float[] upgradeSpritePos = upgradeSprite.getCenter();
       get(GameTooltipsEntity.class)
-          .maybeShowTooltip(TooltipId.UPGRADE_TOOLTIP, upgradeSpritePos[0], upgradeSpritePos[1]);
+          .maybeShowTooltip(TooltipId.UPGRADE_TOOLTIP);
     }
   }
 

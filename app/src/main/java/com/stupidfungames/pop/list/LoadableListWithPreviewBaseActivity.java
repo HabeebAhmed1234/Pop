@@ -48,7 +48,7 @@ public abstract class LoadableListWithPreviewBaseActivity<T> extends
       String backgroundFileName = getPreviewBackgroundImageFileName(item);
       if (!TextUtils.isEmpty(backgroundFileName)) {
         // Set this as the current background of the activity if background view is there
-        loadWithImageAssetFileName(this, background, previewFileName);
+        loadWithImageAssetFileName(background, previewFileName);
       } else {
         Glide.with(this).load(R.drawable.main_menu_background).into(background);
       }
@@ -75,7 +75,7 @@ public abstract class LoadableListWithPreviewBaseActivity<T> extends
 
   private void showPreview(String imageFileName) {
     previewImageFrame.setVisibility(VISIBLE);
-    loadWithImageAssetFileName(this, previewImageView, imageFileName);
+    loadWithImageAssetFileName(previewImageView, imageFileName);
   }
 
   private void showPreview(@DrawableRes int imageDrawableRes) {

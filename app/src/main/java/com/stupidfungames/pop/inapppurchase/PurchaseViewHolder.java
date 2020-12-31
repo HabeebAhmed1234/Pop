@@ -82,7 +82,7 @@ public class PurchaseViewHolder extends BindableViewHolder<Purchase> {
         .get(model.getSku());
 
     if (product != null && !TextUtils.isEmpty(product.imageFileName)) {
-      GlideUtils.loadWithImageAssetFileName(itemView, image, product.imageFileName);
+      GlideUtils.loadWithImageAssetFileName(image, product.imageFileName);
     } else if (product != null && product.imageDrawableRes != -1) {
       Glide.with(itemView).load(product.imageDrawableRes).into(image);
     } else {

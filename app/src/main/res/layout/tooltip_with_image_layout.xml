@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:layout_gravity="center">
+
+  <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/rounded_border"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/between_btn_padding">
+
+    <com.stupidfungames.pop.androidui.GameMenuText
+      android:id="@+id/tooltip_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/menu_btn_padding_vertical"
+      android:textAlignment="center"
+      android:textSize="@dimen/text_size_small" />
+
+    <ImageView
+      android:id="@+id/tooltip_image"
+      android:layout_width="150dp"
+      android:layout_height="150dp"
+      android:layout_marginBottom="@dimen/menu_btn_padding_vertical"
+      android:scaleType="centerCrop"
+      android:visibility="gone" />
+
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/neon_divider_size"
+      android:layout_marginBottom="@dimen/menu_btn_padding_vertical"
+      android:background="@android:color/white" />
+
+    <com.stupidfungames.pop.androidui.GameMenuButton
+      android:id="@+id/ok_btn"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/ok"
+      android:textSize="@dimen/text_size_medium" />
+  </LinearLayout>
+</FrameLayout>

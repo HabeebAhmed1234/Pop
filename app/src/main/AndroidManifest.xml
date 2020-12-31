@@ -101,6 +101,11 @@
     <activity
       android:name="com.stupidfungames.pop.inapppurchase.EquipActivity"
       android:screenOrientation="portrait" />
+
+    <activity
+      android:name=".tooltips.FullPageTooltipActivity"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.Dialog" />
   </application>
 
   <uses-permission android:name="android.permission.INTERNET" />

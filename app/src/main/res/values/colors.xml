@@ -6,5 +6,6 @@
     <color name="menu_button_color">#FFFFFF</color>
     <color name="menu_button_pressed_color">#ca6bc9</color>
     <color name="menu_button_color_disabled">#808080</color>
-    <color name="green">#39ff14</color>
+    <color name="green">#00ff00</color>
+    <color name="pink">#ff00ff</color>
 </resources>
