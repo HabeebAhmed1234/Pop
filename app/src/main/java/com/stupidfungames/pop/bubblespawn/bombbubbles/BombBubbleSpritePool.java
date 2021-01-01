@@ -65,6 +65,7 @@ public class BombBubbleSpritePool extends ItemPool {
     public void onRecycle(Sprite item) {
       super.onRecycle(item);
       item.clearEntityModifiers();
+      item.clearUpdateHandlers();
       removePhysics(item);
     }
   };
@@ -90,16 +91,18 @@ public class BombBubbleSpritePool extends ItemPool {
   }
 
   private void registerColorModifier(Sprite bombBubble) {
-    bombBubble.registerEntityModifier(
+    bombBubble.registerUpdateHandler(
         new BombStateToggleEntityModifier(
+            bombBubble,
             BOMB_STATES_DURATION_SECONDS,
-            BOMB_BUBBLE_LIFESPAN_SECONDS,
             EXPLODING_BOMB_COLOUR,
-            DIFFUSE_BOMB_COLOUR,
-            get(BombBubbleExpiredListenerEntity.class)));
+            DIFFUSE_BOMB_COLOUR));
   }
 
   private void registerCountdownTimerModifier(Text timerText) {
-    timerText.registerEntityModifier(new BombTimerEntityModifier(BOMB_BUBBLE_LIFESPAN_SECONDS));
+    timerText.registerUpdateHandler(new BombTimerEntityModifier(
+        timerText,
+        BOMB_BUBBLE_LIFESPAN_SECONDS,
+        get(BombBubbleExpiredListenerEntity.class)));
   }
 }

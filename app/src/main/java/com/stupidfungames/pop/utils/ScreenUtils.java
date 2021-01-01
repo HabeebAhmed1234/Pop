@@ -102,7 +102,7 @@ public class ScreenUtils {
   }
 
   public static boolean isInScreen(IShape shape) {
-    return shape.collidesWith(sScreenShape);
+    return shape.isVisible() && shape.collidesWith(sScreenShape);
   }
 
   public static int dpToPx(float dp, Context context) {

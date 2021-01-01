@@ -21,7 +21,7 @@ public class TimerHandler implements IUpdateHandler {
 	private float mTimerSeconds;
 	private float mTimerSecondsElapsed;
 	private boolean mTimerCallbackTriggered;
-	protected final ITimerCallback mTimerCallback;
+	protected ITimerCallback mTimerCallback;
 	private boolean mAutoReset;
 	private boolean isPaused;
 
@@ -41,6 +41,10 @@ public class TimerHandler implements IUpdateHandler {
 		this.mTimerSeconds = pTimerSeconds;
 		this.mAutoReset = pAutoReset;
 		this.mTimerCallback = pTimerCallback;
+	}
+
+	protected void setTimerCallback(ITimerCallback timerCallback) {
+		this.mTimerCallback = timerCallback;
 	}
 
 	// ===========================================================
@@ -90,14 +94,18 @@ public class TimerHandler implements IUpdateHandler {
 			this.mTimerSecondsElapsed += pSecondsElapsed;
 			while(this.mTimerSecondsElapsed >= this.mTimerSeconds) {
 				this.mTimerSecondsElapsed -= this.mTimerSeconds;
-				this.mTimerCallback.onTimePassed(this);
+				if (mTimerCallback != null) {
+					this.mTimerCallback.onTimePassed(this);
+				}
 			}
 		} else {
 			if(!this.mTimerCallbackTriggered) {
 				this.mTimerSecondsElapsed += pSecondsElapsed;
 				if(this.mTimerSecondsElapsed >= this.mTimerSeconds) {
 					this.mTimerCallbackTriggered = true;
-					this.mTimerCallback.onTimePassed(this);
+					if (mTimerCallback != null) {
+						this.mTimerCallback.onTimePassed(this);
+					}
 				}
 			}
 		}

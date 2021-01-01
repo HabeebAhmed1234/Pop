@@ -65,11 +65,11 @@ public class BombBubbleSpawnerEntity extends BaseEntity implements Subscriber {
   }
 
   public boolean maybeSpawnBombBubble(float x, float y) {
-    if (random.nextFloat() < currentBombBubbleSpawnChance) {
+    //if (random.nextFloat() < currentBombBubbleSpawnChance) {
       spawnBombBubble(x, y);
       return true;
-    }
-    return false;
+    //}
+    //return false;
   }
 
   private void spawnBombBubble(float x, float y) {

@@ -1,5 +1,7 @@
 package com.stupidfungames.pop.hudentities;
 
+import static com.stupidfungames.pop.GameConstants.STREAK_EXPIRE_THRESHOLD_SECONDS;
+
 import android.text.TextUtils;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.DecrementScoreEventPayload;
@@ -21,11 +23,10 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
   private static final String SCORE_TEXT_PREFIX = "Score: ";
   private static final AndengineColor NEGATIVE_SCORE_COLOR = AndengineColor.RED;
   private static final AndengineColor POSITIVE_SCORE_COLOR = AndengineColor.GREEN;
-  private static final float STREAK_EXPIRY_TIME_SECONDS = 10;
 
   private int scoreValue = 0;
   private final ScoreStreakModel streakModel = new ScoreStreakModel();
-  private final TimerHandler streakExpiryHandler = new TimerHandler(STREAK_EXPIRY_TIME_SECONDS,
+  private final TimerHandler streakExpiryHandler = new TimerHandler(STREAK_EXPIRE_THRESHOLD_SECONDS,
       new ITimerCallback() {
         @Override
         public void onTimePassed(TimerHandler pTimerHandler) {
@@ -110,7 +111,8 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
     if (payload.isPoppedByTouch) {
       updateStreak(payload);
     }
-    scoreValue += (payload.incrementAmount * (payload.isPoppedByTouch ? streakModel.getScoreMultiplier() : 1));
+    scoreValue += (payload.incrementAmount * (payload.isPoppedByTouch ? streakModel
+        .getScoreMultiplier() : 1));
     updateScoreText();
   }
 
