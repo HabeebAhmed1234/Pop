@@ -9,30 +9,36 @@ import org.andengine.util.color.AndengineColor;
 public class BombStateToggleEntityModifier extends TimerHandler implements ITimerCallback {
 
   private final IShape bombBubble;
-  private final AndengineColor startColor;
-  private final AndengineColor endColor;
+  private final AndengineColor diffuseColor;
+  private final AndengineColor warnColor;
+  private final AndengineColor explodeColor;
 
 
   public BombStateToggleEntityModifier(
       IShape bombBubble,
       float toggleDurationSeconds,
-      AndengineColor startColor,
-      AndengineColor endColor) {
+      AndengineColor diffuseColor,
+      AndengineColor warnColor,
+      AndengineColor explodeColor) {
     super(toggleDurationSeconds, true, null);
     setTimerCallback(this);
     this.bombBubble = bombBubble;
-    this.startColor = startColor;
-    this.endColor = endColor;
-    bombBubble.setColor(startColor);
+    this.diffuseColor = diffuseColor;
+    this.warnColor = warnColor;
+    this.explodeColor = explodeColor;
+    bombBubble.setColor(diffuseColor);
   }
 
   @Override
   public void onTimePassed(TimerHandler pTimerHandler) {
     if (ScreenUtils.isInScreen(bombBubble)) {
-      if (bombBubble.getColor().equals(startColor)) {
-        bombBubble.setColor(endColor);
-      } else {
-        bombBubble.setColor(startColor);
+      AndengineColor currentColor = bombBubble.getColor();
+      if (currentColor.equals(diffuseColor)) {
+        bombBubble.setColor(warnColor);
+      } else if (currentColor.equals(warnColor)) {
+        bombBubble.setColor(explodeColor);
+      } else if (currentColor.equals(explodeColor)) {
+        bombBubble.setColor(diffuseColor);
       }
     }
   }

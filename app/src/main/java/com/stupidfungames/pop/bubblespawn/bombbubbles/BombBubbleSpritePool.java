@@ -25,6 +25,7 @@ import org.andengine.util.color.AndengineColor;
 public class BombBubbleSpritePool extends ItemPool {
 
   public static final AndengineColor DIFFUSE_BOMB_COLOUR = AndengineColor.GREEN;
+  public static final AndengineColor WARN_BOMB_COLOUR = AndengineColor.YELLOW;
   public static final AndengineColor EXPLODING_BOMB_COLOUR = AndengineColor.RED;
   public static final float BOMB_BUBBLE_SIZE_DP = BubbleSize.MEDIUM.sizeDp;
   public static final float BOMB_BUBBLE_COUNTDOWN_TEXT_TOP_PADDING_DP = 14;
@@ -96,6 +97,7 @@ public class BombBubbleSpritePool extends ItemPool {
             bombBubble,
             BOMB_STATES_DURATION_SECONDS,
             EXPLODING_BOMB_COLOUR,
+            WARN_BOMB_COLOUR,
             DIFFUSE_BOMB_COLOUR));
   }
 

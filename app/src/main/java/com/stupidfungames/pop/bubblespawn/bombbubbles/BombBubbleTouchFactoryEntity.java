@@ -48,7 +48,7 @@ public class BombBubbleTouchFactoryEntity extends BaseEntity {
           popBubblesInRadius(sprite);
           // User had diffused the bomb. make it disappear and pop all bubbles within a radius of it
           get(BombBubbleSpritePool.class).recycle(sprite);
-        } else {
+        } else if(sprite.getColor().equals(BombBubbleSpritePool.EXPLODING_BOMB_COLOUR)) {
           get(BombBubbleExpiredListenerEntity.class).onBombBubbleExpired(sprite);
         }
         return true;

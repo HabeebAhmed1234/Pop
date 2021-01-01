@@ -23,7 +23,7 @@ class TooltipTexts {
     texts.put(TooltipId.UPGRADE_TOOLTIP,
         "Tap on these bubbles to acquire an upgrade. You can then tap on a tool on the right to upgrade it. Every tool has a max of 3 upgrades. Tools will change color to cyan when they are upgradable");
     texts.put(TooltipId.BOMB_BUBBLE_TOOLTIP,
-        "The below is a bomb bubble.\n\nTap on it while it is green to diffuse it and pop some bubbles in a radius around it.\n\nCareful! If it\'s countdown reaches 0 or you tap on it while it is red it will explode and end the game!");
+        "The below is a bomb bubble.\n\nTap on it while it is green to diffuse it and pop some bubbles in a radius around it.\n\nCareful! If it\'s countdown reaches 0 or you tap on it while it is red it will explode and end the game!\n\n The bomb will flash yellow before becoming red.");
   }
 
   public String getTooltipText(TooltipId id) {
