@@ -45,6 +45,7 @@ public class GameConstants {
   public static final float BOMB_BUBBLE_EXPLOSION_RADIUS_DP = BOMB_BUBBLE_SIZE_DP * 2;
 
   //Streaks
+  public static final int STREAK_EXPIRE_THRESHOLD_SECONDS = 10;
   public static final int STREAK_2X_POPPED_BUBBLES_THRESHOLD = 7;
   public static final int STREAK_4X_POPPED_BUBBLES_THRESHOLD = 14;
   public static final int STREAK_8X_POPPED_BUBBLES_THRESHOLD = 28;

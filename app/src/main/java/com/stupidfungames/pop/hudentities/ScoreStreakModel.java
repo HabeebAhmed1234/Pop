@@ -5,11 +5,12 @@ import static com.stupidfungames.pop.GameConstants.STREAK_4X_POPPED_BUBBLES_THRE
 import static com.stupidfungames.pop.GameConstants.STREAK_8X_POPPED_BUBBLES_THRESHOLD;
 
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleType;
+import org.andengine.util.color.AndengineColor;
 
 public class ScoreStreakModel {
 
-  public BubbleType currentStreakBubbleType = null;
-  public int numBubblesPoppedOfStreak = 0;
+  private BubbleType currentStreakBubbleType = null;
+  private int numBubblesPoppedOfStreak = 0;
 
   public int getScoreMultiplier() {
     if (numBubblesPoppedOfStreak >= STREAK_8X_POPPED_BUBBLES_THRESHOLD) {
@@ -36,5 +37,32 @@ public class ScoreStreakModel {
         return "  X8!!";
     }
     return "";
+  }
+
+  public AndengineColor getStreakColor() {
+    return currentStreakBubbleType != null ? currentStreakBubbleType.color
+        : AndengineColor.TRANSPARENT;
+  }
+
+  public boolean shouldStartNewStreak(BubbleType poppedBubbleType) {
+    return currentStreakBubbleType == null || currentStreakBubbleType != poppedBubbleType;
+  }
+
+  public boolean shouldContinueStreak(BubbleType poppedBubbleType) {
+    return currentStreakBubbleType == poppedBubbleType;
+  }
+
+  public void startNewStreak(BubbleType poppedBubbleType) {
+    currentStreakBubbleType = poppedBubbleType;
+    numBubblesPoppedOfStreak = 1;
+  }
+
+  public void continueStreak() {
+    numBubblesPoppedOfStreak += 1;
+  }
+
+  public void cancelCurrentStreak() {
+    currentStreakBubbleType = null;
+    numBubblesPoppedOfStreak = 0;
   }
 }

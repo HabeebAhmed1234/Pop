@@ -9,6 +9,8 @@ import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.IncrementScoreEventPayload;
 import com.stupidfungames.pop.savegame.SaveGame;
 import com.stupidfungames.pop.utils.ScreenUtils;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.util.color.AndengineColor;
 
 /**
@@ -19,9 +21,18 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
   private static final String SCORE_TEXT_PREFIX = "Score: ";
   private static final AndengineColor NEGATIVE_SCORE_COLOR = AndengineColor.RED;
   private static final AndengineColor POSITIVE_SCORE_COLOR = AndengineColor.GREEN;
+  private static final float STREAK_EXPIRY_TIME_SECONDS = 10;
 
   private int scoreValue = 0;
   private final ScoreStreakModel streakModel = new ScoreStreakModel();
+  private final TimerHandler streakExpiryHandler = new TimerHandler(STREAK_EXPIRY_TIME_SECONDS,
+      new ITimerCallback() {
+        @Override
+        public void onTimePassed(TimerHandler pTimerHandler) {
+          streakModel.cancelCurrentStreak();
+          updateScoreText();
+        }
+      });
 
   public ScoreHudEntity(BinderEnity parent) {
     super(parent);
@@ -109,12 +120,21 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
   }
 
   private void updateStreak(IncrementScoreEventPayload payload) {
-    if (streakModel.currentStreakBubbleType == null || streakModel.currentStreakBubbleType != payload.poppedBubbleType) {
+    boolean shouldScheduleNewStreakExpiry = false;
+    if (streakModel.shouldStartNewStreak(payload.poppedBubbleType)) {
       // start tracking a new streak
-      streakModel.currentStreakBubbleType = payload.poppedBubbleType;
-      streakModel.numBubblesPoppedOfStreak = 1;
-    } else if (streakModel.currentStreakBubbleType == payload.poppedBubbleType) {
-      streakModel.numBubblesPoppedOfStreak += 1;
+      streakModel.startNewStreak(payload.poppedBubbleType);
+      shouldScheduleNewStreakExpiry = true;
+    } else if (streakModel.shouldContinueStreak(payload.poppedBubbleType)) {
+      streakModel.continueStreak();
+      shouldScheduleNewStreakExpiry = true;
+    }
+    if (shouldScheduleNewStreakExpiry) {
+      if (engine.containsUpdateHandler(streakExpiryHandler)) {
+        streakExpiryHandler.reset();
+      } else {
+        engine.registerUpdateHandler(streakExpiryHandler);
+      }
     }
   }
 
@@ -130,7 +150,7 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
     String scoreMultString = streakModel.getScoreMultiplierString();
     if (!TextUtils.isEmpty(scoreMultString)) {
       get(StreakHudEntity.class).updateText(scoreMultString);
-      get(StreakHudEntity.class).updateColor(streakModel.currentStreakBubbleType.color);
+      get(StreakHudEntity.class).updateColor(streakModel.getStreakColor());
     } else {
       get(StreakHudEntity.class).updateColor(AndengineColor.TRANSPARENT);
     }
