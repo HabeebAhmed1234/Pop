@@ -7,6 +7,7 @@ import java.util.Queue;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.UpdateHandlerList;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.modifier.EntityModifierList;
 import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
@@ -872,6 +873,16 @@ public class Entity implements IEntity {
       return;
     }
     this.mUpdateHandlers.clear();
+  }
+
+  @Override
+  public void pauseUpdateHandlers() {
+    for (IUpdateHandler handler : mUpdateHandlers) {
+      if (handler instanceof TimerHandler) {
+        handler.reset();
+        ((TimerHandler) handler).pause();
+      }
+    }
   }
 
   @Override

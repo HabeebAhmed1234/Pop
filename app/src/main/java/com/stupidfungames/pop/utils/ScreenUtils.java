@@ -9,6 +9,7 @@ import android.os.Build.VERSION_CODES;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.DisplayCutout;
+import androidx.core.util.Preconditions;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.shape.IAreaShape;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
@@ -34,6 +35,11 @@ public class ScreenUtils {
       this.safeInsetTopHeightDp = safeInsetTopHeightDp;
     }
   }
+
+  /**
+   * Standard overlap that a sprite should have with the screen to be considered "in the screen".
+   */
+  public static final float PERCENT_SPRITE_IN_SCREEN = 1/2f;
 
   private static ScreenSize sScreenSize;
   private static RectF sScreenRect;
@@ -108,6 +114,15 @@ public class ScreenUtils {
   public static boolean isInScreen(IAreaShape shape, boolean isFullyInScreen) {
     return shape.isVisible() && (isFullyInScreen ? GeometryUtils.isShapeInShape(sScreenShape, shape)
         : shape.collidesWith(sScreenShape));
+  }
+
+  /**
+   * Returns true if at least percent of the shape is in the screen
+   */
+  public static boolean isInScreen(IAreaShape shape, float percent) {
+    Preconditions.checkArgument(percent >= 0 && percent <= 1);
+    if (!shape.isVisible()) return false;
+    return (GeometryUtils.getOverLapArea(shape, sScreenShape) / shape.getWidthScaled() * shape.getHeightScaled()) >= percent;
   }
 
   public static int dpToPx(float dp, Context context) {

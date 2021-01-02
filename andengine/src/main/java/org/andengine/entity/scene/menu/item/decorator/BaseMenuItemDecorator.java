@@ -810,6 +810,11 @@ public abstract class BaseMenuItemDecorator implements IMenuItem {
 	}
 
 	@Override
+	public void pauseUpdateHandlers() {
+		this.mMenuItem.pauseUpdateHandlers();
+	}
+
+	@Override
 	public boolean unregisterUpdateHandlers(final IUpdateHandlerMatcher pUpdateHandlerMatcher) {
 		return this.mMenuItem.unregisterUpdateHandlers(pUpdateHandlerMatcher);
 	}

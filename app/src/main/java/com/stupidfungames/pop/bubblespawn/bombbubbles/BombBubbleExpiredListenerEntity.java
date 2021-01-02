@@ -1,5 +1,7 @@
 package com.stupidfungames.pop.bubblespawn.bombbubbles;
 
+import static com.stupidfungames.pop.utils.ScreenUtils.PERCENT_SPRITE_IN_SCREEN;
+
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
@@ -20,7 +22,7 @@ public class BombBubbleExpiredListenerEntity extends BaseEntity implements
   @Override
   public void onBombBubbleExpired(IEntity bombBubbleEntity) {
     Sprite sprite = (Sprite) bombBubbleEntity;
-    if (ScreenUtils.isInScreen(sprite, true)) {
+    if (ScreenUtils.isInScreen(sprite, PERCENT_SPRITE_IN_SCREEN)) {
       EventBus.get().sendEvent(
           GameEvent.GAME_OVER_ON_EXPLOSION_EVENT,
           new GameOverExplosionEventPayload(

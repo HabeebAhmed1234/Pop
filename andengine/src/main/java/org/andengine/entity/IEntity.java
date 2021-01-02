@@ -305,6 +305,7 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 	public boolean unregisterUpdateHandlers(final IUpdateHandlerMatcher pUpdateHandlerMatcher);
 	public int getUpdateHandlerCount();
 	public void clearUpdateHandlers();
+	public void pauseUpdateHandlers();
 
 	public void registerEntityModifier(final IEntityModifier pEntityModifier);
 	public boolean unregisterEntityModifier(final IEntityModifier pEntityModifier);

@@ -1,18 +1,25 @@
 package com.stupidfungames.pop.bubblespawn.bombbubbles;
 
-import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.shape.IAreaShape;
-import org.andengine.entity.shape.IShape;
 import org.andengine.util.color.AndengineColor;
 
 public class BombStateToggleEntityModifier extends TimerHandler implements ITimerCallback {
+
+  private enum State {
+    DIFFUSE,
+    WARN,
+    EXPLODE,
+    WARN2,
+  }
 
   private final IAreaShape bombBubble;
   private final AndengineColor diffuseColor;
   private final AndengineColor warnColor;
   private final AndengineColor explodeColor;
+
+  private State state = State.DIFFUSE;
 
 
   public BombStateToggleEntityModifier(
@@ -32,15 +39,37 @@ public class BombStateToggleEntityModifier extends TimerHandler implements ITime
 
   @Override
   public void onTimePassed(TimerHandler pTimerHandler) {
-    if (ScreenUtils.isInScreen(bombBubble, true)) {
-      AndengineColor currentColor = bombBubble.getColor();
-      if (currentColor.equals(diffuseColor)) {
-        bombBubble.setColor(warnColor);
-      } else if (currentColor.equals(warnColor)) {
-        bombBubble.setColor(explodeColor);
-      } else if (currentColor.equals(explodeColor)) {
-        bombBubble.setColor(diffuseColor);
-      }
+    advanceState();
+    bombBubble.setColor(getColor());
+  }
+
+  private void advanceState() {
+    switch (state) {
+      case DIFFUSE:
+        state = State.WARN;
+        break;
+      case WARN:
+        state = State.EXPLODE;
+        break;
+      case EXPLODE:
+        state = State.WARN2;
+        break;
+      case WARN2:
+        state = State.DIFFUSE;
+        break;
     }
+  }
+
+  private AndengineColor getColor() {
+    switch (state) {
+      case DIFFUSE:
+        return diffuseColor;
+      case WARN:
+      case WARN2:
+        return warnColor;
+      case EXPLODE:
+        return explodeColor;
+    }
+    return diffuseColor;
   }
 }

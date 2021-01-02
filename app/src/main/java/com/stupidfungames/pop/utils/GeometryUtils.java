@@ -159,7 +159,26 @@ public class GeometryUtils {
     return
         child.getX() >= parent.getX() && (child.getX() + child.getWidthScaled())
             <= (parent.getX() + parent.getWidthScaled())
-        && child.getY() >= parent.getY() && (child.getY() + child.getHeightScaled())
+            && child.getY() >= parent.getY() && (child.getY() + child.getHeightScaled())
             <= (parent.getY() + parent.getHeightScaled());
+  }
+
+  public static float getOverLapArea(IAreaShape shape1, IAreaShape shape2) {
+    float rect1Left = shape1.getX();
+    float rect2Left = shape2.getX();
+    float rect1Right = shape1.getX() + shape1.getWidthScaled();
+    float rect2Right = shape2.getX() + shape2.getWidthScaled();
+
+    float rect1Top = shape1.getY();
+    float rect2Top = shape2.getY();
+    float rect1Bottom = shape1.getY() + shape1.getHeightScaled();
+    float rect2Bottom = shape2.getY() + shape2.getHeightScaled();
+    float xOverlap = Math.max(0, Math.min(rect1Right, rect2Right) - Math.max(rect1Left, rect2Left));
+    float yOverlap = Math.max(0, Math.min(rect1Bottom, rect2Bottom) - Math.max(rect1Top, rect2Top));
+
+    if (xOverlap > 0 && yOverlap > 0) {
+      return xOverlap * yOverlap;
+    }
+    return 0;
   }
 }

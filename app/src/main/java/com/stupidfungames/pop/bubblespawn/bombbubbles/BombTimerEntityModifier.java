@@ -1,5 +1,7 @@
 package com.stupidfungames.pop.bubblespawn.bombbubbles;
 
+import static com.stupidfungames.pop.utils.ScreenUtils.PERCENT_SPRITE_IN_SCREEN;
+
 import com.stupidfungames.pop.utils.GeometryUtils;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.engine.handler.timer.ITimerCallback;
@@ -34,7 +36,7 @@ public class BombTimerEntityModifier extends TimerHandler implements ITimerCallb
 
   @Override
   public void onTimePassed(TimerHandler pTimerHandler) {
-    if (ScreenUtils.isInScreen(bombBubble, true)) {
+    if (ScreenUtils.isInScreen(bombBubble, PERCENT_SPRITE_IN_SCREEN)) {
       timer--;
       if (timer == 0) {
         // bomb exploded

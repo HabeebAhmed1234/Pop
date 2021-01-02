@@ -67,6 +67,8 @@ public class BombBubbleSpritePool extends ItemPool {
       super.onRecycle(item);
       item.clearEntityModifiers();
       item.clearUpdateHandlers();
+      item.getFirstChild().clearEntityModifiers();
+      item.getFirstChild().clearUpdateHandlers();
       removePhysics(item);
     }
   };

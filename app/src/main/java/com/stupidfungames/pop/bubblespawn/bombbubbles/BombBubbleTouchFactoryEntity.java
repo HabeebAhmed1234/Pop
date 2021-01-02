@@ -46,14 +46,14 @@ public class BombBubbleTouchFactoryEntity extends BaseEntity {
             .getUserData() instanceof BombBubbleEntityUserData)) {
           return false;
         }
-        if (sprite.getColor().equals(BombBubbleSpritePool.DIFFUSE_BOMB_COLOUR)) {
+        //if (sprite.getColor().equals(BombBubbleSpritePool.DIFFUSE_BOMB_COLOUR)) {
           popBubblesInRadius(sprite);
           get(GameSoundsManager.class).getSound(SoundId.EXPOSION_2).play();
           // User had diffused the bomb. make it disappear and pop all bubbles within a radius of it
           get(BombBubbleSpritePool.class).recycle(sprite);
-        } else if(sprite.getColor().equals(BombBubbleSpritePool.EXPLODING_BOMB_COLOUR)) {
-          get(BombBubbleExpiredListenerEntity.class).onBombBubbleExpired(sprite);
-        }
+        //} else if(sprite.getColor().equals(BombBubbleSpritePool.EXPLODING_BOMB_COLOUR)) {
+        //  get(BombBubbleExpiredListenerEntity.class).onBombBubbleExpired(sprite);
+        //}
         return true;
       }
       return false;
