@@ -27,7 +27,7 @@ public class GameConstants {
 
   // Difficulty
   public static final float MAX_BUBBLES_PER_SPAWN = 3;
-  public static final float TIME_TO_MAX_DIFFICULTY_SECONDS = TimeUnit.MINUTES.toSeconds(6);
+  public static final float TIME_TO_MAX_DIFFICULTY_SECONDS = 60;//TimeUnit.MINUTES.toSeconds(6);
   // Once all icons are unlocked open up upgrades
   public static final float MIN_UPGRADE_SPAWN_START_THRESHOLD_DIFFICULTY = 0.5f;
   public static final float MAX_SPAWN_INTERVAL_SECONDS = 4f;
@@ -37,7 +37,7 @@ public class GameConstants {
   public static final float MAX_BOMB_BUBBLE_PROBABILITY = 0.2f;
   // The probability of a bomb spawning at min difficulty
   public static final float MIN_BOMB_BUBBLE_PROBABILITY = 0.05f;
-  public static final float BOMB_BUBBLE_SPAWN_DIFFICULTY_THRESHOLD = WALLS_DIFFICULTY_UNLOCK_THRESHOLD;
+  public static final float BOMB_BUBBLE_SPAWN_DIFFICULTY_THRESHOLD = ALL_ICON_UNLOCK_DIFFICULTY_PERCENTAGE;
   // The amount of time a bomb bubble is green/red
   public static final float BOMB_STATES_DURATION_SECONDS = 1f;
   // The amount of time before a bomb bubble explodes and ends the game

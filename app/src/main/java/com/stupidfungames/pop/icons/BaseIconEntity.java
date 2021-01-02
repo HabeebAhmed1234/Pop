@@ -56,15 +56,13 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
     setIconColor(AndengineColor.TRANSPARENT);
 
     EventBus.get()
-        .subscribe(GameEvent.GAME_PROGRESS_CHANGED, this, true)
-        .subscribe(GameEvent.GAME_ICONS_TRAY_OPENED, this, true);
+        .subscribe(GameEvent.GAME_PROGRESS_CHANGED, this, true);
   }
 
   @Override
   public void onDestroy() {
     EventBus.get()
-        .unSubscribe(GameEvent.GAME_PROGRESS_CHANGED, this)
-        .unSubscribe(GameEvent.GAME_ICONS_TRAY_OPENED, this);
+        .unSubscribe(GameEvent.GAME_PROGRESS_CHANGED, this);
     iconSprite.removeOnAreaTouchListener();
   }
 
@@ -74,13 +72,6 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
       case GAME_PROGRESS_CHANGED:
         GameProgressEventPayload progressEventPayload = (GameProgressEventPayload) payload;
         onGameProgressChanged(progressEventPayload.percentProgress);
-        break;
-      case GAME_ICONS_TRAY_OPENED:
-        if (isUnlocked()) {
-          float[] tooltipAnchor = getIconTooltipAnchor();
-          get(GameTooltipsEntity.class)
-              .maybeShowTooltip(getIconTooltipId(), tooltipAnchor[0], tooltipAnchor[1]);
-        }
         break;
     }
   }
@@ -96,7 +87,14 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
       addIconToTray();
       onIconUnlocked();
       broadcastIconUnlock();
+      showTooltip();
     }
+  }
+
+  private void showTooltip() {
+    float[] tooltipAnchor = getIconTooltipAnchor();
+    get(GameTooltipsEntity.class)
+        .maybeShowTooltip(getIconTooltipId(), tooltipAnchor[0], tooltipAnchor[1]);
   }
 
   private float[] getIconTooltipAnchor() {
