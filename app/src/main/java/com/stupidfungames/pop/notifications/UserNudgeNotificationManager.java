@@ -67,7 +67,7 @@ public class UserNudgeNotificationManager extends BroadcastReceiver {
   @Override
   public void onReceive(Context context, Intent intent) {
     NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-        .setSmallIcon(R.drawable.ic_launcher)
+        .setSmallIcon(getNotificationIcon())
         .setContentTitle(context.getString(R.string.nudge_notification_title))
         .setContentText(context.getString(R.string.nudge_notification_content))
         .setContentIntent(getAppLaunchIntent(context))
@@ -78,6 +78,11 @@ public class UserNudgeNotificationManager extends BroadcastReceiver {
 
     int notificationId = intent.getIntExtra(EXTRA_NOTIFICATION_ID, 0);
     notificationManager.notify(notificationId, builder.build());
+  }
+
+  private int getNotificationIcon() {
+    boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
+    return useWhiteIcon ? R.drawable.ic_silhouette : R.drawable.ic_launcher;
   }
 
   private PendingIntent getAppLaunchIntent(Context context) {
