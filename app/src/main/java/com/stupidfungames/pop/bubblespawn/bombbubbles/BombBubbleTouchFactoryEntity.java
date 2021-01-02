@@ -10,6 +10,8 @@ import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
 import com.stupidfungames.pop.entitymatchers.BubblesInRadiusEntityMatcher;
 import com.stupidfungames.pop.fixturedefdata.BombBubbleEntityUserData;
+import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
+import com.stupidfungames.pop.resources.sounds.SoundId;
 import java.util.List;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.scene.IOnAreaTouchListener;
@@ -46,6 +48,7 @@ public class BombBubbleTouchFactoryEntity extends BaseEntity {
         }
         if (sprite.getColor().equals(BombBubbleSpritePool.DIFFUSE_BOMB_COLOUR)) {
           popBubblesInRadius(sprite);
+          get(GameSoundsManager.class).getSound(SoundId.EXPOSION_2).play();
           // User had diffused the bomb. make it disappear and pop all bubbles within a radius of it
           get(BombBubbleSpritePool.class).recycle(sprite);
         } else if(sprite.getColor().equals(BombBubbleSpritePool.EXPLODING_BOMB_COLOUR)) {

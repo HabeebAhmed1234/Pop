@@ -154,4 +154,12 @@ public class GeometryUtils {
   public static void centerInHorizontal(IAreaShape parent, Text child) {
     child.setX(parent.getWidthScaled() / 2 - child.getLineWidthMaximum());
   }
+
+  public static boolean isShapeInShape(IAreaShape parent, IAreaShape child) {
+    return
+        child.getX() >= parent.getX() && (child.getX() + child.getWidthScaled())
+            <= (parent.getX() + parent.getWidthScaled())
+        && child.getY() >= parent.getY() && (child.getY() + child.getHeightScaled())
+            <= (parent.getY() + parent.getHeightScaled());
+  }
 }

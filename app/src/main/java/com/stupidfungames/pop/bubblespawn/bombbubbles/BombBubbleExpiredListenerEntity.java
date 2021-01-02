@@ -20,7 +20,7 @@ public class BombBubbleExpiredListenerEntity extends BaseEntity implements
   @Override
   public void onBombBubbleExpired(IEntity bombBubbleEntity) {
     Sprite sprite = (Sprite) bombBubbleEntity;
-    if (ScreenUtils.isInScreen(sprite)) {
+    if (ScreenUtils.isInScreen(sprite, true)) {
       EventBus.get().sendEvent(
           GameEvent.GAME_OVER_ON_EXPLOSION_EVENT,
           new GameOverExplosionEventPayload(

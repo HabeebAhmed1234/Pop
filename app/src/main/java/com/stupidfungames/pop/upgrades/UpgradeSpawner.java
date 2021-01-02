@@ -161,7 +161,7 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
     addToSceneWithTouch(upgradeSprite, body,
         get(UpgradeTouchFactoryEntity.class).getNewTouchListener(), false);
 
-    if (ScreenUtils.isInScreen(upgradeSprite)) {
+    if (ScreenUtils.isInScreen(upgradeSprite, true)) {
       get(GameTooltipsEntity.class)
           .maybeShowTooltip(TooltipId.UPGRADE_TOOLTIP);
     }

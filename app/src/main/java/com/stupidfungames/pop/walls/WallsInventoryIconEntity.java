@@ -33,7 +33,7 @@ public class WallsInventoryIconEntity extends BaseInventoryIconEntity implements
 
   @Override
   public void onEnterState(WallsStateMachine.State newState) {
-    AndengineColor color = AndengineColor.WHITE;
+    AndengineColor color = AndengineColor.GREY;
     GameSoundsManager soundsManager = get(GameSoundsManager.class);
     switch (newState) {
       case LOCKED:
@@ -41,7 +41,7 @@ public class WallsInventoryIconEntity extends BaseInventoryIconEntity implements
         break;
       case UNLOCKED_TOGGLED_OFF:
         soundsManager.getSound(SoundId.CLICK_DOWN).play();
-        color = AndengineColor.WHITE;
+        color = AndengineColor.GREY;
         break;
       case TOGGLED_ON:
         soundsManager.getSound(SoundId.CLICK_UP).play();

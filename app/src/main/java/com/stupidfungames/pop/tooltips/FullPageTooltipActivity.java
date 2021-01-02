@@ -34,7 +34,8 @@ public class FullPageTooltipActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.tooltip_with_image_layout);
     TooltipId tooltipId = (TooltipId) getIntent().getExtras().get(EXTRA_TOOLTIP_ID);
-    ((TextView) findViewById(R.id.tooltip_text)).setText(tooltipTexts.getTooltipText(tooltipId));
+    ((TextView) findViewById(R.id.tooltip_text))
+        .setText(tooltipTexts.getTooltipText(tooltipId));
     @Nullable String imageFilePath = tooltipImages.getTooltipImageAssetFilePath(tooltipId);
     if (!TextUtils.isEmpty(imageFilePath)) {
       ImageView imageView = findViewById(R.id.tooltip_image);

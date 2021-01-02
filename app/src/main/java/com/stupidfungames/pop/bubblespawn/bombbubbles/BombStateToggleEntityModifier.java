@@ -3,19 +3,20 @@ package com.stupidfungames.pop.bubblespawn.bombbubbles;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
+import org.andengine.entity.shape.IAreaShape;
 import org.andengine.entity.shape.IShape;
 import org.andengine.util.color.AndengineColor;
 
 public class BombStateToggleEntityModifier extends TimerHandler implements ITimerCallback {
 
-  private final IShape bombBubble;
+  private final IAreaShape bombBubble;
   private final AndengineColor diffuseColor;
   private final AndengineColor warnColor;
   private final AndengineColor explodeColor;
 
 
   public BombStateToggleEntityModifier(
-      IShape bombBubble,
+      IAreaShape bombBubble,
       float toggleDurationSeconds,
       AndengineColor diffuseColor,
       AndengineColor warnColor,
@@ -31,7 +32,7 @@ public class BombStateToggleEntityModifier extends TimerHandler implements ITime
 
   @Override
   public void onTimePassed(TimerHandler pTimerHandler) {
-    if (ScreenUtils.isInScreen(bombBubble)) {
+    if (ScreenUtils.isInScreen(bombBubble, true)) {
       AndengineColor currentColor = bombBubble.getColor();
       if (currentColor.equals(diffuseColor)) {
         bombBubble.setColor(warnColor);

@@ -5,7 +5,6 @@ import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.shape.IAreaShape;
-import org.andengine.entity.shape.IShape;
 import org.andengine.entity.text.Text;
 import org.andengine.util.color.AndengineColor;
 
@@ -15,7 +14,7 @@ public class BombTimerEntityModifier extends TimerHandler implements ITimerCallb
   private static final float TIMER_INCREMENT_SECONDS = 1;
 
   private final Text timerText;
-  private final IShape bombBubble;
+  private final IAreaShape bombBubble;
   private final BombBubbleExpiredListenerEntity expiredListenerEntity;
   private int timer;
 
@@ -26,7 +25,7 @@ public class BombTimerEntityModifier extends TimerHandler implements ITimerCallb
     super(TIMER_INCREMENT_SECONDS, true, null);
     setTimerCallback(this);
     this.timerText = timerText;
-    this.bombBubble = (IShape) timerText.getParent();
+    this.bombBubble = (IAreaShape) timerText.getParent();
     this.expiredListenerEntity = expiredListenerEntity;
 
     timer = (int) (durationSeconds / TIMER_INCREMENT_SECONDS);
@@ -35,7 +34,7 @@ public class BombTimerEntityModifier extends TimerHandler implements ITimerCallb
 
   @Override
   public void onTimePassed(TimerHandler pTimerHandler) {
-    if (ScreenUtils.isInScreen(bombBubble)) {
+    if (ScreenUtils.isInScreen(bombBubble, true)) {
       timer--;
       if (timer == 0) {
         // bomb exploded

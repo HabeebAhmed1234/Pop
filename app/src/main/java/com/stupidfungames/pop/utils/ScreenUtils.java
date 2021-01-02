@@ -10,7 +10,7 @@ import android.util.TypedValue;
 import android.view.Display;
 import android.view.DisplayCutout;
 import org.andengine.entity.primitive.Rectangle;
-import org.andengine.entity.shape.IShape;
+import org.andengine.entity.shape.IAreaShape;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 public class ScreenUtils {
@@ -37,7 +37,7 @@ public class ScreenUtils {
 
   private static ScreenSize sScreenSize;
   private static RectF sScreenRect;
-  private static IShape sScreenShape;
+  private static IAreaShape sScreenShape;
 
   /**
    * Initializes when initialize is called
@@ -101,8 +101,13 @@ public class ScreenUtils {
     return sScreenRect;
   }
 
-  public static boolean isInScreen(IShape shape) {
-    return shape.isVisible() && shape.collidesWith(sScreenShape);
+  public static boolean isInScreen(IAreaShape shape) {
+    return isInScreen(shape, false);
+  }
+
+  public static boolean isInScreen(IAreaShape shape, boolean isFullyInScreen) {
+    return shape.isVisible() && (isFullyInScreen ? GeometryUtils.isShapeInShape(sScreenShape, shape)
+        : shape.collidesWith(sScreenShape));
   }
 
   public static int dpToPx(float dp, Context context) {

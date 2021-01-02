@@ -127,4 +127,14 @@
   <string name="description_bg_11">Background of the monster buildings of Hong Kong</string>
   <string name="description_bg_12">Background of the foggy skyline of Tokyo</string>
   <string name="description_bg_13">Background of a huge red lamp</string>
+
+  <!-- Tooltip texts -->
+  <string name="turret_tooltip">Drag and drop turrets from this icon onto the screen.</string>
+  <string name="ball_and_chain_tooltip">Press and hold this icon to get a mace to pop bubbles with.</string>
+  <string name="wall_tooltip">Toggle this icon to start placing walls onto the screen. To place a wall press and drag on the screen.</string>
+  <string name="nuke_tooltip">Tap this icon to pop all bubbles on the screen in waves. Careful, it takes a long time to recharge.</string>
+  <string name="multi_touch_icon_tooltip">Touch a bubble to pop it and all nearby bubbles of the same colour.</string>
+  <string name="touch_pop_tooltip">Touch the bubbles to pop them before they reach the bottom of the screen!\n\nTouch multiple bubbles of the same color to start a streak and earn more points!</string>
+  <string name="upgrade_tooltip">Tap on these bubbles to acquire an upgrade.\nYou can then tap on a tool on the right to upgrade it.\nEvery tool has a max of 3 upgrades.\nTools will change color to cyan when they are upgradable</string>
+  <string name="bomb_bubble_tooltip">The below is a bomb bubble.\n\nTap on it while it is green to diffuse it and pop some bubbles in a radius around it.\n\nCareful! If it\'s countdown reaches 0 or you tap on it while it is red it will explode and end the game!\n\nThe bomb will flash yellow before becoming red.</string>
 </resources>

@@ -5,7 +5,7 @@ import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.IEntityMatcher;
-import org.andengine.entity.shape.IShape;
+import org.andengine.entity.shape.IAreaShape;
 
 public class BubblesEntityMatcher implements IEntityMatcher {
 
@@ -34,7 +34,6 @@ public class BubblesEntityMatcher implements IEntityMatcher {
   }
 
   private boolean isBubbleInPoppableBounds(IEntity entity) {
-    IShape shape = (IShape) entity;
-    return ScreenUtils.isInScreen(shape);
+    return ScreenUtils.isInScreen((IAreaShape) entity);
   }
 }
