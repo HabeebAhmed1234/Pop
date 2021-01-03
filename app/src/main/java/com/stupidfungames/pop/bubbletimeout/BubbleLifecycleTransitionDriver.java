@@ -86,11 +86,11 @@ class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, List
         break;
     }
     if (nextState != null) {
-      float[] bubbleCenter = bubbleSprite.getCenter();
       boolean isBubbleInScreen = ScreenUtils.getScreenRect()
-          .contains(bubbleCenter[0], bubbleCenter[1]);
+          .contains(bubbleSprite.getCenterX(), bubbleSprite.getCenterY());
 
-      if (nextState == EXPLODING && bubbleCenter[1] > ScreenUtils.getSreenSize().heightPx) {
+      if (nextState == EXPLODING && bubbleSprite.getCenterY() > ScreenUtils
+          .getSreenSize().heightPx) {
         // If the bubble has already passed the bottom of the screen it shouldn't explode
         // Should just disappear
         return;

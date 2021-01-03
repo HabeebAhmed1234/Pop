@@ -34,6 +34,7 @@ public class CircleOutlineParticleEmitter extends BaseCircleParticleEmitter {
 		super(pCenterX, pCenterY, pRadiusX, pRadiusY);
 	}
 
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================

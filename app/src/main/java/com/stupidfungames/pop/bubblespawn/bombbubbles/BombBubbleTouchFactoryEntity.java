@@ -51,7 +51,7 @@ public class BombBubbleTouchFactoryEntity extends BaseEntity {
           get(GameSoundsManager.class).getSound(SoundId.EXPOSION_2).play();
           // User had diffused the bomb. make it disappear and pop all bubbles within a radius of it
           get(BombBubbleSpritePool.class).recycle(sprite);
-        } else if(sprite.getColor().equals(BombBubbleSpritePool.EXPLODING_BOMB_COLOUR)) {
+        } else if (sprite.getColor().equals(BombBubbleSpritePool.EXPLODING_BOMB_COLOUR)) {
           get(BombBubbleExpiredListenerEntity.class).onBombBubbleExpired(sprite);
         }
         return true;
@@ -70,7 +70,8 @@ public class BombBubbleTouchFactoryEntity extends BaseEntity {
     float explosionRadiusPx = dpToPx(BOMB_BUBBLE_EXPLOSION_RADIUS_DP, get(Context.class));
     List<IEntity> bubblesInRadius = scene.query(
         new BubblesInRadiusEntityMatcher(
-            sprite.getCenter(),
+            sprite.getCenterX(),
+            sprite.getCenterY(),
             explosionRadiusPx,
             false,
             true));
@@ -78,8 +79,7 @@ public class BombBubbleTouchFactoryEntity extends BaseEntity {
     for (IEntity bubble : bubblesInRadius) {
       bubblePopperEntity.popBubbleWithNoChildren((Sprite) bubble);
     }
-    float[] spriteCenter = sprite.getCenter();
     get(BombBubbleExplosionEffectEntity.class)
-        .explode(spriteCenter[0], spriteCenter[1], explosionRadiusPx);
+        .explode(sprite.getCenterX(), sprite.getCenterY(), explosionRadiusPx);
   }
 }

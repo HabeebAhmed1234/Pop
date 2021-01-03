@@ -97,9 +97,8 @@ public class TouchBubblePopper extends BaseEntity implements Subscriber {
   }
 
   private void showBubbleTouchPopParticleEffect(BubbleTouchedEventPayload touchedEventPayload) {
-    float[] poppedBubbleCenter = touchedEventPayload.sprite.getCenter();
     get(BubblePopParticleEffectEntity.class)
-        .emit(poppedBubbleCenter[0], poppedBubbleCenter[1],
+        .emit(touchedEventPayload.sprite.getCenterX(), touchedEventPayload.sprite.getCenterY(),
             touchedEventPayload.type,
             touchedEventPayload.sprite.getWidthScaled() / 2 * BUBBLE_BODY_SCALE_FACTOR);
   }

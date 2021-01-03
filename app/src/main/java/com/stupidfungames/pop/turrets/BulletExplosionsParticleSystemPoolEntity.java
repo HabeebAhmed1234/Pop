@@ -64,7 +64,7 @@ public class BulletExplosionsParticleSystemPoolEntity extends
   }
 
   @Override
-  protected float getParticleDuration() {
+  protected float getParticleDurationSeconds() {
     return EXPLOSION_DURATION_SECONDS;
   }
 }

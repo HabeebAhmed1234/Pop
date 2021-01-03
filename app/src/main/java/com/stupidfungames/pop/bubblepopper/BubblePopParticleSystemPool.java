@@ -86,7 +86,7 @@ public class BubblePopParticleSystemPool extends
   }
 
   @Override
-  protected float getParticleDuration() {
+  protected float getParticleDurationSeconds() {
     return PARTICLE_DURATION_SECONDS;
   }
 }

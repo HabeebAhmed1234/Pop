@@ -75,7 +75,7 @@ public class UpgradeParticleSystemPoolEntity extends
   }
 
   @Override
-  protected float getParticleDuration() {
+  protected float getParticleDurationSeconds() {
     return EXPLOSION_DURATION_SECONDS;
   }
 }

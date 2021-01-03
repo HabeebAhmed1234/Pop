@@ -36,10 +36,10 @@ public class NeighboringBubblesMarkedForRecursivePoppingEntityMatcher extends Bu
         return false;
       }
       Sprite sprite = ((Sprite) pEntity);
-      float[] c1 = bubble.getCenter();
-      float[] c2 = sprite.getCenter();
-      if (GeometryUtils.distanceBetween(c1[0], c1[1], c2[0], c2[1], bubble.getWidthScaled() / 2,
-          sprite.getWidthScaled() / 2) <= radius) {
+      if (GeometryUtils
+          .distanceBetween(bubble.getCenterX(), bubble.getCenterY(), sprite.getCenterX(),
+              sprite.getCenterY(), bubble.getWidthScaled() / 2,
+              sprite.getWidthScaled() / 2) <= radius) {
         return true;
       }
     }

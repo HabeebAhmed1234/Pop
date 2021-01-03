@@ -24,6 +24,9 @@ class BubbleLifecycleControllersManager extends BaseEntity {
     lifecycleControllers
         .add(new BubbleBlinkAnimationManager(bubbleSprite, stateMachine, soundsManager));
     lifecycleControllers
+        .add(new BubbleAboutToExplodeParticleSystemLifecycleController(bubbleSprite, stateMachine,
+            this));
+    lifecycleControllers
         .add(new BubbleLifecycleTransitionDriver(bubbleSprite, engine, stateMachine));
     lifecycleControllers.add(new BubbleLifecycleGameOverEntity(bubbleSprite, stateMachine, this));
   }

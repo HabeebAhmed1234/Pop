@@ -44,7 +44,8 @@ public abstract class BaseParticleSystemPool<P extends BaseParticleSystemPoolPar
         }
 
         // add baseline set of initializers
-        particleSystem.addParticleInitializer(new ExpireParticleInitializer(getParticleDuration()));
+        particleSystem.addParticleInitializer(new ExpireParticleInitializer(
+            getParticleDurationSeconds()));
 
         List<IParticleModifier> modifiers = getParticleModifiers();
         if (modifiers != null && !modifiers.isEmpty()) {
@@ -55,7 +56,7 @@ public abstract class BaseParticleSystemPool<P extends BaseParticleSystemPoolPar
 
         // add baseline set of modifiers
         particleSystem
-            .addParticleModifier(new AlphaParticleModifier(0, getParticleDuration(), 1, 0));
+            .addParticleModifier(new AlphaParticleModifier(0, getParticleDurationSeconds(), 1, 0));
 
         scene.attachChild(particleSystem);
         return particleSystem;
@@ -109,5 +110,5 @@ public abstract class BaseParticleSystemPool<P extends BaseParticleSystemPoolPar
 
   protected abstract int getParticlesMax();
 
-  protected abstract float getParticleDuration();
+  protected abstract float getParticleDurationSeconds();
 }

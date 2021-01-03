@@ -43,6 +43,7 @@ class BubbleLifecycleGameOverEntity extends BaseEntity implements BubbleLifecycl
     }
     EventBus.get().sendEvent(
         GameEvent.GAME_OVER_ON_EXPLOSION_EVENT,
-        new GameOverExplosionEventPayload(Vec2Pool.obtain(bubble.getCenter())));
+        new GameOverExplosionEventPayload(
+            Vec2Pool.obtain(bubble.getCenterX(), bubble.getCenterY())));
   }
 }

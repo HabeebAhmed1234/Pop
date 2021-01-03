@@ -1,5 +1,9 @@
 package com.stupidfungames.pop.bubbletimeout;
 
+import static com.stupidfungames.pop.GameConstants.BUBBLE_BLINKING_FAST_TIME_SECONDS;
+import static com.stupidfungames.pop.GameConstants.BUBBLE_BLINKING_IMMINENT_TIME_SECONDS;
+import static com.stupidfungames.pop.GameConstants.BUBBLE_BLINKING_SLOWLY_TIME_SECONDS;
+import static com.stupidfungames.pop.GameConstants.BUBBLE_STABLE_TIME_SECONDS;
 import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.BLINKING_FAST;
 import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.BLINKING_IMMINENT;
 import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.BLINKING_SLOWLY;
@@ -35,22 +39,22 @@ class BubbleLifeCycleStateMachine extends BaseStateMachine<BubbleLifeCycleStateM
     /**
      * The bubble is stable and not about to explode
      */
-    STABLE(6f),
+    STABLE(BUBBLE_STABLE_TIME_SECONDS),
 
     /**
      * The bubble has started blinking slowly
      */
-    BLINKING_SLOWLY(3f),
+    BLINKING_SLOWLY(BUBBLE_BLINKING_SLOWLY_TIME_SECONDS),
 
     /**
      * The bubble blinking has sped up
      */
-    BLINKING_FAST(2f),
+    BLINKING_FAST(BUBBLE_BLINKING_FAST_TIME_SECONDS),
 
     /**
      * The bubble is about to explode
      */
-    BLINKING_IMMINENT(1f),
+    BLINKING_IMMINENT(BUBBLE_BLINKING_IMMINENT_TIME_SECONDS),
 
     /**
      * The bubble has exploded

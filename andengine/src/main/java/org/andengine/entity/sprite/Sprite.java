@@ -117,8 +117,12 @@ public class Sprite extends RectangularShape {
 		this.onUpdateTextureCoordinates();
 	}
 
-	public float[] getCenter() {
-		return new float[] {getX() + getWidthScaled() / 2, getY() + getHeightScaled() / 2};
+	public float getCenterX() {
+		return getX() + getWidthScaled() / 2;
+	}
+
+	public float getCenterY() {
+		return getY() + getHeightScaled() / 2;
 	}
 
 	// ===========================================================

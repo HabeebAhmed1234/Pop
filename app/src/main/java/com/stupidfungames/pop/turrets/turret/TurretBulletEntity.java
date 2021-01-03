@@ -109,8 +109,8 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
         .createCircleBody(physicsWorld, bulletSprite, BodyType.DYNAMIC, bulletFixtureDef);
     bulletBody.setGravityScale(0);
     setInitialBulletVelocity(
-        Vec2Pool.obtain(bulletSprite.getCenter()),
-        Vec2Pool.obtain(targetBubble.getCenter()),
+        Vec2Pool.obtain(bulletSprite.getCenterX(), bulletSprite.getCenterY()),
+        Vec2Pool.obtain(targetBubble.getCenterX(), targetBubble.getCenterY()),
         bulletBody);
 
     targetingMouseJoint = createBulletTargetingMouseJoint(bulletSprite, bulletBody);
@@ -118,7 +118,8 @@ public class TurretBulletEntity extends BaseEntity implements EventBus.Subscribe
   }
 
   private void setInitialBulletVelocity(Vec2 bulletPosition, Vec2 targetPosition, Body bulletBody) {
-    Vec2 forceVector = getVector(bulletPosition, targetPosition, BULLET_INITIAL_FIRING_FORCE_NEWTONS);
+    Vec2 forceVector = getVector(bulletPosition, targetPosition,
+        BULLET_INITIAL_FIRING_FORCE_NEWTONS);
     Vec2Pool.recycle(bulletPosition);
     Vec2Pool.recycle(targetPosition);
     bulletBody.applyLinearImpulse(forceVector, bulletBody.getWorldCenter(), true);

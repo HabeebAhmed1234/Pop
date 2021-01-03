@@ -6,16 +6,19 @@ import org.andengine.entity.sprite.Sprite;
 
 public class BubblesInRadiusEntityMatcher extends BubblesEntityMatcher {
 
-  private final float[] radiusCenterPx;
+  private final float radiusCenterXPx;
+  private final float radiusCenterYPx;
   private final float radiusPx;
 
   public BubblesInRadiusEntityMatcher(
-      float[] radiusCenterPx,
+      float radiusCenterXPx,
+      float radiusCenterYPx,
       float radiusPx,
       boolean excludeTargetedBubbles,
       boolean onlyPoppableBubbles) {
     super(excludeTargetedBubbles, onlyPoppableBubbles);
-    this.radiusCenterPx = radiusCenterPx;
+    this.radiusCenterXPx = radiusCenterXPx;
+    this.radiusCenterYPx = radiusCenterYPx;
     this.radiusPx = radiusPx;
   }
 
@@ -27,10 +30,9 @@ public class BubblesInRadiusEntityMatcher extends BubblesEntityMatcher {
   private boolean isInRadius(IEntity pEntity) {
     if (pEntity instanceof Sprite) {
       Sprite sprite = (Sprite) pEntity;
-      float[] targetCenter = sprite.getCenter();
       return GeometryUtils.distanceBetween(
-          radiusCenterPx[0], radiusCenterPx[1],
-          targetCenter[0], targetCenter[1]) <= radiusPx;
+          radiusCenterXPx, radiusCenterYPx,
+          sprite.getCenterX(), sprite.getCenterY()) <= radiusPx;
     }
     return false;
   }

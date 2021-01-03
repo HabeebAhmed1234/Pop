@@ -78,9 +78,9 @@ public class TurretTargetingEntity extends BaseEntity implements
       return;
     }
     if (targetBubbleSprite != null) {
-      float[] targetCenter = targetBubbleSprite.getCenter();
       if (!isInScene(targetBubbleSprite)
-          || !ScreenUtils.getScreenRect().contains(targetCenter[0], targetCenter[1])) {
+          || !ScreenUtils.getScreenRect()
+          .contains(targetBubbleSprite.getCenterX(), targetBubbleSprite.getCenterY())) {
         stopTargetingBubble();
       }
     }

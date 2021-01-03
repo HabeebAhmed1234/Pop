@@ -26,7 +26,7 @@ public class BombBubbleExpiredListenerEntity extends BaseEntity implements
       EventBus.get().sendEvent(
           GameEvent.GAME_OVER_ON_EXPLOSION_EVENT,
           new GameOverExplosionEventPayload(
-              Vec2Pool.obtain(sprite.getCenter())));
+              Vec2Pool.obtain(sprite.getCenterX(), sprite.getCenterY())));
     }
     if (bombBubbleEntity.isVisible()) {
       get(BombBubbleSpritePool.class).recycle(bombBubbleEntity);
