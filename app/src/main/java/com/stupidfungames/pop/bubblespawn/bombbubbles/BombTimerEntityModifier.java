@@ -43,9 +43,9 @@ public class BombTimerEntityModifier extends TimerHandler implements ITimerCallb
         expiredListenerEntity.onBombBubbleExpired(bombBubble);
       } else if (timer > 0) {
         timerText.setText(Integer.toString(timer));
-        GeometryUtils.centerInHorizontal((IAreaShape) timerText.getParent(), timerText);
         timerText.setColor(
             timer <= RED_TIMER_THRESHOLD_SECONDS ? AndengineColor.RED : AndengineColor.WHITE);
+        GeometryUtils.centerInHorizontal((IAreaShape) timerText.getParent(), timerText);
       }
     }
   }

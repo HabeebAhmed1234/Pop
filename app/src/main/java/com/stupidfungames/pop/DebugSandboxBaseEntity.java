@@ -1,83 +1,56 @@
 package com.stupidfungames.pop;
 
-import android.util.Log;
-
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.utils.ScreenUtils;
-
-import org.andengine.entity.scene.IOnAreaTouchListener;
-import org.andengine.entity.scene.ITouchArea;
-import org.andengine.entity.scene.Scene;
+import org.andengine.entity.shape.IAreaShape;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.input.touch.TouchEvent;
+import org.andengine.entity.text.Text;
 
-public class DebugSandboxBaseEntity extends BaseEntity implements GameSceneTouchListenerEntity.SceneTouchListener {
+public class DebugSandboxBaseEntity extends BaseEntity {
 
-    private static final String TAG = "DebugTouchTracerEntity";
+  private static final String TAG = "DebugTouchTracerEntity";
 
-    public DebugSandboxBaseEntity(BinderEnity parent) {
-        super(parent);
-    }
+  public DebugSandboxBaseEntity(BinderEnity parent) {
+    super(parent);
+  }
 
-    @Override
-    protected void createBindings(Binder binder) {
+  @Override
+  protected void createBindings(Binder binder) {
 
-    }
+  }
 
-    @Override
-    public void onCreateScene() {
-        super.onCreateScene();
-        scene.setTouchAreaBindingOnActionDownEnabled(true);
-        //scene.setOnAreaTouchTraversalFrontToBack();
+  @Override
+  public void onCreateScene() {
+    super.onCreateScene();
 
-        get(GameSceneTouchListenerEntity.class).addSceneTouchListener(this);
+    final Sprite parent = new Sprite(
+        0,
+        ScreenUtils.getSreenSize().heightPx / 2 - 300,
+        get(GameTexturesManager.class).getTextureRegion(TextureId.BALL),
+        vertexBufferObjectManager);
 
+    parent.setScale(3f);
 
-        final Sprite bubbleSprite1 = new Sprite(
-                ScreenUtils.getSreenSize().widthPx - 500,
-                ScreenUtils.getSreenSize().heightPx / 2 - 300,
-                get(GameTexturesManager.class).getTextureRegion(TextureId.BALL),
-                vertexBufferObjectManager);
+    parent.setPosition(ScreenUtils.getSreenSize().widthPx / 2 - parent.getWidth() / 2,
+        ScreenUtils.getSreenSize().heightPx / 2 - parent.getHeight() / 2);
 
-        final Sprite bubbleSprite2 = new Sprite(
-                bubbleSprite1.getX() + bubbleSprite1.getWidth() /3,
-                bubbleSprite1.getY() + bubbleSprite1.getHeight() /3,
-                get(GameTexturesManager.class).getTextureRegion(TextureId.BALL),
-                vertexBufferObjectManager);
+    final Sprite child = new Sprite(
+        0,
+        50,
+        get(GameTexturesManager.class).getTextureRegion(TextureId.BULLET),
+        vertexBufferObjectManager);
 
-        addToSceneWithTouch(bubbleSprite1, new IOnAreaTouchListener() {
-            @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-                if (pSceneTouchEvent.isActionDown() || pSceneTouchEvent.isActionMove() || pSceneTouchEvent.isActionUp()) {
-                    return true;
-                }
-                return false;
-            }
-        });
-        addToSceneWithTouch(bubbleSprite2, new IOnAreaTouchListener() {
-            @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-                if (pSceneTouchEvent.isActionDown() || pSceneTouchEvent.isActionMove() || pSceneTouchEvent.isActionUp()) {
-                    return true;
-                }
-                return false;
-            }
-        });
+    centerInHorizontal(parent, child);
 
-    }
+    parent.attachChild(child);
+    addToScene(parent);
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        get(GameSceneTouchListenerEntity.class).removeSceneTouchListener(this);
-    }
+  }
 
-    @Override
-    public boolean onSceneTouchEvent(Scene scene, TouchEvent touchEvent) {
-        // Log.d(TAG, "TouchEvent: ("+touchEvent.getX() + "," + touchEvent.getY() + ")");
-        return false;
-    }
+  public static void centerInHorizontal(IAreaShape parent, Sprite child) {
+    child.setX(parent.getWidth() / 2 - child.getWidth() / 2);
+  }
 }

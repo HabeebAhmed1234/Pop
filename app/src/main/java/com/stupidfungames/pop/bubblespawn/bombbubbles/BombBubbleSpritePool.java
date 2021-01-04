@@ -28,7 +28,7 @@ public class BombBubbleSpritePool extends ItemPool {
   public static final AndengineColor WARN_BOMB_COLOUR = AndengineColor.YELLOW;
   public static final AndengineColor EXPLODING_BOMB_COLOUR = AndengineColor.RED;
   public static final float BOMB_BUBBLE_SIZE_DP = BubbleSize.MEDIUM.sizeDp;
-  public static final float BOMB_BUBBLE_COUNTDOWN_TEXT_TOP_PADDING_DP = 14;
+  public static final float BOMB_BUBBLE_COUNTDOWN_TEXT_TOP_PADDING_DP = 12;
   private final float bombBubbleSizePx;
 
   private final ItemInitializer<Sprite, BaseSpriteInitializerParams> initializer = new BaseSpriteItemInitializer<BaseSpriteInitializerParams>() {
@@ -48,8 +48,8 @@ public class BombBubbleSpritePool extends ItemPool {
           get(GameFontsManager.class).getFont(FontId.BOMB_BUBBLE_COUNTDOWN_FONT), "1",
           3,
           vertexBufferObjectManager);
-      GeometryUtils.centerInHorizontal(sprite, countDownText);
       countDownText.setY(dpToPx(BOMB_BUBBLE_COUNTDOWN_TEXT_TOP_PADDING_DP, get(Context.class)));
+      GeometryUtils.centerInHorizontal(sprite, countDownText);
       sprite.attachChild(countDownText);
       return sprite;
     }
