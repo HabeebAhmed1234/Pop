@@ -204,7 +204,7 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 	@Override
 	protected synchronized void onResume() {
 		if(BuildConfig.DEBUG) {
-			Debug.d(this.getClass().getSimpleName() + ".onResume" + " @(Thread: '" + Thread.currentThread().getName() + "')");
+			Debug.d(this.getClass().getSimpleName() + ".onGameActivityResumed" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 		}
 
 		super.onResume();

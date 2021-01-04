@@ -2,13 +2,11 @@ package com.stupidfungames.pop.appreviews;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import androidx.annotation.Nullable;
 import com.stupidfungames.pop.R;
-import com.stupidfungames.pop.androidui.music.MusicPlayer;
 import com.stupidfungames.pop.dialog.GameNeonDialogActivity;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,12 +22,10 @@ public class ReviewAppDialogActivity extends GameNeonDialogActivity {
     return new Intent(context, ReviewAppDialogActivity.class);
   }
 
-  private MusicPlayer musicPlayer;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    musicPlayer = new MusicPlayer(0, this);
   }
 
   @Override
@@ -74,17 +70,5 @@ public class ReviewAppDialogActivity extends GameNeonDialogActivity {
     Email.putExtra(Intent.EXTRA_SUBJECT, "[Pop!] Feedback");
     Email.putExtra(Intent.EXTRA_TEXT, "The following is my feedback for Pop!:");
     startActivity(Intent.createChooser(Email, "Send Feedback:"));
-  }
-
-  @Override
-  protected void onPause() {
-    super.onPause();
-    musicPlayer.onPause();
-  }
-
-  @Override
-  protected void onResume() {
-    super.onResume();
-    musicPlayer.onResume();
   }
 }

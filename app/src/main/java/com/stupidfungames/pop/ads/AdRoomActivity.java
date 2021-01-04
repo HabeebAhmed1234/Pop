@@ -16,6 +16,7 @@ import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.androidui.LoadingSpinner;
+import com.stupidfungames.pop.androidui.music.MusicPlayer;
 
 /**
  * Activity used to display a full screen interstitial ad or chain of ads.
@@ -67,6 +68,7 @@ public class AdRoomActivity extends AppCompatActivity {
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    MusicPlayer.get().pausePlaying();
     setContentView(R.layout.ad_room_activity);
     loadingSpinner = findViewById(R.id.loading_spinner);
     loadingSpinner.startLoadingAnimation();
@@ -98,11 +100,16 @@ public class AdRoomActivity extends AppCompatActivity {
 
   private void onAdWatched() {
     setResult(RESULT_AD_WATCHED);
-    finish();
+    finishAdWatch();
   }
 
   private void onAdNotWatched() {
     setResult(RESULT_AD_NOT_WATCHED);
+    finishAdWatch();
+  }
+
+  void finishAdWatch() {
+    MusicPlayer.get().resumePlaying();
     finish();
   }
 }

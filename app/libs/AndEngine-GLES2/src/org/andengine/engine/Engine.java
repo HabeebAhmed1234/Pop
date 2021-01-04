@@ -409,7 +409,7 @@ public class Engine implements SensorEventListener, OnTouchListener, ITouchEvent
 		if(this.mRunning) {
 			this.mTouchController.onHandleMotionEvent(pSurfaceMotionEvent);
 			try {
-				/* Because a human cannot interact 1000x per second, we pause the UI-Thread for a little. */
+				/* Because a human cannot interact 1000x per second, we pausePlaying the UI-Thread for a little. */
 				Thread.sleep(this.mEngineOptions.getTouchOptions().getTouchEventIntervalMilliseconds());
 			} catch (final InterruptedException e) {
 				Debug.e(e);

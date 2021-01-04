@@ -15,7 +15,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.stupidfungames.pop.androidui.GameMenuButton;
 import com.stupidfungames.pop.androidui.LoadingSpinner;
-import com.stupidfungames.pop.androidui.music.MusicPlayer;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.continuegame.ContinueGameBtnView;
 import com.stupidfungames.pop.continuegame.ContinueGameBtnView.ContinueGameBtnViewHostActivity;
@@ -30,7 +29,6 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
   private GooglePlayServicesAuthManager authManager;
   private ContinueGameBtnView continueGameBtnView;
   private SaveGameManager saveGameManager;
-  private MusicPlayer musicPlayer;
 
   public static Intent newIntent(Context context, int score, SaveGame continueGame) {
     Intent intent = new Intent(context, GameOverActivity.class);
@@ -76,7 +74,6 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
     saveGameManager.deleteSaveGame();
 
     ((AdView)findViewById(R.id.adView)).loadAd(((new AdRequest.Builder()).build()));
-    musicPlayer = new MusicPlayer(this);
   }
 
   private int getGameOverScore() {
@@ -130,18 +127,6 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
   protected void onDestroy() {
     super.onDestroy();
     logoAnimator.end();
-  }
-
-  @Override
-  protected void onPause() {
-    super.onPause();
-    musicPlayer.onPause();
-  }
-
-  @Override
-  protected void onResume() {
-    super.onResume();
-    musicPlayer.onResume();
   }
 
   @Override

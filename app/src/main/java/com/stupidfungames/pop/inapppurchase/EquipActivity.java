@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ViewGroup;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil.ItemCallback;
@@ -19,7 +18,6 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.stupidfungames.pop.R;
-import com.stupidfungames.pop.androidui.music.MusicPlayer;
 import com.stupidfungames.pop.list.BindableViewHolder;
 import com.stupidfungames.pop.list.BindableViewHolderFactory;
 import com.stupidfungames.pop.list.LoadableListLoadingCoordinator.LoaderCallback;
@@ -34,7 +32,6 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<Purchase>
   }
 
   private GooglePlayServicesBillingManager billingManager;
-  private MusicPlayer musicPlayer;
 
   private BindableViewHolderFactory bindableViewHolderFactory = new BindableViewHolderFactory() {
     @Override
@@ -82,8 +79,7 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<Purchase>
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     billingManager = new GooglePlayServicesBillingManager(this);
     super.onCreate(savedInstanceState);
-    ((AdView)findViewById(R.id.adView)).loadAd(((new AdRequest.Builder()).build()));
-    musicPlayer = new MusicPlayer(this);
+    ((AdView) findViewById(R.id.adView)).loadAd(((new AdRequest.Builder()).build()));
   }
 
   @Override
@@ -137,17 +133,5 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<Purchase>
   @Override
   protected LoaderCallback<List<Purchase>> getLoaderCallback() {
     return loaderCallback;
-  }
-
-  @Override
-  protected void onPause() {
-    super.onPause();
-    musicPlayer.onPause();
-  }
-
-  @Override
-  protected void onResume() {
-    super.onResume();
-    musicPlayer.onResume();
   }
 }

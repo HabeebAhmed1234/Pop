@@ -40,13 +40,17 @@ public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
   private static List<Integer> playableMusicList = new ArrayList<>(Arrays.asList(musicResId));
   // the list of tracks already played
   private static List<Integer> playedMusicList = new ArrayList<>();
+  private static MusicPlayer sMusicPlayer;
 
-  public MusicPlayer(Context context) {
-    this.context = context;
-    initializeMediaPlayer(-1);
+  public static void init(Context context) {
+    sMusicPlayer = new MusicPlayer(0, context);
   }
 
-  public MusicPlayer(int firstTrackResId, Context context) {
+  public static MusicPlayer get() {
+    return sMusicPlayer;
+  }
+
+  private MusicPlayer(int firstTrackResId, Context context) {
     this.context = context;
     initializeMediaPlayer(firstTrackResId);
   }
@@ -63,7 +67,7 @@ public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
     }
   }
 
-  public void resume() {
+  public void resumePlaying() {
     isPaused = false;
     if (mediaPlayer == null) {
       initializeMediaPlayer(-1);
@@ -76,22 +80,36 @@ public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
     }
   }
 
-  public void pause() {
+  public void pausePlaying() {
     isPaused = true;
-    mediaPlayer.pause();
+    if (mediaPlayer != null) {
+      mediaPlayer.pause();
+    }
   }
 
-  public void onResume() {
+  public void onAppForegrounded() {
     isPaused = false;
     playNextTrack();
   }
 
-  public void onResume(boolean isPaused) {
-    this.isPaused = isPaused;
+  public void onGameActivityResumed(boolean isPaused) {
+    boolean isPlaying = mediaPlayer != null && mediaPlayer.isPlaying();
+    if (isPaused) {
+      pausePlaying();
+    } else if (!isPlaying || mediaPlayer == null) {
+      playNextTrack();
+    }
+  }
+
+  /**
+   * Called when we leave the game activity to go to the main menu or to the game over flow.
+   */
+  public void onLeaveGameActivity() {
+    resumePlaying();
     playNextTrack();
   }
 
-  public void onPause() {
+  public void stop() {
     if (mediaPlayer != null) {
       mediaPlayer.stop();
       mediaPlayer.setOnPreparedListener(null);
@@ -100,25 +118,6 @@ public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
     }
     mediaPlayer = null;
     isPaused = false;
-  }
-
-  private void initializeMediaPlayer(int firstTrackIndex) {
-    if (playableMusicList.isEmpty()) {
-      swapLists();
-    }
-    mediaPlayer = MediaPlayer.create(
-        context,
-        firstTrackIndex != -1 ? playableMusicList.get(firstTrackIndex) : getNextTrackToPlayResId());
-
-    if (firstTrackIndex != -1) {
-      playedMusicList.add(playableMusicList.remove(firstTrackIndex));
-    }
-
-    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-    mediaPlayer.setOnPreparedListener(this);
-    mediaPlayer.setOnCompletionListener(this);
-    mediaPlayer.start();
-
   }
 
   public void playNextTrack() {
@@ -144,6 +143,25 @@ public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
         e.printStackTrace();
       }
     }
+  }
+
+  private void initializeMediaPlayer(int firstTrackIndex) {
+    if (playableMusicList.isEmpty()) {
+      swapLists();
+    }
+    mediaPlayer = MediaPlayer.create(
+        context,
+        firstTrackIndex != -1 ? playableMusicList.get(firstTrackIndex) : getNextTrackToPlayResId());
+
+    if (firstTrackIndex != -1) {
+      playedMusicList.add(playableMusicList.remove(firstTrackIndex));
+    }
+
+    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+    mediaPlayer.setOnPreparedListener(this);
+    mediaPlayer.setOnCompletionListener(this);
+    mediaPlayer.start();
+
   }
 
   private int getNextTrackToPlayResId() {

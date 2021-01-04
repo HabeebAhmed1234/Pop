@@ -75,7 +75,6 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
   private GameLifeCycleCalllbackManager gameLifeCycleCalllbackManager = new GameLifeCycleCalllbackManager();
   private GooglePlayServicesAuthManager authManager;
   private SaveGameManager saveGameManager;
-  private MusicPlayer musicPlayer;
 
   BinderEnity mRootBinder;
 
@@ -94,7 +93,6 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
     super.onCreate(pSavedInstanceState);
     authManager = new GooglePlayServicesAuthManager(this);
     saveGameManager = new SaveGameManager(this, this);
-    musicPlayer = new MusicPlayer(this);
 
     // The root binder
     mRootBinder = new BinderEnity(null) {
@@ -118,7 +116,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
             .bind(GameTexturesManager.class, new GameTexturesManager(this))
             .bind(GameSoundsManager.class, new GameSoundsManager(this))
-            .bind(MusicPlayer.class, musicPlayer)
+            .bind(MusicPlayer.class, MusicPlayer.get())
             .bind(BackgroundMusicEntity.class, new BackgroundMusicEntity(this))
             .bind(GameFontsManager.class, new GameFontsManager(this))
             .bind(GameAnimationManager.class, new GameAnimationManager(this))
@@ -221,15 +219,9 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
   }
 
   @Override
-  protected void onPause() {
-    super.onPause();
-    musicPlayer.onPause();
-  }
-
-  @Override
   protected void onResume() {
     super.onResume();
-    musicPlayer.onResume(GamePreferencesManager.getBoolean(
+    MusicPlayer.get().onGameActivityResumed(GamePreferencesManager.getBoolean(
         this,
         Setting.IS_MUSIC_DISABLED_SETTING_BOOLEAN));
   }
@@ -311,6 +303,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
   private void goBackToMainMenu() {
     startActivity(MainMenuActivity.newIntent(this));
+    MusicPlayer.get().onLeaveGameActivity();
     finish();
   }
 

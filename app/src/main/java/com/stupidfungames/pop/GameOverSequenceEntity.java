@@ -1,8 +1,8 @@
 package com.stupidfungames.pop;
 
 import android.content.Context;
+import com.stupidfungames.pop.androidui.music.MusicPlayer;
 import com.stupidfungames.pop.binder.BinderEnity;
-import com.stupidfungames.pop.bubblespawn.BubbleSpritePool;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
@@ -23,7 +23,6 @@ import org.andengine.entity.particle.initializer.VelocityParticleInitializer;
 import org.andengine.entity.particle.modifier.AlphaParticleModifier;
 import org.andengine.entity.particle.modifier.ColorParticleModifier;
 import org.andengine.entity.particle.modifier.ExpireParticleInitializer;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.color.AndengineColor;
 
 public class GameOverSequenceEntity extends BaseEntity {
@@ -103,6 +102,7 @@ public class GameOverSequenceEntity extends BaseEntity {
     Context context = get(Context.class);
     context.startActivity(GameOverActivity.newIntent(context, get(ScoreHudEntity.class).getScore(),
         get(GameSaver.class).fabricateSaveGame()));
+    MusicPlayer.get().onLeaveGameActivity();
     hostActivity.finish();
   }
 }

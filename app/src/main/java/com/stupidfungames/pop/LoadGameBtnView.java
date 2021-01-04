@@ -86,7 +86,7 @@ public class LoadGameBtnView implements Listener, LoginListener {
 
   /**
    * If the user is not yet logged in and there is no save game data loaded then we must login the
-   * user if they tap on the resume button. The user can then tap again to load the game.
+   * user if they tap on the resumePlaying button. The user can then tap again to load the game.
    */
   private void setupButtonToPromptLoad() {
     updateButtonColor(false);
@@ -100,7 +100,7 @@ public class LoadGameBtnView implements Listener, LoginListener {
   }
 
   /**
-   * Sets an onclick listener to the resume button such that when it is pressed the new save game
+   * Sets an onclick listener to the resumePlaying button such that when it is pressed the new save game
    * launches
    */
   private void setupButtonForLoadedGame(final SaveGame saveGame) {

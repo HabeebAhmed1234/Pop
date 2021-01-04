@@ -21,7 +21,7 @@ public class BackgroundMusicEntity extends BaseEntity implements EventBus.Subscr
     if (GamePreferencesManager.getBoolean(
         get(Context.class),
         Setting.IS_MUSIC_DISABLED_SETTING_BOOLEAN)) {
-      musicPlayer.pause();
+      musicPlayer.pausePlaying();
     }
   }
 
@@ -56,9 +56,9 @@ public class BackgroundMusicEntity extends BaseEntity implements EventBus.Subscr
       boolean isMusicEnabled = !GamePreferencesManager
           .getBoolean(get(Context.class), payload.settingKey);
       if (isMusicEnabled) {
-        musicPlayer.resume();
+        musicPlayer.resumePlaying();
       } else {
-        musicPlayer.pause();
+        musicPlayer.pausePlaying();
       }
     }
   }

@@ -12,7 +12,6 @@ import com.google.android.gms.ads.AdView;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.stupidfungames.pop.R;
-import com.stupidfungames.pop.androidui.music.MusicPlayer;
 import com.stupidfungames.pop.list.BindableViewHolder;
 import com.stupidfungames.pop.list.BindableViewHolderFactory;
 import com.stupidfungames.pop.list.LoadableListLoadingCoordinator.LoaderCallback;
@@ -30,7 +29,6 @@ public class StoreActivity extends LoadableListWithPreviewBaseActivity<SkuDetail
   }
 
   private GooglePlayServicesBillingManager billingManager;
-  private MusicPlayer musicPlayer;
 
   private LoaderCallback<List<SkuDetails>> loaderCallback = new LoaderCallback<List<SkuDetails>>() {
     @Override
@@ -62,7 +60,6 @@ public class StoreActivity extends LoadableListWithPreviewBaseActivity<SkuDetail
     super.onCreate(savedInstanceState);
 
     ((AdView) findViewById(R.id.adView)).loadAd(((new AdRequest.Builder()).build()));
-    musicPlayer = new MusicPlayer(this);
   }
 
   @Override
@@ -116,17 +113,5 @@ public class StoreActivity extends LoadableListWithPreviewBaseActivity<SkuDetail
       }
     }
     return null;
-  }
-
-  @Override
-  protected void onPause() {
-    super.onPause();
-    musicPlayer.onPause();
-  }
-
-  @Override
-  protected void onResume() {
-    super.onResume();
-    musicPlayer.onResume();
   }
 }
