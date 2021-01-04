@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1075052757030",
+    "project_id": "pop---bubble-popping-game",
+    "storage_bucket": "pop---bubble-popping-game.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1075052757030:android:37947195829421f9dbe6e7",
+        "android_client_info": {
+          "package_name": "com.stupidfungames.pop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1075052757030-d84k5jiurnvo0dd40hjhbiil93nti833.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2mFYjoyDQVS2gQYwx75jycaioXx9vkVw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1075052757030-d84k5jiurnvo0dd40hjhbiil93nti833.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

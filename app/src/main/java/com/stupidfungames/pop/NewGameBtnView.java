@@ -1,17 +1,18 @@
 package com.stupidfungames.pop;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.dialog.ConfirmationToastDialogActivity;
 
 /**
- * Manages the launching of a new game.
- * - If the user is logged in we must check if they already have a save game
- * - If they already have a save game then show a confirmation dialog ("are you sure you want to
- * override your save game?"
- * - If they don't have a save game or are not logged in then just launch a new game
+ * Manages the launching of a new game. - If the user is logged in we must check if they already
+ * have a save game - If they already have a save game then show a confirmation dialog ("are you
+ * sure you want to override your save game?" - If they don't have a save game or are not logged in
+ * then just launch a new game
  */
 public class NewGameBtnView {
 
@@ -36,7 +37,7 @@ public class NewGameBtnView {
   }
 
   private void onNewGameClicked() {
-    GooglePlayServicesAuthManager authManager =  hostActivity.getAuthManager();
+    GooglePlayServicesAuthManager authManager = hostActivity.getAuthManager();
     if (authManager.isLoggedIn()) {
       // Launch the confirmation toast
       launchConfirmationToast();
@@ -56,13 +57,19 @@ public class NewGameBtnView {
           }
 
           @Override
-          public void onNo() {}
+          public void onNo() {
+          }
         },
         hostActivity,
         context);
   }
 
   private void startNewGame() {
+    Bundle bundle = new Bundle();
+    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "new_game_btn");
+    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "New Gamer Button");
+    FirebaseAnalytics.getInstance(hostActivity.getContext())
+        .logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     hostActivity.startActivity(GameActivity.newIntent(context));
     hostActivity.finish();
   }
