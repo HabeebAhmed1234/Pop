@@ -5,6 +5,7 @@ import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.S
 import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.IDLE;
 import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.STABLE;
 import static com.stupidfungames.pop.eventbus.GameEvent.BUBBLE_RECYCLED;
+import static com.stupidfungames.pop.utils.ScreenUtils.PERCENT_SPRITE_IN_SCREEN;
 
 import com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State;
 import com.stupidfungames.pop.eventbus.BubbleRecycledEventPayload;
@@ -78,9 +79,7 @@ class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, List
         break;
     }
     if (nextState != null) {
-      boolean isBubbleInScreen = ScreenUtils.getScreenRect()
-          .contains(bubbleSprite.getCenterX(), bubbleSprite.getCenterY());
-
+      boolean isBubbleInScreen = ScreenUtils.isInScreen(bubbleSprite, PERCENT_SPRITE_IN_SCREEN);
       if (nextState == EXPLODING && bubbleSprite.getCenterY() > ScreenUtils
           .getSreenSize().heightPx) {
         // If the bubble has already passed the bottom of the screen it shouldn't explode

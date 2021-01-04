@@ -163,16 +163,20 @@ public class GeometryUtils {
             <= (parent.getY() + parent.getHeightScaled());
   }
 
-  public static float getOverLapArea(IAreaShape shape1, IAreaShape shape2) {
-    float rect1Left = shape1.getX();
-    float rect2Left = shape2.getX();
-    float rect1Right = shape1.getX() + shape1.getWidthScaled();
-    float rect2Right = shape2.getX() + shape2.getWidthScaled();
+  public static float getOverLapAreaWithScreen(IAreaShape shape1, IAreaShape screenShape) {
+    float rect1Left = shape1 instanceof Sprite ? ((Sprite) shape1).getScaledX() : shape1.getX();
+    float rect2Left = screenShape.getX();
+    float rect1Right =
+        shape1 instanceof Sprite ? ((Sprite) shape1).getScaledX() + shape1.getWidthScaled()
+            : shape1.getX() + shape1.getWidth();
+    float rect2Right = screenShape.getX() + screenShape.getWidthScaled();
 
-    float rect1Top = shape1.getY();
-    float rect2Top = shape2.getY();
-    float rect1Bottom = shape1.getY() + shape1.getHeightScaled();
-    float rect2Bottom = shape2.getY() + shape2.getHeightScaled();
+    float rect1Top = shape1 instanceof Sprite ? ((Sprite) shape1).getScaledX() : shape1.getY();
+    float rect2Top = screenShape.getY();
+    float rect1Bottom =
+        shape1 instanceof Sprite ? ((Sprite) shape1).getScaledY() + shape1.getHeightScaled()
+            : shape1.getY() + shape1.getHeight();
+    float rect2Bottom = screenShape.getY() + screenShape.getHeightScaled();
     float xOverlap = Math.max(0, Math.min(rect1Right, rect2Right) - Math.max(rect1Left, rect2Left));
     float yOverlap = Math.max(0, Math.min(rect1Bottom, rect2Bottom) - Math.max(rect1Top, rect2Top));
 

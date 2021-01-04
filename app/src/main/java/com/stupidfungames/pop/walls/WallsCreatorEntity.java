@@ -46,7 +46,7 @@ public class WallsCreatorEntity extends BaseEntity implements
     GameSceneTouchListenerEntity.SceneTouchListener {
 
   private static final float WALL_HEIGHT_PX = 30;
-  private static final float MAX_WALL_WIDTH = 500;
+  private static final float MAX_WALL_WIDTH = 10000;
   private static final float MIN_WALL_WIDTH = 200;
 
 

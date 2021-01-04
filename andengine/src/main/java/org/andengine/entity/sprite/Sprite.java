@@ -16,210 +16,256 @@ import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
 
 /**
- * (c) 2010 Nicolas Gramlich
- * (c) 2011 Zynga Inc.
- * 
+ * (c) 2010 Nicolas Gramlich (c) 2011 Zynga Inc.
+ *
  * @author Nicolas Gramlich
  * @since 19:22:38 - 09.03.2010
  */
 public class Sprite extends RectangularShape {
-	// ===========================================================
-	// Constants
-	// ===========================================================
+  // ===========================================================
+  // Constants
+  // ===========================================================
 
-	public static final int VERTEX_INDEX_X = 0;
-	public static final int VERTEX_INDEX_Y = Sprite.VERTEX_INDEX_X + 1;
-	public static final int COLOR_INDEX = Sprite.VERTEX_INDEX_Y + 1;
-	public static final int TEXTURECOORDINATES_INDEX_U = Sprite.COLOR_INDEX + 1;
-	public static final int TEXTURECOORDINATES_INDEX_V = Sprite.TEXTURECOORDINATES_INDEX_U + 1;
+  public static final int VERTEX_INDEX_X = 0;
+  public static final int VERTEX_INDEX_Y = Sprite.VERTEX_INDEX_X + 1;
+  public static final int COLOR_INDEX = Sprite.VERTEX_INDEX_Y + 1;
+  public static final int TEXTURECOORDINATES_INDEX_U = Sprite.COLOR_INDEX + 1;
+  public static final int TEXTURECOORDINATES_INDEX_V = Sprite.TEXTURECOORDINATES_INDEX_U + 1;
 
-	public static final int VERTEX_SIZE = 2 + 1 + 2;
-	public static final int VERTICES_PER_SPRITE = 4;
-	public static final int SPRITE_SIZE = Sprite.VERTEX_SIZE * Sprite.VERTICES_PER_SPRITE;
+  public static final int VERTEX_SIZE = 2 + 1 + 2;
+  public static final int VERTICES_PER_SPRITE = 4;
+  public static final int SPRITE_SIZE = Sprite.VERTEX_SIZE * Sprite.VERTICES_PER_SPRITE;
 
-	public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(3)
-		.add(ShaderProgramConstants.ATTRIBUTE_POSITION_LOCATION, ShaderProgramConstants.ATTRIBUTE_POSITION, 2, GLES20.GL_FLOAT, false)
-		.add(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION, ShaderProgramConstants.ATTRIBUTE_COLOR, 4, GLES20.GL_UNSIGNED_BYTE, true)
-		.add(ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES_LOCATION, ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES, 2, GLES20.GL_FLOAT, false)
-		.build();
+  public static final VertexBufferObjectAttributes VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT = new VertexBufferObjectAttributesBuilder(
+      3)
+      .add(ShaderProgramConstants.ATTRIBUTE_POSITION_LOCATION,
+          ShaderProgramConstants.ATTRIBUTE_POSITION, 2, GLES20.GL_FLOAT, false)
+      .add(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION, ShaderProgramConstants.ATTRIBUTE_COLOR,
+          4, GLES20.GL_UNSIGNED_BYTE, true)
+      .add(ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES_LOCATION,
+          ShaderProgramConstants.ATTRIBUTE_TEXTURECOORDINATES, 2, GLES20.GL_FLOAT, false)
+      .build();
 
-	// ===========================================================
-	// Fields
-	// ===========================================================
+  // ===========================================================
+  // Fields
+  // ===========================================================
 
-	protected final ITextureRegion mTextureRegion;
-	protected final ISpriteVertexBufferObject mSpriteVertexBufferObject;
+  protected final ITextureRegion mTextureRegion;
+  protected final ISpriteVertexBufferObject mSpriteVertexBufferObject;
 
-	protected boolean mFlippedVertical;
-	protected boolean mFlippedHorizontal;
+  protected boolean mFlippedVertical;
+  protected boolean mFlippedHorizontal;
 
-	// ===========================================================
-	// Constructors
-	// ===========================================================
+  // ===========================================================
+  // Constructors
+  // ===========================================================
 
-	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
-		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObjectManager, DrawType.STATIC);
-	}
+  public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion,
+      final VertexBufferObjectManager pVertexBufferObjectManager) {
+    this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion,
+        pVertexBufferObjectManager, DrawType.STATIC);
+  }
 
-	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObjectManager, DrawType.STATIC, pShaderProgram);
-	}
+  public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion,
+      final VertexBufferObjectManager pVertexBufferObjectManager,
+      final ShaderProgram pShaderProgram) {
+    this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion,
+        pVertexBufferObjectManager, DrawType.STATIC, pShaderProgram);
+  }
 
-	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
-		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObjectManager, pDrawType);
-	}
+  public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion,
+      final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+    this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion,
+        pVertexBufferObjectManager, pDrawType);
+  }
 
-	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObjectManager, pDrawType, pShaderProgram);
-	}
+  public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion,
+      final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType,
+      final ShaderProgram pShaderProgram) {
+    this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion,
+        pVertexBufferObjectManager, pDrawType, pShaderProgram);
+  }
 
-	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pVertexBufferObject) {
-		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObject);
-	}
+  public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion,
+      final ISpriteVertexBufferObject pVertexBufferObject) {
+    this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion,
+        pVertexBufferObject);
+  }
 
-	public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pVertexBufferObject, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion, pVertexBufferObject, pShaderProgram);
-	}
+  public Sprite(final float pX, final float pY, final ITextureRegion pTextureRegion,
+      final ISpriteVertexBufferObject pVertexBufferObject, final ShaderProgram pShaderProgram) {
+    this(pX, pY, pTextureRegion.getWidth(), pTextureRegion.getHeight(), pTextureRegion,
+        pVertexBufferObject, pShaderProgram);
+  }
 
-	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager) {
-		this(pX, pY, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager, DrawType.STATIC);
-	}
+  public Sprite(final float pX, final float pY, final float pWidth, final float pHeight,
+      final ITextureRegion pTextureRegion,
+      final VertexBufferObjectManager pVertexBufferObjectManager) {
+    this(pX, pY, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager, DrawType.STATIC);
+  }
 
-	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager, DrawType.STATIC, pShaderProgram);
-	}
+  public Sprite(final float pX, final float pY, final float pWidth, final float pHeight,
+      final ITextureRegion pTextureRegion,
+      final VertexBufferObjectManager pVertexBufferObjectManager,
+      final ShaderProgram pShaderProgram) {
+    this(pX, pY, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager, DrawType.STATIC,
+        pShaderProgram);
+  }
 
-	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
-		this(pX, pY, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager, pDrawType, PositionColorTextureCoordinatesShaderProgram.getInstance());
-	}
+  public Sprite(final float pX, final float pY, final float pWidth, final float pHeight,
+      final ITextureRegion pTextureRegion,
+      final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType) {
+    this(pX, pY, pWidth, pHeight, pTextureRegion, pVertexBufferObjectManager, pDrawType,
+        PositionColorTextureCoordinatesShaderProgram.getInstance());
+  }
 
-	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType, final ShaderProgram pShaderProgram) {
-		this(pX, pY, pWidth, pHeight, pTextureRegion, new HighPerformanceSpriteVertexBufferObject(pVertexBufferObjectManager, Sprite.SPRITE_SIZE, pDrawType, true, Sprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
-	}
+  public Sprite(final float pX, final float pY, final float pWidth, final float pHeight,
+      final ITextureRegion pTextureRegion,
+      final VertexBufferObjectManager pVertexBufferObjectManager, final DrawType pDrawType,
+      final ShaderProgram pShaderProgram) {
+    this(pX, pY, pWidth, pHeight, pTextureRegion,
+        new HighPerformanceSpriteVertexBufferObject(pVertexBufferObjectManager, Sprite.SPRITE_SIZE,
+            pDrawType, true, Sprite.VERTEXBUFFEROBJECTATTRIBUTES_DEFAULT), pShaderProgram);
+  }
 
-	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pSpriteVertexBufferObject) {
-		this(pX, pY, pWidth, pHeight, pTextureRegion, pSpriteVertexBufferObject, PositionColorTextureCoordinatesShaderProgram.getInstance());
-	}
+  public Sprite(final float pX, final float pY, final float pWidth, final float pHeight,
+      final ITextureRegion pTextureRegion,
+      final ISpriteVertexBufferObject pSpriteVertexBufferObject) {
+    this(pX, pY, pWidth, pHeight, pTextureRegion, pSpriteVertexBufferObject,
+        PositionColorTextureCoordinatesShaderProgram.getInstance());
+  }
 
-	public Sprite(final float pX, final float pY, final float pWidth, final float pHeight, final ITextureRegion pTextureRegion, final ISpriteVertexBufferObject pSpriteVertexBufferObject, final ShaderProgram pShaderProgram) {
-		super(pX, pY, pWidth, pHeight, pShaderProgram);
-		
-		this.mTextureRegion = pTextureRegion;
-		this.mSpriteVertexBufferObject = pSpriteVertexBufferObject;
+  public Sprite(final float pX, final float pY, final float pWidth, final float pHeight,
+      final ITextureRegion pTextureRegion,
+      final ISpriteVertexBufferObject pSpriteVertexBufferObject,
+      final ShaderProgram pShaderProgram) {
+    super(pX, pY, pWidth, pHeight, pShaderProgram);
 
-		this.setBlendingEnabled(true);
-		this.initBlendFunction(pTextureRegion);
-		
-		this.onUpdateVertices();
-		this.onUpdateColor();
-		this.onUpdateTextureCoordinates();
-	}
+    this.mTextureRegion = pTextureRegion;
+    this.mSpriteVertexBufferObject = pSpriteVertexBufferObject;
 
-	public float getCenterX() {
-		return getX() + getWidth() / 2;
-	}
+    this.setBlendingEnabled(true);
+    this.initBlendFunction(pTextureRegion);
 
-	public float getCenterY() {
-		return getY() + getHeight() / 2;
-	}
+    this.onUpdateVertices();
+    this.onUpdateColor();
+    this.onUpdateTextureCoordinates();
+  }
 
-	// ===========================================================
-	// Getter & Setter
-	// ===========================================================
+  public float getScaledX() {
+    return getCenterX() - getWidthScaled() / 2;
+  }
 
-	public ITextureRegion getTextureRegion() {
-		return this.mTextureRegion;
-	}
+  public float getScaledY() {
+    return getCenterY() - getHeightScaled() / 2;
+  }
 
-	public boolean isFlippedHorizontal() {
-		return this.mFlippedHorizontal;
-	}
+  public float getCenterX() {
+    return getX() + getWidth() / 2;
+  }
 
-	public void setFlippedHorizontal(final boolean pFlippedHorizontal) {
-		if(this.mFlippedHorizontal != pFlippedHorizontal) {
-			this.mFlippedHorizontal = pFlippedHorizontal;
+  public float getCenterY() {
+    return getY() + getHeight() / 2;
+  }
 
-			this.onUpdateTextureCoordinates();
-		}
-	}
+  // ===========================================================
+  // Getter & Setter
+  // ===========================================================
 
-	public boolean isFlippedVertical() {
-		return this.mFlippedVertical;
-	}
+  public ITextureRegion getTextureRegion() {
+    return this.mTextureRegion;
+  }
 
-	public void setFlippedVertical(final boolean pFlippedVertical) {
-		if(this.mFlippedVertical != pFlippedVertical) {
-			this.mFlippedVertical = pFlippedVertical;
+  public boolean isFlippedHorizontal() {
+    return this.mFlippedHorizontal;
+  }
 
-			this.onUpdateTextureCoordinates();
-		}
-	}
+  public void setFlippedHorizontal(final boolean pFlippedHorizontal) {
+    if (this.mFlippedHorizontal != pFlippedHorizontal) {
+      this.mFlippedHorizontal = pFlippedHorizontal;
 
-	public void setFlipped(final boolean pFlippedHorizontal, final boolean pFlippedVertical) {
-		if((this.mFlippedHorizontal != pFlippedHorizontal) || (this.mFlippedVertical != pFlippedVertical)) {
-			this.mFlippedHorizontal = pFlippedHorizontal;
-			this.mFlippedVertical = pFlippedVertical;
+      this.onUpdateTextureCoordinates();
+    }
+  }
 
-			this.onUpdateTextureCoordinates();
-		}
-	}
+  public boolean isFlippedVertical() {
+    return this.mFlippedVertical;
+  }
 
-	// ===========================================================
-	// Methods for/from SuperClass/Interfaces
-	// ===========================================================
+  public void setFlippedVertical(final boolean pFlippedVertical) {
+    if (this.mFlippedVertical != pFlippedVertical) {
+      this.mFlippedVertical = pFlippedVertical;
 
-	@Override
-	public ISpriteVertexBufferObject getVertexBufferObject() {
-		return this.mSpriteVertexBufferObject;
-	}
+      this.onUpdateTextureCoordinates();
+    }
+  }
 
-	@Override
-	public void reset() {
-		super.reset();
+  public void setFlipped(final boolean pFlippedHorizontal, final boolean pFlippedVertical) {
+    if ((this.mFlippedHorizontal != pFlippedHorizontal) || (this.mFlippedVertical
+        != pFlippedVertical)) {
+      this.mFlippedHorizontal = pFlippedHorizontal;
+      this.mFlippedVertical = pFlippedVertical;
 
-		this.initBlendFunction(this.getTextureRegion().getTexture());
-	}
+      this.onUpdateTextureCoordinates();
+    }
+  }
 
-	@Override
-	protected void preDraw(final GLState pGLState, final Camera pCamera) {
-		super.preDraw(pGLState, pCamera);
+  // ===========================================================
+  // Methods for/from SuperClass/Interfaces
+  // ===========================================================
 
-		this.getTextureRegion().getTexture().bind(pGLState);
+  @Override
+  public ISpriteVertexBufferObject getVertexBufferObject() {
+    return this.mSpriteVertexBufferObject;
+  }
 
-		this.mSpriteVertexBufferObject.bind(pGLState, this.mShaderProgram);
-	}
+  @Override
+  public void reset() {
+    super.reset();
 
-	@Override
-	protected void draw(final GLState pGLState, final Camera pCamera) {
-		this.mSpriteVertexBufferObject.draw(GLES20.GL_TRIANGLE_STRIP, Sprite.VERTICES_PER_SPRITE);
-	}
+    this.initBlendFunction(this.getTextureRegion().getTexture());
+  }
 
-	@Override
-	protected void postDraw(final GLState pGLState, final Camera pCamera) {
-		this.mSpriteVertexBufferObject.unbind(pGLState, this.mShaderProgram);
+  @Override
+  protected void preDraw(final GLState pGLState, final Camera pCamera) {
+    super.preDraw(pGLState, pCamera);
 
-		super.postDraw(pGLState, pCamera);
-	}
+    this.getTextureRegion().getTexture().bind(pGLState);
 
-	@Override
-	protected void onUpdateVertices() {
-		this.mSpriteVertexBufferObject.onUpdateVertices(this);
-	}
+    this.mSpriteVertexBufferObject.bind(pGLState, this.mShaderProgram);
+  }
 
-	@Override
-	protected void onUpdateColor() {
-		this.mSpriteVertexBufferObject.onUpdateColor(this);
-	}
+  @Override
+  protected void draw(final GLState pGLState, final Camera pCamera) {
+    this.mSpriteVertexBufferObject.draw(GLES20.GL_TRIANGLE_STRIP, Sprite.VERTICES_PER_SPRITE);
+  }
 
-	protected void onUpdateTextureCoordinates() {
-		this.mSpriteVertexBufferObject.onUpdateTextureCoordinates(this);
-	}
+  @Override
+  protected void postDraw(final GLState pGLState, final Camera pCamera) {
+    this.mSpriteVertexBufferObject.unbind(pGLState, this.mShaderProgram);
 
-	// ===========================================================
-	// Methods
-	// ===========================================================
+    super.postDraw(pGLState, pCamera);
+  }
 
-	// ===========================================================
-	// Inner and Anonymous Classes
-	// ===========================================================
+  @Override
+  protected void onUpdateVertices() {
+    this.mSpriteVertexBufferObject.onUpdateVertices(this);
+  }
+
+  @Override
+  protected void onUpdateColor() {
+    this.mSpriteVertexBufferObject.onUpdateColor(this);
+  }
+
+  protected void onUpdateTextureCoordinates() {
+    this.mSpriteVertexBufferObject.onUpdateTextureCoordinates(this);
+  }
+
+  // ===========================================================
+  // Methods
+  // ===========================================================
+
+  // ===========================================================
+  // Inner and Anonymous Classes
+  // ===========================================================
 }

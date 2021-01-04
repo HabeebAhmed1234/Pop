@@ -39,7 +39,7 @@ public class ScreenUtils {
   /**
    * Standard overlap that a sprite should have with the screen to be considered "in the screen".
    */
-  public static final float PERCENT_SPRITE_IN_SCREEN = 1/2f;
+  public static final float PERCENT_SPRITE_IN_SCREEN = 1 / 2f;
 
   private static ScreenSize sScreenSize;
   private static RectF sScreenRect;
@@ -121,8 +121,12 @@ public class ScreenUtils {
    */
   public static boolean isInScreen(IAreaShape shape, float percent) {
     Preconditions.checkArgument(percent >= 0 && percent <= 1);
-    if (!shape.isVisible()) return false;
-    return (GeometryUtils.getOverLapArea(shape, sScreenShape) / shape.getWidthScaled() * shape.getHeightScaled()) >= percent;
+    if (!shape.isVisible()) {
+      return false;
+    }
+    float overlapPercent = (GeometryUtils.getOverLapAreaWithScreen(shape, sScreenShape) / (
+        shape.getWidthScaled() * shape.getHeightScaled()));
+    return overlapPercent >= percent;
   }
 
   public static int dpToPx(float dp, Context context) {
