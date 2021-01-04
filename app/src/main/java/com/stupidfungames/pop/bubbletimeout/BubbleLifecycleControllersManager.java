@@ -2,7 +2,6 @@ package com.stupidfungames.pop.bubbletimeout;
 
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State;
-import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import java.util.HashSet;
 import java.util.Set;
 import org.andengine.engine.Engine;
@@ -17,12 +16,10 @@ class BubbleLifecycleControllersManager extends BaseEntity {
   private final Set<BubbleLifecycleController> lifecycleControllers = new HashSet<>();
   private final BubbleLifeCycleStateMachine stateMachine;
 
-  public BubbleLifecycleControllersManager(GameSoundsManager soundsManager, Engine engine,
+  public BubbleLifecycleControllersManager(Engine engine,
       Sprite bubbleSprite, BaseEntity parent) {
     super(parent);
     stateMachine = new BubbleLifeCycleStateMachine();
-    lifecycleControllers
-        .add(new BubbleBlinkAnimationManager(bubbleSprite, stateMachine, soundsManager));
     lifecycleControllers
         .add(new BubbleAboutToExplodeParticleSystemLifecycleController(bubbleSprite, stateMachine,
             this));

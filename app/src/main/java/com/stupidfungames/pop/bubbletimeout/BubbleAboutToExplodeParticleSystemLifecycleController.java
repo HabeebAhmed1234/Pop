@@ -3,6 +3,8 @@ package com.stupidfungames.pop.bubbletimeout;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State;
+import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
+import com.stupidfungames.pop.resources.sounds.SoundId;
 import com.stupidfungames.pop.statemachine.BaseStateMachine;
 import org.andengine.entity.particle.ParticleSystem;
 import org.andengine.entity.sprite.Sprite;
@@ -48,9 +50,7 @@ class BubbleAboutToExplodeParticleSystemLifecycleController extends BaseEntity i
   @Override
   public void onEnterState(State newState) {
     switch (newState) {
-      case BLINKING_SLOWLY:
-      case BLINKING_FAST:
-      case BLINKING_IMMINENT:
+      case ABOUT_TO_EXPLODE:
         startParticleEffect();
         break;
       default:
@@ -60,6 +60,7 @@ class BubbleAboutToExplodeParticleSystemLifecycleController extends BaseEntity i
 
   private void startParticleEffect() {
     if (currentAboutToExplodeParticleSystem == null) {
+      get(GameSoundsManager.class).getSound(SoundId.BEEP).play();
       currentAboutToExplodeParticleSystem = get(BubbleAboutToExplodeParticleEffectEntity.class)
           .start(bubble);
     }

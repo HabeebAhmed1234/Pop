@@ -6,7 +6,6 @@ import com.stupidfungames.pop.eventbus.BubbleSpawnedEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
-import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import java.util.HashMap;
 import java.util.Map;
 import org.andengine.entity.sprite.Sprite;
@@ -46,7 +45,6 @@ public class BubblesLifecycleManagerEntity extends BaseEntity implements EventBu
         controllersManagerMap.put(
             bubbleSprite,
             new BubbleLifecycleControllersManager(
-                get(GameSoundsManager.class),
                 engine,
                 bubbleSprite,
                 this));

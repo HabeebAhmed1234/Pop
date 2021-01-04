@@ -1,8 +1,6 @@
 package com.stupidfungames.pop.bubbletimeout;
 
-import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.BLINKING_FAST;
-import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.BLINKING_IMMINENT;
-import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.BLINKING_SLOWLY;
+import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.ABOUT_TO_EXPLODE;
 import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.EXPLODING;
 import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.IDLE;
 import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.STABLE;
@@ -69,15 +67,9 @@ class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, List
     BubbleLifeCycleStateMachine.State nextState = null;
     switch (newState) {
       case STABLE:
-        nextState = BLINKING_SLOWLY;
+        nextState = ABOUT_TO_EXPLODE;
         break;
-      case BLINKING_SLOWLY:
-        nextState = BLINKING_FAST;
-        break;
-      case BLINKING_FAST:
-        nextState = BLINKING_IMMINENT;
-        break;
-      case BLINKING_IMMINENT:
+      case ABOUT_TO_EXPLODE:
         nextState = EXPLODING;
         break;
       case IDLE:
@@ -94,9 +86,7 @@ class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, List
         // If the bubble has already passed the bottom of the screen it shouldn't explode
         // Should just disappear
         return;
-      } else if ((nextState == BLINKING_SLOWLY
-          || nextState == BLINKING_FAST
-          || nextState == BLINKING_IMMINENT
+      } else if ((nextState == ABOUT_TO_EXPLODE
           || nextState == EXPLODING) && !isBubbleInScreen) {
         // If bubble if not on the screen and we want to transition to some end bubble state then
         // make it stable again since its not fair to the player if its off screen and about to explode

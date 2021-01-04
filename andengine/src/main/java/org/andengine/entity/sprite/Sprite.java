@@ -1,5 +1,6 @@
 package org.andengine.entity.sprite;
 
+import android.opengl.GLES20;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.vbo.HighPerformanceSpriteVertexBufferObject;
@@ -13,9 +14,6 @@ import org.andengine.opengl.vbo.DrawType;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributes;
 import org.andengine.opengl.vbo.attribute.VertexBufferObjectAttributesBuilder;
-
-import android.graphics.RectF;
-import android.opengl.GLES20;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -118,11 +116,11 @@ public class Sprite extends RectangularShape {
 	}
 
 	public float getCenterX() {
-		return getX() + getWidthScaled() / 2;
+		return getX() + getWidth() / 2;
 	}
 
 	public float getCenterY() {
-		return getY() + getHeightScaled() / 2;
+		return getY() + getHeight() / 2;
 	}
 
 	// ===========================================================

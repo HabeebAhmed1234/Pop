@@ -3,7 +3,6 @@ package com.stupidfungames.pop;
 import static com.stupidfungames.pop.bubblespawn.bombbubbles.BombBubbleSpritePool.BOMB_BUBBLE_SIZE_DP;
 
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId;
-import java.util.concurrent.TimeUnit;
 
 public class GameConstants {
 
@@ -45,9 +44,7 @@ public class GameConstants {
 
   // Bubble lifecycle constants
   public static final float BUBBLE_STABLE_TIME_SECONDS = 6f;
-  public static final float BUBBLE_BLINKING_SLOWLY_TIME_SECONDS = 3f;
-  public static final float BUBBLE_BLINKING_FAST_TIME_SECONDS = 2f;
-  public static final float BUBBLE_BLINKING_IMMINENT_TIME_SECONDS = 1f;
+  public static final float BUBBLE_ABOUT_TO_EXPLODE_TIME_SECONDS = 4f;
 
   //Streaks
   public static final int STREAK_EXPIRE_THRESHOLD_SECONDS = 10;

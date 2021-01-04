@@ -9,7 +9,7 @@ public class BubbleAboutToExplodeParticleEmitter extends CircleOutlineParticleEm
   private Sprite bubbleSprite;
 
   public BubbleAboutToExplodeParticleEmitter(Sprite bubbleSprite) {
-    super(bubbleSprite.getScaleCenterX(), bubbleSprite.getScaleCenterY(),
+    super(bubbleSprite.getCenterX(), bubbleSprite.getCenterY(),
         (bubbleSprite.getWidthScaled() * BubbleSpawnerEntity.BUBBLE_BODY_SCALE_FACTOR) / 2);
     this.bubbleSprite = bubbleSprite;
   }

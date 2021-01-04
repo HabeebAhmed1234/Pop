@@ -1,12 +1,8 @@
 package com.stupidfungames.pop.bubbletimeout;
 
-import static com.stupidfungames.pop.GameConstants.BUBBLE_BLINKING_FAST_TIME_SECONDS;
-import static com.stupidfungames.pop.GameConstants.BUBBLE_BLINKING_IMMINENT_TIME_SECONDS;
-import static com.stupidfungames.pop.GameConstants.BUBBLE_BLINKING_SLOWLY_TIME_SECONDS;
+import static com.stupidfungames.pop.GameConstants.BUBBLE_ABOUT_TO_EXPLODE_TIME_SECONDS;
 import static com.stupidfungames.pop.GameConstants.BUBBLE_STABLE_TIME_SECONDS;
-import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.BLINKING_FAST;
-import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.BLINKING_IMMINENT;
-import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.BLINKING_SLOWLY;
+import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.ABOUT_TO_EXPLODE;
 import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.EXPLODING;
 import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.IDLE;
 import static com.stupidfungames.pop.bubbletimeout.BubbleLifeCycleStateMachine.State.STABLE;
@@ -42,19 +38,9 @@ class BubbleLifeCycleStateMachine extends BaseStateMachine<BubbleLifeCycleStateM
     STABLE(BUBBLE_STABLE_TIME_SECONDS),
 
     /**
-     * The bubble has started blinking slowly
+     * The bubble has showing its going to explode
      */
-    BLINKING_SLOWLY(BUBBLE_BLINKING_SLOWLY_TIME_SECONDS),
-
-    /**
-     * The bubble blinking has sped up
-     */
-    BLINKING_FAST(BUBBLE_BLINKING_FAST_TIME_SECONDS),
-
-    /**
-     * The bubble is about to explode
-     */
-    BLINKING_IMMINENT(BUBBLE_BLINKING_IMMINENT_TIME_SECONDS),
+    ABOUT_TO_EXPLODE(BUBBLE_ABOUT_TO_EXPLODE_TIME_SECONDS),
 
     /**
      * The bubble has exploded
@@ -77,10 +63,8 @@ class BubbleLifeCycleStateMachine extends BaseStateMachine<BubbleLifeCycleStateM
   protected Map getAllValidStateTransitions() {
     Map<State, Set<State>> validTransitions = new HashMap<>();
     validTransitions.put(IDLE, new HashSet<>(Arrays.asList(STABLE)));
-    validTransitions.put(STABLE, new HashSet<>(Arrays.asList(IDLE, BLINKING_SLOWLY, STABLE)));
-    validTransitions.put(BLINKING_SLOWLY, new HashSet<>(Arrays.asList(IDLE, STABLE, BLINKING_FAST)));
-    validTransitions.put(BLINKING_FAST, new HashSet<>(Arrays.asList(IDLE, STABLE, BLINKING_IMMINENT)));
-    validTransitions.put(BLINKING_IMMINENT, new HashSet<>(Arrays.asList(IDLE, STABLE, EXPLODING)));
+    validTransitions.put(STABLE, new HashSet<>(Arrays.asList(STABLE, IDLE, ABOUT_TO_EXPLODE)));
+    validTransitions.put(ABOUT_TO_EXPLODE, new HashSet<>(Arrays.asList(STABLE, IDLE, EXPLODING)));
     validTransitions.put(EXPLODING, new HashSet<>(Arrays.asList(IDLE, STABLE)));
     return validTransitions;
   }
