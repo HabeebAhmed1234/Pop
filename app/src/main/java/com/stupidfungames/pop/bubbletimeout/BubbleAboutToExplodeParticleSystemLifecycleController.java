@@ -59,13 +59,16 @@ class BubbleAboutToExplodeParticleSystemLifecycleController extends BaseEntity i
   }
 
   private void startParticleEffect() {
-    currentAboutToExplodeParticleSystem = get(BubbleAboutToExplodeParticleEffectEntity.class)
-        .start(bubble);
+    if (currentAboutToExplodeParticleSystem == null) {
+      currentAboutToExplodeParticleSystem = get(BubbleAboutToExplodeParticleEffectEntity.class)
+          .start(bubble);
+    }
   }
 
   private void stopParticleEffect() {
     if (currentAboutToExplodeParticleSystem != null) {
       get(BubbleAboutToExplodeParticleEffectEntity.class).stop(currentAboutToExplodeParticleSystem);
+      currentAboutToExplodeParticleSystem = null;
     }
   }
 }

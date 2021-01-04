@@ -77,7 +77,7 @@ public abstract class BaseParticleSystemPool<P extends BaseParticleSystemPoolPar
 
       @Override
       public void destroy(ParticleSystem item) {
-
+        item.setParticlesSpawnEnabled(false);
       }
     };
   }
