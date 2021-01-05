@@ -43,16 +43,15 @@ public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
   private static MusicPlayer sMusicPlayer;
 
   public static void init(Context context) {
-    sMusicPlayer = new MusicPlayer(0, context);
+    sMusicPlayer = new MusicPlayer(context);
   }
 
   public static MusicPlayer get() {
     return sMusicPlayer;
   }
 
-  private MusicPlayer(int firstTrackResId, Context context) {
+  private MusicPlayer(Context context) {
     this.context = context;
-    initializeMediaPlayer(firstTrackResId);
   }
 
   @Override
@@ -70,7 +69,7 @@ public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
   public void resumePlaying() {
     isPaused = false;
     if (mediaPlayer == null) {
-      initializeMediaPlayer(-1);
+      initializeMediaPlayer();
     } else {
       try {
         mediaPlayer.start();
@@ -125,7 +124,7 @@ public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
       return;
     }
     if (mediaPlayer == null) {
-      initializeMediaPlayer(-1);
+      initializeMediaPlayer();
     } else {
       AssetFileDescriptor assetFileDescriptor = context.getResources()
           .openRawResourceFd(getNextTrackToPlayResId());
@@ -145,18 +144,11 @@ public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
     }
   }
 
-  private void initializeMediaPlayer(int firstTrackIndex) {
+  private void initializeMediaPlayer() {
     if (playableMusicList.isEmpty()) {
       swapLists();
     }
-    mediaPlayer = MediaPlayer.create(
-        context,
-        firstTrackIndex != -1 ? playableMusicList.get(firstTrackIndex) : getNextTrackToPlayResId());
-
-    if (firstTrackIndex != -1) {
-      playedMusicList.add(playableMusicList.remove(firstTrackIndex));
-    }
-
+    mediaPlayer = MediaPlayer.create(context, playableMusicList.get(0));
     mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
     mediaPlayer.setOnPreparedListener(this);
     mediaPlayer.setOnCompletionListener(this);

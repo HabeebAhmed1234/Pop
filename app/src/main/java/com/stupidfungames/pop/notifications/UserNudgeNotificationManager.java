@@ -1,5 +1,7 @@
 package com.stupidfungames.pop.notifications;
 
+import static android.app.AlarmManager.INTERVAL_DAY;
+
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -8,7 +10,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import com.stupidfungames.pop.MainMenuActivity;
@@ -24,7 +25,7 @@ public class UserNudgeNotificationManager extends BroadcastReceiver {
   private static final String EXTRA_NOTIFICATION_ID = "notification_id";
   private static final int STARTING_NOTIFICATION_ID = 1234;
   private static final int NUM_NUDGES = 3;
-  private static final long INTERVAL_MILLIS = AlarmManager.INTERVAL_DAY;
+  private static final long INTERVAL_MILLIS = INTERVAL_DAY;
 
   public void scheduleNudgeNotifications(Context context) {
     createNotificationChannel(context);
@@ -33,7 +34,8 @@ public class UserNudgeNotificationManager extends BroadcastReceiver {
     for (int i = STARTING_NOTIFICATION_ID; i < STARTING_NOTIFICATION_ID + NUM_NUDGES; i++) {
       Intent notificationIntent = new Intent(context, UserNudgeNotificationManager.class);
       notificationIntent.putExtra(EXTRA_NOTIFICATION_ID, i);
-      PendingIntent contentIntent = PendingIntent.getBroadcast(context, i, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+      PendingIntent contentIntent = PendingIntent
+          .getBroadcast(context, i, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
       AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
       am.cancel(contentIntent);
@@ -81,7 +83,8 @@ public class UserNudgeNotificationManager extends BroadcastReceiver {
   }
 
   private int getNotificationIcon() {
-    boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
+    boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT
+        >= android.os.Build.VERSION_CODES.LOLLIPOP);
     return useWhiteIcon ? R.drawable.ic_silhouette : R.drawable.ic_launcher;
   }
 
