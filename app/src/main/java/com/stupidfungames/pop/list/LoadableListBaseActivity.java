@@ -53,7 +53,8 @@ public abstract class LoadableListBaseActivity<T> extends AppCompatActivity impl
         recyclerView,
         (ViewGroup) findViewById(R.id.loadable_list_view));
     loadingCoordinator = new LoadableListLoadingCoordinator(getLoaderCallback(),
-        loadableListViewCoordinator);
+        loadableListViewCoordinator,
+        getLogListName());
 
     loadingCoordinator.start(this);
   }
@@ -68,6 +69,8 @@ public abstract class LoadableListBaseActivity<T> extends AppCompatActivity impl
   protected abstract LoaderCallback<List<T>> getLoaderCallback();
 
   protected abstract void onClick(T item);
+
+  protected abstract String getLogListName();
 
   @Override
   public Context getContext() {

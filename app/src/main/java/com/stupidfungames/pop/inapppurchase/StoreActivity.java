@@ -83,6 +83,11 @@ public class StoreActivity extends LoadableListWithPreviewBaseActivity<SkuDetail
   }
 
   @Override
+  protected String getLogListName() {
+    return "StoreActivity";
+  }
+
+  @Override
   protected String getPreviewImageFileName(SkuDetails item) {
     String purchaseSku = item.getSku();
     ImmutableMap<String, GameProduct> skuToProductsMap = ProductSKUManager.get().skuToProductsMap;

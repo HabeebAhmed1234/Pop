@@ -134,4 +134,9 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<Purchase>
   protected LoaderCallback<List<Purchase>> getLoaderCallback() {
     return loaderCallback;
   }
+
+  @Override
+  protected String getLogListName() {
+    return "EquipActivity";
+  }
 }

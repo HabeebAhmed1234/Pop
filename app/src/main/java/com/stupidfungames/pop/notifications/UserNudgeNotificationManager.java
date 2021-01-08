@@ -1,6 +1,7 @@
 package com.stupidfungames.pop.notifications;
 
 import static android.app.AlarmManager.INTERVAL_DAY;
+import static com.stupidfungames.pop.analytics.Events.USER_NUDGE_NOTIF_SHOWN;
 
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
@@ -14,12 +15,15 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import com.stupidfungames.pop.MainMenuActivity;
 import com.stupidfungames.pop.R;
+import com.stupidfungames.pop.analytics.Logger;
 
 /**
  * Schedules NUM_NUDGES notifications to be delivered to the user after some interval in between
  * that tell the user to open the app.
  */
 public class UserNudgeNotificationManager extends BroadcastReceiver {
+
+  public static final String EXTRA_FROM_NOTIFICATION = "extra_from_notification";
 
   private static final String CHANNEL_ID = "pop_notifications_channel";
   private static final String EXTRA_NOTIFICATION_ID = "notification_id";
@@ -80,6 +84,7 @@ public class UserNudgeNotificationManager extends BroadcastReceiver {
 
     int notificationId = intent.getIntExtra(EXTRA_NOTIFICATION_ID, 0);
     notificationManager.notify(notificationId, builder.build());
+    Logger.logSelect(context, USER_NUDGE_NOTIF_SHOWN);
   }
 
   private int getNotificationIcon() {
@@ -91,6 +96,7 @@ public class UserNudgeNotificationManager extends BroadcastReceiver {
   private PendingIntent getAppLaunchIntent(Context context) {
     // Create an explicit intent for an Activity in your app
     Intent intent = new Intent(context, MainMenuActivity.class);
+    intent.putExtra(EXTRA_FROM_NOTIFICATION, true);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     return PendingIntent.getActivity(context, 0, intent, 0);
   }

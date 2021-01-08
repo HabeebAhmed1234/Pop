@@ -1,5 +1,8 @@
 package com.stupidfungames.pop;
 
+import static com.stupidfungames.pop.analytics.Events.GAME_OVER_SCORE;
+import static com.stupidfungames.pop.analytics.Events.NEW_GAME_STARTED_GAME_OVER;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
@@ -13,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.stupidfungames.pop.analytics.Logger;
 import com.stupidfungames.pop.androidui.GameMenuButton;
 import com.stupidfungames.pop.androidui.LoadingSpinner;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
@@ -65,15 +69,21 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
       }
     });
 
-    ((TextView) findViewById(R.id.score_text))
-        .setText(Integer.toString(getGameOverScore()));
+    initScoreText();
 
     animateGameOver();
 
     saveGameManager = new SaveGameManager(this, this);
     saveGameManager.deleteSaveGame();
 
-    ((AdView)findViewById(R.id.adView)).loadAd(((new AdRequest.Builder()).build()));
+    ((AdView) findViewById(R.id.adView)).loadAd(((new AdRequest.Builder()).build()));
+  }
+
+  private void initScoreText() {
+    int score = getGameOverScore();
+    ((TextView) findViewById(R.id.score_text))
+        .setText(Integer.toString(score));
+    Logger.logSelect(this, GAME_OVER_SCORE, score);
   }
 
   private int getGameOverScore() {
@@ -83,6 +93,7 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
   private void startNewGame() {
     startActivity(GameActivity.newIntent(this));
     finish();
+    Logger.logSelect(this, NEW_GAME_STARTED_GAME_OVER);
   }
 
   @Override

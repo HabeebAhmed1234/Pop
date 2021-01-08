@@ -1,10 +1,10 @@
 package com.stupidfungames.pop;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import com.google.firebase.analytics.FirebaseAnalytics;
+import com.stupidfungames.pop.analytics.Events;
+import com.stupidfungames.pop.analytics.Logger;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.dialog.ConfirmationToastDialogActivity;
 
@@ -65,11 +65,7 @@ public class NewGameBtnView {
   }
 
   private void startNewGame() {
-    Bundle bundle = new Bundle();
-    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "new_game_btn");
-    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "New Gamer Button");
-    FirebaseAnalytics.getInstance(hostActivity.getContext())
-        .logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+    Logger.logSelect(hostActivity.getContext(), Events.NEW_GAME_STARTED_MAIN_MENU);
     hostActivity.startActivity(GameActivity.newIntent(context));
     hostActivity.finish();
   }

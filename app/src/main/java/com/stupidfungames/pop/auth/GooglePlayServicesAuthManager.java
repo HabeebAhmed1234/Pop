@@ -3,6 +3,8 @@ package com.stupidfungames.pop.auth;
 import static android.app.Activity.RESULT_CANCELED;
 import static com.google.android.gms.games.Games.SCOPE_GAMES_LITE;
 import static com.google.android.gms.games.Games.SCOPE_GAMES_SNAPSHOTS;
+import static com.stupidfungames.pop.analytics.Events.ALREADY_LOGGED_IN;
+import static com.stupidfungames.pop.analytics.Events.LOGIN_SUCCESS;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +29,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.stupidfungames.pop.HostActivity;
 import com.stupidfungames.pop.R;
+import com.stupidfungames.pop.analytics.Events;
+import com.stupidfungames.pop.analytics.Logger;
 import com.stupidfungames.pop.dialog.ToastDialogActivity;
 import com.stupidfungames.pop.gamesettings.GamePreferencesManager;
 import java.util.Arrays;
@@ -101,9 +105,9 @@ public class GooglePlayServicesAuthManager {
       // Already signed in.
       // The signed in account is stored in the 'account' variable.
       if (account != null) {
-        onLogin(account);
+        onLogin(false, account);
       } else {
-        onLoginFailed(new IllegalStateException("Null account?"));
+        onLoginFailed(false, new IllegalStateException("Null account?"));
       }
     } else {
       // Haven't been signed-in before. Try the silent sign-in first.
@@ -124,7 +128,7 @@ public class GooglePlayServicesAuthManager {
                   if (signedInAccount == null) {
                     performExplicitSignIn(hostActivity);
                   } else {
-                    onLogin(signedInAccount);
+                    onLogin(false, signedInAccount);
                   }
                 }
               });
@@ -148,6 +152,7 @@ public class GooglePlayServicesAuthManager {
           }
         });
     startSignInForResult.launch(getSignInClient().getSignInIntent());
+    Logger.logSelect(context, Events.LOGIN_START);
   }
 
   private void onActivityResult(ActivityResult activityResult) {
@@ -159,10 +164,10 @@ public class GooglePlayServicesAuthManager {
     GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(activityResult.getData());
     if (result != null && result.isSuccess() && result.getSignInAccount() != null) {
       // The signed in account is stored in the result.
-      onLogin(result.getSignInAccount());
+      onLogin(true, result.getSignInAccount());
     } else {
       ToastDialogActivity.start(R.string.signin_other_error, context);
-      onLoginFailed(new RuntimeException(result.getStatus().getStatusMessage()));
+      onLoginFailed(true, new RuntimeException(result.getStatus().getStatusMessage()));
     }
   }
 
@@ -187,13 +192,18 @@ public class GooglePlayServicesAuthManager {
     }
   }
 
-  private void onLogin(GoogleSignInAccount account) {
+  private void onLogin(boolean loggedInFromFlow, GoogleSignInAccount account) {
     // If the user ended up logging in then we want to auto sign them in all subsequent times they
     // Open the app
     GamePreferencesManager.set(context, PLAYER_REJECTED_LOGIN_PREFERENCE, false);
     isLoggingIn = false;
     for (LoginListener listener : listeners) {
       listener.onLoggedIn(account);
+    }
+    if (loggedInFromFlow) {
+      Logger.logSelect(context, LOGIN_SUCCESS);
+    } else {
+      Logger.logSelect(context, ALREADY_LOGGED_IN);
     }
   }
 
@@ -202,12 +212,16 @@ public class GooglePlayServicesAuthManager {
     for (LoginListener listener : listeners) {
       listener.onLoggedOut();
     }
+    Logger.logSelect(context, Events.LOGOUT);
   }
 
-  private void onLoginFailed(Exception e) {
+  private void onLoginFailed(boolean fromFlow,Exception e) {
     isLoggingIn = false;
     for (LoginListener listener : listeners) {
       listener.onLoginFailed(e);
+    }
+    if (fromFlow) {
+      Logger.logSelect(context, Events.LOGIN_FAILED);
     }
   }
 

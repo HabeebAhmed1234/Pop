@@ -1,5 +1,8 @@
 package com.stupidfungames.pop;
 
+import static com.stupidfungames.pop.analytics.Events.GAME_STOP_PROGRESS;
+import static com.stupidfungames.pop.analytics.Events.GAME_STOP_SCORE;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -11,6 +14,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import com.stupidfungames.pop.analytics.Logger;
 import com.stupidfungames.pop.androidui.music.MusicPlayer;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.backgroundmusic.BackgroundMusicEntity;
@@ -261,7 +265,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent event) {
     if (keyCode == KeyEvent.KEYCODE_BACK) {
-      // If we are not logged in then we must launch a prompt for the user to log in to save their
+      // If we are not logged in then we must launch a prompt for the user to logSelect in to save their
       // game
       if (!authManager.isLoggedIn()) {
         if (startSaveGameFlow(true, false, true)) {
@@ -316,6 +320,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
   @Override
   protected void onDestroy() {
+    logGameExitData();
     // Destroy the game
     gameLifeCycleCalllbackManager.onDestroy();
     gameLifeCycleCalllbackManager = null;
@@ -346,5 +351,16 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
   @Override
   public GooglePlayServicesAuthManager getAuthManager() {
     return authManager;
+  }
+
+  private void logGameExitData() {
+    Logger.logSelect(
+        this,
+        GAME_STOP_SCORE,
+        mRootBinder.get(ScoreHudEntity.class).getScore());
+    Logger.logSelect(
+        this,
+        GAME_STOP_PROGRESS,
+        mRootBinder.get(GameDifficultyEntity.class).getGameProgress());
   }
 }

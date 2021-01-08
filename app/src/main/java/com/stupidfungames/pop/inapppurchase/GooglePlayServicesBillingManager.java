@@ -1,8 +1,12 @@
 package com.stupidfungames.pop.inapppurchase;
 
+import static com.stupidfungames.pop.analytics.Events.PURCHASE_CANCELED;
+import static com.stupidfungames.pop.analytics.Events.PURCHASE_FAILED;
+import static com.stupidfungames.pop.analytics.Events.PURCHASE_START;
+
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
+import android.text.TextUtils;
 import android.util.Pair;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
@@ -28,8 +32,10 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
+import com.google.firebase.analytics.FirebaseAnalytics.Event;
 import com.stupidfungames.pop.HostActivity;
 import com.stupidfungames.pop.R;
+import com.stupidfungames.pop.analytics.Logger;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager.LoginListener;
 import java.util.ArrayList;
@@ -106,7 +112,7 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
   public ListenableFuture<Purchase> purchase(final Activity activity, final SkuDetails skuDetails) {
     ListenableFuture<BillingResult> result = launchPurchaseFlow(activity, skuDetails);
     if (productPurchaseFuture != null) {
-      onPurchaseFailed();
+      onPurchaseFailed("Purchase already in progress");
     }
     productPurchaseFuture = new Pair<>(skuDetails, SettableFuture.<Purchase>create());
     Futures.addCallback(result, new FutureCallback<BillingResult>() {
@@ -116,13 +122,15 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
         if (result != null) {
           switch (result.getResponseCode()) {
             case BillingResponseCode.OK:
+              Logger.logSelect(hostActivity.getContext(), Event.PURCHASE, skuDetails.getSku());
               break;
             case BillingResponseCode.USER_CANCELED:
               toastResId = R.string.purchase_canceled;
-              onPurchaseFailed();
+              Logger.logSelect(hostActivity.getContext(), PURCHASE_CANCELED, skuDetails.getSku());
+              onPurchaseFailed(null);
               break;
             default:
-              onPurchaseFailed();
+              onPurchaseFailed("Billing flow error error: " + result.getResponseCode());
           }
         }
         if (toastResId != -1) {
@@ -133,17 +141,21 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
       @Override
       public void onFailure(Throwable t) {
         Toast.makeText(activity, R.string.generic_error, Toast.LENGTH_LONG).show();
-        onPurchaseFailed();
+        onPurchaseFailed("launch purchase flow exception");
       }
     }, ContextCompat.getMainExecutor(activity));
     return productPurchaseFuture.second;
   }
 
-  private void onPurchaseFailed() {
+  private void onPurchaseFailed(@Nullable String reason) {
     if (productPurchaseFuture != null && productPurchaseFuture.second != null) {
       productPurchaseFuture.second.setException(new IllegalStateException("Purchase failed"));
     }
     productPurchaseFuture = null;
+
+    if (!TextUtils.isEmpty(reason)) {
+      Logger.logSelect(hostActivity.getContext(), PURCHASE_FAILED, reason);
+    }
   }
 
   private void onPurchaseSuccess(Purchase purchase) {
@@ -310,6 +322,8 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
             .setSkuDetails(skuDetails)
             .build();
         result.set(billingClient.launchBillingFlow(activity, flowParams));
+
+        Logger.logSelect(hostActivity.getContext(), PURCHASE_START, skuDetails.getSku());
       }
 
       @Override
@@ -344,7 +358,10 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
   @Override
   public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> list) {
     if (billingResult.getResponseCode() == BillingResponseCode.USER_CANCELED || list == null) {
-      onPurchaseFailed();
+      onPurchaseFailed(
+          "onPurchasesUpdated BillingResponseCode.USER_CANCELED = "
+              + (billingResult.getResponseCode() == BillingResponseCode.USER_CANCELED)
+              + " or null list = " + (list == null));
       return;
     }
     for (final Purchase purchase : list) {

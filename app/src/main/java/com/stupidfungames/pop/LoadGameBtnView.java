@@ -1,10 +1,13 @@
 package com.stupidfungames.pop;
 
+import static com.stupidfungames.pop.analytics.Events.RESUME_GAME_INCORRECT_VERSION_NUMBER;
+
 import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
 import androidx.core.content.ContextCompat;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.stupidfungames.pop.analytics.Logger;
 import com.stupidfungames.pop.androidui.GameMenuButton;
 import com.stupidfungames.pop.androidui.LoadingSpinner;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;

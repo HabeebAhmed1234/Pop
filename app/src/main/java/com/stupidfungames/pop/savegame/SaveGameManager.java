@@ -1,5 +1,8 @@
 package com.stupidfungames.pop.savegame;
 
+import static com.stupidfungames.pop.analytics.Events.RESUME_GAME;
+import static com.stupidfungames.pop.analytics.Events.RESUME_GAME_INCORRECT_VERSION_NUMBER;
+
 import android.content.Context;
 import android.util.Log;
 import androidx.core.content.ContextCompat;
@@ -9,6 +12,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.stupidfungames.pop.GameActivity;
 import com.stupidfungames.pop.HostActivity;
+import com.stupidfungames.pop.analytics.Logger;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager.LoginListener;
 import com.stupidfungames.pop.googleplaysave.GooglePlayServicesSaveManager;
@@ -179,9 +183,11 @@ public class SaveGameManager implements LoginListener {
      */
     public static boolean startLoadedGame(SaveGame saveGame, Context context) {
         if (saveGame.saveGameVersionCode > SAVE_GAME_VERSION_NUMER) {
+            Logger.logSelect(context, RESUME_GAME_INCORRECT_VERSION_NUMBER, saveGame.saveGameVersionCode, SAVE_GAME_VERSION_NUMER);
             return false;
         }
 
+        Logger.logSelect(context, RESUME_GAME);
         context.startActivity(GameActivity.newIntent(saveGame, context));
         return true;
     }

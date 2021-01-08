@@ -60,7 +60,7 @@ public class GameDifficultyEntity extends BaseEntity {
     EventBus.get().sendEvent(GameEvent.GAME_PROGRESS_CHANGED, new GameProgressEventPayload(0));
   }
 
-  public void updateInterval() {
+  private void updateInterval() {
     setCurrentSpawnInterval(currentSpawnInterval - SPAWN_INTERVAL_DECREASE_SPEED_SECONDS);
   }
 
@@ -79,7 +79,7 @@ public class GameDifficultyEntity extends BaseEntity {
    * Returns the game progress as the currentSpawnInterval percentage between min and max spawn
    * intervals
    */
-  private float getGameProgress() {
+  public float getGameProgress() {
     return 1 - (currentSpawnInterval - MIN_SPAWN_INTERVAL_SECONDS) / (MAX_SPAWN_INTERVAL_SECONDS
         - MIN_SPAWN_INTERVAL_SECONDS);
   }

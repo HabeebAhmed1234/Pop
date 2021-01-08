@@ -1,5 +1,8 @@
 package com.stupidfungames.pop.inapppurchase;
 
+import static com.stupidfungames.pop.analytics.Events.EQUIPPED_BG;
+import static com.stupidfungames.pop.analytics.Events.ERROR_EQUIPPING_BG;
+
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,6 +15,7 @@ import androidx.annotation.Nullable;
 import com.android.billingclient.api.Purchase;
 import com.bumptech.glide.Glide;
 import com.stupidfungames.pop.R;
+import com.stupidfungames.pop.analytics.Logger;
 import com.stupidfungames.pop.androidui.GlideUtils;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventBus.Subscriber;
@@ -37,10 +41,11 @@ public class PurchaseViewHolder extends BindableViewHolder<Purchase> {
           if (!EquipBackgroundHelper.equipBackground(itemView.getContext(), sku)) {
             Toast.makeText(itemView.getContext(), R.string.error_equipping, Toast.LENGTH_LONG)
                 .show();
+            Logger.logSelect(itemView.getContext(), ERROR_EQUIPPING_BG, sku);
           } else {
             Toast.makeText(itemView.getContext(), R.string.equip_success, Toast.LENGTH_SHORT)
                 .show();
-            ;
+            Logger.logSelect(itemView.getContext(), EQUIPPED_BG, sku);
           }
         }
         updateEquipBtn();

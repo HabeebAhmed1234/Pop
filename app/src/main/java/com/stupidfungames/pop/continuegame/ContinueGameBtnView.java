@@ -1,7 +1,9 @@
 package com.stupidfungames.pop.continuegame;
 
+import static com.stupidfungames.pop.analytics.Events.CONTINUE_BTN_PRESSED;
+import static com.stupidfungames.pop.analytics.Events.CONTINUE_GAME_WITH_TOKEN;
+
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
@@ -16,6 +18,7 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.stupidfungames.pop.HostActivity;
 import com.stupidfungames.pop.R;
+import com.stupidfungames.pop.analytics.Logger;
 import com.stupidfungames.pop.androidui.GameMenuButton;
 import com.stupidfungames.pop.androidui.LoadingSpinner;
 import com.stupidfungames.pop.inapppurchase.GooglePlayServicesBillingManager;
@@ -35,9 +38,11 @@ public class ContinueGameBtnView {
     @Override
     public void onClick(View v) {
       if (continueGamePurchase != null) {
+        Logger.logSelect(hostActivity.getContext(), CONTINUE_GAME_WITH_TOKEN);
         billingManager.consume(continueGamePurchase);
       }
       hostActivity.continueGame();
+      Logger.logSelect(hostActivity.getContext(), CONTINUE_BTN_PRESSED);
     }
   };
   private final OnClickListener watchAdOrBuyTokenOnClickListener = new OnClickListener() {
@@ -135,7 +140,8 @@ public class ContinueGameBtnView {
           public void onActivityResult(ActivityResult result) {
             if (result.getResultCode() == ContinueGameChoiceDialogActivity.RESULT_TOKEN_ACQUIRED) {
               checkIfUserHasContinueToken();
-            } else if (result.getResultCode() == ContinueGameChoiceDialogActivity.RESULT_USER_CAN_CONTINUE) {
+            } else if (result.getResultCode()
+                == ContinueGameChoiceDialogActivity.RESULT_USER_CAN_CONTINUE) {
               promptUserToContinueGame();
               setGameButtonState(ContinueGameBtnState.ALLOW_CONTINUE_GAME);
             } else {

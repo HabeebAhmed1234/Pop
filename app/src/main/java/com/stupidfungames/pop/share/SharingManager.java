@@ -1,5 +1,11 @@
 package com.stupidfungames.pop.share;
 
+import static com.stupidfungames.pop.analytics.Events.SHARE_TO_FB_CANCELLED;
+import static com.stupidfungames.pop.analytics.Events.SHARE_TO_FB_ERROR;
+import static com.stupidfungames.pop.analytics.Events.SHARE_TO_FB_START;
+import static com.stupidfungames.pop.analytics.Events.SHARE_TO_FB_SUCCESS;
+import static com.stupidfungames.pop.analytics.Events.SHARE_TO_OTHER;
+
 import android.content.Intent;
 import android.net.Uri;
 import androidx.activity.result.ActivityResult;
@@ -15,6 +21,7 @@ import com.facebook.share.widget.ShareDialog;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.stupidfungames.pop.R;
+import com.stupidfungames.pop.analytics.Logger;
 
 public class SharingManager {
 
@@ -46,19 +53,23 @@ public class SharingManager {
         @Override
         public void onSuccess(Result result) {
           shareSuccess.set(true);
+          Logger.logSelect(hostActivity.getContext(), SHARE_TO_FB_SUCCESS);
         }
 
         @Override
         public void onCancel() {
           shareSuccess.set(false);
+          Logger.logSelect(hostActivity.getContext(), SHARE_TO_FB_CANCELLED);
         }
 
         @Override
         public void onError(FacebookException error) {
           shareSuccess.set(false);
+          Logger.logSelect(hostActivity.getContext(), SHARE_TO_FB_ERROR);
         }
       });
 
+      Logger.logSelect(hostActivity.getContext(), SHARE_TO_FB_START);
       shareDialog.show(content);
       return shareSuccess;
     } else {
@@ -78,6 +89,7 @@ public class SharingManager {
           @Override
           public void onActivityResult(ActivityResult result) {
             shareSuccess.set(true);
+            Logger.logSelect(hostActivity.getContext(), SHARE_TO_OTHER);
           }
         }).launch(sharingIntent);
     return shareSuccess;

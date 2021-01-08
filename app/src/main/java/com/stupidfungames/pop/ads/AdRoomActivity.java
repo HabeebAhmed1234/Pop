@@ -1,5 +1,10 @@
 package com.stupidfungames.pop.ads;
 
+import static com.stupidfungames.pop.analytics.Events.AD_WATCH_ERROR;
+import static com.stupidfungames.pop.analytics.Events.AD_WATCH_LOADED;
+import static com.stupidfungames.pop.analytics.Events.AD_WATCH_START;
+import static com.stupidfungames.pop.analytics.Events.CONTINUE_GAME_WITH_AD;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +20,8 @@ import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.stupidfungames.pop.R;
+import com.stupidfungames.pop.analytics.Events;
+import com.stupidfungames.pop.analytics.Logger;
 import com.stupidfungames.pop.androidui.LoadingSpinner;
 import com.stupidfungames.pop.androidui.music.MusicPlayer;
 
@@ -74,11 +81,13 @@ public class AdRoomActivity extends AppCompatActivity {
     loadingSpinner.startLoadingAnimation();
 
     rewardedAd = new RewardedAd(this, getString(R.string.test_rewarded_ad_unit_id));
+    Logger.logSelect(this, AD_WATCH_START);
     RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() {
       @Override
       public void onRewardedAdLoaded() {
         // Ad successfully loaded.
         if (rewardedAd.isLoaded()) {
+          Logger.logSelect(AdRoomActivity.this, AD_WATCH_LOADED);
           rewardedAd.show(AdRoomActivity.this, adCallback);
         } else {
           onAdWatchError();
@@ -96,11 +105,13 @@ public class AdRoomActivity extends AppCompatActivity {
   private void onAdWatchError() {
     Toast.makeText(AdRoomActivity.this, R.string.ad_load_error, Toast.LENGTH_SHORT).show();
     onAdWatched();
+    Logger.logSelect(this, AD_WATCH_ERROR);
   }
 
   private void onAdWatched() {
     setResult(RESULT_AD_WATCHED);
     finishAdWatch();
+    Logger.logSelect(this, CONTINUE_GAME_WITH_AD);
   }
 
   private void onAdNotWatched() {

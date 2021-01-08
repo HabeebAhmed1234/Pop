@@ -1,5 +1,12 @@
 package com.stupidfungames.pop;
 
+import static com.stupidfungames.pop.analytics.Events.APP_START;
+import static com.stupidfungames.pop.analytics.Events.APP_START_FROM_NOTIFICATION;
+import static com.stupidfungames.pop.analytics.Events.OPEN_PURCHASES;
+import static com.stupidfungames.pop.analytics.Events.OPEN_STORE;
+import static com.stupidfungames.pop.analytics.Events.QUIT_BTN;
+import static com.stupidfungames.pop.notifications.UserNudgeNotificationManager.EXTRA_FROM_NOTIFICATION;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.stupidfungames.pop.analytics.Logger;
 import com.stupidfungames.pop.androidui.BlinkAnimator;
 import com.stupidfungames.pop.androidui.GameMenuButton;
 import com.stupidfungames.pop.androidui.LoadingSpinner;
@@ -44,6 +52,7 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    logAppStart();
     AppReviewUtil.maybeShowAppReviewDialog(this);
     scheduleNudgeNotifications();
     MobileAds.initialize(this);
@@ -109,14 +118,17 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
   }
 
   private void openStore() {
+    Logger.logSelect(this, OPEN_STORE);
     startActivity(StoreActivity.getIntent(this));
   }
 
   private void openPurchses() {
+    Logger.logSelect(this, OPEN_PURCHASES);
     startActivity(EquipActivity.getIntent(this));
   }
 
   private void quitGame() {
+    Logger.logSelect(this, QUIT_BTN);
     this.finish();
   }
 
@@ -139,5 +151,14 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
   @Override
   public Activity getActivity() {
     return this;
+  }
+
+  private void logAppStart() {
+    Intent launchIntent = getIntent();
+    Bundle extras = launchIntent.getExtras();
+    boolean fromNotification =
+        (extras != null && extras.containsKey(EXTRA_FROM_NOTIFICATION))
+            ? extras.getBoolean(EXTRA_FROM_NOTIFICATION) : false;
+    Logger.logSelect(this, fromNotification ? APP_START_FROM_NOTIFICATION : APP_START);
   }
 }

@@ -1,8 +1,12 @@
 package com.stupidfungames.pop;
 
+import static com.stupidfungames.pop.analytics.Events.GAME_OVER_PROGRESS;
+
 import android.content.Context;
+import com.stupidfungames.pop.analytics.Logger;
 import com.stupidfungames.pop.androidui.music.MusicPlayer;
 import com.stupidfungames.pop.binder.BinderEnity;
+import com.stupidfungames.pop.difficulty.GameDifficultyEntity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
@@ -93,16 +97,21 @@ public class GameOverSequenceEntity extends BaseEntity {
       @Override
       public void onTimePassed(TimerHandler pTimerHandler) {
         explosionParticleSystem.setParticlesSpawnEnabled(false);
-        onGameover();
+        onGameOver();
       }
     }));
   }
 
-  private void onGameover() {
+  private void onGameOver() {
     Context context = get(Context.class);
     context.startActivity(GameOverActivity.newIntent(context, get(ScoreHudEntity.class).getScore(),
         get(GameSaver.class).fabricateSaveGame()));
     MusicPlayer.get().onLeaveGameActivity();
     hostActivity.finish();
+
+    Logger.logSelect(
+        hostActivity.getContext(),
+        GAME_OVER_PROGRESS,
+        get(GameDifficultyEntity.class).getGameProgress());
   }
 }
