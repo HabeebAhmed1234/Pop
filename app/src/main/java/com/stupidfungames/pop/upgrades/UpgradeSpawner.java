@@ -134,7 +134,7 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
     // an upgrade.
     if (now >= lastTimeUpgradeWasSpawned + upgradeSpawnInterval) {
       // spawn an upgrade.
-      // spawnUpgrade(bubblePoppedEventPayload);
+      spawnUpgrade(bubblePoppedEventPayload);
     }
   }
 

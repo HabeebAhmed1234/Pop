@@ -14,6 +14,12 @@ import org.andengine.util.debug.Debug;
 
 public class GameSoundsManager extends BaseEntity {
 
+  public static final int MAX_SIMULTANEOUS_SOUND_STREAMS = 50;
+
+  private static final int PRIORITY_LOW = 1;
+  private static final int PRIORITY_MID = 2;
+  private static final int PRIORITY_HIGH = 3;
+
   private final Map<SoundId, Sound> mSounds = new HashMap();
 
   public GameSoundsManager(BinderEnity parent) {
@@ -24,12 +30,12 @@ public class GameSoundsManager extends BaseEntity {
   public void onCreateResources() {
     SoundFactory.setAssetBasePath("mfx/");
     try {
-      loadSound(SoundId.POP_1, "pop1.mp3");
-      loadSound(SoundId.POP_2, "pop2.mp3");
-      loadSound(SoundId.POP_3, "pop3.mp3");
-      loadSound(SoundId.POP_4, "pop4.mp3");
-      loadSound(SoundId.POP_5, "pop5.mp3");
-      loadSound(SoundId.EXPOSION, "explosion.mp3", 1.2f);
+      loadSound(SoundId.POP_1, "pop1.mp3", 1.0f, PRIORITY_MID);
+      loadSound(SoundId.POP_2, "pop2.mp3", 1.0f, PRIORITY_MID);
+      loadSound(SoundId.POP_3, "pop3.mp3", 1.0f, PRIORITY_MID);
+      loadSound(SoundId.POP_4, "pop4.mp3", 1.0f, PRIORITY_MID);
+      loadSound(SoundId.POP_5, "pop5.mp3", 1.0f, PRIORITY_MID);
+      loadSound(SoundId.EXPOSION, "explosion.mp3", 1.2f, PRIORITY_HIGH);
       loadSound(SoundId.EXPOSION_2, "explosion2.mp3", 1.2f);
       loadSound(SoundId.LAZER_BURST, "lazer_burst.mp3");
       loadSound(SoundId.OPEN, "open.mp3");
@@ -41,7 +47,7 @@ public class GameSoundsManager extends BaseEntity {
       loadSound(SoundId.HAMMER_DOWN, "hammer_down.mp3", 0.25f);
       loadSound(SoundId.SCRAP, "scrap.mp3");
       loadSound(SoundId.NUKE_START, "nuke_start.mp3");
-      loadSound(SoundId.BEEP, "beep.mp3", 1.5f);
+      loadSound(SoundId.BEEP, "beep.mp3", 1.5f, PRIORITY_HIGH);
       loadSound(SoundId.PAUSE, "pause.mp3");
       loadSound(SoundId.UNPAUSE, "unpause.mp3");
       loadSound(SoundId.UPGRADE, "upgrade.mp3", 0.5f);
@@ -56,8 +62,13 @@ public class GameSoundsManager extends BaseEntity {
   }
 
   private void loadSound(SoundId soundId, String path, float volume) throws IOException {
+    loadSound(soundId, path, volume, PRIORITY_LOW);
+  }
+
+  private void loadSound(SoundId soundId, String path, float volume, int priority)
+      throws IOException {
     Sound sound = SoundFactory
-        .createSoundFromAsset(get(SoundManager.class), get(Context.class), path);
+        .createSoundFromAsset(get(SoundManager.class), get(Context.class), path, priority);
     sound.setVolume(volume);
     mSounds.put(soundId, sound);
   }

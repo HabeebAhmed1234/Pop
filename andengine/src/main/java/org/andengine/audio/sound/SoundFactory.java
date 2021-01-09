@@ -68,15 +68,19 @@ public class SoundFactory {
 			return sound;
 		}
 	}
-
 	public static Sound createSoundFromAsset(final SoundManager pSoundManager, final Context pContext, final String pAssetPath) throws IOException {
+		return createSoundFromAsset(pSoundManager, pContext, pAssetPath, 1);
+	}
+
+	public static Sound createSoundFromAsset(final SoundManager pSoundManager, final Context pContext, final String pAssetPath, int priority) throws IOException {
 		synchronized(pSoundManager) {
 			final int soundID = pSoundManager.getSoundPool().load(pContext.getAssets().openFd(SoundFactory.sAssetBasePath + pAssetPath), 1);
-			final Sound sound = new Sound(pSoundManager, soundID);
+			final Sound sound = new Sound(pSoundManager, soundID, priority);
 			pSoundManager.add(sound);
 			return sound;
 		}
 	}
+
 
 	public static Sound createSoundFromResource(final SoundManager pSoundManager, final Context pContext, final int pSoundResID) {
 		synchronized(pSoundManager) {

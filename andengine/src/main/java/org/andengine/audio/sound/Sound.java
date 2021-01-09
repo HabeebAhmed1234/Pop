@@ -22,6 +22,8 @@ public class Sound extends BaseAudioEntity {
   // Fields
   // ===========================================================
 
+  private final int priority;
+
   private int mSoundID;
   private Set<Integer> mStreamIDs = new HashSet<>();
 
@@ -38,6 +40,14 @@ public class Sound extends BaseAudioEntity {
     super(pSoundManager);
 
     this.mSoundID = pSoundID;
+    this.priority = 0;
+  }
+
+  Sound(final SoundManager pSoundManager, final int pSoundID, int priority) {
+    super(pSoundManager);
+
+    this.mSoundID = pSoundID;
+    this.priority = priority;
   }
 
   // ===========================================================
@@ -109,7 +119,7 @@ public class Sound extends BaseAudioEntity {
     final float rightVolume = this.mRightVolume * masterVolume;
 
     int streamId = this.getSoundPool()
-        .play(this.mSoundID, leftVolume, rightVolume, 1, this.mLoopCount, this.mRate);
+        .play(this.mSoundID, leftVolume, rightVolume, priority, this.mLoopCount, this.mRate);
     mStreamIDs.add(streamId);
     return streamId;
   }

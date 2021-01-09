@@ -6,6 +6,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnPreparedListener;
+import androidx.core.util.Preconditions;
 import com.stupidfungames.pop.R;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,6 +18,9 @@ import java.util.Random;
  * Can be used from a non Game activity to play background music
  */
 public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
+
+  private static final int MAX_VOLUME = 100;
+  private static final int IN_GAME_VOLUME = 85;
 
   private final Random rand = new Random();
 
@@ -98,6 +102,7 @@ public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
     } else if (!isPlaying || mediaPlayer == null) {
       playNextTrack();
     }
+    setVolume(IN_GAME_VOLUME);
   }
 
   /**
@@ -106,6 +111,7 @@ public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
   public void onLeaveGameActivity() {
     resumePlaying();
     playNextTrack();
+    setVolume(MAX_VOLUME);
   }
 
   public void stop() {
@@ -173,5 +179,20 @@ public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
     List<Integer> temp = playableMusicList;
     playableMusicList = playedMusicList;
     playedMusicList = temp;
+  }
+
+  private void setVolume(int volume) {
+    if (mediaPlayer == null) {
+      return;
+    }
+    Preconditions.checkArgument(volume >= 0 && volume <= MAX_VOLUME);
+    float log1 = 1.0f - (float) (Math.log(MAX_VOLUME - volume) / Math.log(MAX_VOLUME));
+    if (log1 < 0) {
+      log1 = 0;
+    }
+    if (log1 > 1) {
+      log1 = 1;
+    }
+    mediaPlayer.setVolume(log1, log1);
   }
 }
