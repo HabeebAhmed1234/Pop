@@ -113,8 +113,9 @@ public abstract class BaseAudioEntity implements IAudioEntity {
 	}
 
 	@Override
-	public void play() throws AudioException {
+	public int play() throws AudioException {
 		this.assertNotReleased();
+		return -1;
 	}
 
 	@Override
@@ -129,6 +130,11 @@ public abstract class BaseAudioEntity implements IAudioEntity {
 
 	@Override
 	public void stop() throws AudioException {
+		this.assertNotReleased();
+	}
+
+	@Override
+	public void stop(int streamId) throws AudioException {
 		this.assertNotReleased();
 	}
 
