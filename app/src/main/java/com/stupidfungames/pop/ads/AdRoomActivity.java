@@ -47,10 +47,10 @@ public class AdRoomActivity extends AppCompatActivity {
 
     @Override
     public void onRewardedAdClosed() {
-      Toast.makeText(AdRoomActivity.this, R.string.ad_reward_failed_message, Toast.LENGTH_SHORT).show();
       if (isRewardEarned) {
         onAdWatched();
       } else {
+        Toast.makeText(AdRoomActivity.this, R.string.ad_reward_failed_message, Toast.LENGTH_SHORT).show();
         onAdNotWatched();
       }
     }
