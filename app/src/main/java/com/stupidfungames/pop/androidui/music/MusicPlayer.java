@@ -20,7 +20,7 @@ import java.util.Random;
 public class MusicPlayer implements OnCompletionListener, OnPreparedListener {
 
   private static final int MAX_VOLUME = 100;
-  private static final int IN_GAME_VOLUME = 85;
+  private static final int IN_GAME_VOLUME = 80;
 
   private final Random rand = new Random();
 
