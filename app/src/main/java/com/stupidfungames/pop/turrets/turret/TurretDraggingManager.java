@@ -1,5 +1,6 @@
 package com.stupidfungames.pop.turrets.turret;
 
+import static com.stupidfungames.pop.eventbus.GameEvent.CANCEL_WALL_PLACEMENT;
 import static com.stupidfungames.pop.eventbus.GameEvent.OPEN_GAME_ICONS_TRAY;
 import static com.stupidfungames.pop.eventbus.GameEvent.TURRET_DOCKED;
 
@@ -68,6 +69,7 @@ public class TurretDraggingManager extends BaseEntity implements
     TurretsMutex mutex = get(TurretsMutex.class);
     if (newState == TurretStateMachine.State.DRAGGING) {
       mutex.setIsDragging(true);
+      EventBus.get().sendEvent(CANCEL_WALL_PLACEMENT);
     } else {
       mutex.setIsDragging(false);
     }

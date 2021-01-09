@@ -33,4 +33,5 @@ public enum GameEvent {
   UPGRADE_CONSUMED, // Called when an upgrade has been applied to a tool
   NO_UPGRADES_AVAILABLE, // Called when no upgrades are available any longer
   UPGRADEABLE_ICON_LOADED, // Called when an upgradeable icon has loaded a save game
+  CANCEL_WALL_PLACEMENT, // Called when we need to stop placing walls if any (eg. When user uses another tool)
 }

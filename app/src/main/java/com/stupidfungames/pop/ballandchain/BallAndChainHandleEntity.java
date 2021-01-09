@@ -1,10 +1,12 @@
 package com.stupidfungames.pop.ballandchain;
 
+import static com.stupidfungames.pop.eventbus.GameEvent.CANCEL_WALL_PLACEMENT;
+
 import androidx.annotation.Nullable;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameSceneTouchListenerEntity;
-import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
+import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.physics.util.Vec2Pool;
 import com.stupidfungames.pop.utils.CoordinateConversionUtil;
 import com.stupidfungames.pop.utils.ScreenUtils;
@@ -52,28 +54,23 @@ class BallAndChainHandleEntity extends BaseEntity implements
   public void onEnterState(BallAndChainStateMachine.State newState) {
     switch (newState) {
       case LOCKED:
-        stopTouchTracking();
-        break;
       case UNLOCKED_CHARGED:
-        stopTouchTracking();
-        break;
       case UNLOCKED_DISCHARGED:
-        stopTouchTracking();
+        stopDragging();
         break;
       case IN_USE_CHARGED:
-        startTouchTracking();
-        break;
       case IN_USE_DISCHARGED:
-        startTouchTracking();
+        startDragging();
         break;
     }
   }
 
-  private void startTouchTracking() {
+  private void startDragging() {
     get(GameSceneTouchListenerEntity.class).addSceneTouchListener(this);
+    EventBus.get().sendEvent(CANCEL_WALL_PLACEMENT);
   }
 
-  private void stopTouchTracking() {
+  private void stopDragging() {
     // Snap the handle out of the screen and stop tracking touch dragging the handle
     setHandlePositionTarget(OFF_SCREEN_HANDLE_POSITION);
     get(GameSceneTouchListenerEntity.class).removeSceneTouchListener(this);
@@ -100,7 +97,7 @@ class BallAndChainHandleEntity extends BaseEntity implements
           stateMachine.getCurrentState() == BallAndChainStateMachine.State.IN_USE_CHARGED
               ? BallAndChainStateMachine.State.UNLOCKED_CHARGED
               : BallAndChainStateMachine.State.UNLOCKED_DISCHARGED);
-      stopTouchTracking();
+      stopDragging();
     }
   }
 

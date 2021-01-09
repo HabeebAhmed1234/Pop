@@ -53,7 +53,6 @@ public class WallsCreatorEntity extends BaseEntity implements
 
 
   private Vec2 initialPoint;
-
   private Pair<Line, WallEntityUserData> pendingWallData;
 
   public WallsCreatorEntity(BinderEnity parent) {
@@ -103,14 +102,26 @@ public class WallsCreatorEntity extends BaseEntity implements
     switch (touchEvent.getAction()) {
       case ACTION_DOWN:
         return onActionDown(touchEvent);
-      case ACTION_UP:
       case ACTION_CANCEL:
       case ACTION_OUTSIDE:
-        return onActionUp(touchEvent);
+        cancelWallPlacement();
+        return false;
+      case ACTION_UP:
+        return onActionUp();
       case ACTION_MOVE:
         return onActionMove(touchEvent);
     }
     return false;
+  }
+
+  public void cancelWallPlacement() {
+    if (isWallBeingPlaced()) {
+      Vec2Pool.recycle(initialPoint);
+      initialPoint = null;
+      removeFromScene(pendingWallData.first);
+      pendingWallData = null;
+      get(GameSoundsManager.class).getSound(SoundId.SCRAP).play();
+    }
   }
 
   private boolean shouldStartPlacingWall(TouchEvent touchEvent) {
@@ -164,7 +175,7 @@ public class WallsCreatorEntity extends BaseEntity implements
     return false;
   }
 
-  private boolean onActionUp(TouchEvent touchEvent) {
+  private boolean onActionUp() {
     if (!isWallBeingPlaced()) {
       return false;
     }
@@ -211,7 +222,6 @@ public class WallsCreatorEntity extends BaseEntity implements
       setWallBetweenPoints(initialPoint.x, initialPoint.y, touchEvent.getX(), touchEvent.getY());
     }
   }
-
   private Pair<Line, WallEntityUserData> createWall() {
     return createWall(0, 0, 0, 0);
   }

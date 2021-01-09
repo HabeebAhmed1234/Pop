@@ -164,7 +164,7 @@ public class WallsInventoryIconEntity extends BaseInventoryIconEntity implements
     }
   }
 
-  private void toggleOff() {
+  public void toggleOff() {
     WallsStateMachine stateMachine = get(WallsStateMachine.class);
     if (stateMachine.getCurrentState() == WallsStateMachine.State.TOGGLED_ON) {
       stateMachine.transitionState(WallsStateMachine.State.UNLOCKED_TOGGLED_OFF);
