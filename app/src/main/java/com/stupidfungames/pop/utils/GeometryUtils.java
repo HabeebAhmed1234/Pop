@@ -171,7 +171,7 @@ public class GeometryUtils {
             : shape1.getX() + shape1.getWidth();
     float rect2Right = screenShape.getX() + screenShape.getWidthScaled();
 
-    float rect1Top = shape1 instanceof Sprite ? ((Sprite) shape1).getScaledX() : shape1.getY();
+    float rect1Top = shape1 instanceof Sprite ? ((Sprite) shape1).getScaledY() : shape1.getY();
     float rect2Top = screenShape.getY();
     float rect1Bottom =
         shape1 instanceof Sprite ? ((Sprite) shape1).getScaledY() + shape1.getHeightScaled()
