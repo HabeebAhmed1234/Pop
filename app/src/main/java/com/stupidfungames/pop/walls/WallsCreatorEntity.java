@@ -1,5 +1,6 @@
 package com.stupidfungames.pop.walls;
 
+import static com.stupidfungames.pop.utils.ScreenUtils.dpToPx;
 import static org.andengine.input.touch.TouchEvent.ACTION_CANCEL;
 import static org.andengine.input.touch.TouchEvent.ACTION_DOWN;
 import static org.andengine.input.touch.TouchEvent.ACTION_MOVE;
@@ -25,10 +26,12 @@ import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.savegame.SaveGame;
 import com.stupidfungames.pop.savegame.SaveGame.WallCoord;
 import com.stupidfungames.pop.utils.GeometryUtils;
+import com.stupidfungames.pop.utils.ScreenUtils;
 import java.util.ArrayList;
 import java.util.List;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.primitive.Line;
+import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
@@ -44,9 +47,9 @@ import org.jbox2d.dynamics.FixtureDef;
 public class WallsCreatorEntity extends BaseEntity implements
     GameSceneTouchListenerEntity.SceneTouchListener {
 
-  private static final float WALL_HEIGHT_PX = 30;
-  private static final float MAX_WALL_WIDTH = 500;
-  private static final float MIN_WALL_WIDTH = 200;
+  private static final float WALL_HEIGHT_PX = dpToPx(11); // 30
+  private static final float MAX_WALL_WIDTH = dpToPx(182); // 500
+  private static final float MIN_WALL_WIDTH = dpToPx(75); // 200
 
 
   private Vec2 initialPoint;
@@ -114,6 +117,7 @@ public class WallsCreatorEntity extends BaseEntity implements
     Sprite wallsIcon = get(GameIconsHostTrayEntity.class)
         .getIcon(GameIconsHostTrayEntity.IconId.WALLS_ICON);
     return !isWallBeingPlaced() &&
+        !isPointInExcludedZone(touchEvent.getX(), touchEvent.getY()) &&
         get(WallsStateMachine.class).getCurrentState() == WallsStateMachine.State.TOGGLED_ON &&
         get(WallsInventoryIconEntity.class).hasInventory() &&
         !wallsIcon.contains(touchEvent.getX(), touchEvent.getY()) &&
@@ -153,7 +157,7 @@ public class WallsCreatorEntity extends BaseEntity implements
   }
 
   private boolean onActionMove(TouchEvent touchEvent) {
-    if (isWallBeingPlaced()) {
+    if (isWallBeingPlaced() && !isPointInExcludedZone(touchEvent.getX(), touchEvent.getY())) {
       spanWall(touchEvent);
       return true;
     }
@@ -167,7 +171,7 @@ public class WallsCreatorEntity extends BaseEntity implements
 
     get(GameSoundsManager.class).getSound(SoundId.HAMMER_DOWN).play();
 
-    spanWall(touchEvent);
+    // spanWall(touchEvent);
     bakeWall(pendingWallData.first, pendingWallData.second, true, true);
 
     pendingWallData = null;
@@ -239,5 +243,13 @@ public class WallsCreatorEntity extends BaseEntity implements
     float xComponent = (float) Math.cos(angle) * wallLength;
     float yComponent = (float) Math.sin(angle) * wallLength;
     pendingWallData.first.setPosition(x1, y1, x1 + xComponent, y1 + yComponent);
+  }
+
+  /**
+   * Returns true if the given point is in a location where a wall cannot be placed.
+   */
+  private boolean isPointInExcludedZone(float x, float y) {
+    Rectangle rectangle = get(GameIconsHostTrayEntity.class).getTrayIconsHolderRectangle();
+    return rectangle != null && rectangle.contains(x, y) || !ScreenUtils.isInScreen(x, y);
   }
 }

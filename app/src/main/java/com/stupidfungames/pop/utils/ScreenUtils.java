@@ -132,6 +132,10 @@ public class ScreenUtils {
     return overlapPercent >= percent;
   }
 
+  public static boolean isInScreen(float x, float y) {
+    return sScreenRect.contains(x, y);
+  }
+
   public static int dpToPx(float dp) {
     return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
         sDisplayMetrics);
