@@ -51,9 +51,8 @@
         android:layout_marginBottom="24dp"
         android:gravity="center"
         android:paddingVertical="@dimen/menu_btn_padding_vertical"
-        android:textColor="@color/green"
         android:textSize="@dimen/text_size_large"
-        app:glow_color="@color/menu_button_color" />
+        app:glow_color="@color/green" />
 
       <include layout="@layout/continue_game_btn" />
 
