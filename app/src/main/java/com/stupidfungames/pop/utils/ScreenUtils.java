@@ -6,6 +6,7 @@ import android.graphics.Point;
 import android.graphics.RectF;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.DisplayCutout;
@@ -41,6 +42,7 @@ public class ScreenUtils {
    */
   public static final float PERCENT_SPRITE_IN_SCREEN = 1 / 2f;
 
+  private static DisplayMetrics sDisplayMetrics;
   private static ScreenSize sScreenSize;
   private static RectF sScreenRect;
   private static IAreaShape sScreenShape;
@@ -49,6 +51,8 @@ public class ScreenUtils {
    * Initializes when initialize is called
    */
   public static void initialize(Activity activity) {
+    sDisplayMetrics = activity.getResources().getDisplayMetrics();
+
     if (Integer.valueOf(VERSION.SDK_INT) < 13) {
       Display display = activity.getWindowManager().getDefaultDisplay();
       sScreenSize = new ScreenSize(display.getWidth(), display.getHeight(),
@@ -131,11 +135,11 @@ public class ScreenUtils {
 
   public static int dpToPx(float dp, Context context) {
     return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-        context.getResources().getDisplayMetrics());
+        sDisplayMetrics);
   }
 
   public static int pxToDp(int pX, Context context) {
-    return (int) Math.ceil(pX / context.getResources().getDisplayMetrics().density);
+    return (int) Math.ceil(pX / sDisplayMetrics.density);
   }
 
   private static Point getAppWindowSize(Activity activity) {
