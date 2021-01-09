@@ -2,6 +2,8 @@ package com.stupidfungames.pop.bubblespawn;
 
 import static com.stupidfungames.pop.GameConstants.MAX_BUBBLES_ON_SCREEN;
 import static com.stupidfungames.pop.GameConstants.MAX_BUBBLES_PER_SPAWN;
+import static com.stupidfungames.pop.GameConstants.MAX_SPAWN_INTERVAL_SECONDS;
+import static org.andengine.util.math.MathUtils.RANDOM;
 
 import android.content.Context;
 import android.hardware.SensorManager;
@@ -101,7 +103,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
     }
   }
 
-  private float bubbleSpawnInterval = 3;// MAX_SPAWN_INTERVAL;
+  private float bubbleSpawnInterval = MAX_SPAWN_INTERVAL_SECONDS;
   private boolean shouldIncludeExtraBubblesInSpawn = false;
   private TimerHandler bubbleSpawnTimerHandler = new TimerHandler(
       bubbleSpawnInterval,
@@ -110,7 +112,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         @Override
         public void onTimePassed(TimerHandler pTimerHandler) {
           if (!isBubbleLimitReached()) {
-            int numBubbles = (int) (Math.random() * MAX_BUBBLES_PER_SPAWN);
+            int numBubbles = RANDOM.nextInt(MAX_BUBBLES_PER_SPAWN);
             if (numBubbles == 0) {
               numBubbles = 1;
             }
@@ -162,7 +164,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
   private void spawnStartingBubble(final float x, final float y) {
     BubbleType bubbleType = BubbleType.random(shouldIncludeExtraBubblesInSpawn);
     Body body = spawnBubble(bubbleType, x, y, BubbleSize.LARGE);
-    BubblePhysicsUtil.applyVelocity(body, 0f, (float) (SensorManager.GRAVITY_EARTH * 0.3 * 2));
+    BubblePhysicsUtil.applyVelocity(body, 0f, (float) (SensorManager.GRAVITY_EARTH * 0.6));
   }
 
   /**

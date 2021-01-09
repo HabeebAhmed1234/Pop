@@ -24,7 +24,7 @@ public class GameConstants {
   public static final int MAX_BUBBLES_ON_SCREEN = 70;
 
   // Difficulty
-  public static final float MAX_BUBBLES_PER_SPAWN = 3;
+  public static final int MAX_BUBBLES_PER_SPAWN = 3;
   public static final float TIME_TO_MAX_DIFFICULTY_SECONDS = 3;//TimeUnit.MINUTES.toSeconds(6);
   // Once all icons are unlocked open up upgrades
   public static final float MIN_UPGRADE_SPAWN_START_THRESHOLD_DIFFICULTY = 0.5f;

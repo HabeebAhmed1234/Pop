@@ -1,6 +1,5 @@
 package com.stupidfungames.pop.bubblespawn;
 
-import android.content.Context;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleSize;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleType;
@@ -8,9 +7,9 @@ import com.stupidfungames.pop.eventbus.BubbleRecycledEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
+import com.stupidfungames.pop.pool.BaseSpriteInitializerParams;
 import com.stupidfungames.pop.pool.BaseSpriteItemInitializer;
 import com.stupidfungames.pop.pool.ItemPool;
-import com.stupidfungames.pop.pool.BaseSpriteInitializerParams;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.utils.ScreenUtils;
