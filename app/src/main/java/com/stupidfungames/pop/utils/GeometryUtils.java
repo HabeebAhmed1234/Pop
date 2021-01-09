@@ -82,7 +82,7 @@ public class GeometryUtils {
       float centerPosX,
       float centerPosY,
       int sizeDp) {
-    initSpriteDimensCenterPos(sprite, centerPosX, centerPosY, ScreenUtils.dpToPx(sizeDp, context));
+    initSpriteDimensCenterPos(sprite, centerPosX, centerPosY, ScreenUtils.dpToPx(sizeDp));
 
   }
 

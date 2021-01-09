@@ -1,12 +1,10 @@
 package com.stupidfungames.pop.walls;
 
-import android.content.Context;
+import static com.stupidfungames.pop.utils.ScreenUtils.dpToPx;
 
 import com.stupidfungames.pop.fixturedefdata.WallDeleteIconUserData;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
-import com.stupidfungames.pop.utils.ScreenUtils;
-
 import org.andengine.entity.primitive.Line;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
@@ -15,26 +13,27 @@ import org.jbox2d.dynamics.Body;
 
 public class WallDeleteIconFactory {
 
-    private static final int WALL_DELETE_ICON_SIZE_DP = 44;
+  private static final int WALL_DELETE_ICON_SIZE_PX = dpToPx(44);
 
-    public static Sprite getWallDeletionSprite(Context context, Line wallSprite, Body wallBody, GameTexturesManager texturesManager, VertexBufferObjectManager vertexBufferObjectManager) {
-        float[] wallCoords = wallSprite.getBoundingRectangleCoords();
-        final Sprite wallDeleteSprite = new Sprite(
-                0,
-                0,
-                texturesManager.getTextureRegion(TextureId.X_BTN),
-                vertexBufferObjectManager);
-        wallDeleteSprite.setColor(AndengineColor.RED);
+  public static Sprite getWallDeletionSprite(Line wallSprite, Body wallBody,
+      GameTexturesManager texturesManager, VertexBufferObjectManager vertexBufferObjectManager) {
+    float[] wallCoords = wallSprite.getBoundingRectangleCoords();
+    final Sprite wallDeleteSprite = new Sprite(
+        0,
+        0,
+        texturesManager.getTextureRegion(TextureId.X_BTN),
+        vertexBufferObjectManager);
+    wallDeleteSprite.setColor(AndengineColor.RED);
 
-        int iconSize = ScreenUtils.dpToPx(WALL_DELETE_ICON_SIZE_DP, context);
+    wallDeleteSprite.setWidth(WALL_DELETE_ICON_SIZE_PX);
+    wallDeleteSprite.setHeight(WALL_DELETE_ICON_SIZE_PX);
 
-        wallDeleteSprite.setWidth(iconSize);
-        wallDeleteSprite.setHeight(iconSize);
+    wallDeleteSprite.setX(wallCoords[0] + wallSprite.getBoundingRectangleWidth() / 2
+        - wallDeleteSprite.getWidth() / 2);
+    wallDeleteSprite.setY(wallCoords[1] + wallSprite.getBoundingRectangleHeight() / 2
+        - wallDeleteSprite.getHeight() / 2);
 
-        wallDeleteSprite.setX(wallCoords[0] + wallSprite.getBoundingRectangleWidth() / 2 - wallDeleteSprite.getWidth() / 2);
-        wallDeleteSprite.setY(wallCoords[1] + wallSprite.getBoundingRectangleHeight() / 2 - wallDeleteSprite.getHeight() / 2);
-
-        wallDeleteSprite.setUserData(new WallDeleteIconUserData(wallSprite, wallBody));
-        return wallDeleteSprite;
-    }
+    wallDeleteSprite.setUserData(new WallDeleteIconUserData(wallSprite, wallBody));
+    return wallDeleteSprite;
+  }
 }

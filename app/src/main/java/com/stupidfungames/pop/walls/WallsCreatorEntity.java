@@ -6,7 +6,6 @@ import static org.andengine.input.touch.TouchEvent.ACTION_MOVE;
 import static org.andengine.input.touch.TouchEvent.ACTION_OUTSIDE;
 import static org.andengine.input.touch.TouchEvent.ACTION_UP;
 
-import android.content.Context;
 import android.util.Pair;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameFixtureDefs;
@@ -192,7 +191,7 @@ public class WallsCreatorEntity extends BaseEntity implements
     Body wallBody = PhysicsFactory
         .createLineBody(physicsWorld, wallLine, BodyType.STATIC, wallFixtureDef);
     wallUserData.wallDeleteIcon = WallDeleteIconFactory
-        .getWallDeletionSprite(get(Context.class), wallLine, wallBody,
+        .getWallDeletionSprite(wallLine, wallBody,
             get(GameTexturesManager.class), vertexBufferObjectManager);
     addToSceneWithTouch(wallUserData.wallDeleteIcon,
         get(WallsDeletionHandlerFactoryEntity.class).getWallDeletionHandler());

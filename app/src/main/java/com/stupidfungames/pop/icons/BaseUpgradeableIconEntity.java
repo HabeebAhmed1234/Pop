@@ -1,10 +1,11 @@
 package com.stupidfungames.pop.icons;
 
-import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADEABLE_ICON_UNLOCKED;
 import static com.stupidfungames.pop.eventbus.GameEvent.NO_UPGRADES_AVAILABLE;
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADEABLE_ICON_LOADED;
+import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADEABLE_ICON_UNLOCKED;
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADES_AVAILABLE;
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADE_CONSUMED;
+import static com.stupidfungames.pop.utils.ScreenUtils.dpToPx;
 
 import android.content.Context;
 import com.stupidfungames.pop.binder.Binder;
@@ -12,8 +13,8 @@ import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
-import com.stupidfungames.pop.eventbus.UpgradeableIconUnlockedEventPayload;
 import com.stupidfungames.pop.eventbus.UpgradeableIconLoadedEventPayload;
+import com.stupidfungames.pop.eventbus.UpgradeableIconUnlockedEventPayload;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import com.stupidfungames.pop.resources.sounds.SoundId;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
@@ -21,7 +22,6 @@ import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.savegame.SaveGame;
 import com.stupidfungames.pop.touchlisteners.ButtonUpTouchListener;
 import com.stupidfungames.pop.upgrades.UpgradesParticleEffectEntity;
-import com.stupidfungames.pop.utils.ScreenUtils;
 import java.util.HashMap;
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
@@ -31,9 +31,9 @@ import org.andengine.util.color.AndengineColor;
 
 public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
 
-  private static final int UPGRADE_CHEVRON_SIZE_DP = 12;
-  private static final int UPGRADE_CHEVRON_RIGHT_MARGIN_DP = 16;
-  private static final int UPGRADE_CHEVRON_TOP_MARGIN_DP = 0;
+  private static final int UPGRADE_CHEVRON_SIZE_PX = dpToPx(12);
+  private static final int UPGRADE_CHEVRON_RIGHT_MARGIN_PX = dpToPx(16);
+  private static final int UPGRADE_CHEVRON_TOP_MARGIN_PX = dpToPx(0);
 
   /**
    * Number of upgrades this icon has consumed.
@@ -72,7 +72,8 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
   @Override
   protected void onIconUnlocked() {
     EventBus.get()
-        .sendEvent(UPGRADEABLE_ICON_UNLOCKED, new UpgradeableIconUnlockedEventPayload(getIconUpgradesQuantity()));
+        .sendEvent(UPGRADEABLE_ICON_UNLOCKED,
+            new UpgradeableIconUnlockedEventPayload(getIconUpgradesQuantity()));
   }
 
   @Override
@@ -173,14 +174,12 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
         get(GameTexturesManager.class).getTextureRegion(TextureId.UPGRADE_CHEVRON),
         vertexBufferObjectManager);
 
-    Context context = get(Context.class);
     chevronSprite
-        .setScale(ScreenUtils.dpToPx(UPGRADE_CHEVRON_SIZE_DP, context) / chevronSprite.getWidth());
+        .setScale(UPGRADE_CHEVRON_SIZE_PX / chevronSprite.getWidth());
     chevronSprite.setColor(AndengineColor.YELLOW);
-    chevronSprite.setX(-(chevronSprite.getWidthScaled() + ScreenUtils
-        .dpToPx(UPGRADE_CHEVRON_RIGHT_MARGIN_DP, context)));
-    chevronSprite.setY((upgradeLevel - 1) * chevronSprite.getHeightScaled() + ScreenUtils
-        .dpToPx(UPGRADE_CHEVRON_TOP_MARGIN_DP, context));
+    chevronSprite.setX(-(chevronSprite.getWidthScaled() + UPGRADE_CHEVRON_RIGHT_MARGIN_PX));
+    chevronSprite
+        .setY((upgradeLevel - 1) * chevronSprite.getHeightScaled() + UPGRADE_CHEVRON_TOP_MARGIN_PX);
     addToScene(getIconSprite(), chevronSprite);
   }
 

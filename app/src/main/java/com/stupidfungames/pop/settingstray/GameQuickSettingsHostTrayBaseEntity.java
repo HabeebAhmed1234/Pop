@@ -1,6 +1,5 @@
 package com.stupidfungames.pop.settingstray;
 
-import android.content.Context;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.resources.sounds.SoundId;
@@ -29,7 +28,6 @@ public class GameQuickSettingsHostTrayBaseEntity extends
   @Override
   protected Spec getSpec() {
     return new Spec(
-        get(Context.class),
         4,
         ScreenUtils.getSreenSize().safeInsetTopHeightDp + 16,
         ScreenUtils.getSreenSize().widthDp,

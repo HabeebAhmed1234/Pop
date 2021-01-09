@@ -23,8 +23,8 @@ public abstract class TrayOpenCloseButtonBaseEntity extends BaseEntity implement
     public ButtonSpec(Context context,
         int iconSizeDp,
         int iconRightMarginDp) {
-      iconSizePx = ScreenUtils.dpToPx(iconSizeDp, context);
-      iconRightMarginPx = ScreenUtils.dpToPx(iconRightMarginDp, context);
+      iconSizePx = ScreenUtils.dpToPx(iconSizeDp);
+      iconRightMarginPx = ScreenUtils.dpToPx(iconRightMarginDp);
     }
   }
 

@@ -53,7 +53,6 @@ public class GameIconsHostTrayEntity extends HostTrayBaseEntity<GameIconsHostTra
     @Override
     protected Spec getSpec() {
         return new Spec(
-                get(Context.class),
                 4,
                 ScreenUtils.getSreenSize().heightDp / 2,
                 ScreenUtils.getSreenSize().widthDp,

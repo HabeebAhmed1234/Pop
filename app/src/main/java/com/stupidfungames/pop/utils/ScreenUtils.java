@@ -1,7 +1,6 @@
 package com.stupidfungames.pop.utils;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.os.Build.VERSION;
@@ -56,7 +55,7 @@ public class ScreenUtils {
     if (Integer.valueOf(VERSION.SDK_INT) < 13) {
       Display display = activity.getWindowManager().getDefaultDisplay();
       sScreenSize = new ScreenSize(display.getWidth(), display.getHeight(),
-          pxToDp(display.getWidth(), activity), pxToDp(display.getHeight(), activity), 0, 0);
+          pxToDp(display.getWidth()), pxToDp(display.getHeight()), 0, 0);
     } else {
       Point size = getAppWindowSize(activity);
 
@@ -76,10 +75,10 @@ public class ScreenUtils {
 
       sScreenSize = new ScreenSize(
           screenWidthPx, screenHeightPx,
-          pxToDp(screenWidthPx, activity),
-          pxToDp(screenHeightPx, activity),
+          pxToDp(screenWidthPx),
+          pxToDp(screenHeightPx),
           safeInsetTopHeightPx,
-          pxToDp(safeInsetTopHeightPx, activity));
+          pxToDp(safeInsetTopHeightPx));
     }
 
     sScreenRect = new RectF(0, 0, sScreenSize.widthPx, sScreenSize.heightPx);
@@ -133,12 +132,12 @@ public class ScreenUtils {
     return overlapPercent >= percent;
   }
 
-  public static int dpToPx(float dp, Context context) {
+  public static int dpToPx(float dp) {
     return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
         sDisplayMetrics);
   }
 
-  public static int pxToDp(int pX, Context context) {
+  public static int pxToDp(int pX) {
     return (int) Math.ceil(pX / sDisplayMetrics.density);
   }
 

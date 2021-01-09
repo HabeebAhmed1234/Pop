@@ -27,9 +27,8 @@ public class BombBubbleSpritePool extends ItemPool {
   public static final AndengineColor DIFFUSE_BOMB_COLOUR = AndengineColor.GREEN;
   public static final AndengineColor WARN_BOMB_COLOUR = AndengineColor.YELLOW;
   public static final AndengineColor EXPLODING_BOMB_COLOUR = AndengineColor.RED;
-  public static final float BOMB_BUBBLE_SIZE_DP = BubbleSize.MEDIUM.sizeDp;
-  public static final float BOMB_BUBBLE_COUNTDOWN_TEXT_TOP_PADDING_DP = 14;
-  private final float bombBubbleSizePx;
+  public static final float BOMB_BUBBLE_SIZE_PX = BubbleSize.MEDIUM.getSizePx();
+  public static final float BOMB_BUBBLE_COUNTDOWN_TEXT_TOP_PADDING_PX = dpToPx(14);
 
   private final ItemInitializer<Sprite, BaseSpriteInitializerParams> initializer = new BaseSpriteItemInitializer<BaseSpriteInitializerParams>() {
     @Override
@@ -42,13 +41,13 @@ public class BombBubbleSpritePool extends ItemPool {
       sprite.setUserData(new BombBubbleEntityUserData());
       sprite.setColor(EXPLODING_BOMB_COLOUR);
       clipBubblePosition(sprite);
-      sprite.setScale(bombBubbleSizePx / sprite.getWidth());
+      sprite.setScale(BOMB_BUBBLE_SIZE_PX / sprite.getWidth());
 
       Text countDownText = new Text(0, 0,
           get(GameFontsManager.class).getFont(FontId.BOMB_BUBBLE_COUNTDOWN_FONT), "1",
           3,
           vertexBufferObjectManager);
-      countDownText.setY(dpToPx(BOMB_BUBBLE_COUNTDOWN_TEXT_TOP_PADDING_DP, get(Context.class)));
+      countDownText.setY(BOMB_BUBBLE_COUNTDOWN_TEXT_TOP_PADDING_PX);
       GeometryUtils.centerInHorizontal(sprite, countDownText);
       sprite.attachChild(countDownText);
       return sprite;
@@ -75,7 +74,6 @@ public class BombBubbleSpritePool extends ItemPool {
 
   public BombBubbleSpritePool(BinderEnity parent) {
     super(parent);
-    bombBubbleSizePx = dpToPx(BOMB_BUBBLE_SIZE_DP, get(Context.class));
   }
 
   @Override

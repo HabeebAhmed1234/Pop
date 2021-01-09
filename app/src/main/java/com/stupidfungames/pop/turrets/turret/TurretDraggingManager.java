@@ -119,7 +119,7 @@ public class TurretDraggingManager extends BaseEntity implements
   }
 
   private void trackTurretToPointerOnDrag(float x, float y) {
-    int offsetPx = ScreenUtils.dpToPx(DRAGGING_OFFSET_DISTANCE_DP, get(Context.class));
+    int offsetPx = ScreenUtils.dpToPx(DRAGGING_OFFSET_DISTANCE_DP);
     get(HostTurretCallback.class).setTurretPositionCenter(x - offsetPx, y - offsetPx);
   }
 

@@ -100,7 +100,7 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
   private float[] getIconTooltipAnchor() {
     float[] anchor = new float[2];
     Transformation transformation = iconSprite.getLocalToSceneTransformation();
-    anchor[0] = -ScreenUtils.dpToPx(TOOLTIP_LEFT_PADDING_DP, get(Context.class));
+    anchor[0] = -ScreenUtils.dpToPx(TOOLTIP_LEFT_PADDING_DP);
     anchor[1] = iconSprite.getHeightScaled() / 2;
     transformation.transform(anchor);
     return anchor;

@@ -1,6 +1,6 @@
 package com.stupidfungames.pop;
 
-import static com.stupidfungames.pop.bubblespawn.bombbubbles.BombBubbleSpritePool.BOMB_BUBBLE_SIZE_DP;
+import static com.stupidfungames.pop.bubblespawn.bombbubbles.BombBubbleSpritePool.BOMB_BUBBLE_SIZE_PX;
 
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId;
 
@@ -40,7 +40,7 @@ public class GameConstants {
   public static final float BOMB_STATES_DURATION_SECONDS = 1f;
   // The amount of time before a bomb bubble explodes and ends the game
   public static final float BOMB_BUBBLE_LIFESPAN_SECONDS = 9f;
-  public static final float BOMB_BUBBLE_EXPLOSION_RADIUS_DP = BOMB_BUBBLE_SIZE_DP * 2;
+  public static final float BOMB_BUBBLE_EXPLOSION_RADIUS_PX = BOMB_BUBBLE_SIZE_PX * 2;
 
   // Bubble lifecycle constants
   public static final float BUBBLE_STABLE_TIME_SECONDS = 6f;

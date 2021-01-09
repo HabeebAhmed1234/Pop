@@ -1,6 +1,7 @@
 package com.stupidfungames.pop.icons;
 
 import static com.stupidfungames.pop.turrets.TurretsInventoryIconEntity.STARTING_TURRET_INVENTORY;
+import static com.stupidfungames.pop.utils.ScreenUtils.dpToPx;
 
 import android.content.Context;
 import com.stupidfungames.pop.binder.BinderEnity;
@@ -19,8 +20,8 @@ import org.andengine.util.color.AndengineColor;
  */
 public abstract class BaseInventoryIconEntity extends BaseUpgradeableIconEntity {
 
-  private static final float INVENTORY_TEXT_MAX_WIDTH_DP = 8;
-  private static final float INVENTORY_TEXT_MAX_HEIGHT_DP = 20;
+  private static final float INVENTORY_TEXT_MAX_WIDTH_PX = dpToPx(8);
+  private static final float INVENTORY_TEXT_MAX_HEIGHT_PX = dpToPx(20);
 
   private Text inventoryText;
   private int inventoryCount = getStartingInventoryCount();
@@ -80,8 +81,8 @@ public abstract class BaseInventoryIconEntity extends BaseUpgradeableIconEntity 
     Sprite iconSprite = getIconSprite();
     inventoryText.setX(
         iconSprite.getWidthScaled() / 2 -
-            ScreenUtils.dpToPx(INVENTORY_TEXT_MAX_WIDTH_DP, get(Context.class)));
-    inventoryText.setY(-ScreenUtils.dpToPx(INVENTORY_TEXT_MAX_HEIGHT_DP, get(Context.class)));
+            INVENTORY_TEXT_MAX_WIDTH_PX);
+    inventoryText.setY(-INVENTORY_TEXT_MAX_HEIGHT_PX);
 
     onInventoryChanged();
   }

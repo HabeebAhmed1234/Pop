@@ -2,6 +2,7 @@ package com.stupidfungames.pop.turrets;
 
 import static com.stupidfungames.pop.utils.GeometryUtils.initSpriteDimens;
 import static com.stupidfungames.pop.utils.GeometryUtils.initSpriteDimensCenterPos;
+import static com.stupidfungames.pop.utils.ScreenUtils.dpToPx;
 
 import android.content.Context;
 import com.stupidfungames.pop.BaseEntity;
@@ -10,7 +11,6 @@ import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.savegame.SaveGame;
 import com.stupidfungames.pop.turrets.turret.TurretEntity;
-import com.stupidfungames.pop.utils.ScreenUtils;
 import java.util.List;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
@@ -19,8 +19,8 @@ public class TurretEntityCreator extends BaseEntity {
 
   private static final int TURRET_BODY_SIZE_DP = 88;
 
-  private static final int TURRET_CANNON_HEIGHT_DP = 12;
-  private static final int TURRET_CANNON_LENGTH_DP = 32;
+  private static final int TURRET_CANNON_HEIGHT_PX = dpToPx(12);
+  private static final int TURRET_CANNON_LENGTH_PX = dpToPx(32);
 
   public TurretEntityCreator(BinderEnity parent) {
     super(parent);
@@ -59,17 +59,15 @@ public class TurretEntityCreator extends BaseEntity {
         turretCannonTexture,
         vertexBufferObjectManager);
 
-    int cannonHeightPx = ScreenUtils.dpToPx(TURRET_CANNON_HEIGHT_DP, get(Context.class));
-
     initSpriteDimens(
         turretCannonSprite,
         (int) turretBodySprite.getWidth() / 2,
-        (int) turretBodySprite.getHeight() / 2 - cannonHeightPx / 2,
-        ScreenUtils.dpToPx(TURRET_CANNON_LENGTH_DP, get(Context.class)),
-        cannonHeightPx);
+        (int) turretBodySprite.getHeight() / 2 - TURRET_CANNON_HEIGHT_PX / 2,
+        TURRET_CANNON_LENGTH_PX,
+        TURRET_CANNON_HEIGHT_PX);
 
     turretBodySprite.attachChild(turretCannonSprite);
-    turretCannonSprite.setRotationCenter(0f, cannonHeightPx / 2);
+    turretCannonSprite.setRotationCenter(0f, TURRET_CANNON_HEIGHT_PX / 2);
 
     return new TurretEntity(turretBodySprite, turretCannonSprite, this);
   }

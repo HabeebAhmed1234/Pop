@@ -32,14 +32,14 @@ public abstract class HostTrayBaseEntity<IconIdType> extends BaseEntity implemen
     public final int horizontalAnchorPx;
     public final float openCloseAnimationDuration;
 
-    public Spec(Context context,
+    public Spec(
         int marginRightDp,
         int verticalAnchorDp,
         int horizontalAnchorDp,
         float openCloseAnimationDuration) {
-      marginRightPx = ScreenUtils.dpToPx(marginRightDp, context);
-      verticalAnchorPx = ScreenUtils.dpToPx(verticalAnchorDp, context);
-      horizontalAnchorPx = ScreenUtils.dpToPx(horizontalAnchorDp, context);
+      marginRightPx = ScreenUtils.dpToPx(marginRightDp);
+      verticalAnchorPx = ScreenUtils.dpToPx(verticalAnchorDp);
+      horizontalAnchorPx = ScreenUtils.dpToPx(horizontalAnchorDp);
       this.openCloseAnimationDuration = openCloseAnimationDuration;
     }
   }
@@ -54,7 +54,8 @@ public abstract class HostTrayBaseEntity<IconIdType> extends BaseEntity implemen
   protected void createBindings(Binder binder) {
     binder.bind(HostTrayCallback.class, this);
     binder.bind(TrayStateMachine.class, new TrayStateMachine());
-    @Nullable TrayOpenCloseButtonBaseEntity trayOpenCloseButtonBaseEntity = getOpenCloseButtonEntity(this);
+    @Nullable TrayOpenCloseButtonBaseEntity trayOpenCloseButtonBaseEntity = getOpenCloseButtonEntity(
+        this);
     if (trayOpenCloseButtonBaseEntity != null) {
       binder.bind(TrayOpenCloseButtonBaseEntity.class, trayOpenCloseButtonBaseEntity);
     }
@@ -175,7 +176,8 @@ public abstract class HostTrayBaseEntity<IconIdType> extends BaseEntity implemen
 
   @Override
   public void onIconsTrayInitialized() {
-    TrayOpenCloseButtonBaseEntity trayOpenCloseButtonBaseEntity = get(TrayOpenCloseButtonBaseEntity.class);
+    TrayOpenCloseButtonBaseEntity trayOpenCloseButtonBaseEntity = get(
+        TrayOpenCloseButtonBaseEntity.class);
     if (trayOpenCloseButtonBaseEntity != null) {
       trayOpenCloseButtonBaseEntity.onIconsTrayInitialized();
     }

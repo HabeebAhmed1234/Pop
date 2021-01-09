@@ -81,9 +81,9 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
       this.sizeDp = dp;
     }
 
-    public float getSizePx(Context context) {
+    public float getSizePx() {
       if (!sizeToPxMap.containsKey(this)) {
-        sizeToPxMap.put(this, (float) ScreenUtils.dpToPx(sizeDp, context));
+        sizeToPxMap.put(this, (float) ScreenUtils.dpToPx(sizeDp));
       }
       return sizeToPxMap.get(this);
     }
@@ -117,7 +117,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
             List<Pair<Float, Float>> startingBubblePositions = BubblePacker
                 .getSpawnBubblesLocations(
                     numBubbles,
-                    BubbleSize.LARGE.getSizePx(get(Context.class)));
+                    BubbleSize.LARGE.getSizePx());
             for (Pair<Float, Float> position : startingBubblePositions) {
               if (!get(BombBubbleSpawnerEntity.class)
                   .maybeSpawnBombBubble(position.first, position.second)) {
