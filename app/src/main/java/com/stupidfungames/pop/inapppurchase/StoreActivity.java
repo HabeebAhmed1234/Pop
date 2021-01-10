@@ -14,6 +14,7 @@ import com.android.billingclient.api.SkuDetails;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
@@ -26,7 +27,7 @@ import com.stupidfungames.pop.list.LoadableListWithPreviewBaseActivity;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.Callable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * This activity displays a list of all products available in the app. If a product is purchased it
@@ -44,30 +45,49 @@ public class StoreActivity extends LoadableListWithPreviewBaseActivity<SkuDetail
   private LoaderCallback<List<SkuDetails>> loaderCallback = new LoaderCallback<List<SkuDetails>>() {
     @Override
     public ListenableFuture<List<SkuDetails>> loadData() {
+
       final ListenableFuture<List<SkuDetails>> products = billingManager
           .getProducts(StoreActivity.this);
-      final ListenableFuture<PurchasesResult> purchases = billingManager.queryPurchases();
 
       final SettableFuture<List<SkuDetails>> productsPropagateFuture = SettableFuture.create();
-
-      Futures.whenAllComplete(products, purchases).call(new Callable<Object>() {
+      Futures.addCallback(products, new FutureCallback<List<SkuDetails>>() {
         @Override
-        public Object call() throws Exception {
-          PurchasesResult purchasesResult = purchases.get();
-          if (purchasesResult != null
-              && purchasesResult.getBillingResult().getResponseCode() == BillingResponseCode.OK
-              && !purchasesResult.getPurchasesList().isEmpty()) {
-            for (Purchase purchase : purchasesResult.getPurchasesList()) {
-              purchasesSkus.add(purchase.getSku());
-            }
-          }
+        public void onSuccess(@NullableDecl final List<SkuDetails> products) {
+          if (products != null) {
+            final ListenableFuture<PurchasesResult> purchases = billingManager.queryPurchases();
+            Futures.addCallback(purchases, new FutureCallback<PurchasesResult>() {
+              @Override
+              public void onSuccess(@NullableDecl PurchasesResult purchasesResult) {
+                if (purchasesResult != null
+                    && purchasesResult.getBillingResult().getResponseCode()
+                    == BillingResponseCode.OK
+                    && !purchasesResult.getPurchasesList().isEmpty()) {
+                  for (Purchase purchase : purchasesResult.getPurchasesList()) {
+                    purchasesSkus.add(purchase.getSku());
+                  }
+                }
 
-          List<SkuDetails> productsList = products.get();
-          ProductsSorter.sortProducts(productsList, purchasesSkus);
-          productsPropagateFuture.set(productsList);
-          return null;
+                ProductsSorter.sortProducts(products, purchasesSkus);
+                productsPropagateFuture.set(products);
+              }
+
+              @Override
+              public void onFailure(Throwable t) {
+                ProductsSorter.sortProducts(products, purchasesSkus);
+                productsPropagateFuture.set(products);
+              }
+            }, ContextCompat.getMainExecutor(StoreActivity.this));
+          } else {
+            productsPropagateFuture.setException(new IllegalStateException("Null SkuDetails"));
+          }
+        }
+
+        @Override
+        public void onFailure(Throwable t) {
+          productsPropagateFuture.setException(t);
         }
       }, ContextCompat.getMainExecutor(StoreActivity.this));
+
       return productsPropagateFuture;
     }
 
