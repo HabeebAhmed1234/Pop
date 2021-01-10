@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.androidui.GlideUtils;
 import com.stupidfungames.pop.list.BindableViewHolder;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,6 +29,7 @@ public class StoreProductViewHolder extends BindableViewHolder<SkuDetails> {
   };
 
   private SkuDetails skuDetails;
+  private Set<String> purchasesSkus;
 
   private ImageView imageView;
   private TextView name;
@@ -35,10 +37,14 @@ public class StoreProductViewHolder extends BindableViewHolder<SkuDetails> {
   private TextView description;
   private Button buyBtn;
 
+  private View ownedPanel;
+  private View buyPanel;
+
 
   public StoreProductViewHolder(GooglePlayServicesBillingManager billingManager, Activity activity,
-      ViewGroup v) {
+      ViewGroup v, Set<String> purchasesSkus) {
     super(v);
+    this.purchasesSkus = purchasesSkus;
     this.billingManager = billingManager;
     this.activity = activity;
     imageView = v.findViewById(R.id.product_image);
@@ -47,6 +53,8 @@ public class StoreProductViewHolder extends BindableViewHolder<SkuDetails> {
     price.setVisibility(View.VISIBLE);
     description = v.findViewById(R.id.description);
     buyBtn = v.findViewById(R.id.buy_btn);
+    ownedPanel = v.findViewById(R.id.owned_panel);
+    buyPanel = v.findViewById(R.id.buy_panel);
     buyBtn.setOnClickListener(buyBtnClickListener);
   }
 
@@ -57,6 +65,15 @@ public class StoreProductViewHolder extends BindableViewHolder<SkuDetails> {
     name.setText(getTitle(skuDetails));
     price.setText(skuDetails.getPrice());
     description.setText(skuDetails.getDescription());
+
+    if (purchasesSkus.contains(skuDetails.getSku())) {
+      // User has already purchased this product
+      ownedPanel.setVisibility(View.VISIBLE);
+      buyPanel.setVisibility(View.GONE);
+    } else {
+      ownedPanel.setVisibility(View.GONE);
+      buyPanel.setVisibility(View.VISIBLE);
+    }
   }
 
   @Override

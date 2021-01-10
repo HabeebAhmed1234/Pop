@@ -5,18 +5,28 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil.ItemCallback;
+import com.android.billingclient.api.BillingClient.BillingResponseCode;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.Purchase.PurchasesResult;
 import com.android.billingclient.api.SkuDetails;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.SettableFuture;
 import com.stupidfungames.pop.R;
+import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.list.BindableViewHolder;
 import com.stupidfungames.pop.list.BindableViewHolderFactory;
 import com.stupidfungames.pop.list.LoadableListLoadingCoordinator.LoaderCallback;
 import com.stupidfungames.pop.list.LoadableListWithPreviewBaseActivity;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.Callable;
 
 /**
  * This activity displays a list of all products available in the app. If a product is purchased it
@@ -29,11 +39,36 @@ public class StoreActivity extends LoadableListWithPreviewBaseActivity<SkuDetail
   }
 
   private GooglePlayServicesBillingManager billingManager;
+  private Set<String> purchasesSkus = new HashSet<>();
 
   private LoaderCallback<List<SkuDetails>> loaderCallback = new LoaderCallback<List<SkuDetails>>() {
     @Override
     public ListenableFuture<List<SkuDetails>> loadData() {
-      return billingManager.getProducts(StoreActivity.this);
+      final ListenableFuture<List<SkuDetails>> products = billingManager
+          .getProducts(StoreActivity.this);
+      final ListenableFuture<PurchasesResult> purchases = billingManager.queryPurchases();
+
+      final SettableFuture<List<SkuDetails>> productsPropagateFuture = SettableFuture.create();
+
+      Futures.whenAllComplete(products, purchases).call(new Callable<Object>() {
+        @Override
+        public Object call() throws Exception {
+          PurchasesResult purchasesResult = purchases.get();
+          if (purchasesResult != null
+              && purchasesResult.getBillingResult().getResponseCode() == BillingResponseCode.OK
+              && !purchasesResult.getPurchasesList().isEmpty()) {
+            for (Purchase purchase : purchasesResult.getPurchasesList()) {
+              purchasesSkus.add(purchase.getSku());
+            }
+          }
+
+          List<SkuDetails> productsList = products.get();
+          ProductsSorter.sortProducts(productsList, purchasesSkus);
+          productsPropagateFuture.set(productsList);
+          return null;
+        }
+      }, ContextCompat.getMainExecutor(StoreActivity.this));
+      return productsPropagateFuture;
     }
 
     @Override
@@ -50,7 +85,8 @@ public class StoreActivity extends LoadableListWithPreviewBaseActivity<SkuDetail
 
     @Override
     public BindableViewHolder create(ViewGroup parentView) {
-      return new StoreProductViewHolder(billingManager, StoreActivity.this, parentView);
+      return new StoreProductViewHolder(billingManager, StoreActivity.this, parentView,
+          purchasesSkus);
     }
   };
 
@@ -118,5 +154,11 @@ public class StoreActivity extends LoadableListWithPreviewBaseActivity<SkuDetail
       }
     }
     return null;
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    EventBus.get().onDestroy(false);
   }
 }

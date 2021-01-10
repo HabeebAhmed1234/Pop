@@ -18,6 +18,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.stupidfungames.pop.R;
+import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.list.BindableViewHolder;
 import com.stupidfungames.pop.list.BindableViewHolderFactory;
 import com.stupidfungames.pop.list.LoadableListLoadingCoordinator.LoaderCallback;
@@ -54,7 +55,9 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<Purchase>
         public void onSuccess(@NullableDecl PurchasesResult result) {
           if (result != null
               && result.getBillingResult().getResponseCode() == BillingResponseCode.OK) {
-            futureResult.set(result.getPurchasesList());
+            List<Purchase> purchases = result.getPurchasesList();
+            ProductsSorter.sortPurchases(purchases);
+            futureResult.set(purchases);
           } else {
             futureResult
                 .setException(new IllegalStateException("Error when loading purchases list"));
@@ -138,5 +141,11 @@ public class EquipActivity extends LoadableListWithPreviewBaseActivity<Purchase>
   @Override
   protected String getLogListName() {
     return "EquipActivity";
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    EventBus.get().onDestroy(false);
   }
 }

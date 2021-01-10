@@ -18,9 +18,9 @@
   <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_weight="1"
     android:layout_marginEnd="8dp"
     android:layout_marginRight="8dp"
+    android:layout_weight="1"
     android:orientation="vertical">
 
     <TextView
@@ -40,27 +40,48 @@
 
   </LinearLayout>
 
-  <LinearLayout
+  <FrameLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:layout_gravity="center"
+    android:gravity="center">
 
     <TextView
-      android:id="@+id/price"
+      android:id="@+id/owned_panel"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:fontFamily="@font/neon"
       android:layout_marginBottom="4dp"
-      android:textSize="@dimen/product_price_size" />
+      android:fontFamily="@font/neon"
+      android:text="@string/owned"
+      android:textColor="@color/red"
+      android:textSize="@dimen/product_price_size"
+      android:visibility="gone" />
 
-    <Button
-      android:id="@+id/buy_btn"
+    <LinearLayout
+      android:id="@+id/buy_panel"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/buy"
-      android:fontFamily="@font/neon"
-      android:textSize="@dimen/product_price_size"
-      android:background="@drawable/rounded_border_button"/>
-  </LinearLayout>
+      android:gravity="center"
+      android:orientation="vertical"
+      android:visibility="gone">
+
+      <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="@font/neon"
+        android:textSize="@dimen/product_price_size" />
+
+      <Button
+        android:id="@+id/buy_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_border_button"
+        android:fontFamily="@font/neon"
+        android:text="@string/buy"
+        android:textColor="@color/green"
+        android:textSize="@dimen/product_price_size" />
+    </LinearLayout>
+  </FrameLayout>
 </LinearLayout>

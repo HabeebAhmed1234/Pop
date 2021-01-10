@@ -58,6 +58,7 @@
   <string name="store_title">Store</string>
   <string name="my_purchases">My Purchases</string>
   <string name="buy">Buy</string>
+  <string name="owned">Owned</string>
   <string name="equip">Equip</string>
   <string name="un_equip">Un-Equip</string>
   <string name="error_equipping">There was an error equipping your background. Update your app and try again.</string>

@@ -39,6 +39,7 @@ import com.stupidfungames.pop.analytics.Logger;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager.LoginListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
@@ -265,6 +266,9 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
     }
   }
 
+  private boolean isConnecting = false;
+  private List<BillingClientReadyCallback> readyCallbacks = new ArrayList<>();
+
   private void startConnection(final BillingClientReadyCallback readyCallback) {
     if (!authManager.isLoggedIn()) {
       readyCallback.onBillingClientError(
@@ -276,19 +280,35 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
       readyCallback.onBillingClientReady();
       return;
     }
-    billingClient.startConnection(new BillingClientStateListener() {
-      @Override
-      public void onBillingSetupFinished(BillingResult billingResult) {
-        if (billingResult.getResponseCode() == BillingResponseCode.OK) {
-          // The BillingClient is ready. You can query purchases here.
-          readyCallback.onBillingClientReady();
-        }
-      }
 
-      @Override
-      public void onBillingServiceDisconnected() {
-      }
-    });
+    readyCallbacks.add(readyCallback);
+
+    if (!isConnecting) {
+      isConnecting = true;
+      billingClient.startConnection(new BillingClientStateListener() {
+        @Override
+        public void onBillingSetupFinished(BillingResult billingResult) {
+          isConnecting = false;
+          if (billingResult.getResponseCode() == BillingResponseCode.OK) {
+            // The BillingClient is ready. You can query purchases here.
+            Iterator<BillingClientReadyCallback> it = readyCallbacks.iterator();
+            while (it.hasNext()) {
+              it.next().onBillingClientReady();
+              it.remove();
+            }
+          } else {
+            readyCallback
+                .onBillingClientError(new IllegalStateException(billingResult.getDebugMessage()));
+          }
+
+        }
+
+        @Override
+        public void onBillingServiceDisconnected() {
+          isConnecting = false;
+        }
+      });
+    }
   }
 
   /**

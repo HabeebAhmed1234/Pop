@@ -26,20 +26,26 @@ public class EventBus {
     return sEventBus;
   }
 
-  private EventBus() {
-  }
-
+  private EventBus() {}
 
   public void onDestroy() {
-    for (GameEvent event : mEventSubscribers.keySet()) {
-      if (mEventSubscribers.get(event) != null && !mEventSubscribers.get(event).isEmpty()) {
-        List<Subscriber> subscribers = mEventSubscribers.get(event);
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("You forgot to unsubscribe from " + event + " in:");
-        for (Subscriber subscriber : subscribers) {
-          stringBuilder.append(subscriber.getClass().getSimpleName());
+    onDestroy(true);
+  }
+
+  public void onDestroy(boolean showError) {
+    if (showError) {
+      for (GameEvent event : mEventSubscribers.keySet()) {
+        if (mEventSubscribers.get(event) != null && !mEventSubscribers.get(event).isEmpty()) {
+          List<Subscriber> subscribers = mEventSubscribers.get(event);
+          StringBuilder stringBuilder = new StringBuilder();
+          stringBuilder
+              .append(
+                  "You forgot to unsubscribe from " + event + " in (" + subscribers.size() + "):");
+          for (Subscriber subscriber : subscribers) {
+            stringBuilder.append(subscriber.getClass().getName());
+          }
+          throw new IllegalStateException(stringBuilder.toString());
         }
-        throw new IllegalStateException(stringBuilder.toString());
       }
     }
     mEventSubscribers.clear();

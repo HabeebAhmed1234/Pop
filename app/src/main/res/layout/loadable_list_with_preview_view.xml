@@ -1,31 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:animateLayoutChanges="true"
-  android:layout_weight="1"
-  android:orientation="vertical">
+  android:layout_height="match_parent">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical">
+
+    <FrameLayout
+      android:id="@+id/preview_image_frame"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:background="@drawable/rounded_border"
+      android:padding="16dp"
+      android:visibility="gone">
+
+      <ImageView
+        android:id="@+id/preview_image"
+        android:layout_width="wrap_content"
+        android:layout_height="140dp"
+        android:adjustViewBounds="true" />
+    </FrameLayout>
+
+    <include
+      layout="@layout/loadable_list_view"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1" />
+  </LinearLayout>
 
   <FrameLayout
-    android:id="@+id/preview_image_frame"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:background="@drawable/rounded_border"
+    android:id="@+id/expanded_preview_image_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:layout_margin="8dp"
+    android:background="@drawable/rounded_border"
     android:visibility="gone">
 
     <ImageView
-      android:id="@+id/preview_image"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:maxHeight="140dp"
-      android:adjustViewBounds="true"/>
+      android:id="@+id/expanded_preview_image"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent" />
   </FrameLayout>
-
-  <include
-    layout="@layout/loadable_list_view"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1"/>
-</LinearLayout>
+</FrameLayout>
