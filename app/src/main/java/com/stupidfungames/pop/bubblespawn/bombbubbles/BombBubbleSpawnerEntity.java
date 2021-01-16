@@ -4,7 +4,7 @@ import static com.stupidfungames.pop.GameConstants.BOMB_BUBBLE_SPAWN_DIFFICULTY_
 import static com.stupidfungames.pop.GameConstants.MAX_BOMB_BUBBLE_PROBABILITY;
 import static com.stupidfungames.pop.GameConstants.MIN_BOMB_BUBBLE_PROBABILITY;
 import static com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BUBBLE_GRAVITY_SCALE;
-import static com.stupidfungames.pop.eventbus.GameEvent.GAME_PROGRESS_CHANGED;
+import static com.stupidfungames.pop.eventbus.GameEvent.GAME_DIFFICULTY_CHANGED;
 
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameFixtureDefs;
@@ -16,7 +16,7 @@ import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventBus.Subscriber;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
-import com.stupidfungames.pop.eventbus.GameProgressEventPayload;
+import com.stupidfungames.pop.eventbus.GameDifficultyEventPayload;
 import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.pool.BaseSpriteInitializerParams;
 import java.util.Random;
@@ -55,13 +55,13 @@ public class BombBubbleSpawnerEntity extends BaseEntity implements Subscriber {
   @Override
   public void onCreateScene() {
     super.onCreateScene();
-    EventBus.get().subscribe(GAME_PROGRESS_CHANGED, this);
+    EventBus.get().subscribe(GAME_DIFFICULTY_CHANGED, this);
   }
 
   @Override
   public void onDestroy() {
     super.onDestroy();
-    EventBus.get().unSubscribe(GAME_PROGRESS_CHANGED, this);
+    EventBus.get().unSubscribe(GAME_DIFFICULTY_CHANGED, this);
   }
 
   public boolean maybeSpawnBombBubble(float x, float y) {
@@ -92,17 +92,17 @@ public class BombBubbleSpawnerEntity extends BaseEntity implements Subscriber {
 
   @Override
   public void onEvent(GameEvent event, EventPayload payload) {
-    if (event == GAME_PROGRESS_CHANGED) {
-      GameProgressEventPayload gameProgressEventPayload = (GameProgressEventPayload) payload;
+    if (event == GAME_DIFFICULTY_CHANGED) {
+      GameDifficultyEventPayload gameDifficultyEventPayload = (GameDifficultyEventPayload) payload;
       boolean bombBubblesCanSpawn =
-          gameProgressEventPayload.percentProgress >= BOMB_BUBBLE_SPAWN_DIFFICULTY_THRESHOLD;
+          gameDifficultyEventPayload.difficulty >= BOMB_BUBBLE_SPAWN_DIFFICULTY_THRESHOLD;
       if (bombBubblesCanSpawn) {
         get(BombBubbleTooltipEntity.class).maybeShowBombBubbleTooltip();
       }
       currentBombBubbleSpawnChance =
           bombBubblesCanSpawn
               ? (MAX_BOMB_BUBBLE_PROBABILITY - MIN_BOMB_BUBBLE_PROBABILITY) * (
-              gameProgressEventPayload.percentProgress - BOMB_BUBBLE_SPAWN_DIFFICULTY_THRESHOLD)
+              gameDifficultyEventPayload.difficulty - BOMB_BUBBLE_SPAWN_DIFFICULTY_THRESHOLD)
               + MIN_BOMB_BUBBLE_PROBABILITY
               : 0;
     }

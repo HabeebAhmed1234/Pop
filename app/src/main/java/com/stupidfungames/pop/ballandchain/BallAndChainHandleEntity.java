@@ -41,7 +41,7 @@ class BallAndChainHandleEntity extends BaseEntity implements
     }
 
     this.handleJoint = handleJoint;
-    // start listening to state when the handle is set
+    // load listening to state when the handle is set
     get(BallAndChainStateMachine.class).addAllStateTransitionListener(this);
   }
 

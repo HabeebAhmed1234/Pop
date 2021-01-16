@@ -33,7 +33,7 @@ import org.jbox2d.dynamics.joints.RevoluteJointDef;
  */
 class BallAndChainCreatorEntity extends BaseEntity {
 
-  private static final int NUM_CHAIN_LINKS = 4;
+  private static final int NUM_CHAIN_LINKS = 2;
   private static final float JOINT_ANCHOR_PERCENT_FROM_EDGE = 0.05f;
   private static final float MOUSE_JOINT_DAMPING_RATIO = 0f;
   private static final float MOUSE_JOINT_FREQUENCY = 100;

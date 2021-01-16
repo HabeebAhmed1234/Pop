@@ -15,7 +15,7 @@ import javax.microedition.khronos.opengles.GL10;
 class BlinkerModifier extends BaseDurationModifier<IEntity> implements IEntityModifier {
 
     /**
-     * Callback everytime we start a new segment. First callback is at 1 last callback is
+     * Callback everytime we load a new segment. First callback is at 1 last callback is
      * at alphas.length
      */
     public interface NewSegmentCallback {

@@ -110,6 +110,7 @@ class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, List
       BubbleEntityUserData userData = (BubbleEntityUserData) bubbleSprite.getUserData();
       BubbleRecycledEventPayload recycledEventPayload = (BubbleRecycledEventPayload) payload;
       if (userData != null && recycledEventPayload.bubbleId == userData.getId()) {
+        removeCurrentUpdateHandler();
         stateMachine.transitionState(IDLE);
       }
     }
@@ -125,7 +126,9 @@ class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, List
 
     @Override
     public void onTimePassed(TimerHandler pTimerHandler) {
-      stateMachine.transitionState(nextState);
+      if (stateMachine.isValidTransition(nextState)) {
+        stateMachine.transitionState(nextState);
+      }
     }
   }
 }

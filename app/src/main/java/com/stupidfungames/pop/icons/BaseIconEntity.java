@@ -1,13 +1,12 @@
 package com.stupidfungames.pop.icons;
 
-import android.content.Context;
 import androidx.annotation.Nullable;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
-import com.stupidfungames.pop.eventbus.GameProgressEventPayload;
+import com.stupidfungames.pop.eventbus.GameDifficultyEventPayload;
 import com.stupidfungames.pop.eventbus.IconUnlockedEventPayload;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
@@ -56,22 +55,22 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
     setIconColor(AndengineColor.TRANSPARENT);
 
     EventBus.get()
-        .subscribe(GameEvent.GAME_PROGRESS_CHANGED, this, true);
+        .subscribe(GameEvent.GAME_DIFFICULTY_CHANGED, this, true);
   }
 
   @Override
   public void onDestroy() {
     EventBus.get()
-        .unSubscribe(GameEvent.GAME_PROGRESS_CHANGED, this);
+        .unSubscribe(GameEvent.GAME_DIFFICULTY_CHANGED, this);
     iconSprite.removeOnAreaTouchListener();
   }
 
   @Override
   public void onEvent(GameEvent event, EventPayload payload) {
     switch (event) {
-      case GAME_PROGRESS_CHANGED:
-        GameProgressEventPayload progressEventPayload = (GameProgressEventPayload) payload;
-        onGameProgressChanged(progressEventPayload.percentProgress);
+      case GAME_DIFFICULTY_CHANGED:
+        GameDifficultyEventPayload progressEventPayload = (GameDifficultyEventPayload) payload;
+        onGameProgressChanged(progressEventPayload.difficulty);
         break;
     }
   }

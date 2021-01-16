@@ -2,7 +2,7 @@ package com.stupidfungames.pop.upgrades;
 
 import static com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BUBBLE_GRAVITY_SCALE;
 import static com.stupidfungames.pop.eventbus.GameEvent.BUBBLE_POPPED;
-import static com.stupidfungames.pop.eventbus.GameEvent.GAME_PROGRESS_CHANGED;
+import static com.stupidfungames.pop.eventbus.GameEvent.GAME_DIFFICULTY_CHANGED;
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADEABLE_ICON_LOADED;
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADEABLE_ICON_UNLOCKED;
 import static com.stupidfungames.pop.utils.ScreenUtils.dpToPx;
@@ -18,7 +18,7 @@ import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventBus.Subscriber;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
-import com.stupidfungames.pop.eventbus.GameProgressEventPayload;
+import com.stupidfungames.pop.eventbus.GameDifficultyEventPayload;
 import com.stupidfungames.pop.eventbus.UpgradeableIconLoadedEventPayload;
 import com.stupidfungames.pop.eventbus.UpgradeableIconUnlockedEventPayload;
 import com.stupidfungames.pop.fixturedefdata.UpgradeUserData;
@@ -66,7 +66,7 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
     EventBus.get()
         .subscribe(BUBBLE_POPPED, this)
         .subscribe(UPGRADEABLE_ICON_UNLOCKED, this)
-        .subscribe(GAME_PROGRESS_CHANGED, this)
+        .subscribe(GAME_DIFFICULTY_CHANGED, this)
         .subscribe(UPGRADEABLE_ICON_LOADED, this);
   }
 
@@ -76,7 +76,7 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
     EventBus.get()
         .unSubscribe(BUBBLE_POPPED, this)
         .unSubscribe(UPGRADEABLE_ICON_UNLOCKED, this)
-        .unSubscribe(GAME_PROGRESS_CHANGED, this)
+        .unSubscribe(GAME_DIFFICULTY_CHANGED, this)
         .unSubscribe(UPGRADEABLE_ICON_LOADED, this);
   }
 
@@ -89,8 +89,8 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
       case UPGRADEABLE_ICON_UNLOCKED:
         onIconUnlocked((UpgradeableIconUnlockedEventPayload) payload);
         break;
-      case GAME_PROGRESS_CHANGED:
-        currentGameDifficultyPercentProgress = ((GameProgressEventPayload) payload).percentProgress;
+      case GAME_DIFFICULTY_CHANGED:
+        currentGameDifficultyPercentProgress = ((GameDifficultyEventPayload) payload).difficulty;
         break;
       case UPGRADEABLE_ICON_LOADED:
         onIconLoadedAndUpgradesAdjusted((UpgradeableIconLoadedEventPayload) payload);
@@ -111,7 +111,7 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
         || currentGameDifficultyPercentProgress
         <= GameConstants.MIN_UPGRADE_SPAWN_START_THRESHOLD_DIFFICULTY
         || numUpgradesRemaining == 0) {
-      // Only start spawning upgrades if all these values are set.
+      // Only load spawning upgrades if all these values are set.
       return;
     }
 

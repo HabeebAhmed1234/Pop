@@ -28,7 +28,8 @@ public abstract class LoadableListBaseActivity<T> extends AppCompatActivity impl
     @Override
     public void onClick(View v) {
       LoadableListBaseActivity.this
-          .onClick((T) loadableListAdapter.getItemAtPosition(recyclerView.getChildLayoutPosition(v)));
+          .onClick(
+              (T) loadableListAdapter.getItemAtPosition(recyclerView.getChildLayoutPosition(v)));
     }
   };
 
@@ -52,11 +53,13 @@ public abstract class LoadableListBaseActivity<T> extends AppCompatActivity impl
         loadableListAdapter,
         recyclerView,
         (ViewGroup) findViewById(R.id.loadable_list_view));
-    loadingCoordinator = new LoadableListLoadingCoordinator(getLoaderCallback(),
+    loadingCoordinator = new LoadableListLoadingCoordinator(
+        this,
+        getLoaderCallback(),
         loadableListViewCoordinator,
         getLogListName());
 
-    loadingCoordinator.start(this);
+    loadingCoordinator.load();
   }
 
   @LayoutRes

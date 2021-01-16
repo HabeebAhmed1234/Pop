@@ -185,6 +185,10 @@ public class GooglePlayServicesAuthManager {
     listeners.add(listener);
   }
 
+  public void removeListener(LoginListener listener) {
+    listeners.remove(listener);
+  }
+
   private void onLoginStart() {
     isLoggingIn = true;
     for (LoginListener listener : listeners) {

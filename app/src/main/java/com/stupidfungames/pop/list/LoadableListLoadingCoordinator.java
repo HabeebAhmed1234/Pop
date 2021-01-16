@@ -5,12 +5,15 @@ import static com.stupidfungames.pop.analytics.Events.LOAD_LIST_ERROR;
 import static com.stupidfungames.pop.analytics.Events.LOAD_LIST_START;
 import static com.stupidfungames.pop.analytics.Events.LOAD_LIST_SUCCESS;
 
-import android.content.Context;
 import androidx.core.content.ContextCompat;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.stupidfungames.pop.HostActivity;
 import com.stupidfungames.pop.analytics.Logger;
+import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager.LoginListener;
+import com.stupidfungames.pop.auth.LoginListenerImpl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
@@ -28,8 +31,6 @@ public class LoadableListLoadingCoordinator<T> {
     void renderEmptyState();
 
     void renderErrorState();
-
-    void renderErrorState(Throwable throwable);
   }
 
   /**
@@ -42,39 +43,66 @@ public class LoadableListLoadingCoordinator<T> {
     boolean isEmptyResult(T result);
   }
 
+  private final HostActivity hostActivity;
+
   private final LoaderCallback<T> loaderCallback;
   private final ViewCoordinator<T> viewCoordinator;
   private final String listLogName;
 
-  public LoadableListLoadingCoordinator(LoaderCallback<T> loaderCallback, ViewCoordinator<T> viewCoordinator, String listLogName) {
+  private final LoginListener loginListener = new LoginListenerImpl() {
+
+    @Override
+    public void onLoggedIn(GoogleSignInAccount account) {
+      // Now that we are logged in retry loading.
+      load();
+    }
+  };
+
+  public LoadableListLoadingCoordinator(
+      HostActivity hostActivity,
+      LoaderCallback<T> loaderCallback,
+      ViewCoordinator<T> viewCoordinator,
+      String listLogName) {
+    this.hostActivity = hostActivity;
     this.loaderCallback = loaderCallback;
     this.viewCoordinator = viewCoordinator;
     this.listLogName = listLogName;
   }
 
-  public void start(final Context context) {
-    Logger.logSelect(context, LOAD_LIST_START, listLogName);
+  public void load() {
+    Logger.logSelect(hostActivity.getContext(), LOAD_LIST_START, listLogName);
     Futures.addCallback(loaderCallback.loadData(), new FutureCallback<T>() {
 
       @Override
       public void onSuccess(@NullableDecl T result) {
         if (result != null && !loaderCallback.isEmptyResult(result)) {
           viewCoordinator.renderLoadedState(result);
-          Logger.logSelect(context, LOAD_LIST_SUCCESS, listLogName);
+          Logger.logSelect(hostActivity.getContext(), LOAD_LIST_SUCCESS, listLogName);
+          onLoadSuccess();
         } else if (loaderCallback.isEmptyResult(result)) {
           viewCoordinator.renderEmptyState();
-          Logger.logSelect(context, LOAD_LIST_EMPTY_RESULT, listLogName);
+          Logger.logSelect(hostActivity.getContext(), LOAD_LIST_EMPTY_RESULT, listLogName);
+          onLoadSuccess();
         } else {
           viewCoordinator.renderErrorState();
-          Logger.logSelect(context, LOAD_LIST_ERROR, listLogName);
+          onLoadFailed();
         }
       }
 
       @Override
       public void onFailure(Throwable t) {
-        viewCoordinator.renderErrorState(t);
-        Logger.logSelect(context, LOAD_LIST_ERROR, listLogName);
+        viewCoordinator.renderErrorState();
+        onLoadFailed();
       }
-    }, ContextCompat.getMainExecutor(context));
+    }, ContextCompat.getMainExecutor(hostActivity.getContext()));
+  }
+
+  private void onLoadSuccess() {
+    hostActivity.getAuthManager().removeListener(loginListener);
+  }
+
+  private void onLoadFailed() {
+    Logger.logSelect(hostActivity.getContext(), LOAD_LIST_ERROR, listLogName);
+    hostActivity.getAuthManager().addListener(loginListener);
   }
 }

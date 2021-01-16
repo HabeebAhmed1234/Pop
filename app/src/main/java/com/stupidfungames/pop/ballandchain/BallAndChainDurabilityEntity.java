@@ -11,7 +11,7 @@ import org.andengine.engine.handler.timer.TimerHandler;
 /**
  * Monitors the durability of the ball and chain. Sets the ball and chain state accordingly.
  *
- * If the ball and chain enters the UNLOCKED_DISCHARGED or IN_USE_DISCHARGED state we start charging
+ * If the ball and chain enters the UNLOCKED_DISCHARGED or IN_USE_DISCHARGED state we load charging
  * the ball and chain up again (if its not already charging) and reflect that in a charge meter on
  * the screen.
  */

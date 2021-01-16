@@ -97,7 +97,7 @@ public class TurretsInventoryIconEntity extends BaseInventoryIconEntity implemen
 
   /**
    * If the user has pressed down on the icon and they are not already dragging a turret then we
-   * need to start undocking a new turret. While this new turret is being undocking we cannot
+   * need to load undocking a new turret. While this new turret is being undocking we cannot
    * undocking another turret.
    *
    * @Return true if we started spawning

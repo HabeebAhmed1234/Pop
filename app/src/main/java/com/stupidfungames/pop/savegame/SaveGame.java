@@ -30,7 +30,7 @@ public class SaveGame implements Serializable {
 
   public int saveGameVersionCode;
   public int score;
-  public float spawnInterval;
+  public float gameProgress;
   public List<List<Float>> turretPostitions;
   public List<WallCoord> wallCoords;
   public Map<IconId, Integer> iconUpgradeLevels;

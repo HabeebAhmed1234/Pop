@@ -54,4 +54,9 @@ public class NukeStateMachine extends BaseStateMachine<NukeStateMachine.State> {
         validTransitions.put(State.COOLDOWN, new HashSet<>(Arrays.asList(State.READY)));
         return validTransitions;
     }
+
+    @Override
+    protected String getLoggingName() {
+        return "NukeStateMachine";
+    }
 }

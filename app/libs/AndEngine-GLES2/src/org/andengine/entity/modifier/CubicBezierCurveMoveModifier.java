@@ -38,8 +38,8 @@ public class CubicBezierCurveMoveModifier extends DurationEntityModifier {
 
 	/**
 	 * @param pDuration
-	 * @param pX1 x coordinate of the start point.
-	 * @param pY1 y coordinate of the start point.
+	 * @param pX1 x coordinate of the load point.
+	 * @param pY1 y coordinate of the load point.
 	 * @param pX2 x coordinate of the first control point.
 	 * @param pY2 y coordinate of the first control point.
 	 * @param pX3 x coordinate of the second control point.
@@ -53,8 +53,8 @@ public class CubicBezierCurveMoveModifier extends DurationEntityModifier {
 
 	/**
 	 * @param pDuration
-	 * @param pX1 x coordinate of the start point.
-	 * @param pY1 y coordinate of the start point.
+	 * @param pX1 x coordinate of the load point.
+	 * @param pY1 y coordinate of the load point.
 	 * @param pX2 x coordinate of the first control point.
 	 * @param pY2 y coordinate of the first control point.
 	 * @param pX3 x coordinate of the second control point.
@@ -69,8 +69,8 @@ public class CubicBezierCurveMoveModifier extends DurationEntityModifier {
 
 	/**
 	 * @param pDuration
-	 * @param pX1 x coordinate of the start point.
-	 * @param pY1 y coordinate of the start point.
+	 * @param pX1 x coordinate of the load point.
+	 * @param pY1 y coordinate of the load point.
 	 * @param pX2 x coordinate of the first control point.
 	 * @param pY2 y coordinate of the first control point.
 	 * @param pX3 x coordinate of the second control point.
@@ -85,8 +85,8 @@ public class CubicBezierCurveMoveModifier extends DurationEntityModifier {
 
 	/**
 	 * @param pDuration
-	 * @param pX1 x coordinate of the start point.
-	 * @param pY1 y coordinate of the start point.
+	 * @param pX1 x coordinate of the load point.
+	 * @param pY1 y coordinate of the load point.
 	 * @param pX2 x coordinate of the first control point.
 	 * @param pY2 y coordinate of the first control point.
 	 * @param pX3 x coordinate of the second control point.

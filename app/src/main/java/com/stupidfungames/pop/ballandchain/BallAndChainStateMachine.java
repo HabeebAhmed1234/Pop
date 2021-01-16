@@ -70,4 +70,9 @@ public class BallAndChainStateMachine extends BaseStateMachine<BallAndChainState
         validTransitions.put(State.IN_USE_DISCHARGED, new HashSet<>(Arrays.asList(State.UNLOCKED_DISCHARGED, State.IN_USE_CHARGED)));
         return validTransitions;
     }
+
+    @Override
+    protected String getLoggingName() {
+        return "BallAndChainStateMachine";
+    }
 }

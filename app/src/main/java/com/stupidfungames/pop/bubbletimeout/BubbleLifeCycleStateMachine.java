@@ -70,6 +70,11 @@ class BubbleLifeCycleStateMachine extends BaseStateMachine<BubbleLifeCycleStateM
   }
 
   @Override
+  protected String getLoggingName() {
+    return "BubbleLifeCycleStateMachine";
+  }
+
+  @Override
   public void transitionState(BubbleLifeCycleStateMachine.State newState) {
     super.transitionState(newState);
   }

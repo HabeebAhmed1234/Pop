@@ -1,12 +1,14 @@
 package com.stupidfungames.pop.bubblespawn;
 
 import static com.stupidfungames.pop.GameConstants.MAX_BUBBLES_ON_SCREEN;
-import static com.stupidfungames.pop.GameConstants.MAX_BUBBLES_PER_SPAWN;
+import static com.stupidfungames.pop.GameConstants.MAX_BUBBLES_PER_SPAWN_AT_MAX_DIFFICULTY;
+import static com.stupidfungames.pop.GameConstants.MAX_BUBBLES_PER_SPAWN_AT_MIN_DIFFICULTY;
 import static com.stupidfungames.pop.GameConstants.MAX_SPAWN_INTERVAL_SECONDS;
+import static com.stupidfungames.pop.GameConstants.MIN_SPAWN_INTERVAL_SECONDS;
 import static org.andengine.util.math.MathUtils.RANDOM;
 
-import android.content.Context;
 import android.hardware.SensorManager;
+import android.util.Log;
 import android.util.Pair;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.BubbleTouchFactoryEntity;
@@ -18,9 +20,9 @@ import com.stupidfungames.pop.bubblespawn.bombbubbles.BombBubbleSpawnerEntity;
 import com.stupidfungames.pop.collision.CollisionFilters;
 import com.stupidfungames.pop.entitymatchers.BubblesEntityMatcher;
 import com.stupidfungames.pop.eventbus.BubbleSpawnedEventPayload;
-import com.stupidfungames.pop.eventbus.DifficultyChangedEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
+import com.stupidfungames.pop.eventbus.GameDifficultyEventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.IconUnlockedEventPayload;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId;
@@ -103,16 +105,17 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
     }
   }
 
-  private float bubbleSpawnInterval = MAX_SPAWN_INTERVAL_SECONDS;
+  private float bubbleSpawnIntervalSeconds = MAX_SPAWN_INTERVAL_SECONDS;
+  private int maxBubblesPerSpawn = MAX_BUBBLES_PER_SPAWN_AT_MIN_DIFFICULTY;
   private boolean shouldIncludeExtraBubblesInSpawn = false;
   private TimerHandler bubbleSpawnTimerHandler = new TimerHandler(
-      bubbleSpawnInterval,
+      bubbleSpawnIntervalSeconds,
       false,
       new ITimerCallback() {
         @Override
         public void onTimePassed(TimerHandler pTimerHandler) {
           if (!isBubbleLimitReached()) {
-            int numBubbles = RANDOM.nextInt(MAX_BUBBLES_PER_SPAWN);
+            int numBubbles = RANDOM.nextInt(MAX_BUBBLES_PER_SPAWN_AT_MAX_DIFFICULTY) + 1;
             if (numBubbles == 0) {
               numBubbles = 1;
             }
@@ -127,7 +130,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
               }
             }
           }
-          engine.registerUpdateHandler(new TimerHandler(bubbleSpawnInterval, false, this));
+          engine.registerUpdateHandler(new TimerHandler(bubbleSpawnIntervalSeconds, false, this));
         }
       });
 
@@ -138,7 +141,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
   @Override
   public void onCreateScene() {
     EventBus.get()
-        .subscribe(GameEvent.SPAWN_INTERVAL_CHANGED, this, true)
+        .subscribe(GameEvent.GAME_DIFFICULTY_CHANGED, this, true)
         .subscribe(GameEvent.ICON_UNLOCKED, this, true);
     engine.registerUpdateHandler(bubbleSpawnTimerHandler);
   }
@@ -152,7 +155,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
   @Override
   public void onDestroy() {
     EventBus.get()
-        .unSubscribe(GameEvent.SPAWN_INTERVAL_CHANGED, this)
+        .unSubscribe(GameEvent.GAME_DIFFICULTY_CHANGED, this)
         .unSubscribe(GameEvent.ICON_UNLOCKED, this);
   }
 
@@ -198,9 +201,9 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
   @Override
   public void onEvent(GameEvent event, EventPayload payload) {
     switch (event) {
-      case SPAWN_INTERVAL_CHANGED:
-        DifficultyChangedEventPayload difficultyChangedEventPayload = (DifficultyChangedEventPayload) payload;
-        bubbleSpawnInterval = difficultyChangedEventPayload.newSpawnInterval;
+      case GAME_DIFFICULTY_CHANGED:
+        GameDifficultyEventPayload difficultyPayload = (GameDifficultyEventPayload) payload;
+        setDifficultyParams(difficultyPayload.difficulty);
         break;
       case ICON_UNLOCKED:
         if (((IconUnlockedEventPayload) payload).unlockedIconId == IconId.MULTI_POP_ICON) {
@@ -208,5 +211,29 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         }
         break;
     }
+  }
+
+  private void setDifficultyParams(float difficulty) {
+    bubbleSpawnIntervalSeconds = getSpawnIntervalFromDifficulty(difficulty);
+    maxBubblesPerSpawn = getMaxBubblesPerSpawn(difficulty);
+
+    Log.d("asdasd",
+        "bubbleSpawnIntervalSeconds = " + bubbleSpawnIntervalSeconds + " maxBubblesPerSpawn = "
+            + maxBubblesPerSpawn);
+  }
+
+
+  /**
+   * Returns the spawn interval given the current game difficulty.
+   */
+  private float getSpawnIntervalFromDifficulty(float difficulty) {
+    return MAX_SPAWN_INTERVAL_SECONDS
+        - (MAX_SPAWN_INTERVAL_SECONDS - MIN_SPAWN_INTERVAL_SECONDS) * difficulty;
+  }
+
+  private int getMaxBubblesPerSpawn(float difficulty) {
+    return (int) Math.floor(MAX_BUBBLES_PER_SPAWN_AT_MIN_DIFFICULTY
+        + (MAX_BUBBLES_PER_SPAWN_AT_MAX_DIFFICULTY - MAX_BUBBLES_PER_SPAWN_AT_MIN_DIFFICULTY)
+        * difficulty);
   }
 }

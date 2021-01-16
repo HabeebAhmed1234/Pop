@@ -14,7 +14,7 @@ import org.andengine.util.color.AndengineColor;
 import static com.stupidfungames.pop.GameConstants.BALL_AND_CHAIN_DIFFICULTY_UNLOCK_THRESHOLD;
 
 /**
- * Appears when the ball and chain tool is unlocked. The user can tap and hold the icon to start
+ * Appears when the ball and chain tool is unlocked. The user can tap and hold the icon to load
  * using the ball and chain.
  */
 class BallAndChainIconEntity extends BaseUpgradeableIconEntity implements BallAndChainStateMachine.Listener<BallAndChainStateMachine.State> {

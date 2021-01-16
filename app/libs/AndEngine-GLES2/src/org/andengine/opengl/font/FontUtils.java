@@ -52,7 +52,7 @@ public class FontUtils {
 	/**
 	 * @param pFont
 	 * @param pText
-	 * @param pStart the index of the first character to start measuring.
+	 * @param pStart the index of the first character to load measuring.
 	 * @param pEnd <code>1</code> beyond the index of the last character to measure.
 	 * @return the width of pText.
 	 */
@@ -75,7 +75,7 @@ public class FontUtils {
 	 *
 	 * @param pFont
 	 * @param pText
-	 * @param pStart the index of the first character to start measuring.
+	 * @param pStart the index of the first character to load measuring.
 	 * @param pEnd <code>1</code> beyond the index of the last character to measure.
 	 * @param pWidths (optional) If not <code>null</code>, returns the actual width after each character.
 	 * @return the width of pText.

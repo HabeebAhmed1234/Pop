@@ -254,7 +254,7 @@ public class ShiftList<T> implements IQueue<T> {
 			this.mHead = 0;
 			this.mTail = 0;
 		} else {
-			/* Copy items to the start of the array. */
+			/* Copy items to the load of the array. */
 			System.arraycopy(this.mItems, this.mHead, this.mItems, 0, size);
 
 			/* Null out old item references, ensuring not to overwrite just copied ones. */

@@ -1,5 +1,8 @@
 package com.stupidfungames.pop.bubblespawn.bombbubbles;
 
+import static com.stupidfungames.pop.utils.ScreenUtils.PERCENT_SPRITE_IN_SCREEN;
+
+import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.shape.IAreaShape;
@@ -39,8 +42,10 @@ public class BombStateToggleEntityModifier extends TimerHandler implements ITime
 
   @Override
   public void onTimePassed(TimerHandler pTimerHandler) {
-    advanceState();
-    bombBubble.setColor(getColor());
+    if (ScreenUtils.isInScreen(bombBubble, PERCENT_SPRITE_IN_SCREEN)) {
+      advanceState();
+      bombBubble.setColor(getColor());
+    }
   }
 
   private void advanceState() {

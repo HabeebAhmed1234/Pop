@@ -1,5 +1,8 @@
 package com.stupidfungames.pop.list;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,23 +16,28 @@ import com.stupidfungames.pop.list.LoadableListLoadingCoordinator.ViewCoordinato
 import java.util.List;
 
 /**
- * Coordinates the view state when loading some data with {@link LoadableListLoadingCoordinator}. Requires that
- * loadable_list_view.xml is included in the passed in viewGroup or its children.
+ * Coordinates the view state when loading some data with {@link LoadableListLoadingCoordinator}.
+ * Requires that loadable_list_view.xml is included in the passed in viewGroup or its children.
  */
 public class LoadableListViewCoordinator<T> implements ViewCoordinator<List<T>> {
 
   private Context context;
   private LoadingSpinner loadingSpinner;
-  private TextView errorText;
   private RecyclerView recyclerView;
   private ListAdapter adapter;
 
-  public LoadableListViewCoordinator(ListAdapter<T, ?> adapter, RecyclerView recyclerView, ViewGroup viewGroup) {
+  // Error state
+  private TextView errorText;
+  private View signInBtn;
+
+  public LoadableListViewCoordinator(ListAdapter<T, ?> adapter, RecyclerView recyclerView,
+      ViewGroup viewGroup) {
     this.context = viewGroup.getContext();
     this.adapter = adapter;
     this.recyclerView = recyclerView;
     loadingSpinner = viewGroup.findViewById(R.id.loading_spinner);
     errorText = viewGroup.findViewById(R.id.error_text);
+    signInBtn = viewGroup.findViewById(R.id.sign_in_btn);
 
     recyclerView.setHasFixedSize(true);
     recyclerView.setLayoutManager(new LinearLayoutManager(viewGroup.getContext()));
@@ -41,40 +49,39 @@ public class LoadableListViewCoordinator<T> implements ViewCoordinator<List<T>> 
   @Override
   public void renderLoadedState(List<T> loadedResult) {
     loadingSpinner.stopLoadingAnimation();
-    errorText.setVisibility(View.GONE);
-    recyclerView.setVisibility(View.VISIBLE);
+    errorText.setVisibility(GONE);
+    signInBtn.setVisibility(GONE);
+    recyclerView.setVisibility(VISIBLE);
 
     adapter.submitList(loadedResult);
   }
 
   @Override
   public void renderEmptyState() {
-    renderErrorState(context.getString(R.string.no_items_result));
+    renderErrorState(context.getString(R.string.no_items_result), false);
   }
 
   @Override
   public void renderErrorState() {
-    renderErrorState(context.getString(R.string.error_fetching_items));
-  }
-
-  @Override
-  public void renderErrorState(Throwable throwable) {
-    renderErrorState(throwable.getMessage());
+    renderErrorState(context.getString(R.string.error_fetching_items), true);
   }
 
   private void renderLoadingState() {
-    errorText.setVisibility(View.GONE);
-    recyclerView.setVisibility(View.GONE);
+    errorText.setVisibility(GONE);
+    signInBtn.setVisibility(GONE);
+    recyclerView.setVisibility(GONE);
     loadingSpinner.startLoadingAnimation();
   }
 
-  private void renderErrorState(String errorMessage) {
+  private void renderErrorState(String errorMessage, boolean showSignInBtn) {
     loadingSpinner.stopLoadingAnimation();
-    recyclerView.setVisibility(View.GONE);
+    recyclerView.setVisibility(GONE);
 
-    errorText.setVisibility(View.VISIBLE);
+    errorText.setVisibility(VISIBLE);
     if (errorMessage != null) {
       errorText.setText(errorMessage);
     }
+
+    signInBtn.setVisibility(showSignInBtn ? VISIBLE : GONE);
   }
 }

@@ -146,7 +146,7 @@ public class Base64 {
 	 * if any are present, there must be the correct number of them.
 	 *
 	 * @param input  the data to decode
-	 * @param offset the position within the input array at which to start
+	 * @param offset the position within the input array at which to load
 	 * @param len    the number of bytes of input to decode
 	 * @param flags  controls certain features of the decoded output.
 	 *               Pass {@code DEFAULT} to decode standard Base64.
@@ -474,7 +474,7 @@ public class Base64 {
 	 *
 	 * @param input  the data to encode
 	 * @param offset the position within the input array at which to
-	 *               start
+	 *               load
 	 * @param len    the number of bytes of input to encode
 	 * @param flags  controls certain features of the encoded output.
 	 *               Passing {@code DEFAULT} results in output that
@@ -508,7 +508,7 @@ public class Base64 {
 	 *
 	 * @param input  the data to encode
 	 * @param offset the position within the input array at which to
-	 *               start
+	 *               load
 	 * @param len    the number of bytes of input to encode
 	 * @param flags  controls certain features of the encoded output.
 	 *               Passing {@code DEFAULT} results in output that

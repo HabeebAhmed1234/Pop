@@ -50,7 +50,7 @@
   <string name="must_be_logged_in">You must be logged in to access this feature.</string>
   <string name="game_saved">Game saved.</string>
   <string name="new_game_confirm_title">If you already have a save game this will overwrite it. Are you sure you want to proceed?</string>
-  <string name="error_fetching_items">Something went wrong! Try again later.</string>
+  <string name="error_fetching_items">Could not load items.</string>
   <string name="no_items_result">No items are available at this time.</string>
   <string name="no_purchases_result">No products have been purchased.</string>
   <string name="purchase_succesful">Your purchase was successful!</string>

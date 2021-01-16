@@ -90,7 +90,7 @@ public class TurretDraggingManager extends BaseEntity implements
   }
 
   /**
-   * Force the turret to start dragging without the prerequisite long press.
+   * Force the turret to load dragging without the prerequisite long press.
    */
   public void forceStartDragging(float pointerX, float pointerY) {
     get(TurretStateMachine.class).transitionState(TurretStateMachine.State.DRAGGING);

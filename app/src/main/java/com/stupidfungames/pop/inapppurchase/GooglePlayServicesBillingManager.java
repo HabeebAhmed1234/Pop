@@ -273,7 +273,7 @@ public class GooglePlayServicesBillingManager implements PurchasesUpdatedListene
     if (!authManager.isLoggedIn()) {
       readyCallback.onBillingClientError(
           new IllegalStateException(
-              "Cannot start a billing connection if user is not logged in."));
+              "Cannot load a billing connection if user is not logged in."));
       return;
     }
     if (billingClient.isReady()) {

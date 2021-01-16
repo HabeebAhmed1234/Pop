@@ -12,8 +12,7 @@ public enum GameEvent {
   BUBBLE_RECYCLED, // Fired when a bubble gets recycled into the BubbleSpritePool
   BUBBLE_POPPED, // Fired when a bubble is popped
   BUBBLE_TOUCHED, // Fired when a bubble is touched by a user's finger
-  SPAWN_INTERVAL_CHANGED, // Fired when the bubble spawn interval changes as determined by GameDifficultyEntity
-  GAME_PROGRESS_CHANGED, // Fired when the user's current game progress has changed (percentage)
+  GAME_DIFFICULTY_CHANGED, // Fired when the user's current game progress has changed (percentage)
   BALL_AND_CHAIN_POPPED_BUBBLE, // Fired when the ball and chain pops a bubble
   TURRET_BULLET_POPPED_BUBBLE, // Fired bullet popped a bubble
   TURRET_DOCKED, // Fired when a turret gets docked back into the turret icon

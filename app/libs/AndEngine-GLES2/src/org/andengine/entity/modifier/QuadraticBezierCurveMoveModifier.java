@@ -35,8 +35,8 @@ public class QuadraticBezierCurveMoveModifier extends DurationEntityModifier {
 
 	/**
 	 * @param pDuration
-	 * @param pX1 x coordinate of the start point.
-	 * @param pY1 y coordinate of the start point.
+	 * @param pX1 x coordinate of the load point.
+	 * @param pY1 y coordinate of the load point.
 	 * @param pX2 x coordinate of the control point.
 	 * @param pY2 y coordinate of the ontrol point.
 	 * @param pX3 x coordinate of the end point.
@@ -48,8 +48,8 @@ public class QuadraticBezierCurveMoveModifier extends DurationEntityModifier {
 
 	/**
 	 * @param pDuration
-	 * @param pX1 x coordinate of the start point.
-	 * @param pY1 y coordinate of the start point.
+	 * @param pX1 x coordinate of the load point.
+	 * @param pY1 y coordinate of the load point.
 	 * @param pX2 x coordinate of the control point.
 	 * @param pY2 y coordinate of the ontrol point.
 	 * @param pX3 x coordinate of the end point.
@@ -62,8 +62,8 @@ public class QuadraticBezierCurveMoveModifier extends DurationEntityModifier {
 
 	/**
 	 * @param pDuration
-	 * @param pX1 x coordinate of the start point.
-	 * @param pY1 y coordinate of the start point.
+	 * @param pX1 x coordinate of the load point.
+	 * @param pY1 y coordinate of the load point.
 	 * @param pX2 x coordinate of the control point.
 	 * @param pY2 y coordinate of the ontrol point.
 	 * @param pX3 x coordinate of the end point.
@@ -76,8 +76,8 @@ public class QuadraticBezierCurveMoveModifier extends DurationEntityModifier {
 
 	/**
 	 * @param pDuration
-	 * @param pX1 x coordinate of the start point.
-	 * @param pY1 y coordinate of the start point.
+	 * @param pX1 x coordinate of the load point.
+	 * @param pY1 y coordinate of the load point.
 	 * @param pX2 x coordinate of the control point.
 	 * @param pY2 y coordinate of the ontrol point.
 	 * @param pX3 x coordinate of the end point.

@@ -1,5 +1,6 @@
 package com.stupidfungames.pop.statemachine;
 
+import android.util.Log;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -27,9 +28,12 @@ public abstract class BaseStateMachine<StateType extends Enum> {
 
   protected abstract Map<StateType, Set<StateType>> getAllValidStateTransitions();
 
+  protected abstract String getLoggingName();
+
   protected boolean allowSelfStateTransitions() {
     return false;
   }
+
 
   public BaseStateMachine(StateType initialState) {
     this.initialState = initialState;
@@ -105,12 +109,15 @@ public abstract class BaseStateMachine<StateType extends Enum> {
     return currentState;
   }
 
-  public void transitionState(StateType newState) {
+  public boolean isValidTransition(StateType newState) {
     Map<StateType, Set<StateType>> validTransitions = getAllValidStateTransitionsInternal();
-    boolean isValidTransition =
-        validTransitions.containsKey(currentState)
-            ? validTransitions.get(currentState).contains(newState)
-            : false;
+    return validTransitions.containsKey(currentState)
+        ? validTransitions.get(currentState).contains(newState)
+        : false;
+  }
+
+  public void transitionState(StateType newState) {
+    boolean isValidTransition = isValidTransition(newState);
 
     if (newState == currentState && allowSelfStateTransitions()) {
       isValidTransition = true;
@@ -120,8 +127,8 @@ public abstract class BaseStateMachine<StateType extends Enum> {
       currentState = newState;
       notifyTransition(currentState);
     } else {
-      throw new IllegalArgumentException(
-          "Cannot transition state machine from " + currentState + " to " + newState);
+      Log.e(getLoggingName(), "Illegal state transition", new IllegalArgumentException(
+          "Cannot transition state machine from " + currentState + " to " + newState));
     }
   }
 

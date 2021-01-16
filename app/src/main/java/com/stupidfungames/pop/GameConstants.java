@@ -3,6 +3,7 @@ package com.stupidfungames.pop;
 import static com.stupidfungames.pop.bubblespawn.bombbubbles.BombBubbleSpritePool.BOMB_BUBBLE_SIZE_PX;
 
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId;
+import java.util.concurrent.TimeUnit;
 
 public class GameConstants {
 
@@ -23,11 +24,14 @@ public class GameConstants {
   // Limits
   public static final int MAX_BUBBLES_ON_SCREEN = 70;
 
-  // Difficulty
-  public static final int MAX_BUBBLES_PER_SPAWN = 3;
-  public static final float TIME_TO_MAX_DIFFICULTY_SECONDS = 3;//TimeUnit.MINUTES.toSeconds(6);
   // Once all icons are unlocked open up upgrades
   public static final float MIN_UPGRADE_SPAWN_START_THRESHOLD_DIFFICULTY = 0.5f;
+
+  // Difficulty
+  public static final float TIME_TO_MAX_DIFFICULTY_SECONDS = TimeUnit.MINUTES.toSeconds(8);
+
+  public static final int MAX_BUBBLES_PER_SPAWN_AT_MAX_DIFFICULTY = 4;
+  public static final int MAX_BUBBLES_PER_SPAWN_AT_MIN_DIFFICULTY = 1;
   public static final float MAX_SPAWN_INTERVAL_SECONDS = 4f;
   public static final float MIN_SPAWN_INTERVAL_SECONDS = 0.5f;
 
@@ -35,11 +39,13 @@ public class GameConstants {
   public static final float MAX_BOMB_BUBBLE_PROBABILITY = 0.2f;
   // The probability of a bomb spawning at min difficulty
   public static final float MIN_BOMB_BUBBLE_PROBABILITY = 0.05f;
+
   public static final float BOMB_BUBBLE_SPAWN_DIFFICULTY_THRESHOLD = ALL_ICON_UNLOCK_DIFFICULTY_PERCENTAGE;
+
   // The amount of time a bomb bubble is green/red
   public static final float BOMB_STATES_DURATION_SECONDS = 1f;
   // The amount of time before a bomb bubble explodes and ends the game
-  public static final float BOMB_BUBBLE_LIFESPAN_SECONDS = 9f;
+  public static final float BOMB_BUBBLE_LIFESPAN_SECONDS = 7f;
   public static final float BOMB_BUBBLE_EXPLOSION_RADIUS_PX = BOMB_BUBBLE_SIZE_PX * 2;
 
   // Bubble lifecycle constants

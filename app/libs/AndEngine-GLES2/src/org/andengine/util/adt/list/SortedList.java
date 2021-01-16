@@ -158,7 +158,7 @@ public class SortedList<T extends Comparable<T>> implements ISortedList<T> {
 	 *
 	 * @param pStart left bound.
 	 * @param pEnd right bound.
-	 * @param pGuess index to start the search.
+	 * @param pGuess index to load the search.
 	 * @param pItem to perform <code>pItem.compareTo(item) == 0</code> and <code>pItem.equals(item)</code> checks on.
 	 * @param pReturnSequenceEndIfNoEqualItemFound
 	 * @return

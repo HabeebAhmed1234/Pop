@@ -124,7 +124,7 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
   private void updateStreak(IncrementScoreEventPayload payload) {
     boolean shouldScheduleNewStreakExpiry = false;
     if (streakModel.shouldStartNewStreak(payload.poppedBubbleType)) {
-      // start tracking a new streak
+      // load tracking a new streak
       streakModel.startNewStreak(payload.poppedBubbleType);
       shouldScheduleNewStreakExpiry = true;
     } else if (streakModel.shouldContinueStreak(payload.poppedBubbleType)) {
