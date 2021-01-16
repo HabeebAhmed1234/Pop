@@ -25,7 +25,7 @@ public class GameConstants {
   public static final int MAX_BUBBLES_ON_SCREEN = 70;
 
   // Once all icons are unlocked open up upgrades
-  public static final float MIN_UPGRADE_SPAWN_START_THRESHOLD_DIFFICULTY = 0.5f;
+  public static final float MIN_UPGRADE_SPAWN_START_THRESHOLD_DIFFICULTY = 0.55f;
 
   // Difficulty
   public static final float TIME_TO_MAX_DIFFICULTY_SECONDS = TimeUnit.MINUTES.toSeconds(8);
@@ -46,7 +46,7 @@ public class GameConstants {
   public static final float BOMB_STATES_DURATION_SECONDS = 1f;
   // The amount of time before a bomb bubble explodes and ends the game
   public static final float BOMB_BUBBLE_LIFESPAN_SECONDS = 7f;
-  public static final float BOMB_BUBBLE_EXPLOSION_RADIUS_PX = BOMB_BUBBLE_SIZE_PX * 2;
+  public static final float BOMB_BUBBLE_EXPLOSION_RADIUS_PX = BOMB_BUBBLE_SIZE_PX * 1.5f;
 
   // Bubble lifecycle constants
   public static final float BUBBLE_STABLE_TIME_SECONDS = 6f;
