@@ -115,10 +115,11 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
         @Override
         public void onTimePassed(TimerHandler pTimerHandler) {
           if (!isBubbleLimitReached()) {
-            int numBubbles = RANDOM.nextInt(MAX_BUBBLES_PER_SPAWN_AT_MAX_DIFFICULTY) + 1;
+            int numBubbles = RANDOM.nextInt(maxBubblesPerSpawn) + 1;
             if (numBubbles == 0) {
               numBubbles = 1;
             }
+            Log.d("asdasd", "numBubbles = " + numBubbles);
             List<Pair<Float, Float>> startingBubblePositions = BubblePacker
                 .getSpawnBubblesLocations(
                     numBubbles,
@@ -216,10 +217,6 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
   private void setDifficultyParams(float difficulty) {
     bubbleSpawnIntervalSeconds = getSpawnIntervalFromDifficulty(difficulty);
     maxBubblesPerSpawn = getMaxBubblesPerSpawn(difficulty);
-
-    Log.d("asdasd",
-        "bubbleSpawnIntervalSeconds = " + bubbleSpawnIntervalSeconds + " maxBubblesPerSpawn = "
-            + maxBubblesPerSpawn);
   }
 
 

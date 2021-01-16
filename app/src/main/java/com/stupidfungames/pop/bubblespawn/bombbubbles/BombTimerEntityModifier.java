@@ -13,7 +13,6 @@ import org.andengine.util.color.AndengineColor;
 public class BombTimerEntityModifier extends TimerHandler implements ITimerCallback {
 
   public static final int RED_TIMER_THRESHOLD_SECONDS = 3;
-  private static final float TIMER_INCREMENT_SECONDS = 1;
 
   private final Text timerText;
   private final IAreaShape bombBubble;
@@ -22,31 +21,35 @@ public class BombTimerEntityModifier extends TimerHandler implements ITimerCallb
 
   public BombTimerEntityModifier(
       Text timerText,
-      float durationSeconds,
+      int durationSeconds,
       BombBubbleExpiredListenerEntity expiredListenerEntity) {
-    super(TIMER_INCREMENT_SECONDS, true, null);
+    super(1, true, null);
     setTimerCallback(this);
     this.timerText = timerText;
     this.bombBubble = (IAreaShape) timerText.getParent();
     this.expiredListenerEntity = expiredListenerEntity;
 
-    timer = (int) (durationSeconds / TIMER_INCREMENT_SECONDS);
-    timerText.setText(Integer.toString(timer));
+    timer = durationSeconds;
+    onTimerUpdated();
   }
 
   @Override
   public void onTimePassed(TimerHandler pTimerHandler) {
     if (ScreenUtils.isInScreen(bombBubble, PERCENT_SPRITE_IN_SCREEN)) {
       timer--;
-      if (timer == 0) {
+      if (timer <= -1) {
         // bomb exploded
         expiredListenerEntity.onBombBubbleExpired(bombBubble);
-      } else if (timer > 0) {
-        timerText.setText(Integer.toString(timer));
-        timerText.setColor(
-            timer <= RED_TIMER_THRESHOLD_SECONDS ? AndengineColor.RED : AndengineColor.WHITE);
-        GeometryUtils.centerInHorizontal((IAreaShape) timerText.getParent(), timerText);
+      } else {
+        onTimerUpdated();
       }
     }
+  }
+
+  private void onTimerUpdated() {
+    timerText.setText(Integer.toString(timer));
+    timerText.setColor(
+        timer <= RED_TIMER_THRESHOLD_SECONDS ? AndengineColor.RED : AndengineColor.WHITE);
+    GeometryUtils.centerInHorizontal((IAreaShape) timerText.getParent(), timerText);
   }
 }

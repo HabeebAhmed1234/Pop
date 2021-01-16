@@ -43,9 +43,9 @@ public class GameConstants {
   public static final float BOMB_BUBBLE_SPAWN_DIFFICULTY_THRESHOLD = ALL_ICON_UNLOCK_DIFFICULTY_PERCENTAGE;
 
   // The amount of time a bomb bubble is green/red
-  public static final float BOMB_STATES_DURATION_SECONDS = 1f;
+  public static final int BOMB_STATES_DURATION_SECONDS = 1;
   // The amount of time before a bomb bubble explodes and ends the game
-  public static final float BOMB_BUBBLE_LIFESPAN_SECONDS = 7f;
+  public static final int BOMB_BUBBLE_LIFESPAN_SECONDS = 8;
   public static final float BOMB_BUBBLE_EXPLOSION_RADIUS_PX = BOMB_BUBBLE_SIZE_PX * 1.5f;
 
   // Bubble lifecycle constants
