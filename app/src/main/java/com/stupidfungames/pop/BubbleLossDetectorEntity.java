@@ -41,7 +41,7 @@ public class BubbleLossDetectorEntity extends BaseLossDetectorEntity {
       return;
     }
     if (data.isScoreLossBubble) {
-      createScoreLossText(
+      spawnScoreLossText(
           data.bubbleSprite.getX(),
           levelHeight - 80);
       EventBus.get().sendEvent(GameEvent.DECREMENT_SCORE,
@@ -50,7 +50,7 @@ public class BubbleLossDetectorEntity extends BaseLossDetectorEntity {
     get(BubbleSpritePool.class).recycle(data.bubbleSprite);
   }
 
-  private void createScoreLossText(float x, float y) {
+  private void spawnScoreLossText(float x, float y) {
     final Text scoreminusText = new Text(x, y,
         get(GameFontsManager.class).getFont(FontId.SCORE_TICKER_FONT), "-20",
         vertexBufferObjectManager);
@@ -60,5 +60,7 @@ public class BubbleLossDetectorEntity extends BaseLossDetectorEntity {
     get(GameAnimationManager.class).startModifier(scoreminusText, new ParallelEntityModifier(
         new ScaleModifier(1.2f, 0.1f, 1.5f),
         new AlphaModifier(1.5f, 1f, 0f)));
+
+    get(ShakeCamera.class).shake(0.5f, 4);
   }
 }
