@@ -24,8 +24,8 @@ class TrayStateMachine extends BaseStateMachine<TrayStateMachine.State> {
     CLOSING,
   }
 
-  TrayStateMachine() {
-    super(EMPTY);
+  TrayStateMachine(State startingState) {
+    super(startingState);
   }
 
   @Override

@@ -40,6 +40,11 @@ public class GameQuickSettingsHostTrayBaseEntity extends
   }
 
   @Override
+  protected boolean shouldStartWithExpandedTray() {
+    return false;
+  }
+
+  @Override
   protected TrayOpenCloseButtonBaseEntity getOpenCloseButtonEntity(BinderEnity parent) {
     return new GameQuickSettingsTrayOpenCloseButton(this, parent);
   }

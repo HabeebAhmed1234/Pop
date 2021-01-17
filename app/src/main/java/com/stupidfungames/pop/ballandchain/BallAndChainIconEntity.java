@@ -1,5 +1,6 @@
 package com.stupidfungames.pop.ballandchain;
 
+import android.util.Log;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
 import com.stupidfungames.pop.icons.BaseUpgradeableIconEntity;
@@ -103,6 +104,7 @@ class BallAndChainIconEntity extends BaseUpgradeableIconEntity implements BallAn
                 color = AndengineColor.TRANSPARENT;
                 break;
             case UNLOCKED_CHARGED:
+                Log.d("asdasd", "UNLOCKED_CHARGED");
             case IN_USE_CHARGED:
                 color = AndengineColor.GREEN;
                 break;

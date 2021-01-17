@@ -113,6 +113,10 @@ public abstract class TrayIconsHolderBaseEntity<IconIdType> extends BaseEntity {
     return null;
   }
 
+  public boolean hasIcons() {
+    return !icons.isEmpty();
+  }
+
   public void refreshDimensions(@Nullable Sprite newIcon) {
     if (newIcon != null) {
       applyIconSize(newIcon);
@@ -155,16 +159,18 @@ public abstract class TrayIconsHolderBaseEntity<IconIdType> extends BaseEntity {
   }
 
   private void updatePhysics() {
-    final FixtureDef iconFixtureDef = GameFixtureDefs.ICON_BOX_FIXTURE_DEF;
-    iconFixtureDef.setFilter(CollisionFilters.ICON_FILTER);
+    if (hasIcons()) {
+      final FixtureDef iconFixtureDef = GameFixtureDefs.ICON_BOX_FIXTURE_DEF;
+      iconFixtureDef.setFilter(CollisionFilters.ICON_FILTER);
 
-    final Body body = PhysicsFactory
-        .createBoxBody(physicsWorld, iconsTray, BodyType.STATIC, iconFixtureDef);
+      final Body body = PhysicsFactory
+          .createBoxBody(physicsWorld, iconsTray, BodyType.STATIC, iconFixtureDef);
 
-    if (hasPhysics(iconsTray)) {
-      removePhysics(iconsTray);
+      if (hasPhysics(iconsTray)) {
+        removePhysics(iconsTray);
+      }
+      linkReversePhysics(iconsTray, body);
     }
-    linkReversePhysics(iconsTray, body);
   }
 
   private void refreshIconPostitions() {

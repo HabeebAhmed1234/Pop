@@ -64,6 +64,11 @@ public class GameIconsHostTrayEntity extends HostTrayBaseEntity<GameIconsHostTra
   }
 
   @Override
+  protected boolean shouldStartWithExpandedTray() {
+    return true;
+  }
+
+  @Override
   protected TrayOpenCloseButtonBaseEntity getOpenCloseButtonEntity(BinderEnity parent) {
     return null;
   }

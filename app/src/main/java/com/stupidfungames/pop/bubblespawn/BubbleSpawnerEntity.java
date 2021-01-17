@@ -119,7 +119,6 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
             if (numBubbles == 0) {
               numBubbles = 1;
             }
-            Log.d("asdasd", "numBubbles = " + numBubbles);
             List<Pair<Float, Float>> startingBubblePositions = BubblePacker
                 .getSpawnBubblesLocations(
                     numBubbles,

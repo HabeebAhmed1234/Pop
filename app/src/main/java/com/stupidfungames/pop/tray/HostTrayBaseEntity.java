@@ -13,6 +13,7 @@ import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.resources.sounds.SoundId;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
+import com.stupidfungames.pop.tray.TrayStateMachine.State;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnAreaTouchListener;
@@ -53,7 +54,8 @@ public abstract class HostTrayBaseEntity<IconIdType> extends BaseEntity implemen
   @Override
   protected void createBindings(Binder binder) {
     binder.bind(HostTrayCallback.class, this);
-    binder.bind(TrayStateMachine.class, new TrayStateMachine());
+    binder.bind(TrayStateMachine.class,
+        new TrayStateMachine(shouldStartWithExpandedTray() ? State.EXPANDED : State.EMPTY));
     @Nullable TrayOpenCloseButtonBaseEntity trayOpenCloseButtonBaseEntity = getOpenCloseButtonEntity(
         this);
     if (trayOpenCloseButtonBaseEntity != null) {
@@ -67,6 +69,8 @@ public abstract class HostTrayBaseEntity<IconIdType> extends BaseEntity implemen
   protected abstract Spec getSpec();
 
   protected abstract boolean shouldExpandWhenIconAdded();
+
+  protected abstract boolean shouldStartWithExpandedTray();
 
   protected abstract TrayOpenCloseButtonBaseEntity getOpenCloseButtonEntity(BinderEnity parent);
 
