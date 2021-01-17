@@ -2,10 +2,12 @@ package com.stupidfungames.pop.hudentities;
 
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
+import com.stupidfungames.pop.physics.util.Vec2Pool;
 import com.stupidfungames.pop.resources.fonts.FontId;
 import com.stupidfungames.pop.resources.fonts.GameFontsManager;
 import org.andengine.entity.text.Text;
 import org.andengine.util.color.AndengineColor;
+import org.jbox2d.common.Vec2;
 
 public abstract class HudTextBaseEntity extends BaseEntity {
 
@@ -51,6 +53,10 @@ public abstract class HudTextBaseEntity extends BaseEntity {
 
   protected AndengineColor currentTextColor() {
     return text.getColor();
+  }
+
+  protected Vec2 getTextCenter() {
+    return Vec2Pool.obtain(text.getX() + text.getWidth() / 2, text.getY() + text.getHeight() / 2);
   }
 
   private void updateTextPosition() {

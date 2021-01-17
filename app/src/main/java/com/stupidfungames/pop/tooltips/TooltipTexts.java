@@ -18,6 +18,7 @@ class TooltipTexts {
     texts.put(TooltipId.TOUCH_POP_TOOLTIP, R.string.touch_pop_tooltip);
     texts.put(TooltipId.UPGRADE_TOOLTIP, R.string.upgrade_tooltip);
     texts.put(TooltipId.BOMB_BUBBLE_TOOLTIP, R.string.bomb_bubble_tooltip);
+    texts.put(TooltipId.NEGATIVE_SCORE_WARNING, R.string.negative_score_warning_tooltip);
   }
 
   @StringRes

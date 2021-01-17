@@ -1,5 +1,6 @@
 package com.stupidfungames.pop.hudentities;
 
+import static com.stupidfungames.pop.BubbleLossDetectorEntity.SCORE_DECREMENT_AMOUNT;
 import static com.stupidfungames.pop.GameConstants.STREAK_EXPIRE_THRESHOLD_SECONDS;
 
 import android.text.TextUtils;
@@ -8,8 +9,11 @@ import com.stupidfungames.pop.eventbus.DecrementScoreEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
+import com.stupidfungames.pop.eventbus.GameOverExplosionEventPayload;
 import com.stupidfungames.pop.eventbus.IncrementScoreEventPayload;
 import com.stupidfungames.pop.savegame.SaveGame;
+import com.stupidfungames.pop.tooltips.GameTooltipsEntity;
+import com.stupidfungames.pop.tooltips.TooltipId;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -21,10 +25,12 @@ import org.andengine.util.color.AndengineColor;
 public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscriber {
 
   private static final String SCORE_TEXT_PREFIX = "Score: ";
-  private static final AndengineColor NEGATIVE_SCORE_COLOR = AndengineColor.RED;
-  private static final AndengineColor POSITIVE_SCORE_COLOR = AndengineColor.GREEN;
+  private static final int STARTING_SCORE = 60;
+  private static final int WARNING_COLOR_SCORE_THRESHOLD = SCORE_DECREMENT_AMOUNT * 3;
+  private static final AndengineColor WARNING_SCORE_COLOR = AndengineColor.RED;
+  private static final AndengineColor NORMAL_SCORE_COLOR = AndengineColor.GREEN;
 
-  private int scoreValue = 0;
+  private int scoreValue = STARTING_SCORE;
   private final ScoreStreakModel streakModel = new ScoreStreakModel();
   private final TimerHandler streakExpiryHandler = new TimerHandler(STREAK_EXPIRE_THRESHOLD_SECONDS,
       new ITimerCallback() {
@@ -61,7 +67,7 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
 
   @Override
   String getInitialText() {
-    return SCORE_TEXT_PREFIX + "-------";
+    return getScoreText();
   }
 
   @Override
@@ -140,13 +146,20 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
     }
   }
 
-  private void updateScoreText() {
-    updateText(SCORE_TEXT_PREFIX + scoreValue);
+  private String getScoreText() {
+    return SCORE_TEXT_PREFIX + scoreValue;
+  }
 
-    if (scoreValue < 0 && !currentTextColor().equals(NEGATIVE_SCORE_COLOR)) {
-      updateColor(NEGATIVE_SCORE_COLOR);
-    } else if (scoreValue >= 0 && !currentTextColor().equals(POSITIVE_SCORE_COLOR)) {
-      updateColor(POSITIVE_SCORE_COLOR);
+  private void updateScoreText() {
+    updateText(getScoreText());
+
+    if (scoreValue < WARNING_COLOR_SCORE_THRESHOLD && !currentTextColor().equals(
+        WARNING_SCORE_COLOR)) {
+      updateColor(WARNING_SCORE_COLOR);
+      get(GameTooltipsEntity.class).maybeShowTooltip(TooltipId.NEGATIVE_SCORE_WARNING);
+    } else if (scoreValue >= WARNING_COLOR_SCORE_THRESHOLD && !currentTextColor().equals(
+        NORMAL_SCORE_COLOR)) {
+      updateColor(NORMAL_SCORE_COLOR);
     }
 
     String scoreMultString = streakModel.getScoreMultiplierString();
@@ -156,5 +169,14 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
     } else {
       get(StreakHudEntity.class).updateColor(AndengineColor.TRANSPARENT);
     }
+
+    if (scoreValue < 0) {
+      onScoreNegative();
+    }
+  }
+
+  private void onScoreNegative() {
+    EventBus.get().sendEvent(
+        GameEvent.GAME_OVER_ON_EXPLOSION_EVENT, new GameOverExplosionEventPayload(getTextCenter()));
   }
 }

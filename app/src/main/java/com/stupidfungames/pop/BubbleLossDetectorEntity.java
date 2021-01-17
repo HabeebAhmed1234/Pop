@@ -21,7 +21,7 @@ import org.jbox2d.dynamics.Fixture;
  */
 public class BubbleLossDetectorEntity extends BaseLossDetectorEntity {
 
-  private static final int SCORE_DECREMENT_AMOUNT = 1;
+  public static final int SCORE_DECREMENT_AMOUNT = 20;
 
 
   public BubbleLossDetectorEntity(BinderEnity parent) {
@@ -51,13 +51,13 @@ public class BubbleLossDetectorEntity extends BaseLossDetectorEntity {
   }
 
   private void createScoreLossText(float x, float y) {
-    final Text scoreminus5Text = new Text(x, y,
-        get(GameFontsManager.class).getFont(FontId.SCORE_TICKER_FONT), "-1",
+    final Text scoreminusText = new Text(x, y,
+        get(GameFontsManager.class).getFont(FontId.SCORE_TICKER_FONT), "-20",
         vertexBufferObjectManager);
-    scoreminus5Text.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
-    scoreminus5Text.setColor(1, 0, 0);
-    addToScene(scoreminus5Text);
-    get(GameAnimationManager.class).startModifier(scoreminus5Text, new ParallelEntityModifier(
+    scoreminusText.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+    scoreminusText.setColor(1, 0, 0);
+    addToScene(scoreminusText);
+    get(GameAnimationManager.class).startModifier(scoreminusText, new ParallelEntityModifier(
         new ScaleModifier(1.2f, 0.1f, 1.5f),
         new AlphaModifier(1.5f, 1f, 0f)));
   }

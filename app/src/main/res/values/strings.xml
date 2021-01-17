@@ -138,4 +138,5 @@
   <string name="touch_pop_tooltip">Touch the bubbles to pop them before they reach the bottom of the screen!\n\nTouch multiple bubbles of the same color to start a streak and earn more points!</string>
   <string name="upgrade_tooltip">Tap on these bubbles to acquire an upgrade.\nYou can then tap on a tool on the right to upgrade it.\nEvery tool has a max of 3 upgrades.\nTools will change color to cyan when they are upgradable</string>
   <string name="bomb_bubble_tooltip">The below is a bomb bubble.\n\nTap on it while it is green to diffuse it and pop some bubbles in a radius around it.\n\nCareful! If it\'s countdown reaches 0 or you tap on it while it is red it will explode and end the game!\n\nThe bomb will flash yellow before becoming red.</string>
+  <string name="negative_score_warning_tooltip">Careful! If your score falls below 0 it will be game over.</string>
 </resources>

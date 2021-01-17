@@ -7,7 +7,6 @@ import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADES_AVAILABLE;
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADE_CONSUMED;
 import static com.stupidfungames.pop.utils.ScreenUtils.dpToPx;
 
-import android.content.Context;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
@@ -23,6 +22,8 @@ import com.stupidfungames.pop.savegame.SaveGame;
 import com.stupidfungames.pop.touchlisteners.ButtonUpTouchListener;
 import com.stupidfungames.pop.upgrades.UpgradesParticleEffectEntity;
 import java.util.HashMap;
+import org.andengine.entity.modifier.LoopEntityModifier;
+import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.sprite.Sprite;
@@ -84,7 +85,7 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
         onUpgradesAvailable();
         break;
       case NO_UPGRADES_AVAILABLE:
-        onNoUpgradesAvailable();
+        exitUpgradeState();
         break;
     }
   }
@@ -129,18 +130,14 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
     }
   }
 
-  private void onNoUpgradesAvailable() {
-    exitUpgradeState();
-  }
-
   private void enterUpgradeState() {
     if (!isInUpgradeState) {
       isInUpgradeState = true;
       previousIconColor.set(getCurrentIconColor());
       setIconColor(AndengineColor.CYAN);
       enableOverrideTouchListener(true);
+      startBouncingEffect();
     }
-
   }
 
   private void exitUpgradeState() {
@@ -148,7 +145,19 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
       isInUpgradeState = false;
       setIconColor(previousIconColor);
       enableOverrideTouchListener(false);
+      stopBouncingEffect();
     }
+  }
+
+  private void startBouncingEffect() {
+    stopBouncingEffect();
+    getIconSprite()
+        .registerEntityModifier(
+            new LoopEntityModifier(new ScaleModifier(0.5f, 1.0f, 0.9f)));
+  }
+
+  private void stopBouncingEffect() {
+    getIconSprite().clearEntityModifiers();
   }
 
   private void upgrade() {
