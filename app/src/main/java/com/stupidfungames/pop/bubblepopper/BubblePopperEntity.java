@@ -2,6 +2,7 @@ package com.stupidfungames.pop.bubblepopper;
 
 import static com.stupidfungames.pop.eventbus.GameEvent.BUBBLE_POPPED;
 
+import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameAnimationManager;
 import com.stupidfungames.pop.GameAnimationManager.AnimationListener;
@@ -22,6 +23,7 @@ import com.stupidfungames.pop.pool.BaseSpriteInitializerParams;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import com.stupidfungames.pop.resources.sounds.SoundId;
 import com.stupidfungames.pop.utils.BubblePhysicsUtil;
+import java.util.Random;
 import org.andengine.audio.sound.Sound;
 import org.andengine.entity.modifier.AlphaModifier;
 import org.andengine.entity.modifier.ParallelEntityModifier;
@@ -157,8 +159,9 @@ public class BubblePopperEntity extends BaseEntity {
         });
   }
 
+  private final Random r = new Random();
   private Sound getRandomPopSound() {
-    int random = (int) (Math.random() * 4);
+    int random = r.nextInt(5);
     GameSoundsManager soundsManager = get(GameSoundsManager.class);
     switch (random) {
       case 0:
