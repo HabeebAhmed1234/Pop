@@ -50,6 +50,7 @@ public abstract class LoadableListBaseActivity<T> extends AppCompatActivity impl
     loadableListAdapter = new LoadableListAdapter(getDiffutilCallback(),
         getViewHolderFactory(), onClickListener);
     loadableListViewCoordinator = new LoadableListViewCoordinator(
+        this,
         loadableListAdapter,
         recyclerView,
         (ViewGroup) findViewById(R.id.loadable_list_view));

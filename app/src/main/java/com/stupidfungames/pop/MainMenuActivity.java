@@ -106,6 +106,14 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
     ((AdView) findViewById(R.id.adView)).loadAd(((new AdRequest.Builder()).build()));
   }
 
+  @Override
+  protected void onResume() {
+    super.onResume();
+    if (authManager.isLoggedIn()) {
+      authManager.initiateLogin(this);
+    }
+  }
+
   private void scheduleNudgeNotifications() {
     new UserNudgeNotificationManager().scheduleNudgeNotifications(this);
   }
