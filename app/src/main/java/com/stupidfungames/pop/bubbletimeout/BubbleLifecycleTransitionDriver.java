@@ -79,21 +79,8 @@ class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, List
         break;
     }
     if (nextState != null) {
-      boolean isBubbleInScreen = ScreenUtils.isInScreen(bubbleSprite, PERCENT_SPRITE_IN_SCREEN);
-      if (nextState == EXPLODING && bubbleSprite.getCenterY() > ScreenUtils
-          .getSreenSize().heightPx) {
-        // If the bubble has already passed the bottom of the screen it shouldn't explode
-        // Should just disappear
-        return;
-      } else if ((nextState == ABOUT_TO_EXPLODE
-          || nextState == EXPLODING) && !isBubbleInScreen) {
-        // If bubble if not on the screen and we want to transition to some end bubble state then
-        // make it stable again since its not fair to the player if its off screen and about to explode
-        currentStateTransition = new TimerHandler(STABLE.duration, new NextStateDriver(STABLE));
-      } else {
-        currentStateTransition = new TimerHandler(newState.duration,
-            new NextStateDriver(nextState));
-      }
+      currentStateTransition = new TimerHandler(newState.duration,
+          new NextStateDriver(nextState));
       engine.registerUpdateHandler(currentStateTransition);
     }
   }
@@ -101,6 +88,7 @@ class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, List
   private void removeCurrentUpdateHandler() {
     if (currentStateTransition != null && engine.containsUpdateHandler(currentStateTransition)) {
       engine.unregisterUpdateHandler(currentStateTransition);
+      currentStateTransition = null;
     }
   }
 
@@ -126,7 +114,16 @@ class BubbleLifecycleTransitionDriver implements BubbleLifecycleController, List
 
     @Override
     public void onTimePassed(TimerHandler pTimerHandler) {
-      if (stateMachine.isValidTransition(nextState)) {
+      boolean isBubbleInScreen = ScreenUtils.isInScreen(bubbleSprite, PERCENT_SPRITE_IN_SCREEN);
+      if (nextState == EXPLODING && !isBubbleInScreen) {
+        // If the bubble has already passed the bottom of the screen it shouldn't explode
+        // Should just disappear
+        return;
+      } else if ((nextState == ABOUT_TO_EXPLODE || nextState == EXPLODING) && !isBubbleInScreen) {
+        // If bubble if not on the screen and we want to transition to some end bubble state then
+        // make it stable again since its not fair to the player if its off screen and about to explode
+        stateMachine.transitionState(STABLE);
+      } else if (stateMachine.isValidTransition(nextState)) {
         stateMachine.transitionState(nextState);
       }
     }
