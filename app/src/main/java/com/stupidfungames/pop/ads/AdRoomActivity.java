@@ -20,7 +20,6 @@ import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.stupidfungames.pop.R;
-import com.stupidfungames.pop.analytics.Events;
 import com.stupidfungames.pop.analytics.Logger;
 import com.stupidfungames.pop.androidui.LoadingSpinner;
 import com.stupidfungames.pop.androidui.music.MusicPlayer;
@@ -80,7 +79,7 @@ public class AdRoomActivity extends AppCompatActivity {
     loadingSpinner = findViewById(R.id.loading_spinner);
     loadingSpinner.startLoadingAnimation();
 
-    rewardedAd = new RewardedAd(this, getString(R.string.test_rewarded_ad_unit_id));
+    rewardedAd = new RewardedAd(this, getString(R.string.rewarded_ad_unit_id));
     Logger.logSelect(this, AD_WATCH_START);
     RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() {
       @Override
