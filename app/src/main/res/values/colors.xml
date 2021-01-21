@@ -7,6 +7,7 @@
   <color name="menu_button_pressed_color">#ca6bc9</color>
   <color name="menu_button_color_disabled">#808080</color>
   <color name="green">#00ff00</color>
+  <color name="grey">#CCCCCC</color>
   <color name="pink">#ff00ff</color>
   <color name="red">#FF0000</color>
 </resources>

@@ -12,6 +12,11 @@ public class TooltipImageTints {
   {
     tints.put(TooltipId.BOMB_BUBBLE_TOOLTIP, R.color.green);
     tints.put(TooltipId.UPGRADE_TOOLTIP, R.color.pink);
+    tints.put(TooltipId.BALL_AND_CHAIN_ICON_TOOLTIP, R.color.green);
+    tints.put(TooltipId.TURRET_ICON_TOOLTIP, R.color.green);
+    tints.put(TooltipId.WALLS_ICON_TOOLTIP, R.color.grey);
+    tints.put(TooltipId.NUKE_ICON_TOOLTIP, R.color.green);
+    tints.put(TooltipId.MULTI_TOUCH_ICON_TOOLTIP, R.color.green);
   }
 
   @ColorRes public int getTooltipImageTint(TooltipId id) {

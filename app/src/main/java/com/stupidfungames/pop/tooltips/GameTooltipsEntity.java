@@ -30,26 +30,9 @@ public class GameTooltipsEntity extends BaseEntity {
     }
   }
 
-  public void maybeShowTooltip(TooltipId id, float anchorX, float anchorY) {
-    TooltipPreferences tooltipPreferences = get(TooltipPreferences.class);
-    if (tooltipPreferences.shouldShowTooltip(id)) {
-      tooltipPreferences.tooltipShown(id);
-      showAnchoredTooltip(id, anchorX, anchorY);
-    }
-  }
-
   private void showTooltip(final TooltipId id) {
     startActivity(FullPageTooltipActivity.newIntent(id, get(Context.class)));
 
-  }
-
-  private void showAnchoredTooltip(TooltipId id, float anchorX, float anchorY) {
-    startActivity(GameTooltipActivity.newIntent(
-        GameTooltipActivityParams.forAnchoredTooltip(
-            id,
-            (int) anchorX,
-            (int) anchorY),
-        get(Context.class)));
   }
 
   private void startActivity(Intent intent) {

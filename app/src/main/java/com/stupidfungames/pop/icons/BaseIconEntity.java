@@ -5,20 +5,18 @@ import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
-import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.GameDifficultyEventPayload;
+import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.IconUnlockedEventPayload;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.tooltips.GameTooltipsEntity;
 import com.stupidfungames.pop.tooltips.TooltipId;
-import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.util.adt.transformation.Transformation;
 import org.andengine.util.color.AndengineColor;
 
 /**
@@ -91,18 +89,8 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
   }
 
   private void showTooltip() {
-    float[] tooltipAnchor = getIconTooltipAnchor();
     get(GameTooltipsEntity.class)
-        .maybeShowTooltip(getIconTooltipId(), tooltipAnchor[0], tooltipAnchor[1]);
-  }
-
-  private float[] getIconTooltipAnchor() {
-    float[] anchor = new float[2];
-    Transformation transformation = iconSprite.getLocalToSceneTransformation();
-    anchor[0] = -ScreenUtils.dpToPx(TOOLTIP_LEFT_PADDING_DP);
-    anchor[1] = iconSprite.getHeightScaled() / 2;
-    transformation.transform(anchor);
-    return anchor;
+        .maybeShowTooltip(getIconTooltipId());
   }
 
   private void broadcastIconUnlock() {
