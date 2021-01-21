@@ -11,11 +11,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import com.stupidfungames.pop.MainMenuActivity;
 import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.analytics.Logger;
+import java.util.Random;
 
 /**
  * Schedules NUM_NUDGES notifications to be delivered to the user after some interval in between
@@ -75,7 +77,7 @@ public class UserNudgeNotificationManager extends BroadcastReceiver {
     NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
         .setSmallIcon(getNotificationIcon())
         .setContentTitle(context.getString(R.string.nudge_notification_title))
-        .setContentText(context.getString(R.string.nudge_notification_content))
+        .setContentText(context.getString(getRandomNotificaitonString()))
         .setContentIntent(getAppLaunchIntent(context))
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         .setAutoCancel(true);
@@ -85,6 +87,24 @@ public class UserNudgeNotificationManager extends BroadcastReceiver {
     int notificationId = intent.getIntExtra(EXTRA_NOTIFICATION_ID, 0);
     notificationManager.notify(notificationId, builder.build());
     Logger.logSelect(context, USER_NUDGE_NOTIF_SHOWN);
+  }
+
+  @StringRes
+  private int getRandomNotificaitonString() {
+    Random random = new Random();
+    switch (random.nextInt(5)) {
+      case 0:
+        return R.string.nudge_notification_content_1;
+      case 1:
+        return R.string.nudge_notification_content_2;
+      case 2:
+        return R.string.nudge_notification_content_3;
+      case 3:
+        return R.string.nudge_notification_content_4;
+      case 4:
+        return R.string.nudge_notification_content_5;
+    }
+    return R.string.nudge_notification_content_1;
   }
 
   private int getNotificationIcon() {
