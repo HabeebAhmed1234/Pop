@@ -83,6 +83,13 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
       }
     });
 
+    findViewById(R.id.info_btn).setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        startActivity(AppInfoAppDialog.newIntent(MainMenuActivity.this));
+      }
+    });
+
     popupView = new GoogleAuthPopupView(findViewById(R.id.root_view), this);
     playerProfileView =
         new PlayerProfileView(
@@ -120,9 +127,6 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
 
   private void animate() {
     blinkAnimator.animate(findViewById(R.id.logo));
-    blinkAnimator.animate(findViewById(R.id.share_btn_android));
-    blinkAnimator.animate(findViewById(R.id.share_btn_fb));
-    blinkAnimator.animate(findViewById(R.id.review_btn));
   }
 
   private void openStore() {

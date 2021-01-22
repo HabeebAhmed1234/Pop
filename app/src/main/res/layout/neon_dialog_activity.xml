@@ -1,50 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@android:color/transparent"
+  android:gravity="center">
+
+  <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_border"
     android:gravity="center"
-    android:background="@android:color/transparent">
+    android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:background="@drawable/rounded_border" >
+    <com.stupidfungames.pop.androidui.GameMenuText
+      android:id="@+id/neon_dialog_title_text"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:clipToPadding="false"
+      android:gravity="center"
+      android:paddingHorizontal="@dimen/menu_btn_padding_vertical"
+      android:paddingVertical="@dimen/menu_btn_padding_vertical"
+      android:textSize="@dimen/neon_dialog_title_text_size"
+      app:glow_color="@color/menu_button_color" />
 
-            <com.stupidfungames.pop.androidui.GameMenuText
-                android:id="@+id/neon_dialog_title_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/neon_dialog_title_text_size"
-                android:paddingVertical="@dimen/menu_btn_padding_vertical"
-                android:paddingHorizontal="@dimen/menu_btn_padding_vertical"
-                android:gravity="center"
-                android:clipToPadding="false"
-                app:glow_color="@color/menu_button_color" />
+    <com.stupidfungames.pop.androidui.GameMenuText
+      android:id="@+id/neon_dialog_sub_title_text"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:clipToPadding="false"
+      android:gravity="center"
+      android:paddingHorizontal="@dimen/menu_btn_padding_vertical"
+      android:paddingVertical="@dimen/menu_btn_padding_vertical"
+      android:textSize="@dimen/neon_dialog_sub_title_text_size"
+      app:glow_color="@color/menu_button_color" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/neon_divider_size"
-                android:paddingHorizontal="@dimen/between_btn_padding"
-                android:layout_marginBottom="@dimen/menu_btn_padding_vertical"
-                android:background="@android:color/white" />
-            
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:isScrollContainer="true">
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/neon_divider_size"
+      android:layout_marginBottom="@dimen/menu_btn_padding_vertical"
+      android:background="@android:color/white"
+      android:paddingHorizontal="@dimen/between_btn_padding" />
 
-                <LinearLayout
-                    android:id="@+id/neon_dialog_buttons_container"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:orientation="vertical" >
+    <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:isScrollContainer="true">
 
-                </LinearLayout>
-            </ScrollView>
-        </LinearLayout>
+      <LinearLayout
+        android:id="@+id/neon_dialog_buttons_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+      </LinearLayout>
+    </ScrollView>
+  </LinearLayout>
 </FrameLayout>

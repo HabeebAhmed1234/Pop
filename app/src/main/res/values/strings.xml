@@ -76,6 +76,10 @@
   <string name="must_choose_option_to_continue">You must choose one of the options to continue your game.</string>
   <string name="prompt_user_to_continue">You can continue to resume your game!</string>
 
+  <!-- App info -->
+  <string name="app_info_title">About &appname;</string>
+  <string name="app_info_subtitle">A fun arcade style bubble popping game \n\n Music credit:\n Karl Casey @ White Bat Audio</string>
+
   <!-- Reviews -->
   <string name="review_app_dialog_title">Do you like &appname; so far?</string>
   <string name="review_app_btn_text">Yes! I\'d like to leave a review.</string>
