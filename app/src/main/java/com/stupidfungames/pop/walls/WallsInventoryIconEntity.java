@@ -33,22 +33,18 @@ public class WallsInventoryIconEntity extends BaseInventoryIconEntity implements
 
   @Override
   public void onEnterState(WallsStateMachine.State newState) {
-    AndengineColor color = AndengineColor.GREY;
     GameSoundsManager soundsManager = get(GameSoundsManager.class);
     switch (newState) {
-      case LOCKED:
-        color = AndengineColor.TRANSPARENT;
-        break;
       case UNLOCKED_TOGGLED_OFF:
         soundsManager.getSound(SoundId.CLICK_DOWN).play();
-        color = AndengineColor.GREY;
         break;
       case TOGGLED_ON:
         soundsManager.getSound(SoundId.CLICK_UP).play();
-        color = AndengineColor.GREEN;
         break;
     }
-    setIconColor(color);
+    if (!isInUpgradeState()) {
+      setIconColor(getColorFromState(newState));
+    }
   }
 
   @Override
@@ -99,6 +95,11 @@ public class WallsInventoryIconEntity extends BaseInventoryIconEntity implements
         toggleOff();
         break;
     }
+  }
+
+  @Override
+  protected AndengineColor getIconColor() {
+    return getColorFromCurrentState();
   }
 
   @Override
@@ -169,5 +170,25 @@ public class WallsInventoryIconEntity extends BaseInventoryIconEntity implements
     if (stateMachine.getCurrentState() == WallsStateMachine.State.TOGGLED_ON) {
       stateMachine.transitionState(WallsStateMachine.State.UNLOCKED_TOGGLED_OFF);
     }
+  }
+
+  private AndengineColor getColorFromCurrentState() {
+    return getColorFromState(get(WallsStateMachine.class).getCurrentState());
+  }
+
+  private AndengineColor getColorFromState(WallsStateMachine.State state) {
+    AndengineColor color = AndengineColor.GREY;
+    switch (state) {
+      case LOCKED:
+        color = AndengineColor.TRANSPARENT;
+        break;
+      case UNLOCKED_TOGGLED_OFF:
+        color = AndengineColor.GREY;
+        break;
+      case TOGGLED_ON:
+        color = AndengineColor.GREEN;
+        break;
+    }
+    return color;
   }
 }

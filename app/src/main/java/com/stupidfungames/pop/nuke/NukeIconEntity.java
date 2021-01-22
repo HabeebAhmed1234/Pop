@@ -4,7 +4,6 @@ import static com.stupidfungames.pop.GameConstants.NUKE_UNLOCK_THRESHOLD;
 import static com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId.NUKE_ICON;
 
 import androidx.annotation.Nullable;
-import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
 import com.stupidfungames.pop.icons.BaseUpgradeableIconEntity;
@@ -52,24 +51,9 @@ public class NukeIconEntity extends BaseUpgradeableIconEntity implements
 
   @Override
   public void onEnterState(NukeStateMachine.State newState) {
-    AndengineColor color = AndengineColor.TRANSPARENT;
-
-    switch (newState) {
-      case LOCKED:
-        color = AndengineColor.TRANSPARENT;
-        break;
-      case READY:
-        color = AndengineColor.GREEN;
-        break;
-      case NUKING:
-        color = AndengineColor.YELLOW;
-        break;
-      case COOLDOWN:
-        color = AndengineColor.RED;
-        break;
+    if (!isInUpgradeState()) {
+      setIconColor(getIconColorFromState(newState));
     }
-
-    setIconColor(color);
   }
 
   @Override
@@ -99,6 +83,11 @@ public class NukeIconEntity extends BaseUpgradeableIconEntity implements
   }
 
   @Override
+  protected AndengineColor getIconColor() {
+    return getIconColorFromCurrentState();
+  }
+
+  @Override
   protected void onUpgraded(int previousUpgradeLevel, int newUpgradeLevel) {
     get(NukerEntity.class).onUpgrade(newUpgradeLevel);
     get(NukeCooldownManager.class).onUpgrade(newUpgradeLevel);
@@ -118,5 +107,28 @@ public class NukeIconEntity extends BaseUpgradeableIconEntity implements
   @Override
   protected TooltipId getIconTooltipId() {
     return TooltipId.NUKE_ICON_TOOLTIP;
+  }
+
+  private AndengineColor getIconColorFromCurrentState() {
+    return getIconColorFromState(get(NukeStateMachine.class).getCurrentState());
+  }
+
+  private AndengineColor getIconColorFromState(NukeStateMachine.State state) {
+    AndengineColor color = AndengineColor.TRANSPARENT;
+    switch (state) {
+      case LOCKED:
+        color = AndengineColor.TRANSPARENT;
+        break;
+      case READY:
+        color = AndengineColor.GREEN;
+        break;
+      case NUKING:
+        color = AndengineColor.YELLOW;
+        break;
+      case COOLDOWN:
+        color = AndengineColor.RED;
+        break;
+    }
+    return color;
   }
 }

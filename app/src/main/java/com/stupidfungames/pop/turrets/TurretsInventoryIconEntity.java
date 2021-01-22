@@ -31,7 +31,8 @@ import org.andengine.util.color.AndengineColor;
  * turrets back onto the icon to store them this increasing the number turrets in stock on the
  * icon.
  */
-public class TurretsInventoryIconEntity extends BaseInventoryIconEntity implements EventBus.Subscriber,
+public class TurretsInventoryIconEntity extends BaseInventoryIconEntity implements
+    EventBus.Subscriber,
     GameSceneTouchListenerEntity.SceneTouchListener {
 
   public static final int STARTING_TURRET_INVENTORY = 1;
@@ -74,6 +75,11 @@ public class TurretsInventoryIconEntity extends BaseInventoryIconEntity implemen
         onTurretDocked();
         break;
     }
+  }
+
+  @Override
+  protected AndengineColor getIconColor() {
+    return isUnlocked() ? getUnlockedIconColor() : AndengineColor.TRANSPARENT;
   }
 
   @Override

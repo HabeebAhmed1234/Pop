@@ -42,7 +42,7 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
   private int upgradeLevel = 0;
   private boolean isInUpgradeState = false;
   // the icon color before we entered the upgrade state
-  private AndengineColor previousIconColor = new AndengineColor(getUnlockedIconColor());
+  // private AndengineColor previousIconColor = new AndengineColor(getUnlockedIconColor());
 
   public BaseUpgradeableIconEntity(BinderEnity parent) {
     super(parent);
@@ -120,6 +120,12 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
     }
   }
 
+  protected boolean isInUpgradeState() {
+    return isInUpgradeState;
+  }
+
+  protected abstract AndengineColor getIconColor();
+
   private boolean canTakeMoreUpgrades() {
     return upgradeLevel < getIconUpgradesQuantity();
   }
@@ -133,7 +139,7 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
   private void enterUpgradeState() {
     if (!isInUpgradeState) {
       isInUpgradeState = true;
-      previousIconColor.set(getCurrentIconColor());
+      // previousIconColor.set(getCurrentIconSpriteColor());
       setIconColor(AndengineColor.CYAN);
       enableOverrideTouchListener(true);
       startBouncingEffect();
@@ -143,7 +149,7 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
   private void exitUpgradeState() {
     if (isInUpgradeState) {
       isInUpgradeState = false;
-      setIconColor(previousIconColor);
+      setIconColor(getIconColor());
       enableOverrideTouchListener(false);
       stopBouncingEffect();
     }
