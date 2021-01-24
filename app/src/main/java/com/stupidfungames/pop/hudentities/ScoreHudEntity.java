@@ -56,13 +56,13 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
   @Override
   public void onSaveGame(SaveGame saveGame) {
     super.onSaveGame(saveGame);
-    saveGame.score = scoreValue;
+    saveGame.score = Math.max(scoreValue, STARTING_SCORE);
   }
 
   @Override
   public void onLoadGame(SaveGame saveGame) {
     super.onLoadGame(saveGame);
-    setScoreOnLoadGame(saveGame.score);
+    setScoreOnLoadGame(Math.max(saveGame.score, STARTING_SCORE));
   }
 
   @Override
