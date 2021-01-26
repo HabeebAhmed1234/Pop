@@ -10,13 +10,14 @@ public class GameAdsManager implements OnInitializationCompleteListener {
   private static GameAdsManager sGameAdsManager;
 
   public static GameAdsManager get() {
-      if (sGameAdsManager == null) {
-        sGameAdsManager = new GameAdsManager();
-      }
-      return sGameAdsManager;
+    if (sGameAdsManager == null) {
+      sGameAdsManager = new GameAdsManager();
+    }
+    return sGameAdsManager;
   }
 
-  private GameAdsManager() {}
+  private GameAdsManager() {
+  }
 
 
   public void initialize(Context context) {
