@@ -66,7 +66,7 @@ public class ReviewAppDialogActivity extends GameNeonDialogActivity {
   private void sendFeedback() {
     Intent Email = new Intent(Intent.ACTION_SEND);
     Email.setType("text/email");
-    Email.putExtra(Intent.EXTRA_EMAIL, new String[]{"1habeeb.ahmed1@gmail.com"});
+    Email.putExtra(Intent.EXTRA_EMAIL, new String[]{"stupidfungameszz@gmail.com"});
     Email.putExtra(Intent.EXTRA_SUBJECT, "[Pop!] Feedback");
     Email.putExtra(Intent.EXTRA_TEXT, "The following is my feedback for Pop!:");
     startActivity(Intent.createChooser(Email, "Send Feedback:"));
