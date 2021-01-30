@@ -86,9 +86,11 @@ public class WallsInventoryIconEntity extends BaseInventoryIconEntity implements
 
     switch (event) {
       case WALL_PLACED:
+        toggleOff();
         decreaseInventory();
         break;
       case WALL_DELETED:
+        toggleOff();
         increaseInventory();
         break;
       case GAME_ICONS_TRAY_CLOSED:

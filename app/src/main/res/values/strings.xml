@@ -145,7 +145,7 @@
   <!-- Tooltip texts -->
   <string name="turret_tooltip">Drag and drop turrets from this icon onto the screen.</string>
   <string name="ball_and_chain_tooltip">Press and hold this icon to get a mace.</string>
-  <string name="wall_tooltip">Toggle this icon to start placing walls onto the screen. To place a wall press and drag on the screen.</string>
+  <string name="wall_tooltip">Tap this icon to place or delete a wall on the screen. To place a wall press and drag on the screen.</string>
   <string name="nuke_tooltip">Tap this icon to pop all bubbles on the screen in waves. Careful, it takes a long time to recharge.</string>
   <string name="multi_touch_icon_tooltip">Tap a bubble to pop all nearby bubbles of the same colour.</string>
   <string name="touch_pop_tooltip">Touch the bubbles to pop them before they reach the bottom of the screen!\n\nTouch multiple bubbles of the same color to start a streak and earn more points!</string>
