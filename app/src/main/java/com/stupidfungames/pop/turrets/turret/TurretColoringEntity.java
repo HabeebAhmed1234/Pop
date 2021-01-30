@@ -39,13 +39,13 @@ public class TurretColoringEntity extends BaseEntity implements Listener<State> 
         color = AndengineColor.YELLOW;
         break;
       case FIRING:
-        color = AndengineColor.RED;
+        color = AndengineColor.PURPLE;
         break;
       case DOCKED:
         color = AndengineColor.TRANSPARENT;
         break;
       case TARGETING:
-        color = AndengineColor.GREEN;
+        color = AndengineColor.PURPLE;
         break;
     }
 

@@ -40,6 +40,7 @@ public class AndengineColor {
   public static final AndengineColor CYAN = new AndengineColor(0, 1, 1, 1);
   public static final AndengineColor BLUE = new AndengineColor(0.277f, 0.402f, 1, 1);
   public static final AndengineColor PINK = new AndengineColor(1, 0, 1, 1);
+  public static final AndengineColor PURPLE = new AndengineColor(1,0,1);
   public static final AndengineColor TRANSPARENT = new AndengineColor(0, 0, 0, 0);
 
   public static final int WHITE_ABGR_PACKED_INT = AndengineColor.WHITE.getABGRPackedInt();
