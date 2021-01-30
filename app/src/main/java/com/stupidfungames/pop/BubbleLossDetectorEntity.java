@@ -61,6 +61,6 @@ public class BubbleLossDetectorEntity extends BaseLossDetectorEntity {
         new ScaleModifier(1.2f, 0.1f, 1.5f),
         new AlphaModifier(1.5f, 1f, 0f)));
 
-    get(ShakeCamera.class).shake(0.5f, 4);
+    get(ShakeCamera.class).shake(0.5f, 6);
   }
 }
