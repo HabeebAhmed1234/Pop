@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/player_profile_view"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="@dimen/player_profile_top_padding" >
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/player_profile_view"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:gravity="center"
+  android:orientation="vertical"
+  android:paddingTop="@dimen/player_profile_top_padding">
 
   <com.stupidfungames.pop.androidui.GameMenuText
     android:id="@+id/username"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:ellipsize="end"
     android:gravity="center"
+    android:maxLines="1"
+    android:paddingHorizontal="8dp"
     android:textSize="20sp"
     android:visibility="gone"
-    android:maxLines="1"
-    android:ellipsize="end"
-    android:paddingHorizontal="8dp"
-    android:layout_marginBottom="8dp"
-    app:glow_color="@color/menu_button_color"/>
+    app:glow_color="@color/menu_button_color" />
 
   <com.google.android.gms.common.SignInButton
     android:id="@+id/sign_in_btn"
@@ -31,9 +31,9 @@
     android:id="@+id/sign_out_btn"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:visibility="gone"
+    android:text="@string/sign_out"
     android:textSize="20sp"
+    android:visibility="gone"
     app:glow_color="@color/menu_button_color"
-    app:pressed_glow_color = "@color/menu_button_pressed_color"
-    android:text="@string/sign_out" />
+    app:pressed_glow_color="@color/menu_button_pressed_color" />
 </LinearLayout>

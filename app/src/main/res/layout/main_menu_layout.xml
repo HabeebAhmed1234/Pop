@@ -34,21 +34,15 @@
 
         <FrameLayout
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:clipChildren="false">
+          android:layout_height="wrap_content">
 
-          <com.stupidfungames.pop.androidui.GameMenuText
+          <ImageView
             android:id="@+id/logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="@dimen/title_margin_bottom"
-            android:clipToPadding="false"
-            android:text="@string/app_name"
-            android:textAlignment="center"
-            android:textSize="150sp"
-            app:glow_color="@color/menu_button_color" />
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/title_logo" />
 
           <ImageView
             android:id="@+id/info_btn"
