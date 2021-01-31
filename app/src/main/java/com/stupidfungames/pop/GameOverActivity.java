@@ -64,7 +64,7 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
 
     initScoreText();
 
-    //animateGameOver();
+    animateGameOver();
 
     saveGameManager = new SaveGameManager(this, this);
     saveGameManager.deleteSaveGame();
