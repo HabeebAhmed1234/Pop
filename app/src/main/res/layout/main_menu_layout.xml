@@ -49,11 +49,11 @@
 
           <ImageView
             android:id="@+id/info_btn"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="@dimen/info_btn_size"
+            android:layout_height="@dimen/info_btn_size"
             android:layout_gravity="right |bottom"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginRight="@dimen/info_btn_margin"
+            android:layout_marginBottom="@dimen/info_btn_margin"
             android:src="@drawable/info_icon" />
         </FrameLayout>
 
@@ -73,7 +73,7 @@
             android:padding="4dp"
             android:text="@string/share"
             android:textAlignment="center"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_small_medium"
             app:glow_color="@color/menu_button_color" />
 
           <com.stupidfungames.pop.androidui.GameMenuText
@@ -84,7 +84,7 @@
             android:padding="4dp"
             android:text="@string/vertical_divider"
             android:textAlignment="center"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_small_medium"
             app:glow_color="@color/menu_button_color" />
 
           <com.stupidfungames.pop.androidui.GameMenuText
@@ -95,7 +95,7 @@
             android:padding="4dp"
             android:text="@string/share_facebook"
             android:textAlignment="center"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_small_medium"
             app:glow_color="@color/menu_button_color" />
 
           <com.stupidfungames.pop.androidui.GameMenuText
@@ -106,7 +106,7 @@
             android:padding="4dp"
             android:text="@string/vertical_divider"
             android:textAlignment="center"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_small_medium"
             app:glow_color="@color/menu_button_color" />
 
           <com.stupidfungames.pop.androidui.GameMenuText
@@ -117,7 +117,7 @@
             android:padding="4dp"
             android:text="@string/review"
             android:textAlignment="center"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_small_medium"
             app:glow_color="@color/menu_button_color" />
         </LinearLayout>
 
