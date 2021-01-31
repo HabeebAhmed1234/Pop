@@ -1,0 +1,35 @@
+<resources>
+  <dimen name="button_horizontal_padding">3dp</dimen>
+  <dimen name="text_size_xlarge">20sp</dimen>
+  <dimen name="text_size_large">12sp</dimen>
+  <dimen name="text_size_medium">8sp</dimen>
+  <dimen name="text_size_small_medium">8sp</dimen>
+  <dimen name="text_size_small">6sp</dimen>
+  <dimen name="main_menu_padding_horizontal">12dp</dimen>
+  <dimen name="main_menu_padding_top">40dp</dimen>
+  <dimen name="between_btn_padding">4dp</dimen>
+  <dimen name="socials_btn_bottom_padding">4dp</dimen>
+  <dimen name="player_profile_top_padding">8dp</dimen>
+  <dimen name="title_margin_bottom">12dp</dimen>
+  <dimen name="menu_btn_padding_vertical">4dp</dimen>
+  <dimen name="main_menu_player_profile_view_height">16dp</dimen>
+  <dimen name="main_menu_btn_text_size">12sp</dimen>
+  <dimen name="neon_dialog_title_text_size">8sp</dimen>
+  <dimen name="neon_dialog_sub_title_text_size">4sp</dimen>
+  <dimen name="neon_dialog_button_text_size">9sp</dimen>
+  <dimen name="neon_divider_size">1dp</dimen>
+  <dimen name="toast_dialog_title_size">8sp</dimen>
+  <dimen name="list_horizontal_padding">4dp</dimen>
+  <dimen name="list_vertical_padding">8dp</dimen>
+  <dimen name="products_list_item_spacing">4dp</dimen>
+  <dimen name="product_horizontal_margin">3dp</dimen>
+  <dimen name="product_name_size">4sp</dimen>
+  <dimen name="product_price_size">4sp</dimen>
+  <dimen name="product_description_size">4sp</dimen>
+  <dimen name="product_title_spacing">2dp</dimen>
+  <dimen name="product_image_right_margin">2dp</dimen>
+  <dimen name="product_image_size">16dp</dimen>
+  <dimen name="info_btn_size">12dp</dimen>
+  <dimen name="info_btn_margin">4dp</dimen>
+  <dimen name="tooltip_image_size">50dp</dimen>
+</resources>
