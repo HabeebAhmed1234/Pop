@@ -62,16 +62,9 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
       }
     });
 
-    findViewById(R.id.quit_btn).setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        quitGame();
-      }
-    });
-
     initScoreText();
 
-    animateGameOver();
+    //animateGameOver();
 
     saveGameManager = new SaveGameManager(this, this);
     saveGameManager.deleteSaveGame();
@@ -106,10 +99,6 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
     String saveGameJson = getIntent().getStringExtra(CONTINUE_SAVE_GAME_EXTRA);
     SaveGame saveGame = SaveGame.fromJson(saveGameJson);
     return saveGame;
-  }
-
-  private void quitGame() {
-    this.finish();
   }
 
   private void animateGameOver() {

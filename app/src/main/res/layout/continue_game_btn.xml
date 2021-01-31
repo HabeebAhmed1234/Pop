@@ -19,6 +19,7 @@
     android:id="@+id/continue_game_btn"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:textAlignment="center"
     android:text="@string/continue_game_text"
     android:textSize="@dimen/text_size_large"
     android:clipToPadding="false"

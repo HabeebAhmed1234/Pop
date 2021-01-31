@@ -72,6 +72,7 @@
             android:clipToPadding="false"
             android:padding="4dp"
             android:text="@string/share"
+            android:textAlignment="center"
             android:textSize="20sp"
             app:glow_color="@color/menu_button_color" />
 
@@ -82,6 +83,7 @@
             android:clipToPadding="false"
             android:padding="4dp"
             android:text="@string/vertical_divider"
+            android:textAlignment="center"
             android:textSize="20sp"
             app:glow_color="@color/menu_button_color" />
 
@@ -92,6 +94,7 @@
             android:clipToPadding="false"
             android:padding="4dp"
             android:text="@string/share_facebook"
+            android:textAlignment="center"
             android:textSize="20sp"
             app:glow_color="@color/menu_button_color" />
 
@@ -102,6 +105,7 @@
             android:clipToPadding="false"
             android:padding="4dp"
             android:text="@string/vertical_divider"
+            android:textAlignment="center"
             android:textSize="20sp"
             app:glow_color="@color/menu_button_color" />
 
@@ -112,6 +116,7 @@
             android:clipToPadding="false"
             android:padding="4dp"
             android:text="@string/review"
+            android:textAlignment="center"
             android:textSize="20sp"
             app:glow_color="@color/menu_button_color" />
         </LinearLayout>
@@ -123,6 +128,7 @@
           android:layout_marginBottom="@dimen/between_btn_padding"
           android:clipToPadding="false"
           android:text="@string/new_game_text"
+          android:textAlignment="center"
           android:textSize="@dimen/main_menu_btn_text_size"
           app:glow_color="@color/menu_button_color"
           app:pressed_glow_color="@color/menu_button_pressed_color" />
@@ -136,6 +142,7 @@
           android:layout_marginBottom="@dimen/between_btn_padding"
           android:clipToPadding="false"
           android:text="@string/purchases"
+          android:textAlignment="center"
           android:textSize="@dimen/main_menu_btn_text_size"
           app:glow_color="@color/menu_button_color"
           app:pressed_glow_color="@color/menu_button_pressed_color" />
@@ -147,6 +154,7 @@
           android:layout_marginBottom="@dimen/between_btn_padding"
           android:clipToPadding="false"
           android:text="@string/store"
+          android:textAlignment="center"
           android:textSize="@dimen/main_menu_btn_text_size"
           app:glow_color="@color/menu_button_color"
           app:pressed_glow_color="@color/menu_button_pressed_color" />

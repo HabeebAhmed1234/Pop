@@ -31,6 +31,7 @@
         android:gravity="center"
         android:paddingVertical="@dimen/menu_btn_padding_vertical"
         android:text="@string/game_over_text"
+        android:textAlignment="center"
         android:textSize="@dimen/text_size_xlarge"
         app:glow_color="@color/menu_button_color" />
 
@@ -41,6 +42,7 @@
         android:gravity="center"
         android:paddingVertical="@dimen/menu_btn_padding_vertical"
         android:text="@string/your_score_title"
+        android:textAlignment="center"
         android:textSize="@dimen/text_size_large"
         app:glow_color="@color/menu_button_color" />
 
@@ -51,6 +53,7 @@
         android:layout_marginBottom="24dp"
         android:gravity="center"
         android:paddingVertical="@dimen/menu_btn_padding_vertical"
+        android:textAlignment="center"
         android:textSize="@dimen/text_size_large"
         app:glow_color="@color/green" />
 
@@ -63,20 +66,11 @@
         android:gravity="center"
         android:paddingVertical="@dimen/menu_btn_padding_vertical"
         android:text="@string/new_game_text"
+        android:textAlignment="center"
         android:textSize="@dimen/text_size_medium"
         app:glow_color="@color/menu_button_color"
         app:pressed_glow_color="@color/menu_button_pressed_color" />
 
-      <com.stupidfungames.pop.androidui.GameMenuButton
-        android:id="@+id/quit_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingVertical="@dimen/menu_btn_padding_vertical"
-        android:text="@string/quit_text"
-        android:textSize="@dimen/text_size_medium"
-        app:glow_color="@color/menu_button_color"
-        app:pressed_glow_color="@color/menu_button_pressed_color" />
     </LinearLayout>
 
     <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
