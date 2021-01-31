@@ -4,7 +4,6 @@ import static com.stupidfungames.pop.analytics.Events.APP_START;
 import static com.stupidfungames.pop.analytics.Events.APP_START_FROM_NOTIFICATION;
 import static com.stupidfungames.pop.analytics.Events.OPEN_PURCHASES;
 import static com.stupidfungames.pop.analytics.Events.OPEN_STORE;
-import static com.stupidfungames.pop.analytics.Events.QUIT_BTN;
 import static com.stupidfungames.pop.notifications.UserNudgeNotificationManager.EXTRA_FROM_NOTIFICATION;
 
 import android.app.Activity;
@@ -61,13 +60,6 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
     saveGameManager = new SaveGameManager(this, this);
 
     setContentView(R.layout.main_menu_layout);
-
-    findViewById(R.id.quit_btn).setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        quitGame();
-      }
-    });
 
     findViewById(R.id.open_store_btn).setOnClickListener(new OnClickListener() {
       @Override
@@ -137,11 +129,6 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
   private void openPurchses() {
     Logger.logSelect(this, OPEN_PURCHASES);
     startActivity(EquipActivity.getIntent(this));
-  }
-
-  private void quitGame() {
-    Logger.logSelect(this, QUIT_BTN);
-    this.finish();
   }
 
   @Override

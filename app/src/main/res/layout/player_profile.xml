@@ -6,6 +6,7 @@
   android:layout_height="wrap_content"
   android:gravity="center"
   android:orientation="vertical"
+  android:background="@android:color/transparent"
   android:paddingTop="@dimen/player_profile_top_padding">
 
   <com.stupidfungames.pop.androidui.GameMenuText

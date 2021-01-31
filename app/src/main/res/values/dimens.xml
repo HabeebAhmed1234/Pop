@@ -23,11 +23,6 @@
 
     <dimen name="toast_dialog_title_size">26sp</dimen>
 
-    <dimen name="ttlm_default_padding">20dp</dimen>
-    <dimen name="ttlm_default_corner_radius">6dp</dimen>
-    <dimen name="ttlm_default_stroke_weight">4dp</dimen>
-    <dimen name="ttlm_default_elevation">2dp</dimen>
-
     <dimen name="list_horizontal_padding">16dp</dimen>
     <dimen name="list_vertical_padding">24dp</dimen>
     <dimen name="products_list_item_spacing">12dp</dimen>

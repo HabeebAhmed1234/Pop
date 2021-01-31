@@ -22,19 +22,22 @@
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_weight="1"
+      android:background="@android:color/transparent"
       android:isScrollContainer="true">
 
       <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
+        android:background="@android:color/transparent"
         android:clipChildren="false"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <FrameLayout
           android:layout_width="match_parent"
-          android:layout_height="wrap_content">
+          android:layout_height="wrap_content"
+          android:background="@android:color/transparent">
 
           <ImageView
             android:id="@+id/logo"
@@ -58,6 +61,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginBottom="@dimen/socials_btn_bottom_padding"
+          android:background="@android:color/transparent"
           android:gravity="center"
           android:orientation="horizontal">
 
@@ -143,17 +147,6 @@
           android:layout_marginBottom="@dimen/between_btn_padding"
           android:clipToPadding="false"
           android:text="@string/store"
-          android:textSize="@dimen/main_menu_btn_text_size"
-          app:glow_color="@color/menu_button_color"
-          app:pressed_glow_color="@color/menu_button_pressed_color" />
-
-        <com.stupidfungames.pop.androidui.GameMenuButton
-          android:id="@+id/quit_btn"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="@dimen/between_btn_padding"
-          android:clipToPadding="false"
-          android:text="@string/quit_text"
           android:textSize="@dimen/main_menu_btn_text_size"
           app:glow_color="@color/menu_button_color"
           app:pressed_glow_color="@color/menu_button_pressed_color" />
