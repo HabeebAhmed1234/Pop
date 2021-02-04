@@ -1,42 +1,76 @@
 <resources>
-    <dimen name="button_horizontal_padding">8dp</dimen>
+  <dimen name="button_horizontal_padding">8dp</dimen>
 
-    <dimen name="text_size_xlarge">60sp</dimen>
-    <dimen name="text_size_large">32sp</dimen>
-    <dimen name="text_size_medium">26sp</dimen>
-    <dimen name="text_size_small_medium">20sp</dimen>
-    <dimen name="text_size_small">18sp</dimen>
+  <dimen name="text_size_xlarge">60sp</dimen>
+  <dimen name="text_size_large">32sp</dimen>
+  <dimen name="text_size_medium">26sp</dimen>
+  <dimen name="text_size_small_medium">20sp</dimen>
+  <dimen name="text_size_small">18sp</dimen>
 
-    <dimen name="main_menu_padding_horizontal">32dp</dimen>
-    <dimen name="main_menu_padding_top">120dp</dimen>
-    <dimen name="between_btn_padding">16dp</dimen>
-    <dimen name="socials_btn_bottom_padding">20dp</dimen>
-    <dimen name="player_profile_top_padding">20dp</dimen>
-    <dimen name="title_margin_bottom">40dp</dimen>
-    <dimen name="menu_btn_padding_vertical">12dp</dimen>
-    <dimen name="main_menu_player_profile_view_height">50dp</dimen>
-    <dimen name="main_menu_btn_text_size">40sp</dimen>
+  <dimen name="main_menu_padding_horizontal">32dp</dimen>
+  <dimen name="main_menu_padding_top">120dp</dimen>
+  <dimen name="between_btn_padding">16dp</dimen>
+  <dimen name="socials_btn_bottom_padding">20dp</dimen>
+  <dimen name="player_profile_top_padding">20dp</dimen>
+  <dimen name="title_margin_bottom">40dp</dimen>
+  <dimen name="menu_btn_padding_vertical">12dp</dimen>
+  <dimen name="main_menu_player_profile_view_height">50dp</dimen>
+  <dimen name="main_menu_btn_text_size">40sp</dimen>
 
-    <dimen name="neon_dialog_title_text_size">20sp</dimen>
-    <dimen name="neon_dialog_sub_title_text_size">14sp</dimen>
-    <dimen name="neon_dialog_button_text_size">26sp</dimen>
-    <dimen name="neon_divider_size">1dp</dimen>
+  <dimen name="neon_dialog_title_text_size">20sp</dimen>
+  <dimen name="neon_dialog_sub_title_text_size">14sp</dimen>
+  <dimen name="neon_dialog_button_text_size">26sp</dimen>
+  <dimen name="neon_divider_size">1dp</dimen>
 
-    <dimen name="toast_dialog_title_size">26sp</dimen>
+  <dimen name="toast_dialog_title_size">26sp</dimen>
 
-    <dimen name="list_horizontal_padding">16dp</dimen>
-    <dimen name="list_vertical_padding">24dp</dimen>
-    <dimen name="products_list_item_spacing">12dp</dimen>
-    <dimen name="product_horizontal_margin">8dp</dimen>
-    <dimen name="product_name_size">16sp</dimen>
-    <dimen name="product_price_size">16sp</dimen>
-    <dimen name="product_description_size">12sp</dimen>
-    <dimen name="product_title_spacing">4dp</dimen>
-    <dimen name="product_image_right_margin">4dp</dimen>
-    <dimen name="product_image_size">48dp</dimen>
+  <dimen name="list_horizontal_padding">16dp</dimen>
+  <dimen name="list_vertical_padding">24dp</dimen>
+  <dimen name="products_list_item_spacing">12dp</dimen>
+  <dimen name="product_horizontal_margin">8dp</dimen>
+  <dimen name="product_name_size">16sp</dimen>
+  <dimen name="product_price_size">16sp</dimen>
+  <dimen name="product_description_size">12sp</dimen>
+  <dimen name="product_title_spacing">4dp</dimen>
+  <dimen name="product_image_right_margin">4dp</dimen>
+  <dimen name="product_image_size">48dp</dimen>
 
-    <dimen name="info_btn_size">36dp</dimen>
-    <dimen name="info_btn_margin">16dp</dimen>
+  <dimen name="info_btn_size">36dp</dimen>
+  <dimen name="info_btn_margin">16dp</dimen>
 
-    <dimen name="tooltip_image_size">150dp</dimen>
+  <dimen name="tooltip_image_size">150dp</dimen>
+
+  <!-- in game dimens -->
+  <dimen name="bubble_size_large">160dp</dimen>
+  <dimen name="bubble_size_medium">120dp</dimen>
+  <dimen name="bubble_size_small">80dp</dimen>
+
+  <dimen name="game_tray_margin_right">4dp</dimen>
+  <dimen name="quick_settings_icon_size">32dp</dimen>
+  <dimen name="quick_settings_padding_horizontal">8dp</dimen>
+  <dimen name="quick_settings_padding_vertical">6dp</dimen>
+  <dimen name="quick_settings_padding_between_icons">8dp</dimen>
+  <dimen name="quick_settings_open_close_btn_size">32dp</dimen>
+  <dimen name="quick_settings_open_close_btn_right_margin">4dp</dimen>
+
+  <dimen name="turret_dragging_offset">20dp</dimen>
+  <dimen name="turret_body_size">88dp</dimen>
+  <dimen name="turret_cannon_height">12dp</dimen>
+  <dimen name="turret_cannon_length">32dp</dimen>
+
+  <dimen name="inventory_text_max_width">9dp</dimen>
+  <dimen name="inventory_text_max_height">20dp</dimen>
+
+  <dimen name="upgrade_chevron_size">12dp</dimen>
+  <dimen name="upgrade_chevron_right_margin">16dp</dimen>
+  <dimen name="upgrade_chevron_top_margin">0dp</dimen>
+  <dimen name="upgrade_ball_size">80dp</dimen>
+
+  <dimen name="bomb_bubble_countdown_text_top_padding">14dp</dimen>
+
+  <dimen name="wall_height">11dp</dimen>
+  <dimen name="max_wall_width">182dp</dimen>
+  <dimen name="min_wall_width">75dp</dimen>
+  <dimen name="wall_delete_icon_size">44dp</dimen>
+
 </resources>

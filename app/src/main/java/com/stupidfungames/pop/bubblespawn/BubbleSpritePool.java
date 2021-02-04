@@ -1,5 +1,6 @@
 package com.stupidfungames.pop.bubblespawn;
 
+import android.content.Context;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleSize;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleType;
@@ -102,6 +103,7 @@ public class BubbleSpritePool extends ItemPool {
   }
 
   private void adjustBubbleScale(Shape bubbleSprite, BubbleSize bubbleSize) {
-    bubbleSprite.setScale(bubbleSize.getSizePx() / ((Sprite) bubbleSprite).getWidth());
+    bubbleSprite
+        .setScale(bubbleSize.getSizePx(get(Context.class)) / ((Sprite) bubbleSprite).getWidth());
   }
 }

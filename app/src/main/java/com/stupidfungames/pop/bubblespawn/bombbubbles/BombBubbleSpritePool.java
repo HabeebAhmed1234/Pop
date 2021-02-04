@@ -2,9 +2,9 @@ package com.stupidfungames.pop.bubblespawn.bombbubbles;
 
 import static com.stupidfungames.pop.GameConstants.BOMB_BUBBLE_LIFESPAN_SECONDS;
 import static com.stupidfungames.pop.GameConstants.BOMB_STATES_DURATION_SECONDS;
-import static com.stupidfungames.pop.utils.ScreenUtils.dpToPx;
 
 import android.content.Context;
+import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleSize;
 import com.stupidfungames.pop.fixturedefdata.BombBubbleEntityUserData;
@@ -27,8 +27,6 @@ public class BombBubbleSpritePool extends ItemPool {
   public static final AndengineColor DIFFUSE_BOMB_COLOUR = AndengineColor.GREEN;
   public static final AndengineColor WARN_BOMB_COLOUR = AndengineColor.YELLOW;
   public static final AndengineColor EXPLODING_BOMB_COLOUR = AndengineColor.RED;
-  public static final float BOMB_BUBBLE_SIZE_PX = BubbleSize.MEDIUM.getSizePx();
-  public static final float BOMB_BUBBLE_COUNTDOWN_TEXT_TOP_PADDING_PX = dpToPx(14);
 
   private final ItemInitializer<Sprite, BaseSpriteInitializerParams> initializer = new BaseSpriteItemInitializer<BaseSpriteInitializerParams>() {
     @Override
@@ -41,13 +39,13 @@ public class BombBubbleSpritePool extends ItemPool {
       sprite.setUserData(new BombBubbleEntityUserData());
       sprite.setColor(EXPLODING_BOMB_COLOUR);
       clipBubblePosition(sprite);
-      sprite.setScale(BOMB_BUBBLE_SIZE_PX / sprite.getWidth());
+      sprite.setScale(BubbleSize.MEDIUM.getSizePx(get(Context.class)) / sprite.getWidth());
 
       Text countDownText = new Text(0, 0,
           get(GameFontsManager.class).getFont(FontId.BOMB_BUBBLE_COUNTDOWN_FONT), "1",
           3,
           vertexBufferObjectManager);
-      countDownText.setY(BOMB_BUBBLE_COUNTDOWN_TEXT_TOP_PADDING_PX);
+      countDownText.setY(getDimenPx(R.dimen.bomb_bubble_countdown_text_top_padding));
       GeometryUtils.centerInHorizontal(sprite, countDownText);
       sprite.attachChild(countDownText);
       return sprite;

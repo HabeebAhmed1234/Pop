@@ -1,5 +1,6 @@
 package com.stupidfungames.pop.gameiconstray;
 
+import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
@@ -52,9 +53,9 @@ public class GameIconsHostTrayEntity extends HostTrayBaseEntity<GameIconsHostTra
   @Override
   protected Spec getSpec() {
     return new Spec(
-        4,
-        ScreenUtils.getSreenSize().heightDp / 2,
-        ScreenUtils.getSreenSize().widthDp,
+        getDimenPx(R.dimen.game_tray_margin_right),
+        ScreenUtils.getSreenSize().heightPx / 2,
+        ScreenUtils.getSreenSize().widthPx,
         0.2f);
   }
 

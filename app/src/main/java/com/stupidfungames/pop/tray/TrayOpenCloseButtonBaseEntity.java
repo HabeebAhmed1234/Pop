@@ -1,6 +1,5 @@
 package com.stupidfungames.pop.tray;
 
-import android.content.Context;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.resources.textures.TextureId;
@@ -20,11 +19,11 @@ public abstract class TrayOpenCloseButtonBaseEntity extends BaseEntity implement
     public final int iconSizePx;
     public final int iconRightMarginPx;
 
-    public ButtonSpec(Context context,
-        int iconSizeDp,
-        int iconRightMarginDp) {
-      iconSizePx = ScreenUtils.dpToPx(iconSizeDp);
-      iconRightMarginPx = ScreenUtils.dpToPx(iconRightMarginDp);
+    public ButtonSpec(
+        int iconSizePx,
+        int iconRightMarginPx) {
+      this.iconSizePx = iconSizePx;
+      this.iconRightMarginPx = iconRightMarginPx;
     }
   }
 

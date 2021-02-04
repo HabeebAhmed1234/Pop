@@ -1,5 +1,8 @@
 package com.stupidfungames.pop;
 
+import android.content.Context;
+import android.util.Log;
+import androidx.annotation.DimenRes;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.fixturedefdata.BaseEntityUserData;
 import com.stupidfungames.pop.physics.IPhysicsConnector;
@@ -8,6 +11,8 @@ import com.stupidfungames.pop.physics.PhysicsWorld;
 import com.stupidfungames.pop.physics.ReversePhysicsConnectorImpl;
 import com.stupidfungames.pop.savegame.SaveGame;
 import com.stupidfungames.pop.utils.ScreenUtils;
+import java.util.HashMap;
+import java.util.Map;
 import org.andengine.engine.Engine;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.scene.IOnAreaTouchListener;
@@ -30,6 +35,8 @@ import org.jbox2d.dynamics.Body;
 public abstract class BaseEntity extends BinderEnity implements
     GameLifeCycleCalllbackManager.GameCallback {
 
+  private static final String TAG = "BaseEntity";
+
   protected final Scene scene;
   protected final PhysicsWorld physicsWorld;
   protected final VertexBufferObjectManager vertexBufferObjectManager;
@@ -37,6 +44,8 @@ public abstract class BaseEntity extends BinderEnity implements
   protected final HostActivity hostActivity;
   protected final int levelWidth;
   protected final int levelHeight;
+
+  private Map<Integer, Float> dimenPxCache;
 
   public BaseEntity(BinderEnity parent) {
     super(parent);
@@ -52,7 +61,7 @@ public abstract class BaseEntity extends BinderEnity implements
   }
 
   /**
-   * NOOP all the GameCallbacks so each entitiy doesn't have to implement every callback
+   * NOOP all the GameCallbacks so each entity doesn't have to implement every callback
    */
   @Override
   public void onCreateResources() {
@@ -182,6 +191,23 @@ public abstract class BaseEntity extends BinderEnity implements
 
   protected boolean isInScene(final IEntity entity) {
     return entity != null && entity.isVisible();
+  }
+
+  protected float getDimenPx(@DimenRes int dimenRes) {
+    if (dimenRes == 0) {
+      Log.e(TAG, "Invalid dimen " + dimenRes);
+      return 0;
+    }
+    if (dimenPxCache == null) {
+      dimenPxCache = new HashMap<>();
+    }
+    if (dimenPxCache.containsKey(dimenRes)) {
+      return dimenPxCache.get(dimenRes);
+    }
+
+    float dimenPx = get(Context.class).getResources().getDimension(dimenRes);
+    dimenPxCache.put(dimenRes, dimenPx);
+    return dimenPx;
   }
 
   private void removeFromSceneInternal(IEntity entity) {

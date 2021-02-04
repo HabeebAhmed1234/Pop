@@ -1,15 +1,13 @@
 package com.stupidfungames.pop.icons;
 
 import static com.stupidfungames.pop.turrets.TurretsInventoryIconEntity.STARTING_TURRET_INVENTORY;
-import static com.stupidfungames.pop.utils.ScreenUtils.dpToPx;
 
-import android.content.Context;
+import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId;
 import com.stupidfungames.pop.resources.fonts.FontId;
 import com.stupidfungames.pop.resources.fonts.GameFontsManager;
 import com.stupidfungames.pop.savegame.SaveGame;
-import com.stupidfungames.pop.utils.ScreenUtils;
 import java.util.HashMap;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
@@ -19,9 +17,6 @@ import org.andengine.util.color.AndengineColor;
  * Base class for icons that have inventory text on top of them
  */
 public abstract class BaseInventoryIconEntity extends BaseUpgradeableIconEntity {
-
-  private static final float INVENTORY_TEXT_MAX_WIDTH_PX = dpToPx(8);
-  private static final float INVENTORY_TEXT_MAX_HEIGHT_PX = dpToPx(20);
 
   private Text inventoryText;
   private int inventoryCount = getStartingInventoryCount();
@@ -81,8 +76,8 @@ public abstract class BaseInventoryIconEntity extends BaseUpgradeableIconEntity 
     Sprite iconSprite = getIconSprite();
     inventoryText.setX(
         iconSprite.getWidthScaled() / 2 -
-            INVENTORY_TEXT_MAX_WIDTH_PX);
-    inventoryText.setY(-INVENTORY_TEXT_MAX_HEIGHT_PX);
+            getDimenPx(R.dimen.inventory_text_max_width));
+    inventoryText.setY(-getDimenPx(R.dimen.inventory_text_max_height));
 
     onInventoryChanged();
   }

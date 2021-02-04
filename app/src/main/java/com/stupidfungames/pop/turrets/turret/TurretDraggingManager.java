@@ -9,6 +9,7 @@ import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameSceneTouchListenerEntity;
 import com.stupidfungames.pop.LongPressGesture;
+import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
@@ -27,8 +28,6 @@ import org.andengine.input.touch.TouchEvent;
 public class TurretDraggingManager extends BaseEntity implements
     GameSceneTouchListenerEntity.SceneTouchListener,
     BaseStateMachine.Listener<TurretStateMachine.State>, LongPressGesture.LongPressCallback {
-
-  private static final float DRAGGING_OFFSET_DISTANCE_DP = 20;
 
   public TurretDraggingManager(BinderEnity parent) {
     super(parent);
@@ -103,7 +102,7 @@ public class TurretDraggingManager extends BaseEntity implements
         && !get(TurretsMutex.class).isDragging()) {
       pickUpTurret(touchX, touchY);
     } else {
-      Log.e("TurretDragginManager", "Long press registered while we are dragging the turret!");
+      Log.e("TurretDraggingManager", "Long press registered while we are dragging the turret!");
     }
   }
 
@@ -121,7 +120,7 @@ public class TurretDraggingManager extends BaseEntity implements
   }
 
   private void trackTurretToPointerOnDrag(float x, float y) {
-    int offsetPx = ScreenUtils.dpToPx(DRAGGING_OFFSET_DISTANCE_DP);
+    float offsetPx = getDimenPx(R.dimen.turret_dragging_offset);
     get(HostTurretCallback.class).setTurretPositionCenter(x - offsetPx, y - offsetPx);
   }
 

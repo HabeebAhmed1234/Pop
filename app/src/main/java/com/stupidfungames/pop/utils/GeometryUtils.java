@@ -77,20 +77,10 @@ public class GeometryUtils {
   }
 
   public static void initSpriteDimensCenterPos(
-      Context context,
-      Sprite sprite,
-      float centerPosX,
-      float centerPosY,
-      int sizeDp) {
-    initSpriteDimensCenterPos(sprite, centerPosX, centerPosY, ScreenUtils.dpToPx(sizeDp));
-
-  }
-
-  public static void initSpriteDimensCenterPos(
       Sprite sprite,
       float centerPosXPx,
       float centerPosYPx,
-      int sizePx) {
+      float sizePx) {
     initSpriteDimens(sprite, centerPosXPx - sizePx / 2, centerPosYPx - sizePx / 2, sizePx, sizePx);
   }
 
@@ -98,8 +88,8 @@ public class GeometryUtils {
       Sprite sprite,
       float posXPx,
       float posYPx,
-      int widthPx,
-      int heightPx) {
+      float widthPx,
+      float heightPx) {
     sprite.setWidth(widthPx);
     sprite.setHeight(heightPx);
     sprite.setX(posXPx);

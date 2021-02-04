@@ -7,12 +7,14 @@ import static com.stupidfungames.pop.GameConstants.MAX_SPAWN_INTERVAL_SECONDS;
 import static com.stupidfungames.pop.GameConstants.MIN_SPAWN_INTERVAL_SECONDS;
 import static org.andengine.util.math.MathUtils.RANDOM;
 
+import android.content.Context;
 import android.hardware.SensorManager;
-import android.util.Log;
 import android.util.Pair;
+import androidx.annotation.DimenRes;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.BubbleTouchFactoryEntity;
 import com.stupidfungames.pop.GameFixtureDefs;
+import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpritePool.BubbleSpritePoolParams;
@@ -28,7 +30,6 @@ import com.stupidfungames.pop.eventbus.IconUnlockedEventPayload;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId;
 import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.utils.BubblePhysicsUtil;
-import com.stupidfungames.pop.utils.ScreenUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,20 +75,21 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
   }
 
   public enum BubbleSize {
-    LARGE(160),
-    MEDIUM(120),
-    SMALL(80);
+    LARGE(R.dimen.bubble_size_large),
+    MEDIUM(R.dimen.bubble_size_medium),
+    SMALL(R.dimen.bubble_size_small);
 
-    public final float sizeDp;
+    @DimenRes
+    public final int dimenRes;
     private final Map<BubbleSize, Float> sizeToPxMap = new HashMap<>();
 
-    BubbleSize(final float dp) {
-      this.sizeDp = dp;
+    BubbleSize(@DimenRes final int dimenRes) {
+      this.dimenRes = dimenRes;
     }
 
-    public float getSizePx() {
+    public float getSizePx(Context context) {
       if (!sizeToPxMap.containsKey(this)) {
-        sizeToPxMap.put(this, (float) ScreenUtils.dpToPx(sizeDp));
+        sizeToPxMap.put(this, context.getResources().getDimension(dimenRes));
       }
       return sizeToPxMap.get(this);
     }
@@ -122,7 +124,7 @@ public class BubbleSpawnerEntity extends BaseEntity implements EventBus.Subscrib
             List<Pair<Float, Float>> startingBubblePositions = BubblePacker
                 .getSpawnBubblesLocations(
                     numBubbles,
-                    BubbleSize.LARGE.getSizePx());
+                    BubbleSize.LARGE.getSizePx(get(Context.class)));
             for (Pair<Float, Float> position : startingBubblePositions) {
               if (!get(BombBubbleSpawnerEntity.class)
                   .maybeSpawnBombBubble(position.first, position.second)) {

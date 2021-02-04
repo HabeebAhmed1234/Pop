@@ -1,6 +1,6 @@
 package com.stupidfungames.pop.bubblespawn.bombbubbles;
 
-import static com.stupidfungames.pop.GameConstants.BOMB_BUBBLE_EXPLOSION_RADIUS_PX;
+import static com.stupidfungames.pop.GameConstants.BOMB_BUBBLE_EXPLOSION_RADIUS_MULTIPLIER;
 
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.Binder;
@@ -65,11 +65,13 @@ public class BombBubbleTouchFactoryEntity extends BaseEntity {
   }
 
   private void popBubblesInRadius(Sprite sprite) {
+    float explosionRadiusPx = sprite.getWidthScaled() * BOMB_BUBBLE_EXPLOSION_RADIUS_MULTIPLIER;
+
     List<IEntity> bubblesInRadius = scene.query(
         new BubblesInRadiusEntityMatcher(
             sprite.getCenterX(),
             sprite.getCenterY(),
-            BOMB_BUBBLE_EXPLOSION_RADIUS_PX,
+            explosionRadiusPx,
             false,
             true));
     BubblePopperEntity bubblePopperEntity = get(BubblePopperEntity.class);
@@ -77,6 +79,6 @@ public class BombBubbleTouchFactoryEntity extends BaseEntity {
       bubblePopperEntity.popBubbleWithNoChildren((Sprite) bubble);
     }
     get(BombBubbleExplosionEffectEntity.class)
-        .explode(sprite.getCenterX(), sprite.getCenterY(), BOMB_BUBBLE_EXPLOSION_RADIUS_PX);
+        .explode(sprite.getCenterX(), sprite.getCenterY(), explosionRadiusPx);
   }
 }

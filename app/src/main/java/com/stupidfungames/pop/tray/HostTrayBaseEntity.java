@@ -14,7 +14,6 @@ import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.resources.sounds.SoundId;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.tray.TrayStateMachine.State;
-import com.stupidfungames.pop.utils.ScreenUtils;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.sprite.Sprite;
@@ -28,19 +27,19 @@ public abstract class HostTrayBaseEntity<IconIdType> extends BaseEntity implemen
    */
   public static class Spec {
 
-    public final int marginRightPx;
-    public final int verticalAnchorPx;
-    public final int horizontalAnchorPx;
+    public final float marginRightPx;
+    public final float verticalAnchorPx;
+    public final float horizontalAnchorPx;
     public final float openCloseAnimationDuration;
 
     public Spec(
-        int marginRightDp,
-        int verticalAnchorDp,
-        int horizontalAnchorDp,
+        float marginRightPx,
+        float verticalAnchorPx,
+        float horizontalAnchorPx,
         float openCloseAnimationDuration) {
-      marginRightPx = ScreenUtils.dpToPx(marginRightDp);
-      verticalAnchorPx = ScreenUtils.dpToPx(verticalAnchorDp);
-      horizontalAnchorPx = ScreenUtils.dpToPx(horizontalAnchorDp);
+      this.marginRightPx = marginRightPx;
+      this.verticalAnchorPx = verticalAnchorPx;
+      this.horizontalAnchorPx = horizontalAnchorPx;
       this.openCloseAnimationDuration = openCloseAnimationDuration;
     }
   }
@@ -199,11 +198,11 @@ public abstract class HostTrayBaseEntity<IconIdType> extends BaseEntity implemen
   @Override
   public int[] getAnchorPx() {
     return new int[]{
-        getSpecInternal().horizontalAnchorPx - getMarginRightPx(),
-        getSpecInternal().verticalAnchorPx};
+        (int) (getSpecInternal().horizontalAnchorPx - getMarginRightPx()),
+        (int) (getSpecInternal().verticalAnchorPx)};
   }
 
   private int getMarginRightPx() {
-    return getSpecInternal().marginRightPx;
+    return (int) getSpecInternal().marginRightPx;
   }
 }

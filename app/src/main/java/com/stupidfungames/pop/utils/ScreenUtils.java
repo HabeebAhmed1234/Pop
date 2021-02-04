@@ -6,7 +6,6 @@ import android.graphics.RectF;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.Display;
 import android.view.DisplayCutout;
 import androidx.core.util.Preconditions;
@@ -134,11 +133,6 @@ public class ScreenUtils {
 
   public static boolean isInScreen(float x, float y) {
     return sScreenRect.contains(x, y);
-  }
-
-  public static int dpToPx(float dp) {
-    return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-        sDisplayMetrics);
   }
 
   public static int pxToDp(int pX) {

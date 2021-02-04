@@ -1,5 +1,6 @@
 package com.stupidfungames.pop.settingstray;
 
+import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.tray.HostTrayCallback;
 import com.stupidfungames.pop.tray.TrayIconsHolderBaseEntity;
@@ -18,10 +19,10 @@ public class GameQuickSettingsTrayIconsHolderBaseEntity<IconIdType> extends
   protected Spec getSpec() {
     return new Spec(
         LayoutOrientation.HORIZONTAL,
-        8,
-        6,
-        8,
-        32);
+        getDimenPx(R.dimen.quick_settings_padding_horizontal),
+        getDimenPx(R.dimen.quick_settings_padding_vertical),
+        getDimenPx(R.dimen.quick_settings_padding_between_icons),
+        getDimenPx(R.dimen.quick_settings_icon_size));
   }
 
   @Override

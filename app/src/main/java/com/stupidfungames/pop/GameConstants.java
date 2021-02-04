@@ -1,7 +1,5 @@
 package com.stupidfungames.pop;
 
-import static com.stupidfungames.pop.bubblespawn.bombbubbles.BombBubbleSpritePool.BOMB_BUBBLE_SIZE_PX;
-
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId;
 import java.util.concurrent.TimeUnit;
 
@@ -28,7 +26,7 @@ public class GameConstants {
   public static final float MIN_UPGRADE_SPAWN_START_THRESHOLD_DIFFICULTY = 0.55f;
 
   // Difficulty
-  public static final float TIME_TO_MAX_DIFFICULTY_SECONDS = TimeUnit.MINUTES.toSeconds(8);
+  public static final float TIME_TO_MAX_DIFFICULTY_SECONDS = 5; // TimeUnit.MINUTES.toSeconds(8);
 
   public static final int MAX_BUBBLES_PER_SPAWN_AT_MAX_DIFFICULTY = 4;
   public static final int MAX_BUBBLES_PER_SPAWN_AT_MIN_DIFFICULTY = 1;
@@ -46,7 +44,8 @@ public class GameConstants {
   public static final int BOMB_STATES_DURATION_SECONDS = 1;
   // The amount of time before a bomb bubble explodes and ends the game
   public static final int BOMB_BUBBLE_LIFESPAN_SECONDS = 8;
-  public static final float BOMB_BUBBLE_EXPLOSION_RADIUS_PX = BOMB_BUBBLE_SIZE_PX * 1.5f;
+  // Multiple of bomb bubble size to make bomb bubble explosion
+  public static final float BOMB_BUBBLE_EXPLOSION_RADIUS_MULTIPLIER = 1.5f;
 
   // Bubble lifecycle constants
   public static final float BUBBLE_STABLE_TIME_SECONDS = 6f;

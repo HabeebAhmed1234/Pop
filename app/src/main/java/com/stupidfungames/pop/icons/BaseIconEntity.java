@@ -32,8 +32,6 @@ public abstract class BaseIconEntity extends BaseEntity implements EventBus.Subs
     }
   };
 
-  private static final int TOOLTIP_LEFT_PADDING_DP = 8;
-
   private Sprite iconSprite;
   private boolean isUnlocked;
   private boolean overrideTouchListenerEnabled = false;

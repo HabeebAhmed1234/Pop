@@ -8,7 +8,6 @@ import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.collision.CollisionFilters;
 import com.stupidfungames.pop.physics.PhysicsFactory;
 import com.stupidfungames.pop.tray.TrayStateMachine.State;
-import com.stupidfungames.pop.utils.ScreenUtils;
 import java.util.ArrayList;
 import java.util.List;
 import org.andengine.entity.primitive.Rectangle;
@@ -30,15 +29,15 @@ public abstract class TrayIconsHolderBaseEntity<IconIdType> extends BaseEntity {
     public final int iconsSizePx;
 
     public Spec(LayoutOrientation layoutOrientation,
-        int paddingHorizontalDp,
-        int paddingVerticalDp,
-        int paddingBetweenIconsDp,
-        int iconsSizeDp) {
+        float paddingHorizontalPx,
+        float paddingVerticalPx,
+        float paddingBetweenIconsPx,
+        float iconsSizePx) {
       this.layoutOrientation = layoutOrientation;
-      paddingHorizontalPx = ScreenUtils.dpToPx(paddingHorizontalDp);
-      paddingVerticalPx = ScreenUtils.dpToPx(paddingVerticalDp);
-      paddingBetweenIconsPx = ScreenUtils.dpToPx(paddingBetweenIconsDp);
-      iconsSizePx = ScreenUtils.dpToPx(iconsSizeDp);
+      this.paddingHorizontalPx = (int) paddingHorizontalPx;
+      this.paddingVerticalPx = (int) paddingVerticalPx;
+      this.paddingBetweenIconsPx = (int) paddingBetweenIconsPx;
+      this.iconsSizePx = (int) iconsSizePx;
     }
   }
 
