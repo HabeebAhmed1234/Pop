@@ -53,6 +53,11 @@
   <dimen name="quick_settings_open_close_btn_size">32dp</dimen>
   <dimen name="quick_settings_open_close_btn_right_margin">4dp</dimen>
 
+  <dimen name="game_icons_tray_padding_horizontal">0dp</dimen>
+  <dimen name="game_icons_tray_padding_vertical">8dp</dimen>
+  <dimen name="game_icons_tray_padding_between_icons">16dp</dimen>
+  <dimen name="game_icons_tray_icons_size">64dp</dimen>
+
   <dimen name="turret_dragging_offset">20dp</dimen>
   <dimen name="turret_body_size">88dp</dimen>
   <dimen name="turret_cannon_height">12dp</dimen>
