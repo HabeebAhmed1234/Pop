@@ -4,7 +4,6 @@ import static com.stupidfungames.pop.eventbus.GameEvent.CANCEL_WALL_PLACEMENT;
 import static com.stupidfungames.pop.eventbus.GameEvent.OPEN_GAME_ICONS_TRAY;
 import static com.stupidfungames.pop.eventbus.GameEvent.TURRET_DOCKED;
 
-import android.content.Context;
 import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameSceneTouchListenerEntity;
@@ -17,8 +16,7 @@ import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import com.stupidfungames.pop.resources.sounds.SoundId;
 import com.stupidfungames.pop.statemachine.BaseStateMachine;
-import com.stupidfungames.pop.turrets.TurretsMutex;
-import com.stupidfungames.pop.utils.ScreenUtils;
+import com.stupidfungames.pop.utils.Mutex;
 import org.andengine.entity.scene.Scene;
 import org.andengine.input.touch.TouchEvent;
 
@@ -65,12 +63,12 @@ public class TurretDraggingManager extends BaseEntity implements
 
   @Override
   public void onEnterState(TurretStateMachine.State newState) {
-    TurretsMutex mutex = get(TurretsMutex.class);
+    Mutex mutex = get(Mutex.class);
     if (newState == TurretStateMachine.State.DRAGGING) {
-      mutex.setIsDragging(true);
+      mutex.setIsLocked(true);
       EventBus.get().sendEvent(CANCEL_WALL_PLACEMENT);
     } else {
-      mutex.setIsDragging(false);
+      mutex.setIsLocked(false);
     }
   }
 
@@ -99,7 +97,7 @@ public class TurretDraggingManager extends BaseEntity implements
   @Override
   public void onLongPress(float touchX, float touchY) {
     if (get(TurretStateMachine.class).getCurrentState() != TurretStateMachine.State.DRAGGING
-        && !get(TurretsMutex.class).isDragging()) {
+        && !get(Mutex.class).isLocked()) {
       pickUpTurret(touchX, touchY);
     } else {
       Log.e("TurretDraggingManager", "Long press registered while we are dragging the turret!");

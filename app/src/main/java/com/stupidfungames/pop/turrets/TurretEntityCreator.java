@@ -3,9 +3,9 @@ package com.stupidfungames.pop.turrets;
 import static com.stupidfungames.pop.utils.GeometryUtils.initSpriteDimens;
 import static com.stupidfungames.pop.utils.GeometryUtils.initSpriteDimensCenterPos;
 
-import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.binder.BinderEnity;
+import com.stupidfungames.pop.draggableinventory.BaseDraggableEntityCreator;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.savegame.SaveGame;
@@ -14,7 +14,7 @@ import java.util.List;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
-public class TurretEntityCreator extends BaseEntity {
+public class TurretEntityCreator extends BaseDraggableEntityCreator {
 
   public TurretEntityCreator(BinderEnity parent) {
     super(parent);
@@ -25,13 +25,14 @@ public class TurretEntityCreator extends BaseEntity {
     super.onLoadGame(saveGame);
     if (saveGame.turretPostitions != null) {
       for (List<Float> position : saveGame.turretPostitions) {
-        TurretEntity turretEntity = createTurret(position.get(0), position.get(1));
+        TurretEntity turretEntity = createDraggableEntity(position.get(0), position.get(1));
         turretEntity.forceDrop();
       }
     }
   }
 
-  public TurretEntity createTurret(float centerX, float centerY) {
+  @Override
+  public TurretEntity createDraggableEntity(float centerX, float centerY) {
     GameTexturesManager texturesManager = get(GameTexturesManager.class);
     ITextureRegion turretBodyTexture = texturesManager.getTextureRegion(TextureId.BALL);
     ITextureRegion turretCannonTexture = texturesManager.getTextureRegion(TextureId.LINE);

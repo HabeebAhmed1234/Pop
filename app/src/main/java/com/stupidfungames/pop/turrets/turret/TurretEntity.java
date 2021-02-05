@@ -1,9 +1,8 @@
 package com.stupidfungames.pop.turrets.turret;
 
-import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
-import com.stupidfungames.pop.physics.util.Vec2Pool;
+import com.stupidfungames.pop.draggableinventory.BaseDraggableEntity;
 import com.stupidfungames.pop.savegame.SaveGame;
 import com.stupidfungames.pop.statemachine.BaseStateMachine;
 import com.stupidfungames.pop.turrets.turret.TurretStateMachine.State;
@@ -12,13 +11,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.andengine.entity.sprite.Sprite;
-import org.jbox2d.common.Vec2;
 
 /**
  * Contains the components of the TurretEntity. Can be used to set the position and rotation of the
  * turret. Each turret contains a state machine
  */
-public class TurretEntity extends BaseEntity implements
+public class TurretEntity extends BaseDraggableEntity implements
     HostTurretCallback, BaseStateMachine.Listener<State> {
 
   public static final float TURRET_DRAGGING_SCALE_MULTIPLIER = 1.3f;
@@ -67,7 +65,8 @@ public class TurretEntity extends BaseEntity implements
     float newX = x - turretBodySprite.getWidthScaled() / 2;
     float newY = y - turretBodySprite.getHeightScaled() / 2;
     turretBodySprite.setX(GeometryUtils.constrainXToScreenWidth(newX, turretBodySprite.getWidth()));
-    turretBodySprite.setY(GeometryUtils.constrainYToScreenHeight(newY, turretBodySprite.getHeight()));
+    turretBodySprite
+        .setY(GeometryUtils.constrainYToScreenHeight(newY, turretBodySprite.getHeight()));
   }
 
   public void forceStartDragging(float pointerX, float pointerY) {

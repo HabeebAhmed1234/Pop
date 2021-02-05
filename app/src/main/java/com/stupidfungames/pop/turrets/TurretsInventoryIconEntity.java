@@ -1,27 +1,17 @@
 package com.stupidfungames.pop.turrets;
 
 import static com.stupidfungames.pop.GameConstants.TURRETS_DIFFICULTY_UNLOCK_THRESHOLD;
-import static org.andengine.input.touch.TouchEvent.ACTION_CANCEL;
-import static org.andengine.input.touch.TouchEvent.ACTION_DOWN;
-import static org.andengine.input.touch.TouchEvent.ACTION_MOVE;
-import static org.andengine.input.touch.TouchEvent.ACTION_OUTSIDE;
-import static org.andengine.input.touch.TouchEvent.ACTION_UP;
 
 import com.stupidfungames.pop.GameSceneTouchListenerEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
+import com.stupidfungames.pop.draggableinventory.BaseDraggableInventoryIcon;
 import com.stupidfungames.pop.eventbus.EventBus;
-import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
-import com.stupidfungames.pop.icons.BaseInventoryIconEntity;
-import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import com.stupidfungames.pop.resources.sounds.SoundId;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.tooltips.TooltipId;
-import com.stupidfungames.pop.turrets.turret.TurretEntity;
 import org.andengine.entity.scene.IOnAreaTouchListener;
-import org.andengine.entity.scene.Scene;
-import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.color.AndengineColor;
 
 /**
@@ -31,7 +21,7 @@ import org.andengine.util.color.AndengineColor;
  * turrets back onto the icon to store them this increasing the number turrets in stock on the
  * icon.
  */
-public class TurretsInventoryIconEntity extends BaseInventoryIconEntity implements
+public class TurretsInventoryIconEntity extends BaseDraggableInventoryIcon implements
     EventBus.Subscriber,
     GameSceneTouchListenerEntity.SceneTouchListener {
 
@@ -39,42 +29,8 @@ public class TurretsInventoryIconEntity extends BaseInventoryIconEntity implemen
   public static final int TURRET_INVENTORY_DELTA_PER_UPDATE = 1;
   private static final int NUM_UPGRADES = 3;
 
-  // True if we are currently spawning
-  private boolean isSpawning;
-
   public TurretsInventoryIconEntity(BinderEnity parent) {
     super(parent);
-  }
-
-  @Override
-  public boolean onSceneTouchEvent(Scene scene, TouchEvent touchEvent) {
-    boolean handled = false;
-    switch (touchEvent.getAction()) {
-      case ACTION_DOWN:
-        handled = maybeStartUndocking(touchEvent);
-        break;
-      case ACTION_UP:
-        finishedSpawning();
-        handled = true;
-        break;
-      case ACTION_CANCEL:
-      case ACTION_OUTSIDE:
-      case ACTION_MOVE:
-        // NOOP
-        break;
-
-    }
-    return handled;
-  }
-
-  @Override
-  public void onEvent(GameEvent event, EventPayload payload) {
-    super.onEvent(event, payload);
-    switch (event) {
-      case TURRET_DOCKED:
-        onTurretDocked();
-        break;
-    }
   }
 
   @Override
@@ -83,57 +39,13 @@ public class TurretsInventoryIconEntity extends BaseInventoryIconEntity implemen
   }
 
   @Override
-  public void onCreateScene() {
-    super.onCreateScene();
-    EventBus.get().subscribe(GameEvent.TURRET_DOCKED, this);
-    get(GameSceneTouchListenerEntity.class).addSceneTouchListener(this);
+  protected GameEvent getDockedEvent() {
+    return GameEvent.TURRET_DOCKED;
   }
 
   @Override
-  public void onDestroy() {
-    super.onDestroy();
-    EventBus.get().unSubscribe(GameEvent.TURRET_DOCKED, this);
-    get(GameSceneTouchListenerEntity.class).removeSceneTouchListener(this);
-  }
-
-  private void onTurretDocked() {
-    get(GameSoundsManager.class).getSound(SoundId.PUFF).play();
-    increaseInventory();
-  }
-
-  /**
-   * If the user has pressed down on the icon and they are not already dragging a turret then we
-   * need to load undocking a new turret. While this new turret is being undocking we cannot
-   * undocking another turret.
-   *
-   * @Return true if we started spawning
-   */
-  private boolean maybeStartUndocking(TouchEvent touchEvent) {
-    if (canUndockTurret(touchEvent)) {
-      // play the sound for undocking a turret
-      get(GameSoundsManager.class).getSound(SoundId.PUFF).play();
-      // Create a turret and set it to be dragging
-      TurretEntity turretEntity = get(TurretEntityCreator.class)
-          .createTurret((int) touchEvent.getX(), (int) touchEvent.getY());
-      turretEntity.forceStartDragging(touchEvent.getX(), touchEvent.getY());
-
-      decreaseInventory();
-      isSpawning = true;
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   * Returns true if it is permissible to undock a new turret
-   */
-  private boolean canUndockTurret(TouchEvent touchEvent) {
-    return !isSpawning && !get(TurretsMutex.class).isDragging() && getIconSprite()
-        .contains(touchEvent.getX(), touchEvent.getY()) && hasInventory();
-  }
-
-  private void finishedSpawning() {
-    isSpawning = false;
+  protected SoundId getDockUnDockSoundEffect() {
+    return SoundId.PUFF;
   }
 
   @Override
