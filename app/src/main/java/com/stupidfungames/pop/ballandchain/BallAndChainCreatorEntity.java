@@ -155,7 +155,7 @@ class BallAndChainCreatorEntity extends BaseEntity {
   }
 
   private MouseJoint createMouseJoint(final Sprite sprite, final Body body) {
-    Vec2 physicsWorldPoint = Vec2Pool.obtain(sprite.getScaledX() + sprite.getWidthScaled() / 2,
+    Vec2 physicsWorldPoint = Vec2Pool.obtain(sprite.getScaledX() + sprite.getWidthScaled(),
         sprite.getScaledY() + sprite.getHeightScaled() / 2);
     CoordinateConversionUtil.sceneToPhysicsWorld(physicsWorldPoint);
 
