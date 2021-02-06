@@ -70,21 +70,23 @@ public abstract class BaseInventoryIconEntity extends BaseUpgradeableIconEntity 
   @Override
   protected void addIconToTray() {
     super.addIconToTray();
-
-    // The icon size has now been set so we can correctly set the position of the inventory tex
-    // In the icon
-    Sprite iconSprite = getIconSprite();
-    inventoryText.setX(
-        iconSprite.getWidthScaled() / 2 -
-            getDimenPx(R.dimen.inventory_text_max_width));
-    inventoryText.setY(-getDimenPx(R.dimen.inventory_text_max_height));
-
     onInventoryChanged();
   }
 
   protected void onInventoryChanged() {
     inventoryText.setText(Integer.toString(inventoryCount));
     inventoryText.setColor(isUnlocked() ? getUnlockedIconColor() : AndengineColor.TRANSPARENT);
+    updateInventoryTextPosition();
+  }
+
+  private void updateInventoryTextPosition() {
+    // The icon size has now been set so we can correctly set the position of the inventory tex
+    // In the icon
+    Sprite iconSprite = getIconSprite();
+    // slightly offset the text to the left since numbers are right weighted.
+    inventoryText
+        .setX((iconSprite.getWidth() / 2) * (inventoryCount == 1 ? 0.9f : 1) - inventoryText.getWidth() / 2);
+    inventoryText.setY(-(inventoryText.getHeight() * 0.75f));
   }
 
   protected void increaseInventory() {

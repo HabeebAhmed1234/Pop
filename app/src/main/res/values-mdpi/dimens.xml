@@ -32,4 +32,44 @@
   <dimen name="info_btn_size">12dp</dimen>
   <dimen name="info_btn_margin">4dp</dimen>
   <dimen name="tooltip_image_size">50dp</dimen>
+
+  <!-- in game dimens -->
+  <dimen name="ticker_font_size">30sp</dimen>
+  <dimen name="inventory_font_size">22sp</dimen>
+  <dimen name="bomb_bubble_countdown_font">12sp</dimen>
+  <dimen name="bomb_bubble_countdown_text_top_padding">13dp</dimen>
+
+  <dimen name="bubble_size_large">160dp</dimen>
+  <dimen name="bubble_size_medium">120dp</dimen>
+  <dimen name="bubble_size_small">80dp</dimen>
+
+  <dimen name="game_tray_margin_right">4dp</dimen>
+  <dimen name="quick_settings_icon_size">32dp</dimen>
+  <dimen name="quick_settings_padding_horizontal">8dp</dimen>
+  <dimen name="quick_settings_padding_vertical">6dp</dimen>
+  <dimen name="quick_settings_padding_between_icons">8dp</dimen>
+  <dimen name="quick_settings_open_close_btn_size">32dp</dimen>
+  <dimen name="quick_settings_open_close_btn_right_margin">4dp</dimen>
+
+  <dimen name="game_icons_tray_padding_horizontal">0dp</dimen>
+  <dimen name="game_icons_tray_padding_vertical">8dp</dimen>
+  <dimen name="game_icons_tray_padding_between_icons">16dp</dimen>
+  <dimen name="game_icons_tray_icons_size">64dp</dimen>
+
+  <dimen name="turret_dragging_offset">20dp</dimen>
+  <dimen name="turret_body_size">88dp</dimen>
+  <dimen name="turret_cannon_height">12dp</dimen>
+  <dimen name="turret_cannon_length">32dp</dimen>
+
+  <dimen name="inventory_text_max_width">9dp</dimen>
+
+  <dimen name="upgrade_chevron_size">12dp</dimen>
+  <dimen name="upgrade_chevron_right_margin">16dp</dimen>
+  <dimen name="upgrade_chevron_top_margin">0dp</dimen>
+  <dimen name="upgrade_ball_size">80dp</dimen>
+
+  <dimen name="wall_height">11dp</dimen>
+  <dimen name="max_wall_width">182dp</dimen>
+  <dimen name="min_wall_width">75dp</dimen>
+  <dimen name="wall_delete_icon_size">44dp</dimen>
 </resources>
