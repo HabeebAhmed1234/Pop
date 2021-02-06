@@ -26,7 +26,7 @@ public class GameConstants {
   public static final float MIN_UPGRADE_SPAWN_START_THRESHOLD_DIFFICULTY = 0.55f;
 
   // Difficulty
-  public static final float TIME_TO_MAX_DIFFICULTY_SECONDS = 5; // TimeUnit.MINUTES.toSeconds(8);
+  public static final float TIME_TO_MAX_DIFFICULTY_SECONDS = TimeUnit.MINUTES.toSeconds(8);
 
   public static final int MAX_BUBBLES_PER_SPAWN_AT_MAX_DIFFICULTY = 4;
   public static final int MAX_BUBBLES_PER_SPAWN_AT_MIN_DIFFICULTY = 1;
