@@ -184,6 +184,11 @@ public class Sprite extends RectangularShape {
     return getY() + getHeight() / 2;
   }
 
+  public void setCenterPosition(float centerX, float centerY) {
+    setScaledX(centerX - getWidthScaled() / 2);
+    setScaledY(centerY - getHeightScaled() / 2);
+  }
+
   // ===========================================================
   // Getter & Setter
   // ===========================================================
