@@ -73,11 +73,12 @@ class BallAndChainCreatorEntity extends BaseEntity {
     ITextureRegion ballTexture = get(GameTexturesManager.class).getTextureRegion(TextureId.BALL);
     WreckingBallEntityUserData wreckingBallEntityUserData = new WreckingBallEntityUserData();
     final Sprite ballSprite = new Sprite(
-        position.x,
-        position.y,
+        0, //position.x,
+        0, //position.y,
         ballTexture,
         vertexBufferObjectManager);
     ballSprite.setScale(BubbleSize.MEDIUM.getSizePx(get(Context.class)) / ballSprite.getWidth());
+    ballSprite.setScaledPosition(position.x, position.y);
     ballSprite.setUserData(wreckingBallEntityUserData);
     FixtureDef ballFixtureDef = BASE_WRECKING_BALL_DEF;
     ballFixtureDef.setFilter(CollisionFilters.BALL_AND_CHAIN_FILTER);
@@ -105,7 +106,8 @@ class BallAndChainCreatorEntity extends BaseEntity {
     ITextureRegion chainLinkTexture = get(GameTexturesManager.class)
         .getTextureRegion(TextureId.CHAIN_LINK);
     float chainLinkScaledWidth = BubbleSize.SMALL.getSizePx(get(Context.class));
-    float chainLinkScaledHeight = chainLinkScaledWidth * (chainLinkTexture.getHeight() / chainLinkTexture.getWidth());
+    float chainLinkScaledHeight =
+        chainLinkScaledWidth * (chainLinkTexture.getHeight() / chainLinkTexture.getWidth());
     float previousChainLinkX = previousChainLinkSprite.getScaledX();
     float previousChainLinkY = previousChainLinkSprite.getScaledY();
 
@@ -121,12 +123,13 @@ class BallAndChainCreatorEntity extends BaseEntity {
     float newChainLinkY = previousChainLinkY;
     ChainLinkEntityUserData chainLinkEntityUserData = new ChainLinkEntityUserData();
     final Sprite chainLinkSprite = new Sprite(
-        newChainLinkX,
-        newChainLinkY,
+        0,
+        0,
         chainLinkTexture,
         vertexBufferObjectManager);
     chainLinkSprite
         .setScale(chainLinkScaledWidth / chainLinkSprite.getWidth());
+    chainLinkSprite.setScaledPosition(newChainLinkX, newChainLinkY);
     chainLinkSprite.setUserData(chainLinkEntityUserData);
     FixtureDef chainLinkFixtureDef = BASE_CHAIN_LINK_FIXTURE_DEF;
     chainLinkFixtureDef.setFilter(CollisionFilters.BALL_AND_CHAIN_FILTER);

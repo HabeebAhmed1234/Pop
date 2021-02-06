@@ -160,6 +160,22 @@ public class Sprite extends RectangularShape {
     return getCenterY() - getHeightScaled() / 2;
   }
 
+  /**
+   * Sets the x position of the sprite after it has been scaled
+   */
+  public void setScaledX(float x) {
+    setX(getX() + (x - getScaledX()));
+  }
+
+  public void setScaledY(float y) {
+    setY(getY() + (y - getScaledY()));
+  }
+
+  public void setScaledPosition(float x, float y) {
+    setScaledX(x);
+    setScaledY(y);
+  }
+
   public float getCenterX() {
     return getX() + getWidth() / 2;
   }
