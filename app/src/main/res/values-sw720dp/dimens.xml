@@ -35,7 +35,7 @@
   <dimen name="product_image_right_margin">4dp</dimen>
   <dimen name="product_image_size">48dp</dimen>
 
-  <dimen name="info_btn_size">36dp</dimen>
+  <dimen name="info_btn_size">30dp</dimen>
   <dimen name="info_btn_margin">16dp</dimen>
 
   <dimen name="tooltip_image_size">150dp</dimen>
