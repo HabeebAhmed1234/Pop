@@ -1,11 +1,10 @@
 package com.stupidfungames.pop.turrets.turret;
 
-import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.fixturedefdata.TurretBulletUserData;
+import com.stupidfungames.pop.pool.BaseSpriteInitializerParams;
 import com.stupidfungames.pop.pool.BaseSpriteItemInitializer;
 import com.stupidfungames.pop.pool.ItemPool;
-import com.stupidfungames.pop.pool.BaseSpriteInitializerParams;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import org.andengine.entity.sprite.Sprite;
@@ -16,6 +15,8 @@ import org.andengine.util.color.AndengineColor;
  */
 public class TurretBulletSpritePool extends ItemPool {
 
+  private static final float BULLET_SIZE_PX = 30;
+
   private final ItemInitializer initializer = new BaseSpriteItemInitializer<BaseSpriteInitializerParams>() {
 
     @Override
@@ -25,7 +26,7 @@ public class TurretBulletSpritePool extends ItemPool {
           0,
           get(GameTexturesManager.class).getTextureRegion(TextureId.BULLET),
           vertexBufferObjectManager);
-      sprite.setScale(getDimenPx(R.dimen.bullet_size) / sprite.getWidth());
+      sprite.setScale(BULLET_SIZE_PX / sprite.getWidth());
       sprite.setCenterPosition(params.x, params.y);
       sprite.setColor(AndengineColor.RED);
       sprite.setUserData(new TurretBulletUserData());

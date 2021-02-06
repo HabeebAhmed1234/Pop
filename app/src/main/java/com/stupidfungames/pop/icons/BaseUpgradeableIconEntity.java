@@ -6,7 +6,6 @@ import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADEABLE_ICON_UNLOCKE
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADES_AVAILABLE;
 import static com.stupidfungames.pop.eventbus.GameEvent.UPGRADE_CONSUMED;
 
-import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
@@ -32,13 +31,15 @@ import org.andengine.util.color.AndengineColor;
 
 public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
 
+  private static final int UPGRADE_CHEVRON_SIZE_PX = 36;
+  private static final int UPGRADE_CHEVRON_RIGHT_MARGIN_PX = 48;
+  private static final int UPGRADE_CHEVRON_TOP_MARGIN_PX = 0;
+
   /**
    * Number of upgrades this icon has consumed.
    */
   private int upgradeLevel = 0;
   private boolean isInUpgradeState = false;
-  // the icon color before we entered the upgrade state
-  // private AndengineColor previousIconColor = new AndengineColor(getUnlockedIconColor());
 
   public BaseUpgradeableIconEntity(BinderEnity parent) {
     super(parent);
@@ -186,13 +187,12 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
         vertexBufferObjectManager);
 
     chevronSprite
-        .setScale(getDimenPx(R.dimen.upgrade_chevron_size) / chevronSprite.getWidth());
+        .setScale(UPGRADE_CHEVRON_SIZE_PX / chevronSprite.getWidth());
     chevronSprite.setColor(AndengineColor.YELLOW);
     chevronSprite
-        .setX(-(chevronSprite.getWidthScaled() + getDimenPx(R.dimen.upgrade_chevron_right_margin)));
+        .setX(-(chevronSprite.getWidthScaled() + UPGRADE_CHEVRON_RIGHT_MARGIN_PX));
     chevronSprite
-        .setY((upgradeLevel - 1) * chevronSprite.getHeightScaled() + getDimenPx(
-            R.dimen.upgrade_chevron_top_margin));
+        .setY((upgradeLevel - 1) * chevronSprite.getHeightScaled() + UPGRADE_CHEVRON_TOP_MARGIN_PX);
     addToScene(getIconSprite(), chevronSprite);
   }
 

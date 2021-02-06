@@ -18,8 +18,8 @@ public class GameQuickSettingsTrayOpenCloseButton extends TrayOpenCloseButtonBas
   @Override
   protected ButtonSpec getButtonSpec() {
     return new ButtonSpec(
-        (int) getDimenPx(R.dimen.quick_settings_open_close_btn_size),
-        (int) getDimenPx(R.dimen.quick_settings_open_close_btn_right_margin));
+        96,
+        12);
   }
 
   @Override

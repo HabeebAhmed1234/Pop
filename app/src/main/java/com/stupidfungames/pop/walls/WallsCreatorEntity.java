@@ -6,12 +6,10 @@ import static org.andengine.input.touch.TouchEvent.ACTION_MOVE;
 import static org.andengine.input.touch.TouchEvent.ACTION_OUTSIDE;
 import static org.andengine.input.touch.TouchEvent.ACTION_UP;
 
-import android.content.Context;
 import android.util.Pair;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameFixtureDefs;
 import com.stupidfungames.pop.GameSceneTouchListenerEntity;
-import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.collision.CollisionFilters;
 import com.stupidfungames.pop.entitymatchers.WallsEntityMatcher;
@@ -48,11 +46,12 @@ import org.jbox2d.dynamics.FixtureDef;
 public class WallsCreatorEntity extends BaseEntity implements
     GameSceneTouchListenerEntity.SceneTouchListener {
 
+  private static final int WALL_HEIGHT_PX = 20;
+  private static final int MAX_WALL_WIDTH = 600;
+  private static final int MIN_WALL_WIDTH = 300;
+
   private Vec2 initialPoint;
   private Pair<Line, WallEntityUserData> pendingWallData;
-  private float wallHeightPx;
-  private float maxWallWidthPx;
-  private float minWallWidthPx;
 
   public WallsCreatorEntity(BinderEnity parent) {
     super(parent);
@@ -60,9 +59,6 @@ public class WallsCreatorEntity extends BaseEntity implements
 
   @Override
   public void onCreateScene() {
-    wallHeightPx = getDimenPx(R.dimen.wall_height);
-    maxWallWidthPx = getDimenPx(R.dimen.max_wall_width);
-    minWallWidthPx = getDimenPx(R.dimen.min_wall_width);
     get(GameSceneTouchListenerEntity.class).addSceneTouchListener(this);
   }
 
@@ -209,7 +205,7 @@ public class WallsCreatorEntity extends BaseEntity implements
         .createLineBody(physicsWorld, wallLine, BodyType.STATIC, wallFixtureDef);
     wallUserData.wallDeleteIcon = WallDeleteIconFactory
         .getWallDeletionSprite(wallLine, wallBody,
-            get(GameTexturesManager.class), vertexBufferObjectManager, get(Context.class));
+            get(GameTexturesManager.class), vertexBufferObjectManager);
     addToSceneWithTouch(wallUserData.wallDeleteIcon,
         get(WallsDeletionHandlerFactoryEntity.class).getWallDeletionHandler());
     wallUserData.wallDeleteIcon.setVisible(isVisible);
@@ -233,7 +229,7 @@ public class WallsCreatorEntity extends BaseEntity implements
     WallEntityUserData userData = new WallEntityUserData();
     Line wallLine = new Line(x1, y1, x2, y2, vertexBufferObjectManager);
     wallLine.setUserData(userData);
-    wallLine.setLineWidth(wallHeightPx);
+    wallLine.setLineWidth(WALL_HEIGHT_PX);
     wallLine.setColor(AndengineColor.WHITE);
 
     addToScene(wallLine);
@@ -241,10 +237,10 @@ public class WallsCreatorEntity extends BaseEntity implements
   }
 
   private float clipWallLength(float wallLength) {
-    if (wallLength < minWallWidthPx) {
-      return minWallWidthPx;
-    } else if (wallLength > maxWallWidthPx) {
-      return maxWallWidthPx;
+    if (wallLength < MIN_WALL_WIDTH) {
+      return MIN_WALL_WIDTH;
+    } else if (wallLength > MAX_WALL_WIDTH) {
+      return MAX_WALL_WIDTH;
     }
     return wallLength;
   }

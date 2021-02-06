@@ -104,6 +104,6 @@ public class BubbleSpritePool extends ItemPool {
 
   private void adjustBubbleScale(Shape bubbleSprite, BubbleSize bubbleSize) {
     bubbleSprite
-        .setScale(bubbleSize.getSizePx(get(Context.class)) / ((Sprite) bubbleSprite).getWidth());
+        .setScale(bubbleSize.sizePx / ((Sprite) bubbleSprite).getWidth());
   }
 }

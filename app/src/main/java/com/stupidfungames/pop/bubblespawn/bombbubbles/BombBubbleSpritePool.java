@@ -4,7 +4,6 @@ import static com.stupidfungames.pop.GameConstants.BOMB_BUBBLE_LIFESPAN_SECONDS;
 import static com.stupidfungames.pop.GameConstants.BOMB_STATES_DURATION_SECONDS;
 
 import android.content.Context;
-import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleSize;
 import com.stupidfungames.pop.fixturedefdata.BombBubbleEntityUserData;
@@ -28,6 +27,8 @@ public class BombBubbleSpritePool extends ItemPool {
   public static final AndengineColor WARN_BOMB_COLOUR = AndengineColor.YELLOW;
   public static final AndengineColor EXPLODING_BOMB_COLOUR = AndengineColor.RED;
 
+  private static final float COUNTDOWN_TEXT_TOP_PADDING = 39;
+
   private final ItemInitializer<Sprite, BaseSpriteInitializerParams> initializer = new BaseSpriteItemInitializer<BaseSpriteInitializerParams>() {
     @Override
     public Sprite createNew(BaseSpriteInitializerParams params) {
@@ -39,13 +40,13 @@ public class BombBubbleSpritePool extends ItemPool {
       sprite.setUserData(new BombBubbleEntityUserData());
       sprite.setColor(EXPLODING_BOMB_COLOUR);
       clipBubblePosition(sprite);
-      sprite.setScale(BubbleSize.MEDIUM.getSizePx(get(Context.class)) / sprite.getWidth());
+      sprite.setScale(BubbleSize.MEDIUM.sizePx / sprite.getWidth());
 
       Text countDownText = new Text(0, 0,
           get(GameFontsManager.class).getFont(FontId.BOMB_BUBBLE_COUNTDOWN_FONT), "1",
           3,
           vertexBufferObjectManager);
-      countDownText.setY(getDimenPx(R.dimen.bomb_bubble_countdown_text_top_padding));
+      countDownText.setY(COUNTDOWN_TEXT_TOP_PADDING);
       GeometryUtils.centerInHorizontal(sprite, countDownText);
       sprite.attachChild(countDownText);
       return sprite;

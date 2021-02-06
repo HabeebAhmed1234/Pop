@@ -42,6 +42,7 @@ import org.jbox2d.dynamics.FixtureDef;
  */
 public class UpgradeSpawner extends BaseEntity implements Subscriber {
 
+  private static final float UPGRADE_SIZE_PX = 275;
   private static final AndengineColor UPGRADE_COLOUR = new AndengineColor(241f / 255f, 10f / 255f,
       245f / 255f);
 
@@ -147,7 +148,7 @@ public class UpgradeSpawner extends BaseEntity implements Subscriber {
         vertexBufferObjectManager);
     upgradeSprite.setUserData(new UpgradeUserData(upgradeSprite));
 
-    upgradeSprite.setScale(getDimenPx(R.dimen.upgrade_ball_size) / upgradeSprite.getWidth());
+    upgradeSprite.setScale(UPGRADE_SIZE_PX / upgradeSprite.getWidth());
     upgradeSprite.setColor(UPGRADE_COLOUR);
 
     final FixtureDef bubbleFixtureDef = GameFixtureDefs.UPGRADE_FIXTURE_DEF;

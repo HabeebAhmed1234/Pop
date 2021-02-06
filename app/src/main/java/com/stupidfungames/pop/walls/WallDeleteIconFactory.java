@@ -1,8 +1,5 @@
 package com.stupidfungames.pop.walls;
 
-import android.content.Context;
-import android.content.res.Resources;
-import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.fixturedefdata.WallDeleteIconUserData;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
@@ -14,9 +11,10 @@ import org.jbox2d.dynamics.Body;
 
 public class WallDeleteIconFactory {
 
+  private static final float WALL_DELETE_ICON_SIZE_PX = 160;
+
   public static Sprite getWallDeletionSprite(Line wallSprite, Body wallBody,
-      GameTexturesManager texturesManager, VertexBufferObjectManager vertexBufferObjectManager,
-      Context context) {
+      GameTexturesManager texturesManager, VertexBufferObjectManager vertexBufferObjectManager) {
     float[] wallCoords = wallSprite.getBoundingRectangleCoords();
     final Sprite wallDeleteSprite = new Sprite(
         0,
@@ -25,10 +23,8 @@ public class WallDeleteIconFactory {
         vertexBufferObjectManager);
     wallDeleteSprite.setColor(AndengineColor.RED);
 
-    Resources resources = context.getResources();
-    float wallDeleteIconSizePx = resources.getDimension(R.dimen.wall_delete_icon_size);
-    wallDeleteSprite.setWidth(wallDeleteIconSizePx);
-    wallDeleteSprite.setHeight(wallDeleteIconSizePx);
+    wallDeleteSprite.setWidth(WALL_DELETE_ICON_SIZE_PX);
+    wallDeleteSprite.setHeight(WALL_DELETE_ICON_SIZE_PX);
 
     wallDeleteSprite.setX(wallCoords[0] + wallSprite.getBoundingRectangleWidth() / 2
         - wallDeleteSprite.getWidth() / 2);

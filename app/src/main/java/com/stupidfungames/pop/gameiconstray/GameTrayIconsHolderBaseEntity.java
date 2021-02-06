@@ -1,6 +1,5 @@
 package com.stupidfungames.pop.gameiconstray;
 
-import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.tray.HostTrayCallback;
 import com.stupidfungames.pop.tray.TrayIconsHolderBaseEntity;
@@ -19,10 +18,10 @@ public class GameTrayIconsHolderBaseEntity<IconIdType> extends
   protected Spec getSpec() {
     return new Spec(
         LayoutOrientation.VERTICAL,
-        getDimenPx(R.dimen.game_icons_tray_padding_horizontal),
-        getDimenPx(R.dimen.game_icons_tray_padding_vertical),
-        getDimenPx(R.dimen.game_icons_tray_padding_between_icons),
-        getDimenPx(R.dimen.game_icons_tray_icons_size));
+        0,
+        16,
+        42,
+        210);
   }
 
   @Override

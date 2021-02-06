@@ -58,6 +58,7 @@ import org.andengine.audio.music.MusicManager;
 import org.andengine.audio.sound.SoundManager;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
+import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.util.FPSLogger;
@@ -191,11 +192,13 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
   public EngineOptions onCreateEngineOptions() {
     ScreenUtils.initialize(this);
     ScreenUtils.ScreenSize screenSize = ScreenUtils.getSreenSize();
+
     camera = new ShakeCamera(0, 0, screenSize.widthPx, screenSize.heightPx);
+
     final EngineOptions engineOptions = new EngineOptions(
         true,
         ScreenOrientation.PORTRAIT_FIXED,
-        new RatioResolutionPolicy(screenSize.widthPx, screenSize.heightPx),
+        new FillResolutionPolicy(),
         this.camera);
     engineOptions.getTouchOptions().setNeedsMultiTouch(true);
     engineOptions.getAudioOptions().setNeedsSound(true);

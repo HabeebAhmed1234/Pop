@@ -77,7 +77,7 @@ class BallAndChainCreatorEntity extends BaseEntity {
         0, //position.y,
         ballTexture,
         vertexBufferObjectManager);
-    ballSprite.setScale(BubbleSize.MEDIUM.getSizePx(get(Context.class)) / ballSprite.getWidth());
+    ballSprite.setScale(BubbleSize.MEDIUM.sizePx / ballSprite.getWidth());
     ballSprite.setScaledPosition(position.x, position.y);
     ballSprite.setUserData(wreckingBallEntityUserData);
     FixtureDef ballFixtureDef = BASE_WRECKING_BALL_DEF;
@@ -105,7 +105,7 @@ class BallAndChainCreatorEntity extends BaseEntity {
 
     ITextureRegion chainLinkTexture = get(GameTexturesManager.class)
         .getTextureRegion(TextureId.CHAIN_LINK);
-    float chainLinkScaledWidth = BubbleSize.SMALL.getSizePx(get(Context.class));
+    float chainLinkScaledWidth = BubbleSize.SMALL.sizePx;
     float chainLinkScaledHeight =
         chainLinkScaledWidth * (chainLinkTexture.getHeight() / chainLinkTexture.getWidth());
     float previousChainLinkX = previousChainLinkSprite.getScaledX();

@@ -19,19 +19,12 @@ public class ScreenUtils {
 
     public final int widthPx;
     public final int heightPx;
-    public final int widthDp;
-    public final int heightDp;
     public final int safeInsetTopHeightPx;
-    public final int safeInsetTopHeightDp;
 
-    public ScreenSize(int widthPx, int heightPx, int widthDp, int heightDp,
-        int safeInsetTopHeightPx, int safeInsetTopHeightDp) {
+    public ScreenSize(int widthPx, int heightPx, int safeInsetTopHeightPx) {
       this.widthPx = widthPx;
       this.heightPx = heightPx;
-      this.widthDp = widthDp;
-      this.heightDp = heightDp;
       this.safeInsetTopHeightPx = safeInsetTopHeightPx;
-      this.safeInsetTopHeightDp = safeInsetTopHeightDp;
     }
   }
 
@@ -39,6 +32,7 @@ public class ScreenUtils {
    * Standard overlap that a sprite should have with the screen to be considered "in the screen".
    */
   public static final float PERCENT_SPRITE_IN_SCREEN = 1 / 2f;
+  public static final float FIXED_GAME_SCREEN_WIDTH = 1440;
 
   private static DisplayMetrics sDisplayMetrics;
   private static ScreenSize sScreenSize;
@@ -51,16 +45,17 @@ public class ScreenUtils {
   public static void initialize(Activity activity) {
     sDisplayMetrics = activity.getResources().getDisplayMetrics();
 
+    float screenWidthPx = 0;
+    float screenHeightPx = 0;
+    float safeInsetTopHeightPx = 0;
+
     if (Integer.valueOf(VERSION.SDK_INT) < 13) {
       Display display = activity.getWindowManager().getDefaultDisplay();
-      sScreenSize = new ScreenSize(display.getWidth(), display.getHeight(),
-          pxToDp(display.getWidth()), pxToDp(display.getHeight()), 0, 0);
+      screenWidthPx = display.getWidth();
+      screenHeightPx = display.getHeight();
     } else {
       Point size = getAppWindowSize(activity);
 
-      int screenWidthPx;
-      int screenHeightPx;
-      int safeInsetTopHeightPx = 0;
       screenWidthPx = size.x;
       screenHeightPx = size.y;
 
@@ -71,15 +66,14 @@ public class ScreenUtils {
           safeInsetTopHeightPx = displayCutout.getSafeInsetTop();
         }
       }
-
-      sScreenSize = new ScreenSize(
-          screenWidthPx, screenHeightPx,
-          pxToDp(screenWidthPx),
-          pxToDp(screenHeightPx),
-          safeInsetTopHeightPx,
-          pxToDp(safeInsetTopHeightPx));
     }
 
+    int gameScreenHeight = (int) (FIXED_GAME_SCREEN_WIDTH / screenWidthPx * screenHeightPx);
+    float phoneScreenToGameScreenHeightRatio = gameScreenHeight / screenHeightPx;
+    sScreenSize = new ScreenSize(
+        (int) FIXED_GAME_SCREEN_WIDTH,
+        gameScreenHeight,
+        (int) (safeInsetTopHeightPx * phoneScreenToGameScreenHeightRatio));
     sScreenRect = new RectF(0, 0, sScreenSize.widthPx, sScreenSize.heightPx);
   }
 
