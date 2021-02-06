@@ -4,9 +4,12 @@ import static com.stupidfungames.pop.GameFixtureDefs.BASE_CHAIN_LINK_FIXTURE_DEF
 import static com.stupidfungames.pop.GameFixtureDefs.BASE_WRECKING_BALL_DEF;
 import static com.stupidfungames.pop.ballandchain.BallAndChainHandleEntity.OFF_SCREEN_HANDLE_POSITION;
 
+import android.content.Context;
 import android.util.Pair;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
+import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity;
+import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleSize;
 import com.stupidfungames.pop.collision.CollisionFilters;
 import com.stupidfungames.pop.fixturedefdata.ChainLinkEntityUserData;
 import com.stupidfungames.pop.fixturedefdata.WreckingBallEntityUserData;
@@ -74,6 +77,7 @@ class BallAndChainCreatorEntity extends BaseEntity {
         position.y,
         ballTexture,
         vertexBufferObjectManager);
+    ballSprite.setScale(BubbleSize.MEDIUM.getSizePx(get(Context.class)) / ballSprite.getWidth());
     ballSprite.setUserData(wreckingBallEntityUserData);
     FixtureDef ballFixtureDef = BASE_WRECKING_BALL_DEF;
     ballFixtureDef.setFilter(CollisionFilters.BALL_AND_CHAIN_FILTER);
@@ -81,6 +85,7 @@ class BallAndChainCreatorEntity extends BaseEntity {
     Body ballBody = PhysicsFactory.createCircleBody(
         physicsWorld,
         ballSprite,
+        BubbleSpawnerEntity.BUBBLE_BODY_SCALE_FACTOR,
         BodyType.DYNAMIC,
         ballFixtureDef);
 
@@ -99,16 +104,18 @@ class BallAndChainCreatorEntity extends BaseEntity {
 
     ITextureRegion chainLinkTexture = get(GameTexturesManager.class)
         .getTextureRegion(TextureId.CHAIN_LINK);
-    float previousChainLinkX = previousChainLinkSprite.getX();
-    float previousChainLinkY = previousChainLinkSprite.getY();
+    float chainLinkScaledWidth = BubbleSize.SMALL.getSizePx(get(Context.class));
+    float chainLinkScaledHeight = chainLinkScaledWidth * (chainLinkTexture.getHeight() / chainLinkTexture.getWidth());
+    float previousChainLinkX = previousChainLinkSprite.getScaledX();
+    float previousChainLinkY = previousChainLinkSprite.getScaledY();
 
     // The distance from the left or right edge of the chain link that we will place the anchor
-    float jointPixelsFromEdge = JOINT_ANCHOR_PERCENT_FROM_EDGE * chainLinkTexture.getWidth();
+    float jointPixelsFromEdge = JOINT_ANCHOR_PERCENT_FROM_EDGE * chainLinkScaledWidth;
 
     // New chain link anchor position (on the right side of the given chain link)
     float newChainLinkAnchorX =
-        previousChainLinkX + chainLinkTexture.getWidth() - jointPixelsFromEdge;
-    float newChainLinkAnchorY = previousChainLinkY + chainLinkTexture.getHeight() / 2;
+        previousChainLinkX + chainLinkScaledWidth - jointPixelsFromEdge;
+    float newChainLinkAnchorY = previousChainLinkY + chainLinkScaledHeight / 2;
 
     float newChainLinkX = newChainLinkAnchorX - jointPixelsFromEdge;
     float newChainLinkY = previousChainLinkY;
@@ -118,6 +125,8 @@ class BallAndChainCreatorEntity extends BaseEntity {
         newChainLinkY,
         chainLinkTexture,
         vertexBufferObjectManager);
+    chainLinkSprite
+        .setScale(chainLinkScaledWidth / chainLinkSprite.getWidth());
     chainLinkSprite.setUserData(chainLinkEntityUserData);
     FixtureDef chainLinkFixtureDef = BASE_CHAIN_LINK_FIXTURE_DEF;
     chainLinkFixtureDef.setFilter(CollisionFilters.BALL_AND_CHAIN_FILTER);
@@ -128,7 +137,6 @@ class BallAndChainCreatorEntity extends BaseEntity {
 
     addToScene(chainLinkSprite, chainLinkBody);
 
-    // We don't need a joint if this is the first chain link
     RevoluteJointDef jointDef = new RevoluteJointDef();
 
     Vec2 newChainLinkAnchorPos = Vec2Pool.obtain(newChainLinkAnchorX, newChainLinkAnchorY);
@@ -144,8 +152,8 @@ class BallAndChainCreatorEntity extends BaseEntity {
   }
 
   private MouseJoint createMouseJoint(final Sprite sprite, final Body body) {
-    Vec2 physicsWorldPoint = Vec2Pool.obtain(sprite.getX() + sprite.getWidth() / 2,
-        sprite.getY() + sprite.getHeight() / 2);
+    Vec2 physicsWorldPoint = Vec2Pool.obtain(sprite.getScaledX() + sprite.getWidthScaled() / 2,
+        sprite.getScaledY() + sprite.getHeightScaled() / 2);
     CoordinateConversionUtil.sceneToPhysicsWorld(physicsWorldPoint);
 
     final MouseJointDef mouseJointDef = new MouseJointDef();
