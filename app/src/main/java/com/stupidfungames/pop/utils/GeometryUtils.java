@@ -67,7 +67,7 @@ public class GeometryUtils {
    * Scales the given sprite to fix the screen widthPx and heightPx while maintaining the aspect
    * ratio
    */
-  public static void scaleToFixScreen(Sprite srcSprite) {
+  public static void scaleToFitScreen(Sprite srcSprite) {
     Matrix matrix = new Matrix();
     RectF dstRect = new RectF(ScreenUtils.getScreenRect());
     matrix.setRectToRect(new RectF(0, 0, (int) srcSprite.getWidth(), (int) srcSprite.getHeight()),

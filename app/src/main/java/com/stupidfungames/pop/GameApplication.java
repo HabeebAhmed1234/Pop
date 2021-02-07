@@ -7,7 +7,7 @@ import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ProcessLifecycleOwner;
 import com.stupidfungames.pop.ads.GameAdsManager;
 import com.stupidfungames.pop.androidui.music.MusicPlayer;
-import com.stupidfungames.pop.appreviews.AppOpenCounter;
+import com.stupidfungames.pop.appreviews.GamesPlayedCounter;
 
 public class GameApplication extends Application implements LifecycleObserver {
 
@@ -17,7 +17,6 @@ public class GameApplication extends Application implements LifecycleObserver {
     ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
 
     MusicPlayer.init(this);
-    AppOpenCounter.onAppOpened(this);
     GameAdsManager.get().initialize(this);
   }
 

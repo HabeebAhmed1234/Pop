@@ -36,7 +36,6 @@ public class GamePreferencesManager {
       }
     });
     notifyChanged(key);
-
   }
 
   public static void set(Context context, final String key, final String value) {

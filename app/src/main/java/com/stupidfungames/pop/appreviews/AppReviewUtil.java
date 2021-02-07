@@ -8,7 +8,7 @@ import com.stupidfungames.pop.gamesettings.GamePreferencesManager;
 public class AppReviewUtil {
 
   // Number of times the app must be opened before we show the review prompt
-  public static int SHOW_REVIEW_PROMPT_APP_OPENED_THRESHOLD = 3;
+  public static int SHOW_REVIEW_PROMPT_GAMED_PLAYED_THRESHOLD = 3;
 
   public static String DONT_SHOW_AGAIN_PREF = "dont_show_again";
 
@@ -38,8 +38,8 @@ public class AppReviewUtil {
   }
 
   private static boolean shouldShowReviewDialog(Context context) {
-    int numTimesAppOpened = AppOpenCounter.getNumTimesAppOpened(context);
-    return numTimesAppOpened >= SHOW_REVIEW_PROMPT_APP_OPENED_THRESHOLD
+    int numTimesGamePlayed = GamesPlayedCounter.getNumTimesGamePlayed(context);
+    return numTimesGamePlayed >= SHOW_REVIEW_PROMPT_GAMED_PLAYED_THRESHOLD
         && !GamePreferencesManager.getBoolean(context, DONT_SHOW_AGAIN_PREF);
   }
 }

@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import com.stupidfungames.pop.analytics.Logger;
 import com.stupidfungames.pop.androidui.music.MusicPlayer;
+import com.stupidfungames.pop.appreviews.GamesPlayedCounter;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.backgroundmusic.BackgroundMusicEntity;
 import com.stupidfungames.pop.ballandchain.BallAndChainManagerEntity;
@@ -96,6 +97,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
   @Override
   protected void onCreate(Bundle pSavedInstanceState) {
     super.onCreate(pSavedInstanceState);
+    GamesPlayedCounter.onGamePlayed(this);
     authManager = new GooglePlayServicesAuthManager(this);
     saveGameManager = new SaveGameManager(this, this);
 
