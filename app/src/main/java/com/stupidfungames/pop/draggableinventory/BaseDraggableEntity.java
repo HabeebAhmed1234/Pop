@@ -1,15 +1,35 @@
 package com.stupidfungames.pop.draggableinventory;
 
 import com.stupidfungames.pop.BaseEntity;
+import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
+import com.stupidfungames.pop.draggableinventory.DraggingManager.DraggableEntityCallback;
+import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId;
 
-public class BaseDraggableEntity extends BaseEntity {
+public abstract class BaseDraggableEntity extends BaseEntity implements DraggableEntityCallback {
+
 
   public BaseDraggableEntity(BinderEnity parent) {
     super(parent);
   }
 
-  public void forceStartDragging(float pointerX, float pointerY) {
-
+  @Override
+  protected void createBindings(Binder binder) {
+    super.createBindings(binder);
+    binder.bind(DraggingManager.class,
+        new DraggingManager(this, getDraggingOffsetPx(), getHomeIconId(), this));
   }
+
+  public void forceStartDragging(float pointerX, float pointerY) {
+    get(DraggingManager.class).forceStartDragging(pointerX, pointerY);
+  }
+
+  public void onForceDropped() {
+    onDropped();
+  }
+
+
+  protected abstract float getDraggingOffsetPx();
+
+  protected abstract IconId getHomeIconId();
 }

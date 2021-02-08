@@ -1,8 +1,14 @@
 package com.stupidfungames.pop.turrets.turret;
 
+import static com.stupidfungames.pop.eventbus.GameEvent.CANCEL_WALL_PLACEMENT;
+import static com.stupidfungames.pop.eventbus.GameEvent.TURRET_DOCKED;
+
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.draggableinventory.BaseDraggableEntity;
+import com.stupidfungames.pop.eventbus.EventBus;
+import com.stupidfungames.pop.eventbus.GameEvent;
+import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId;
 import com.stupidfungames.pop.savegame.SaveGame;
 import com.stupidfungames.pop.statemachine.BaseStateMachine;
 import com.stupidfungames.pop.turrets.turret.TurretStateMachine.State;
@@ -16,15 +22,16 @@ import org.andengine.entity.sprite.Sprite;
  * Contains the components of the TurretEntity. Can be used to set the position and rotation of the
  * turret. Each turret contains a state machine
  */
-public class TurretEntity extends BaseDraggableEntity implements
+public class TurretDraggableEntity extends BaseDraggableEntity implements
     HostTurretCallback, BaseStateMachine.Listener<State> {
 
+  private static final float TURRET_DRAGGING_OFFSET = 60;
   public static final float TURRET_DRAGGING_SCALE_MULTIPLIER = 1.3f;
 
   private Sprite turretBodySprite;
   private Sprite turretCannonSprite;
 
-  public TurretEntity(Sprite turretBodySprite,
+  public TurretDraggableEntity(Sprite turretBodySprite,
       Sprite turretCannonSprite,
       BinderEnity parent) {
     super(parent);
@@ -36,13 +43,23 @@ public class TurretEntity extends BaseDraggableEntity implements
 
   @Override
   protected void createBindings(Binder binder) {
+    super.createBindings(binder);
     binder.bind(HostTurretCallback.class, this)
         .bind(TurretStateMachine.class, new TurretStateMachine())
         .bind(TurretFiringEntity.class, new TurretFiringEntity(this))
         .bind(TurretTargetingEntity.class, new TurretTargetingEntity(this))
         .bind(TurretColoringEntity.class, new TurretColoringEntity(this))
-        .bind(TurretDraggingManager.class, new TurretDraggingManager(this))
         .bind(TurretCannonRotationManagerEntity.class, new TurretCannonRotationManagerEntity(this));
+  }
+
+  @Override
+  protected float getDraggingOffsetPx() {
+    return TURRET_DRAGGING_OFFSET;
+  }
+
+  @Override
+  protected IconId getHomeIconId() {
+    return IconId.TURRETS_ICON;
   }
 
   @Override
@@ -61,20 +78,18 @@ public class TurretEntity extends BaseDraggableEntity implements
   }
 
   @Override
-  public void setTurretPositionCenter(float x, float y) {
-    float newX = x - turretBodySprite.getWidthScaled() / 2;
-    float newY = y - turretBodySprite.getHeightScaled() / 2;
-    turretBodySprite.setX(GeometryUtils.constrainXToScreenWidth(newX, turretBodySprite.getWidth()));
-    turretBodySprite
-        .setY(GeometryUtils.constrainYToScreenHeight(newY, turretBodySprite.getHeight()));
-  }
-
-  public void forceStartDragging(float pointerX, float pointerY) {
-    get(TurretDraggingManager.class).forceStartDragging(pointerX, pointerY);
-  }
-
-  public void forceDrop() {
+  public void onDropped() {
     get(TurretStateMachine.class).transitionState(TurretStateMachine.State.TARGETING);
+  }
+
+  @Override
+  public void onDocked() {
+    get(TurretStateMachine.class).transitionState(TurretStateMachine.State.DOCKED);
+  }
+
+  @Override
+  public GameEvent getDockedEvent() {
+    return TURRET_DOCKED;
   }
 
   private void init() {
@@ -103,5 +118,29 @@ public class TurretEntity extends BaseDraggableEntity implements
         .asList(turretBodySprite.getX() + turretBodySprite.getWidthScaled() / 2,
             turretBodySprite.getY() + turretBodySprite.getHeightScaled() / 2);
     saveGame.turretPostitions.add(position);
+  }
+
+  @Override
+  public void setEntityPositionCenter(float centerX, float centerY) {
+    setTurretPositionCenter(centerX, centerY);
+  }
+
+  @Override
+  public boolean canDrag() {
+    return get(TurretStateMachine.class).getCurrentState() != TurretStateMachine.State.DRAGGING;
+  }
+
+  @Override
+  public void onDraggingStarted() {
+    get(TurretStateMachine.class).transitionState(State.DRAGGING);
+    EventBus.get().sendEvent(CANCEL_WALL_PLACEMENT);
+  }
+
+  private void setTurretPositionCenter(float x, float y) {
+    float newX = x - turretBodySprite.getWidthScaled() / 2;
+    float newY = y - turretBodySprite.getHeightScaled() / 2;
+    turretBodySprite.setX(GeometryUtils.constrainXToScreenWidth(newX, turretBodySprite.getWidth()));
+    turretBodySprite
+        .setY(GeometryUtils.constrainYToScreenHeight(newY, turretBodySprite.getHeight()));
   }
 }

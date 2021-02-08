@@ -53,12 +53,12 @@ public class GameOverSequenceEntity extends BaseEntity {
 
   @Override
   public void onCreateScene() {
-    EventBus.get().subscribe(GameEvent.GAME_OVER_ON_EXPLOSION_EVENT, gameOverExplosionSubscriber);
+    //EventBus.get().subscribe(GameEvent.GAME_OVER_ON_EXPLOSION_EVENT, gameOverExplosionSubscriber);
   }
 
   @Override
   public void onDestroy() {
-    EventBus.get().unSubscribe(GameEvent.GAME_OVER_ON_EXPLOSION_EVENT, gameOverExplosionSubscriber);
+    //EventBus.get().unSubscribe(GameEvent.GAME_OVER_ON_EXPLOSION_EVENT, gameOverExplosionSubscriber);
   }
 
   private void runGameOverSequenceWithExplosion(GameOverExplosionEventPayload payload) {

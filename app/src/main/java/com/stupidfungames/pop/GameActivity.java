@@ -51,7 +51,7 @@ import com.stupidfungames.pop.settingstray.NextSongQuickSettingsIconEntity;
 import com.stupidfungames.pop.settingstray.SaveGameQuickSettingsIconEntity;
 import com.stupidfungames.pop.settingstray.SaveGameQuickSettingsIconEntity.SaveGameButtonCallback;
 import com.stupidfungames.pop.tooltips.GameTooltipsEntity;
-import com.stupidfungames.pop.turrets.TurretsManagerEntity;
+import com.stupidfungames.pop.turrets.TurretsDraggableManagerEntity;
 import com.stupidfungames.pop.upgrades.UpgradeManager;
 import com.stupidfungames.pop.utils.ScreenUtils;
 import com.stupidfungames.pop.walls.WallsManagerBaseEntity;
@@ -60,7 +60,6 @@ import org.andengine.audio.sound.SoundManager;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
-import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.input.sensor.acceleration.AccelerationData;
@@ -160,7 +159,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
             .bind(GameIconsHostTrayEntity.class, new GameIconsHostTrayEntity(this))
             .bind(BallAndChainManagerEntity.class, new BallAndChainManagerEntity(this))
-            .bind(TurretsManagerEntity.class, new TurretsManagerEntity(this))
+            .bind(TurretsDraggableManagerEntity.class, new TurretsDraggableManagerEntity(this))
             .bind(WallsManagerBaseEntity.class, new WallsManagerBaseEntity(this))
             .bind(NukeManagerEntity.class, new NukeManagerEntity(this))
 

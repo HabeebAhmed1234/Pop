@@ -1,8 +1,5 @@
 package com.stupidfungames.pop.icons;
 
-import static com.stupidfungames.pop.turrets.TurretsInventoryIconEntity.STARTING_TURRET_INVENTORY;
-
-import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId;
 import com.stupidfungames.pop.resources.fonts.FontId;
@@ -60,7 +57,7 @@ public abstract class BaseInventoryIconEntity extends BaseUpgradeableIconEntity 
         0,
         get(GameFontsManager.class).getFont(FontId.INVENTORY_ICON_FONT),
         Integer.toString(inventoryCount),
-        (Integer.toString(STARTING_TURRET_INVENTORY)).length(),
+        2,
         vertexBufferObjectManager);
     addToScene(iconSprite, inventoryText);
 
@@ -85,7 +82,8 @@ public abstract class BaseInventoryIconEntity extends BaseUpgradeableIconEntity 
     Sprite iconSprite = getIconSprite();
     // slightly offset the text to the left since numbers are right weighted.
     inventoryText
-        .setX((iconSprite.getWidth() / 2) * (inventoryCount == 1 ? 0.9f : 1) - inventoryText.getWidth() / 2);
+        .setX((iconSprite.getWidth() / 2) * (inventoryCount == 1 ? 0.9f : 1)
+            - inventoryText.getWidth() / 2);
     inventoryText.setY(-(inventoryText.getHeight() * 0.75f));
   }
 

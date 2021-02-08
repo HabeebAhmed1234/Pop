@@ -8,18 +8,18 @@ import com.stupidfungames.pop.draggableinventory.BaseDraggableEntityCreator;
 import com.stupidfungames.pop.resources.textures.GameTexturesManager;
 import com.stupidfungames.pop.resources.textures.TextureId;
 import com.stupidfungames.pop.savegame.SaveGame;
-import com.stupidfungames.pop.turrets.turret.TurretEntity;
+import com.stupidfungames.pop.turrets.turret.TurretDraggableEntity;
 import java.util.List;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
-public class TurretEntityCreator extends BaseDraggableEntityCreator {
+public class TurretDraggableEntityCreator extends BaseDraggableEntityCreator {
 
   private static final float TURRET_BODY_SIZE_PX = 300;
   private static final float TURRET_CANNON_HEIGHT_PX = 36;
   private static final float TURRET_CANNON_LENGTH_PX = 96;
 
-  public TurretEntityCreator(BinderEnity parent) {
+  public TurretDraggableEntityCreator(BinderEnity parent) {
     super(parent);
   }
 
@@ -28,14 +28,14 @@ public class TurretEntityCreator extends BaseDraggableEntityCreator {
     super.onLoadGame(saveGame);
     if (saveGame.turretPostitions != null) {
       for (List<Float> position : saveGame.turretPostitions) {
-        TurretEntity turretEntity = createDraggableEntity(position.get(0), position.get(1));
-        turretEntity.forceDrop();
+        TurretDraggableEntity turretDraggableEntity = createDraggableEntity(position.get(0), position.get(1));
+        turretDraggableEntity.onForceDropped();
       }
     }
   }
 
   @Override
-  public TurretEntity createDraggableEntity(float centerX, float centerY) {
+  public TurretDraggableEntity createDraggableEntity(float centerX, float centerY) {
     GameTexturesManager texturesManager = get(GameTexturesManager.class);
     ITextureRegion turretBodyTexture = texturesManager.getTextureRegion(TextureId.BALL);
     ITextureRegion turretCannonTexture = texturesManager.getTextureRegion(TextureId.LINE);
@@ -66,6 +66,6 @@ public class TurretEntityCreator extends BaseDraggableEntityCreator {
     turretBodySprite.attachChild(turretCannonSprite);
     turretCannonSprite.setRotationCenter(0f, TURRET_CANNON_HEIGHT_PX / 2);
 
-    return new TurretEntity(turretBodySprite, turretCannonSprite, this);
+    return new TurretDraggableEntity(turretBodySprite, turretCannonSprite, this);
   }
 }
