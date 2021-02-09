@@ -27,4 +27,5 @@ public enum TextureId {
   PAUSE_BTN,
   SAVE_BTN,
   NEXT_BTN,
+  WALL_V2,
 }

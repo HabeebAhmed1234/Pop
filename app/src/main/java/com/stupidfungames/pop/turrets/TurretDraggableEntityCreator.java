@@ -1,7 +1,7 @@
 package com.stupidfungames.pop.turrets;
 
 import static com.stupidfungames.pop.utils.GeometryUtils.initSpriteDimens;
-import static com.stupidfungames.pop.utils.GeometryUtils.initSpriteDimensCenterPos;
+import static com.stupidfungames.pop.utils.GeometryUtils.initSpriteDimensCenterPosWithSize;
 
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.draggableinventory.BaseDraggableEntityCreator;
@@ -46,7 +46,7 @@ public class TurretDraggableEntityCreator extends BaseDraggableEntityCreator {
         turretBodyTexture,
         vertexBufferObjectManager);
 
-    initSpriteDimensCenterPos(turretBodySprite, centerX, centerY, TURRET_BODY_SIZE_PX);
+    initSpriteDimensCenterPosWithSize(turretBodySprite, centerX, centerY, TURRET_BODY_SIZE_PX);
 
     addToScene(turretBodySprite);
 

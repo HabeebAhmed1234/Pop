@@ -1,6 +1,5 @@
 package com.stupidfungames.pop.gameiconstray;
 
-import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
@@ -10,7 +9,6 @@ import com.stupidfungames.pop.tray.HostTrayBaseEntity;
 import com.stupidfungames.pop.tray.TrayIconsHolderBaseEntity;
 import com.stupidfungames.pop.tray.TrayOpenCloseButtonBaseEntity;
 import com.stupidfungames.pop.utils.ScreenUtils;
-import org.andengine.entity.primitive.Rectangle;
 
 /**
  * Single entity used to manage the icons for different tools in the game.
@@ -21,6 +19,7 @@ public class GameIconsHostTrayEntity extends HostTrayBaseEntity<GameIconsHostTra
     BALL_AND_CHAIN_ICON,
     TURRETS_ICON,
     WALLS_ICON,
+    WALLS_V2_ICON,
     NUKE_ICON,
     MULTI_POP_ICON,
   }

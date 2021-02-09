@@ -54,7 +54,8 @@ import com.stupidfungames.pop.tooltips.GameTooltipsEntity;
 import com.stupidfungames.pop.turrets.TurretsDraggableManagerEntity;
 import com.stupidfungames.pop.upgrades.UpgradeManager;
 import com.stupidfungames.pop.utils.ScreenUtils;
-import com.stupidfungames.pop.walls.WallsManagerBaseEntity;
+import com.stupidfungames.pop.walls.WallsManagerEntity;
+import com.stupidfungames.pop.wallsv2.WallsV2Manager;
 import org.andengine.audio.music.MusicManager;
 import org.andengine.audio.sound.SoundManager;
 import org.andengine.engine.options.EngineOptions;
@@ -160,7 +161,8 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(GameIconsHostTrayEntity.class, new GameIconsHostTrayEntity(this))
             .bind(BallAndChainManagerEntity.class, new BallAndChainManagerEntity(this))
             .bind(TurretsDraggableManagerEntity.class, new TurretsDraggableManagerEntity(this))
-            .bind(WallsManagerBaseEntity.class, new WallsManagerBaseEntity(this))
+            .bind(WallsV2Manager.class, new WallsV2Manager(this))
+            //.bind(WallsManagerEntity.class, new WallsManagerEntity(this))
             .bind(NukeManagerEntity.class, new NukeManagerEntity(this))
 
             .bind(MultiTouchPopperIcon.class, new MultiTouchPopperIcon(this))

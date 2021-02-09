@@ -5,7 +5,6 @@ import static java.lang.Math.pow;
 import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
-import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import com.stupidfungames.pop.physics.util.Vec2Pool;
@@ -77,6 +76,15 @@ public class GeometryUtils {
   }
 
   public static void initSpriteDimensCenterPos(
+      Sprite sprite,
+      float centerPosXPx,
+      float centerPosYPx) {
+    initSpriteDimens(sprite, centerPosXPx - sprite.getWidthScaled() / 2,
+        centerPosYPx - sprite.getHeightScaled() / 2, sprite.getWidthScaled(),
+        sprite.getHeightScaled());
+  }
+
+  public static void initSpriteDimensCenterPosWithSize(
       Sprite sprite,
       float centerPosXPx,
       float centerPosYPx,

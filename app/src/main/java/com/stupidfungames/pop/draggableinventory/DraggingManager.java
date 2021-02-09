@@ -4,7 +4,6 @@ import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameSceneTouchListenerEntity;
 import com.stupidfungames.pop.LongPressGesture;
-import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.GameEvent;
@@ -12,8 +11,10 @@ import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
 import com.stupidfungames.pop.resources.sounds.SoundId;
+import com.stupidfungames.pop.utils.GeometryUtils;
 import com.stupidfungames.pop.utils.Mutex;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 
 /**
@@ -26,8 +27,6 @@ class DraggingManager extends BaseEntity implements
    * Callbacks for the entity that is being dragged
    */
   public interface DraggableEntityCallback {
-
-    void setEntityPositionCenter(float centerX, float centerY);
 
     boolean canDrag();
 
@@ -52,27 +51,30 @@ class DraggingManager extends BaseEntity implements
     GameEvent getDockedEvent();
   }
 
+  private final Sprite draggableSprite;
   private final float draggingOffsetPx;
+  private final float draggingScaleMultiplier;
   private final IconId homeIconId;
   private final DraggableEntityCallback draggableEntityCallback;
+  private final LongPressGesture longPressGesture;
 
   private boolean isDragging = false;
 
   DraggingManager(
       BinderEnity parent,
+      Sprite draggableSprite,
       float draggingOffsetPx,
+      float draggingScaleMultiplier,
       IconId homeIconId,
       DraggableEntityCallback draggableEntityCallback) {
     super(parent);
+    this.draggableSprite = draggableSprite;
     this.draggingOffsetPx = draggingOffsetPx;
+    this.draggingScaleMultiplier = draggingScaleMultiplier;
     this.homeIconId = homeIconId;
     this.draggableEntityCallback = draggableEntityCallback;
+    this.longPressGesture = new LongPressGesture(draggableSprite, this, this);
     init();
-  }
-
-  @Override
-  protected void createBindings(Binder binder) {
-    binder.bind(LongPressGesture.class, new LongPressGesture(this, this));
   }
 
   @Override
@@ -85,7 +87,6 @@ class DraggingManager extends BaseEntity implements
     if (!touchListenerEntity.hasSceneTouchListener(this)) {
       touchListenerEntity.addSceneTouchListener(this);
     }
-    LongPressGesture longPressGesture = get(LongPressGesture.class);
     if (!touchListenerEntity.hasSceneTouchListener(longPressGesture)) {
       touchListenerEntity.addSceneTouchListener(longPressGesture);
     }
@@ -95,7 +96,7 @@ class DraggingManager extends BaseEntity implements
   public void onDestroy() {
     GameSceneTouchListenerEntity touchListenerEntity = get(GameSceneTouchListenerEntity.class);
     touchListenerEntity.removeSceneTouchListener(this);
-    touchListenerEntity.removeSceneTouchListener(get(LongPressGesture.class));
+    touchListenerEntity.removeSceneTouchListener(longPressGesture);
   }
 
   private void setDragging(boolean isDragging) {
@@ -107,6 +108,7 @@ class DraggingManager extends BaseEntity implements
     } else {
       mutex.setIsLocked(false);
     }
+    draggableSprite.setScale(isDragging ? draggingScaleMultiplier : 1);
   }
 
   @Override
@@ -149,12 +151,23 @@ class DraggingManager extends BaseEntity implements
   private void dropEntity(TouchEvent touchEvent) {
     get(GameSoundsManager.class).getSound(SoundId.CLICK_DOWN).play();
     setDragging(false);
-    draggableEntityCallback.setEntityPositionCenter(touchEvent.getX(), touchEvent.getY());
+    setDraggableSpritePositionCenter(touchEvent.getX(), touchEvent.getY());
     draggableEntityCallback.onDropped();
   }
 
   private void trackEntityToPointerOnDrag(float x, float y) {
-    draggableEntityCallback.setEntityPositionCenter(x - draggingOffsetPx, y - draggingOffsetPx);
+    setDraggableSpritePositionCenter(x - draggingOffsetPx, y - draggingOffsetPx);
+  }
+
+  private void setDraggableSpritePositionCenter(float x, float y) {
+    if (draggableSprite == null) {
+      return;
+    }
+    float newX = x - draggableSprite.getWidthScaled() / 2;
+    float newY = y - draggableSprite.getHeightScaled() / 2;
+    draggableSprite.setX(GeometryUtils.constrainXToScreenWidth(newX, draggableSprite.getWidth()));
+    draggableSprite
+        .setY(GeometryUtils.constrainYToScreenHeight(newY, draggableSprite.getHeight()));
   }
 
   /**

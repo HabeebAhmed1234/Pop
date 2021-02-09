@@ -1,6 +1,5 @@
 package com.stupidfungames.pop.bubblespawn;
 
-import android.content.Context;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleSize;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleType;

@@ -13,9 +13,9 @@ import com.stupidfungames.pop.eventbus.GameEvent;
 /**
  * Manages the creation of walls that can catch or redirect bubbles
  */
-public class WallsManagerBaseEntity extends BaseEntity implements Subscriber {
+public class WallsManagerEntity extends BaseEntity implements Subscriber {
 
-  public WallsManagerBaseEntity(BinderEnity parent) {
+  public WallsManagerEntity(BinderEnity parent) {
     super(parent);
   }
 
