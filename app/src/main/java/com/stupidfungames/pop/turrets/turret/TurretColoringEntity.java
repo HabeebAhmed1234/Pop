@@ -1,6 +1,5 @@
 package com.stupidfungames.pop.turrets.turret;
 
-import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.statemachine.BaseStateMachine.Listener;

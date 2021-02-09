@@ -44,12 +44,12 @@ public class WallDraggableEntity extends BaseDraggableEntity {
 
   @Override
   public void onDraggingStarted() {
-
+    draggableSprite.setColor(AndengineColor.YELLOW);
   }
 
   @Override
   public void onDropped() {
-
+    draggableSprite.setColor(AndengineColor.WHITE);
   }
 
   @Override
