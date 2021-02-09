@@ -4,6 +4,10 @@ import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.draggableinventory.BaseDraggableEntity;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId;
+import com.stupidfungames.pop.savegame.SaveGame;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.color.AndengineColor;
 
@@ -57,5 +61,20 @@ public class WallDraggableEntity extends BaseDraggableEntity {
   @Override
   public GameEvent getDockedEvent() {
     return GameEvent.WALL_DOCKED;
+  }
+
+  @Override
+  public void onSaveGame(SaveGame saveGame) {
+    super.onSaveGame(saveGame);
+    if (wallSprite.getColor().equals(AndengineColor.TRANSPARENT)) {
+      return;
+    }
+    if (saveGame.wallV2Postitions == null) {
+      saveGame.wallV2Postitions = new ArrayList<>();
+    }
+    List<Float> position = Arrays
+        .asList(draggableSprite.getX() + draggableSprite.getWidthScaled() / 2,
+            draggableSprite.getY() + draggableSprite.getHeightScaled() / 2);
+    saveGame.wallV2Postitions.add(position);
   }
 }
