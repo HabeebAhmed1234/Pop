@@ -6,6 +6,8 @@ import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
 import com.stupidfungames.pop.eventbus.EventBus;
+import com.stupidfungames.pop.eventbus.WallV2PoppedBubbleEventPayload;
+import com.stupidfungames.pop.fixturedefdata.BaseEntityUserData;
 import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
 import com.stupidfungames.pop.fixturedefdata.FixtureDefDataUtil;
 import com.stupidfungames.pop.physics.collision.CollisionIds;
@@ -43,7 +45,12 @@ public class WallsV2CollisionManager extends BaseEntity implements
           .getUserData();
       if (bubbleEntityUserData.bubbleSprite.isVisible()) {
         get(BubblePopperEntity.class).popBubble(bubbleEntityUserData.bubbleSprite);
-        EventBus.get().sendEvent(WALL_V2_POPPED_BUBBLE);
+
+        Fixture wallFixture = FixtureDefDataUtil.getWallV2Fixture(fixture1, fixture2);
+        EventBus.get().sendEvent(
+            WALL_V2_POPPED_BUBBLE,
+            new WallV2PoppedBubbleEventPayload(
+                ((BaseEntityUserData) wallFixture.m_userData).getId()));
       }
     }
   }

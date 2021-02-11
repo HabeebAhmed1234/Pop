@@ -16,6 +16,10 @@ public class FixtureDefDataUtil {
     return fixture.m_userData != null && fixture.m_userData instanceof FloorEntityUserData;
   }
 
+  public static boolean isWallV2Fixture(Fixture fixture) {
+    return fixture.m_userData != null && fixture.m_userData instanceof WallV2EntityUserData;
+  }
+
   /**
    * Returns the first bubble fixture from the given two fixtures
    */
@@ -26,6 +30,19 @@ public class FixtureDefDataUtil {
       return f2;
     } else {
       throw new IllegalStateException("neither of the fixtures are bubbles!");
+    }
+  }
+
+  /**
+   * Returns the first wall fixture from the given two fixtures
+   */
+  public static Fixture getWallV2Fixture(Fixture f1, Fixture f2) {
+    if (FixtureDefDataUtil.isWallV2Fixture(f1)) {
+      return f1;
+    } else if (FixtureDefDataUtil.isWallV2Fixture(f2)) {
+      return f2;
+    } else {
+      throw new IllegalStateException("neither of the fixtures are walls!");
     }
   }
 
