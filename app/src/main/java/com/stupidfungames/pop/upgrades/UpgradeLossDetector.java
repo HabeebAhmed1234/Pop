@@ -3,6 +3,7 @@ package com.stupidfungames.pop.upgrades;
 import com.stupidfungames.pop.BaseLossDetectorEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.fixturedefdata.UpgradeUserData;
+import com.stupidfungames.pop.physics.collision.CollisionIds;
 import org.jbox2d.dynamics.Fixture;
 
 public class UpgradeLossDetector extends BaseLossDetectorEntity {
@@ -12,10 +13,10 @@ public class UpgradeLossDetector extends BaseLossDetectorEntity {
   }
 
   @Override
-  protected Class getUserDataClassToDetectLossOf() {
-    return UpgradeUserData.class;
+  protected int getCollisionIdToDetectLossOf() {
+    return CollisionIds.UPGRADE;
   }
-
+  
   @Override
   protected void processLoss(Fixture upgradeFixture) {
     UpgradeUserData userData = (UpgradeUserData) upgradeFixture.getUserData();

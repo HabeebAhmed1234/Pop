@@ -1,17 +1,19 @@
-package com.stupidfungames.pop;
+package com.stupidfungames.pop.physics.collision;
 
 import android.util.Log;
 import androidx.annotation.Nullable;
+import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.fixturedefdata.BaseEntityUserData;
+import com.stupidfungames.pop.physics.util.Vec2Pool;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.Contact;
 
@@ -30,7 +32,7 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
     void onEndContact(Fixture fixture1, Fixture fixture2);
   }
 
-  private Map<Set<Class<? extends BaseEntityUserData>>, Set<GameContactListener>> gameContactListenerMap = new HashMap<>();
+  private Map<Vec2, Set<GameContactListener>> gameContactListenerMap = new HashMap<>();
 
   public GamePhysicsContactsEntity(BinderEnity parent) {
     super(parent);
@@ -88,11 +90,10 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
 
 
   public void addContactListener(
-      Class<? extends BaseEntityUserData> entityType1,
-      Class<? extends BaseEntityUserData> entityType2,
+      int collisionIdA,
+      int collisionIdB,
       GameContactListener contactListener) {
-    Set<Class<? extends BaseEntityUserData>> key = createKeyFromTypes(entityType1, entityType2);
-
+    Vec2 key = createKeyCollisionIds(collisionIdA, collisionIdB);
     if (!gameContactListenerMap.containsKey(key)) {
       gameContactListenerMap.put(key, new HashSet<GameContactListener>());
     }
@@ -101,32 +102,41 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
   }
 
   public void removeContactListener(
-      Class<? extends BaseEntityUserData> entityType1,
-      Class<? extends BaseEntityUserData> entityType2,
+      int collisionIdA,
+      int collisionIdB,
       GameContactListener contactListener) {
-    Set<Class<? extends BaseEntityUserData>> key = createKeyFromTypes(entityType1, entityType2);
+    Vec2 key = createKeyCollisionIds(collisionIdA, collisionIdB);
     if (gameContactListenerMap.containsKey(key)) {
       gameContactListenerMap.get(key).remove(contactListener);
     } else {
       throw new IllegalStateException(
-          "gameContactListenerMap does not contain a listener for these types");
+          "gameContactListenerMap does not contain a listener for these collisionIds");
     }
+    Vec2Pool.recycle(key);
   }
 
   public boolean containsContactListener(
-      Class<? extends BaseEntityUserData> entityType1,
-      Class<? extends BaseEntityUserData> entityType2,
+      int collisionIdA,
+      int collisionIdB,
       GameContactListener contactListener) {
-    Set<Class<? extends BaseEntityUserData>> key = createKeyFromTypes(entityType1, entityType2);
-    return gameContactListenerMap.containsKey(key) && gameContactListenerMap.get(key)
+    Vec2 key = createKeyCollisionIds(collisionIdA, collisionIdB);
+    boolean contains = gameContactListenerMap.containsKey(key) && gameContactListenerMap.get(key)
         .contains(contactListener);
+    Vec2Pool.recycle(key);
+    return contains;
   }
 
   /**
    * Returns true if the given contact is one that we are listening to. If not then discard it.
    */
   private boolean isContactListenedTo(Contact contact) {
-    return gameContactListenerMap.containsKey(createKeyFromContact(contact));
+    Vec2 key = createKeyFromContact(contact);
+    if (key == null) {
+      return false;
+    }
+    boolean isListenedTo = gameContactListenerMap.containsKey(key);
+    Vec2Pool.recycle(key);
+    return isListenedTo;
   }
 
   private void notifyBeginContact(Set<GameContactListener> listeners, Fixture a, Fixture b) {
@@ -152,31 +162,28 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
    */
   @Nullable
   private Set<GameContactListener> getListenersFromContact(Contact contact) {
-    return gameContactListenerMap.get(createKeyFromContact(contact));
+    Vec2 key = createKeyFromContact(contact);
+    Set<GameContactListener> listeners = gameContactListenerMap.get(createKeyFromContact(contact));
+    Vec2Pool.recycle(key);
+    return listeners;
   }
 
-  private Set<Class<? extends BaseEntityUserData>> createKeyFromContact(Contact contact) {
+  private Vec2 createKeyFromContact(Contact contact) {
     if (contact.m_fixtureA.m_userData == null || contact.m_fixtureB.m_userData == null) {
       Log.w("GamePhysicsContacts",
           "Collision detected between one or more null BaseUserData fixtures");
       return null;
     }
-    return createKeyFromTypes(
-        (Class<BaseEntityUserData>) contact.m_fixtureA.m_userData.getClass(),
-        (Class<BaseEntityUserData>) contact.m_fixtureB.m_userData.getClass());
+    return createKeyCollisionIds(
+        ((BaseEntityUserData) contact.m_fixtureA.m_userData).collisionType(),
+        ((BaseEntityUserData) contact.m_fixtureB.m_userData).collisionType());
   }
 
-  private Set<Class<? extends BaseEntityUserData>> createKeyFromTypes(
-      Class<? extends BaseEntityUserData> type1,
-      Class<? extends BaseEntityUserData> type2) {
-    if (type1 == null || type2 == null) {
+  private Vec2 createKeyCollisionIds(int a, int b) {
+    if (a <= 0 || b <= 0) {
       throw new IllegalArgumentException(
-          "You cannot create a key with one or more null BaseEntityUserData types");
+          "You cannot create a key with one or more unset collisionIds");
     }
-
-    Set<Class<? extends BaseEntityUserData>> key = new HashSet<>();
-    key.add(type1);
-    key.add(type2);
-    return key;
+    return Vec2Pool.obtain(Math.min(a, b), Math.max(a, b));
   }
 }

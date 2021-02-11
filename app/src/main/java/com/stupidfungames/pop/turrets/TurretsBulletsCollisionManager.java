@@ -3,7 +3,6 @@ package com.stupidfungames.pop.turrets;
 import static com.stupidfungames.pop.eventbus.GameEvent.TURRET_BULLET_POPPED_BUBBLE;
 
 import com.stupidfungames.pop.BaseEntity;
-import com.stupidfungames.pop.GamePhysicsContactsEntity;
 import com.stupidfungames.pop.binder.Binder;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
@@ -12,6 +11,8 @@ import com.stupidfungames.pop.eventbus.TurretBulletPoppedBubbleEventPayload;
 import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
 import com.stupidfungames.pop.fixturedefdata.FixtureDefDataUtil;
 import com.stupidfungames.pop.fixturedefdata.TurretBulletUserData;
+import com.stupidfungames.pop.physics.collision.CollisionIds;
+import com.stupidfungames.pop.physics.collision.GamePhysicsContactsEntity;
 import org.jbox2d.dynamics.Fixture;
 
 public class TurretsBulletsCollisionManager extends BaseEntity implements
@@ -34,7 +35,7 @@ public class TurretsBulletsCollisionManager extends BaseEntity implements
   @Override
   public void onDestroy() {
     get(GamePhysicsContactsEntity.class)
-        .removeContactListener(TurretBulletUserData.class, BubbleEntityUserData.class, this);
+        .removeContactListener(CollisionIds.TURRET_BULLET, CollisionIds.BUBBLE, this);
   }
 
   @Override
@@ -56,9 +57,9 @@ public class TurretsBulletsCollisionManager extends BaseEntity implements
   private void addContactListener() {
     GamePhysicsContactsEntity gamePhysicsContactsEntity = get(GamePhysicsContactsEntity.class);
     if (!gamePhysicsContactsEntity
-        .containsContactListener(TurretBulletUserData.class, BubbleEntityUserData.class, this)) {
+        .containsContactListener(CollisionIds.TURRET_BULLET, CollisionIds.BUBBLE, this)) {
       gamePhysicsContactsEntity
-          .addContactListener(TurretBulletUserData.class, BubbleEntityUserData.class, this);
+          .addContactListener(CollisionIds.TURRET_BULLET, CollisionIds.BUBBLE, this);
     }
   }
 }

@@ -7,6 +7,7 @@ import com.stupidfungames.pop.eventbus.DecrementScoreEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
+import com.stupidfungames.pop.physics.collision.CollisionIds;
 import com.stupidfungames.pop.resources.fonts.FontId;
 import com.stupidfungames.pop.resources.fonts.GameFontsManager;
 import org.andengine.entity.modifier.AlphaModifier;
@@ -28,10 +29,9 @@ public class BubbleLossDetectorEntity extends BaseLossDetectorEntity {
     super(parent);
   }
 
-
   @Override
-  protected Class getUserDataClassToDetectLossOf() {
-    return BubbleEntityUserData.class;
+  protected int getCollisionIdToDetectLossOf() {
+    return CollisionIds.BUBBLE;
   }
 
   @Override

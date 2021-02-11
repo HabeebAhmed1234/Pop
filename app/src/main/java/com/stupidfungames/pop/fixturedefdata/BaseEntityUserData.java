@@ -21,4 +21,6 @@ public abstract class BaseEntityUserData {
     public void reset() {
         id = 0;
     }
+
+    public abstract int collisionType();
 }

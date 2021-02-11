@@ -1,5 +1,7 @@
 package com.stupidfungames.pop.fixturedefdata;
 
+import static com.stupidfungames.pop.physics.collision.CollisionIds.BUBBLE;
+
 import androidx.annotation.Nullable;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity;
 import com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BubbleType;
@@ -56,5 +58,10 @@ public class BubbleEntityUserData extends BaseEntityUserData {
     bubbleSprite = null;
     isMarkedForRecursivePopping = false;
     isTargeted = false;
+  }
+
+  @Override
+  public int collisionType() {
+    return BUBBLE;
   }
 }

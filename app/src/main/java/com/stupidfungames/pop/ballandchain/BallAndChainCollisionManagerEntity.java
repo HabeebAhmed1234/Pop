@@ -2,9 +2,9 @@ package com.stupidfungames.pop.ballandchain;
 
 import static com.stupidfungames.pop.eventbus.GameEvent.BALL_AND_CHAIN_POPPED_BUBBLE;
 
-import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
-import com.stupidfungames.pop.GamePhysicsContactsEntity;
+import com.stupidfungames.pop.physics.collision.CollisionIds;
+import com.stupidfungames.pop.physics.collision.GamePhysicsContactsEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
 import com.stupidfungames.pop.eventbus.EventBus;
@@ -28,18 +28,18 @@ class BallAndChainCollisionManagerEntity extends BaseEntity implements
     GamePhysicsContactsEntity gamePhysicsContactsEntity = get(GamePhysicsContactsEntity.class);
     // Set up collision detection between the ball and chain and the bubbles on the stage
     gamePhysicsContactsEntity
-        .addContactListener(ChainLinkEntityUserData.class, BubbleEntityUserData.class, this);
+        .addContactListener(CollisionIds.CHAIN_LINK, CollisionIds.BUBBLE, this);
     gamePhysicsContactsEntity
-        .addContactListener(WreckingBallEntityUserData.class, BubbleEntityUserData.class, this);
+        .addContactListener(CollisionIds.WRECKING_BALL, CollisionIds.BUBBLE, this);
   }
 
   @Override
   public void onDestroy() {
     GamePhysicsContactsEntity gamePhysicsContactsEntity = get(GamePhysicsContactsEntity.class);
     gamePhysicsContactsEntity
-        .removeContactListener(ChainLinkEntityUserData.class, BubbleEntityUserData.class, this);
+        .removeContactListener(CollisionIds.CHAIN_LINK, CollisionIds.BUBBLE, this);
     gamePhysicsContactsEntity
-        .removeContactListener(WreckingBallEntityUserData.class, BubbleEntityUserData.class, this);
+        .removeContactListener(CollisionIds.WRECKING_BALL, CollisionIds.BUBBLE, this);
   }
 
 

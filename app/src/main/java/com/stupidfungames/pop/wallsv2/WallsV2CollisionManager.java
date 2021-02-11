@@ -3,13 +3,13 @@ package com.stupidfungames.pop.wallsv2;
 import static com.stupidfungames.pop.eventbus.GameEvent.WALL_V2_POPPED_BUBBLE;
 
 import com.stupidfungames.pop.BaseEntity;
-import com.stupidfungames.pop.GamePhysicsContactsEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
 import com.stupidfungames.pop.fixturedefdata.FixtureDefDataUtil;
-import com.stupidfungames.pop.fixturedefdata.WallV2EntityUserData;
+import com.stupidfungames.pop.physics.collision.CollisionIds;
+import com.stupidfungames.pop.physics.collision.GamePhysicsContactsEntity;
 import org.jbox2d.dynamics.Fixture;
 
 public class WallsV2CollisionManager extends BaseEntity implements
@@ -24,7 +24,7 @@ public class WallsV2CollisionManager extends BaseEntity implements
     super.onCreateScene();
     GamePhysicsContactsEntity gamePhysicsContactsEntity = get(GamePhysicsContactsEntity.class);
     gamePhysicsContactsEntity
-        .addContactListener(WallV2EntityUserData.class, BubbleEntityUserData.class, this);
+        .addContactListener(CollisionIds.WALL_V2, CollisionIds.BUBBLE, this);
   }
 
   @Override
@@ -32,15 +32,11 @@ public class WallsV2CollisionManager extends BaseEntity implements
     super.onDestroy();
     GamePhysicsContactsEntity gamePhysicsContactsEntity = get(GamePhysicsContactsEntity.class);
     gamePhysicsContactsEntity
-        .removeContactListener(WallV2EntityUserData.class, BubbleEntityUserData.class, this);
+        .removeContactListener(CollisionIds.WALL_V2, CollisionIds.BUBBLE, this);
   }
 
   @Override
   public void onBeginContact(Fixture fixture1, Fixture fixture2) {
-  }
-
-  @Override
-  public void onEndContact(Fixture fixture1, Fixture fixture2) {
     if (shouldWallPop()) {
       Fixture bubbleFixture = FixtureDefDataUtil.getBubbleFixture(fixture1, fixture2);
       BubbleEntityUserData bubbleEntityUserData = (BubbleEntityUserData) bubbleFixture
@@ -50,6 +46,10 @@ public class WallsV2CollisionManager extends BaseEntity implements
         EventBus.get().sendEvent(WALL_V2_POPPED_BUBBLE);
       }
     }
+  }
+
+  @Override
+  public void onEndContact(Fixture fixture1, Fixture fixture2) {
   }
 
   private boolean shouldWallPop() {
