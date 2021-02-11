@@ -151,7 +151,7 @@ public class WallDraggableEntity extends BaseDraggableEntity implements Subscrib
     wallCharge = getWallChargeLevel() * WALL_CHARGE_PER_LVL;
     onWallChargeChanged();
   }
-  
+
   private void onBubbleHitWall(WallV2CollidedWithBubbleEventPayload payload) {
     if (stateMachine.getCurrentState() == DROPPED_CHARGED
         && ((BaseEntityUserData) draggableSprite.getUserData()).getId() == payload.wallId) {
