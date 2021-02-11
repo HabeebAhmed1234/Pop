@@ -125,6 +125,10 @@ public class TimerHandler implements IUpdateHandler {
 		this.isPaused = true;
 	}
 
+	public boolean isPaused() {
+		return isPaused;
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================

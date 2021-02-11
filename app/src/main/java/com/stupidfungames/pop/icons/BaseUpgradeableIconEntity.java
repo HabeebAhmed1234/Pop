@@ -117,6 +117,10 @@ public abstract class BaseUpgradeableIconEntity extends BaseIconEntity {
     }
   }
 
+  public int getUpgradeLevel() {
+    return upgradeLevel;
+  }
+
   protected boolean isInUpgradeState() {
     return isInUpgradeState;
   }

@@ -54,6 +54,9 @@ class BallAndChainCollisionManagerEntity extends BaseEntity implements
       return;
     }
     Fixture bubbleFixture = FixtureDefDataUtil.getBubbleFixture(fixture1, fixture2);
+    if (bubbleFixture == null) {
+      return;
+    }
     BubbleEntityUserData bubbleEntityUserData = (BubbleEntityUserData) bubbleFixture.getUserData();
     if (bubbleEntityUserData.bubbleSprite.isVisible()) {
       get(BubblePopperEntity.class).popBubble(bubbleEntityUserData.bubbleSprite);

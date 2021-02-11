@@ -6,6 +6,7 @@ import static com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconI
 
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.draggableinventory.BaseDraggableInventoryIcon;
+import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.gameiconstray.GameIconsHostTrayEntity.IconId;
 import com.stupidfungames.pop.resources.sounds.SoundId;
@@ -21,6 +22,16 @@ public class WallsV2InventoryIcon extends BaseDraggableInventoryIcon {
 
   public WallsV2InventoryIcon(BinderEnity parent) {
     super(parent);
+  }
+
+  public int getWallsLevel() {
+    int upgradeLevel = getUpgradeLevel();
+    if (upgradeLevel == 2) {
+      return 1;
+    } else if (upgradeLevel == 3) {
+      return 2;
+    }
+    return 0;
   }
 
   @Override
@@ -85,8 +96,8 @@ public class WallsV2InventoryIcon extends BaseDraggableInventoryIcon {
       super.onUpgraded(previousUpgradeLevel, newUpgradeLevel);
     } else {
       // Each upgrade after that makes the walls start popping bubbles, slowly at first, then fast
-
+      EventBus.get().sendEvent(
+          newUpgradeLevel == 2 ? GameEvent.CHARGE_WALLS_LVL_1 : GameEvent.CHARGE_WALLS_LVL_2);
     }
-
   }
 }

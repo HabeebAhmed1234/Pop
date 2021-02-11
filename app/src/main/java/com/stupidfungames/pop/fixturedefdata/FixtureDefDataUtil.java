@@ -1,5 +1,6 @@
 package com.stupidfungames.pop.fixturedefdata;
 
+import android.util.Log;
 import org.jbox2d.dynamics.Fixture;
 
 public class FixtureDefDataUtil {
@@ -29,7 +30,9 @@ public class FixtureDefDataUtil {
     } else if (FixtureDefDataUtil.isBubbleFixtureDefData(f2)) {
       return f2;
     } else {
-      throw new IllegalStateException("neither of the fixtures are bubbles!");
+      Log.e("FixtureDefDataUtil", "illegal state",
+          new IllegalStateException("neither of the fixtures are bubbles!"));
+      return null;
     }
   }
 
@@ -42,7 +45,9 @@ public class FixtureDefDataUtil {
     } else if (FixtureDefDataUtil.isWallV2Fixture(f2)) {
       return f2;
     } else {
-      throw new IllegalStateException("neither of the fixtures are walls!");
+      Log.e("FixtureDefDataUtil", "illegal state",
+          new IllegalStateException("neither of the fixtures are walls!"));
+      return null;
     }
   }
 
@@ -55,7 +60,9 @@ public class FixtureDefDataUtil {
     } else if (FixtureDefDataUtil.isBulletFixtureDefData(f2)) {
       return f2;
     } else {
-      throw new IllegalStateException("neither of the fixtures are bullets!");
+      Log.e("FixtureDefDataUtil", "illegal state",
+          new IllegalStateException("neither of the fixtures are bullets!"));
+      return null;
     }
   }
 
@@ -68,7 +75,9 @@ public class FixtureDefDataUtil {
     } else if (!isFloorFixtureDefData(f2)) {
       return f2;
     } else {
-      throw new IllegalStateException("neither of the fixtures are non floor fixtures!");
+      Log.e("FixtureDefDataUtil", "illegal state",
+          new IllegalStateException("neither of the fixtures are non floor fixtures!"));
+      return null;
     }
   }
 }

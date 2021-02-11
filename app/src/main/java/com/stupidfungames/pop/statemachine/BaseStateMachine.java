@@ -129,6 +129,8 @@ public abstract class BaseStateMachine<StateType extends Enum> {
     } else {
       Log.e(getLoggingName(), "Illegal state transition", new IllegalArgumentException(
           "Cannot transition state machine from " + currentState + " to " + newState));
+      throw new IllegalArgumentException(
+          "Cannot transition state machine from " + currentState + " to " + newState);
     }
   }
 

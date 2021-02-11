@@ -20,9 +20,7 @@ public class NukeCooldownManager extends BaseEntity implements
   }
 
   @Override
-  protected void createBindings(Binder binder) {
-
-  }
+  protected void createBindings(Binder binder) {}
 
   @Override
   public void onCreateScene() {

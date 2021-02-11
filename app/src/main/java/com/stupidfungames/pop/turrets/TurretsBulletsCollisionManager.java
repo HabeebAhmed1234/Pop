@@ -41,9 +41,15 @@ public class TurretsBulletsCollisionManager extends BaseEntity implements
   @Override
   public void onBeginContact(Fixture fixture1, Fixture fixture2) {
     Fixture bubbleFixture = FixtureDefDataUtil.getBubbleFixture(fixture1, fixture2);
+    if (bubbleFixture == null) {
+      return;
+    }
     BubbleEntityUserData bubbleEntityUserData = (BubbleEntityUserData) bubbleFixture.getUserData();
     if (get(BubblePopperEntity.class).popBubble(bubbleEntityUserData.bubbleSprite)) {
       Fixture bulletFixture = FixtureDefDataUtil.getBulletFixture(fixture1, fixture2);
+      if (bulletFixture == null) {
+        return;
+      }
       TurretBulletUserData bulletUserData = (TurretBulletUserData) bulletFixture.getUserData();
       EventBus.get().sendEvent(TURRET_BULLET_POPPED_BUBBLE,
           new TurretBulletPoppedBubbleEventPayload(bulletUserData.getId()));
