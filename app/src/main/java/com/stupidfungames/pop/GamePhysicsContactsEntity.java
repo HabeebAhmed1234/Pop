@@ -7,6 +7,7 @@ import com.stupidfungames.pop.fixturedefdata.BaseEntityUserData;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
@@ -172,6 +173,7 @@ public class GamePhysicsContactsEntity extends BaseEntity implements ContactList
       throw new IllegalArgumentException(
           "You cannot create a key with one or more null BaseEntityUserData types");
     }
+
     Set<Class<? extends BaseEntityUserData>> key = new HashSet<>();
     key.add(type1);
     key.add(type2);

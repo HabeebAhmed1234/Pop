@@ -34,4 +34,5 @@ public enum GameEvent {
   NO_UPGRADES_AVAILABLE, // Called when no upgrades are available any longer
   UPGRADEABLE_ICON_LOADED, // Called when an upgradeable icon has loaded a save game
   CANCEL_WALL_PLACEMENT, // Called when we need to stop placing walls if any (eg. When user uses another tool)
+  WALL_V2_POPPED_BUBBLE, // Called when a wall v2 pops a bubble
 }

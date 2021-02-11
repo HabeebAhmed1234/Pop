@@ -77,4 +77,16 @@ public class WallsV2InventoryIcon extends BaseDraggableInventoryIcon {
   protected TooltipId getIconTooltipId() {
     return TooltipId.WALLS_ICON_TOOLTIP;
   }
+
+  @Override
+  protected void onUpgraded(int previousUpgradeLevel, int newUpgradeLevel) {
+    if (newUpgradeLevel <= 1) {
+      // Upgrade normally up to the first upgrade (ie add inventory)
+      super.onUpgraded(previousUpgradeLevel, newUpgradeLevel);
+    } else {
+      // Each upgrade after that makes the walls start popping bubbles, slowly at first, then fast
+
+    }
+
+  }
 }
