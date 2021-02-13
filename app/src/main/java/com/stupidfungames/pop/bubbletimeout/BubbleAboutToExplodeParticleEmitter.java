@@ -10,12 +10,13 @@ public class BubbleAboutToExplodeParticleEmitter extends CircleOutlineParticleEm
 
   public BubbleAboutToExplodeParticleEmitter(Sprite bubbleSprite) {
     super(bubbleSprite.getCenterX(), bubbleSprite.getCenterY(),
-        (bubbleSprite.getWidthScaled() * BubbleSpawnerEntity.BUBBLE_BODY_SCALE_FACTOR) / 2);
+        getRadius(bubbleSprite));
     this.bubbleSprite = bubbleSprite;
   }
 
   public void setSprite(Sprite bubbleSprite) {
     this.bubbleSprite = bubbleSprite;
+    setRadius(getRadius(bubbleSprite));
   }
 
   @Override
@@ -27,5 +28,9 @@ public class BubbleAboutToExplodeParticleEmitter extends CircleOutlineParticleEm
     if (bubbleSprite.getCenterY() != getCenterY()) {
       setCenterY(bubbleSprite.getCenterY());
     }
+  }
+
+  private static float getRadius(Sprite sprite) {
+    return (sprite.getWidthScaled() * BubbleSpawnerEntity.BUBBLE_BODY_SCALE_FACTOR) / 2;
   }
 }

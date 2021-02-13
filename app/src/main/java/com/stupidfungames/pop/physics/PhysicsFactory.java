@@ -1,8 +1,10 @@
 package com.stupidfungames.pop.physics;
 
+import static com.stupidfungames.pop.physics.util.constants.PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT;
+
 import com.stupidfungames.pop.physics.util.constants.PhysicsConstants;
 import com.stupidfungames.pop.utils.GeometryUtils;
-
+import java.util.List;
 import org.andengine.entity.primitive.Line;
 import org.andengine.entity.shape.IAreaShape;
 import org.andengine.entity.shape.IShape;
@@ -16,10 +18,6 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Filter;
 import org.jbox2d.dynamics.FixtureDef;
-
-import java.util.List;
-
-import static com.stupidfungames.pop.physics.util.constants.PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT;
 
 /**
  * (c) 2010 Nicolas Gramlich (c) 2011 Zynga Inc.
@@ -95,18 +93,40 @@ public class PhysicsFactory {
 
   public static Body createBoxBody(final PhysicsWorld pPhysicsWorld, final IAreaShape pAreaShape,
       final BodyType pBodyType, final FixtureDef pFixtureDef) {
-    return PhysicsFactory.createBoxBody(pPhysicsWorld, pAreaShape, pBodyType, pFixtureDef,
+    return PhysicsFactory.createBoxBody(
+        pPhysicsWorld,
+        pAreaShape,
+        pBodyType,
+        pFixtureDef,
+        1,
+        PIXEL_TO_METER_RATIO_DEFAULT);
+  }
+
+  public static Body createBoxBody(
+      final PhysicsWorld pPhysicsWorld,
+      final IAreaShape pAreaShape,
+      final BodyType pBodyType,
+      final float scaleFactor,
+      final FixtureDef pFixtureDef) {
+    return PhysicsFactory.createBoxBody(
+        pPhysicsWorld,
+        pAreaShape,
+        pBodyType,
+        pFixtureDef,
+        scaleFactor,
         PIXEL_TO_METER_RATIO_DEFAULT);
   }
 
   public static Body createBoxBody(final PhysicsWorld pPhysicsWorld, final IAreaShape pAreaShape,
-      final BodyType pBodyType, final FixtureDef pFixtureDef, final float pPixelToMeterRatio) {
+      final BodyType pBodyType, final FixtureDef pFixtureDef, final float scaleFactor,
+      final float pPixelToMeterRatio) {
     final float[] sceneCenterCoordinates = pAreaShape.getSceneCenterCoordinates();
     final float centerX = sceneCenterCoordinates[Constants.VERTEX_INDEX_X];
     final float centerY = sceneCenterCoordinates[Constants.VERTEX_INDEX_Y];
     return PhysicsFactory
-        .createBoxBody(pPhysicsWorld, centerX, centerY, pAreaShape.getWidthScaled(),
-            pAreaShape.getHeightScaled(), pAreaShape.getRotation(), pBodyType, pFixtureDef,
+        .createBoxBody(pPhysicsWorld, centerX, centerY, pAreaShape.getWidthScaled() * scaleFactor,
+            pAreaShape.getHeightScaled() * scaleFactor, pAreaShape.getRotation(), pBodyType,
+            pFixtureDef,
             pPixelToMeterRatio);
   }
 

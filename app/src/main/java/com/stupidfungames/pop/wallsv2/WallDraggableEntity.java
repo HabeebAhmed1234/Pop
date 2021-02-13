@@ -3,7 +3,6 @@ package com.stupidfungames.pop.wallsv2;
 import static com.stupidfungames.pop.eventbus.GameEvent.CHARGE_WALLS_LVL_1;
 import static com.stupidfungames.pop.eventbus.GameEvent.CHARGE_WALLS_LVL_2;
 import static com.stupidfungames.pop.eventbus.GameEvent.WALL_V2_COLLIDED_WITH_BUBBLE;
-import static com.stupidfungames.pop.wallsv2.WallV2StateMachine.State.DOCKED;
 import static com.stupidfungames.pop.wallsv2.WallV2StateMachine.State.DROPPED_CHARGED;
 
 import com.stupidfungames.pop.binder.BinderEnity;
@@ -36,16 +35,15 @@ public class WallDraggableEntity extends BaseDraggableEntity implements Subscrib
   private static final int WALL_CHARGE_PER_LVL = 7;
   private static final int WALL_RECHARGE_DELAY_SECONDS = 10;
 
-  private final Sprite wallSprite;
   private final WallV2StateMachine stateMachine;
-
+  private final Sprite wallHealthSprite;
   // Walls start off with no charge since they don't pop bubbles until upgraded.
   private int wallCharge = -1;
   private TimerHandler wallChargeTimerHandler = null;
 
   public WallDraggableEntity(Sprite wallSprite, BinderEnity parent) {
     super(wallSprite, parent);
-    this.wallSprite = wallSprite;
+    wallHealthSprite = (Sprite) wallSprite.getChildByIndex(0);
     this.stateMachine = new WallV2StateMachine();
 
     EventBus.get()
@@ -100,7 +98,7 @@ public class WallDraggableEntity extends BaseDraggableEntity implements Subscrib
   @Override
   public void onDocked() {
     stateMachine.transitionState(State.DOCKED);
-    removePhysics(wallSprite);
+    removePhysics(draggableSprite);
   }
 
   @Override
@@ -148,8 +146,12 @@ public class WallDraggableEntity extends BaseDraggableEntity implements Subscrib
     if (isRechargePending()) {
       wallChargeTimerHandler.pause();
     }
-    wallCharge = getWallChargeLevel() * WALL_CHARGE_PER_LVL;
+    wallCharge = getMaxWallCharge();
     onWallChargeChanged();
+  }
+
+  private int getMaxWallCharge() {
+    return getWallChargeLevel() * WALL_CHARGE_PER_LVL;
   }
 
   private void onBubbleHitWall(WallV2CollidedWithBubbleEventPayload payload) {
@@ -169,6 +171,18 @@ public class WallDraggableEntity extends BaseDraggableEntity implements Subscrib
     } else if (wallCharge <= 0 && stateMachine.getCurrentState() == DROPPED_CHARGED
         && stateMachine.getCurrentState() != State.DROPPED_DISCHARGED) {
       stateMachine.transitionState(State.DROPPED_DISCHARGED);
+    }
+    updateWallHealthSprite();
+  }
+
+  private void updateWallHealthSprite() {
+    int maxWallCharge = getMaxWallCharge();
+    if (maxWallCharge == 0 && wallHealthSprite.isVisible()) {
+      wallHealthSprite.setVisible(false);
+    } else if (maxWallCharge > 0) {
+      wallHealthSprite.setVisible(true);
+      float percentWallCharged = (float) wallCharge / (float) getMaxWallCharge();
+      wallHealthSprite.setScaleX(percentWallCharged);
     }
   }
 
@@ -195,6 +209,7 @@ public class WallDraggableEntity extends BaseDraggableEntity implements Subscrib
         break;
     }
     draggableSprite.setColor(newColor);
+    wallHealthSprite.setColor(newColor);
   }
 
   private boolean isRechargePending() {
@@ -202,7 +217,8 @@ public class WallDraggableEntity extends BaseDraggableEntity implements Subscrib
   }
 
   private void maybeChargeWall(State newState) {
-    if (newState == State.DROPPED_DISCHARGED && (wallChargeTimerHandler == null || !isRechargePending())) {
+    if (newState == State.DROPPED_DISCHARGED && (wallChargeTimerHandler == null
+        || !isRechargePending())) {
       if (wallChargeTimerHandler == null) {
         wallChargeTimerHandler = new TimerHandler(WALL_RECHARGE_DELAY_SECONDS,
             new ITimerCallback() {
