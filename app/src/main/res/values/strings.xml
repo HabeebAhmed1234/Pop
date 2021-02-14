@@ -19,10 +19,10 @@
   <string name="share">Share</string>
   <string name="share_facebook">[ f ]</string>
   <string name="review">Review</string>
-  <string name="game_share_string_title">Share Pop! with</string>
-  <string name="game_share_hashtag">#PopStupidFunGames</string>
+  <string name="game_share_string_title">Share Cyberpop with</string>
+  <string name="game_share_hashtag">#Cyberpop-StupidFunGames</string>
   <string name="game_share_link">https://play.google.com/store/apps/details?id=com.stupidfungames.pop</string>
-  <string name="game_share_string">Try playing Pop - Bubble Popping Game! \n https://play.google.com/store/apps/details?id=com.stupidfungames.pop</string>
+  <string name="game_share_string">Try playing Cyberpop - Bubble Popping Game! \n https://play.google.com/store/apps/details?id=com.stupidfungames.pop</string>
   <string name="continue_game_text_with_ad">Watch Ad to Continue Game</string>
   <string name="continue_game_text_with_token_purchase">Buy token to Continue Game</string>
   <string name="load_game_text">Resume Game</string>
@@ -92,7 +92,7 @@
   <!-- Notifications -->
   <string name="notification_channel_name">Pop game notifications</string>
   <string name="notification_channel_description">Channel for pop notifications</string>
-  <string name="nudge_notification_title">Come back to Pop!</string>
+  <string name="nudge_notification_title">Come back to Cyberpop!</string>
   <string name="nudge_notification_content_1">Wake up samurai. We have bubbles to pop.</string>
   <string name="nudge_notification_content_2">Why aren\'t you popping bubbles right now?.</string>
   <string name="nudge_notification_content_3">Drop everything. There are bubbles that need popping.</string>
