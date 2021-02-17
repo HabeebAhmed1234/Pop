@@ -98,7 +98,7 @@ public class PhysicsFactory {
         pAreaShape,
         pBodyType,
         pFixtureDef,
-        1,
+        new float[]{1, 1},
         PIXEL_TO_METER_RATIO_DEFAULT);
   }
 
@@ -106,7 +106,7 @@ public class PhysicsFactory {
       final PhysicsWorld pPhysicsWorld,
       final IAreaShape pAreaShape,
       final BodyType pBodyType,
-      final float scaleFactor,
+      final float[] scaleFactor,
       final FixtureDef pFixtureDef) {
     return PhysicsFactory.createBoxBody(
         pPhysicsWorld,
@@ -118,14 +118,15 @@ public class PhysicsFactory {
   }
 
   public static Body createBoxBody(final PhysicsWorld pPhysicsWorld, final IAreaShape pAreaShape,
-      final BodyType pBodyType, final FixtureDef pFixtureDef, final float scaleFactor,
+      final BodyType pBodyType, final FixtureDef pFixtureDef, final float[] scaleFactor,
       final float pPixelToMeterRatio) {
     final float[] sceneCenterCoordinates = pAreaShape.getSceneCenterCoordinates();
     final float centerX = sceneCenterCoordinates[Constants.VERTEX_INDEX_X];
     final float centerY = sceneCenterCoordinates[Constants.VERTEX_INDEX_Y];
     return PhysicsFactory
-        .createBoxBody(pPhysicsWorld, centerX, centerY, pAreaShape.getWidthScaled() * scaleFactor,
-            pAreaShape.getHeightScaled() * scaleFactor, pAreaShape.getRotation(), pBodyType,
+        .createBoxBody(pPhysicsWorld, centerX, centerY,
+            pAreaShape.getWidthScaled() * scaleFactor[0],
+            pAreaShape.getHeightScaled() * scaleFactor[1], pAreaShape.getRotation(), pBodyType,
             pFixtureDef,
             pPixelToMeterRatio);
   }

@@ -5,6 +5,7 @@ import static com.stupidfungames.pop.eventbus.GameEvent.CANCEL_WALL_PLACEMENT;
 import androidx.annotation.Nullable;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameSceneTouchListenerEntity;
+import com.stupidfungames.pop.PointerEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.physics.util.Vec2Pool;
@@ -81,10 +82,12 @@ class BallAndChainHandleEntity extends BaseEntity implements
     switch (touchEvent.getAction()) {
       case TouchEvent.ACTION_UP:
         releaseHandle();
+        get(PointerEntity.class).onSceneTouchEvent(scene, touchEvent);
         return false;
       case TouchEvent.ACTION_DOWN:
       case TouchEvent.ACTION_MOVE:
         setHandlePositionTarget(touchEvent);
+        get(PointerEntity.class).onSceneTouchEvent(scene, touchEvent);
         return true;
     }
     return false;

@@ -20,7 +20,8 @@ import org.jbox2d.dynamics.FixtureDef;
 
 public class WallDraggableEntityCreator extends BaseDraggableEntityCreator {
 
-  private static final float DRAGGABLE_WALL_SCALE_FACTOR = 0.7f;
+  private static final float DRAGGABLE_WALL_SCALE_FACTOR_X = 0.7f;
+  private static final float DRAGGABLE_WALL_SCALE_FACTOR_Y = 0.8f;
 
   public WallDraggableEntityCreator(BinderEnity parent) {
     super(parent);
@@ -55,7 +56,11 @@ public class WallDraggableEntityCreator extends BaseDraggableEntityCreator {
     wallFixtureDef.setFilter(CollisionFilters.WALL_FILTER);
     wallFixtureDef.setUserData(wallUserData);
     Body wallBody = PhysicsFactory
-        .createBoxBody(physicsWorld, wallSprite, BodyType.STATIC, DRAGGABLE_WALL_SCALE_FACTOR,
+        .createBoxBody(
+            physicsWorld,
+            wallSprite,
+            BodyType.STATIC,
+            new float[]{DRAGGABLE_WALL_SCALE_FACTOR_X, DRAGGABLE_WALL_SCALE_FACTOR_Y},
             wallFixtureDef);
 
     // Create wall health bar

@@ -29,4 +29,5 @@ public enum TextureId {
   NEXT_BTN,
   WALL_V2,
   WALL_V2_FILL,
+  POINTER,
 }

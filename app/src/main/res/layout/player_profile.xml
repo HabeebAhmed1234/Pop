@@ -3,11 +3,11 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/player_profile_view"
   android:layout_width="match_parent"
-  android:layout_height="wrap_content"
+  android:layout_height="@dimen/player_profile_height"
   android:layout_alignParentTop="true"
+  android:background="@android:color/transparent"
   android:gravity="center"
   android:orientation="vertical"
-  android:background="@android:color/transparent"
   android:paddingTop="@dimen/player_profile_top_padding">
 
   <com.stupidfungames.pop.androidui.GameMenuText

@@ -85,15 +85,15 @@ public class PlayerProfileView implements LoginListener {
     client.getCurrentPlayer().addOnCompleteListener(new OnCompleteListener<Player>() {
       @Override
       public void onComplete(@NonNull Task<Player> task) {
-        if (task.isSuccessful()) {
+        if (task.isSuccessful() && task.getResult() != null) {
           Player player = task.getResult();
-          if (player != null) {
-            playerUserName.setText(player.getDisplayName());
-            playerUserName.setVisibility(View.VISIBLE);
-            signInBtn.setVisibility(View.GONE);
-            signOutBtn.setVisibility(View.VISIBLE);
-            setClickListeners(true);
-          }
+          playerUserName.setText(player.getDisplayName());
+          playerUserName.setVisibility(View.VISIBLE);
+          signInBtn.setVisibility(View.GONE);
+          signOutBtn.setVisibility(View.VISIBLE);
+          setClickListeners(true);
+        } else {
+          renderLoggedOutState();
         }
       }
     });

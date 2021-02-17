@@ -5,7 +5,6 @@ import com.stupidfungames.pop.eventbus.BubbleTouchedEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
-
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.sprite.Sprite;
@@ -16,30 +15,39 @@ import org.andengine.input.touch.TouchEvent;
  */
 public class BubbleTouchFactoryEntity extends BaseEntity {
 
-    public BubbleTouchFactoryEntity(BinderEnity parent) {
-        super(parent);
+  public BubbleTouchFactoryEntity(BinderEnity parent) {
+    super(parent);
+  }
+
+  public BubbleTouchedListener getNewTouchBubblePopper() {
+    return new BubbleTouchedListener(this);
+  }
+
+  public static class BubbleTouchedListener implements IOnAreaTouchListener {
+
+    private BinderEnity rent;
+
+    private BubbleTouchedListener(BinderEnity parent) {
+      this.rent = parent;
     }
 
-    public BubbleTouchedListener getNewTouchBubblePopper() {
-        return new BubbleTouchedListener();
-    }
-
-    public static class BubbleTouchedListener implements IOnAreaTouchListener {
-
-        private BubbleTouchedListener() {}
-
-        @Override
-        public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-            if (pSceneTouchEvent.isActionDown()) {
-                final Sprite entity = (Sprite) pTouchArea;
-                if (entity.getUserData() == null) {
-                    return false;
-                }
-                final BubbleEntityUserData bubbleEntityUserData = (BubbleEntityUserData) entity.getUserData();
-                EventBus.get().sendEvent(GameEvent.BUBBLE_TOUCHED, new BubbleTouchedEventPayload(entity, bubbleEntityUserData.size, bubbleEntityUserData.bubbleType));
-                return true;
-            }
-            return false;
+    @Override
+    public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea,
+        float pTouchAreaLocalX, float pTouchAreaLocalY) {
+      if (pSceneTouchEvent.isActionDown()) {
+        final Sprite entity = (Sprite) pTouchArea;
+        if (entity.getUserData() == null) {
+          return false;
         }
+        final BubbleEntityUserData bubbleEntityUserData = (BubbleEntityUserData) entity
+            .getUserData();
+        EventBus.get().sendEvent(GameEvent.BUBBLE_TOUCHED,
+            new BubbleTouchedEventPayload(entity, bubbleEntityUserData.size,
+                bubbleEntityUserData.bubbleType));
+        rent.get(PointerEntity.class).onSceneTouchEvent(null, pSceneTouchEvent);
+        return true;
+      }
+      return false;
     }
+  }
 }

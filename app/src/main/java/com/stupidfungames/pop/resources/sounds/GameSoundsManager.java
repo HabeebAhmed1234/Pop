@@ -52,6 +52,7 @@ public class GameSoundsManager extends BaseEntity {
       loadSound(SoundId.UNPAUSE, "unpause.mp3");
       loadSound(SoundId.UPGRADE, "upgrade.mp3", 0.5f);
       loadSound(SoundId.UPGRADE_POP, "upgrade_pop.mp3", 0.5f);
+      loadSound(SoundId.SHATTER, "shatter.mp3", 0.75f);
     } catch (final IOException e) {
       Debug.e(e);
     }

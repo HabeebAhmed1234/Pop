@@ -5,6 +5,8 @@ import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
+import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
+import com.stupidfungames.pop.resources.sounds.SoundId;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 
@@ -73,8 +75,9 @@ class BallAndChainDurabilityEntity extends BaseEntity implements EventBus.Subscr
   @Override
   public void onEnterState(BallAndChainStateMachine.State newState) {
     switch (newState) {
-      case UNLOCKED_DISCHARGED:
       case IN_USE_DISCHARGED:
+        get(GameSoundsManager.class).getSound(SoundId.SHATTER).play();
+      case UNLOCKED_DISCHARGED:
         startChargingBallAndChain();
     }
   }

@@ -23,4 +23,5 @@ public enum SoundId {
     UNPAUSE,
     UPGRADE_POP,
     UPGRADE,
+    SHATTER,
 }
