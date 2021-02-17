@@ -168,8 +168,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(MultiTouchPopperIcon.class, new MultiTouchPopperIcon(this))
             .bind(TouchBubblePopper.class, new TouchBubblePopper(this))
 
-            .bind(UpgradeManager.class, new UpgradeManager(this))
-            .bind(PointerEntity.class, new PointerEntity(this));
+            .bind(UpgradeManager.class, new UpgradeManager(this));
       }
     };
   }

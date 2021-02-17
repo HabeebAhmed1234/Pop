@@ -20,16 +20,10 @@ public class BubbleTouchFactoryEntity extends BaseEntity {
   }
 
   public BubbleTouchedListener getNewTouchBubblePopper() {
-    return new BubbleTouchedListener(this);
+    return new BubbleTouchedListener();
   }
 
   public static class BubbleTouchedListener implements IOnAreaTouchListener {
-
-    private BinderEnity rent;
-
-    private BubbleTouchedListener(BinderEnity parent) {
-      this.rent = parent;
-    }
 
     @Override
     public boolean onAreaTouched(TouchEvent pSceneTouchEvent, ITouchArea pTouchArea,
@@ -44,7 +38,6 @@ public class BubbleTouchFactoryEntity extends BaseEntity {
         EventBus.get().sendEvent(GameEvent.BUBBLE_TOUCHED,
             new BubbleTouchedEventPayload(entity, bubbleEntityUserData.size,
                 bubbleEntityUserData.bubbleType));
-        rent.get(PointerEntity.class).onSceneTouchEvent(null, pSceneTouchEvent);
         return true;
       }
       return false;
