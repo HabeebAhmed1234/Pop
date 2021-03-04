@@ -28,7 +28,6 @@
   <string name="load_game_text">Resume Game</string>
   <string name="game_over_text">Game Over</string>
   <string name="options_text">Options</string>
-  <string name="purchases">My Purchases</string>
   <string name="error_checking_continue_token">There was an error checking if you have a continue token. You can watch an ad instead.</string>
   <string name="store">Store</string>
   <string name="quit_text">Quit</string>
@@ -61,7 +60,7 @@
   <string name="purchase_succesful">Your purchase was successful!</string>
   <string name="purchase_canceled">Your purchase was cancelled</string>
   <string name="store_title">Store</string>
-  <string name="my_purchases">My Purchases</string>
+  <string name="my_items">My Items</string>
   <string name="buy">Buy</string>
   <string name="owned">Owned</string>
   <string name="equip">Equip</string>

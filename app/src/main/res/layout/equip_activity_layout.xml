@@ -33,7 +33,7 @@
       android:layout_gravity="center_horizontal"
       android:textAlignment="center"
       android:layout_marginBottom="@dimen/between_btn_padding"
-      android:text="@string/my_purchases"
+      android:text="@string/my_items"
       android:textSize="@dimen/main_menu_btn_text_size" />
 
     <include

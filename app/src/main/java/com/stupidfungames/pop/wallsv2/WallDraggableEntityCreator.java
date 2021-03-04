@@ -20,8 +20,8 @@ import org.jbox2d.dynamics.FixtureDef;
 
 public class WallDraggableEntityCreator extends BaseDraggableEntityCreator {
 
-  private static final float DRAGGABLE_WALL_SCALE_FACTOR_X = 0.7f;
-  private static final float DRAGGABLE_WALL_SCALE_FACTOR_Y = 0.8f;
+  private static final float DRAGGABLE_WALL_SCALE_FACTOR_X = 0.92f;
+  private static final float DRAGGABLE_WALL_SCALE_FACTOR_Y = 0.74f;
 
   public WallDraggableEntityCreator(BinderEnity parent) {
     super(parent);

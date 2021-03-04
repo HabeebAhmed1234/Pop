@@ -145,7 +145,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/between_btn_padding"
         android:clipToPadding="false"
-        android:text="@string/purchases"
+        android:text="@string/my_items"
         android:textAlignment="center"
         android:textSize="@dimen/main_menu_btn_text_size"
         app:glow_color="@color/menu_button_color"
