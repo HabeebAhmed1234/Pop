@@ -17,7 +17,8 @@ import static android.view.MotionEvent.ACTION_UP;
 
 public class GameMenuButton extends TextView {
 
-    private static final float DEFAULT_GLOW_RADIUS = 80;
+    private static final float MAX_SHADOW_RADIUS = 24;
+    private static final float DEFAULT_GLOW_RADIUS = MAX_SHADOW_RADIUS;
 
     private static final int DEFAULT_COLOR = R.color.menu_button_color;
     private static final int DEFAULT_PRESSED_GLOW_COLOR =  R.color.menu_button_pressed_color;
@@ -64,6 +65,7 @@ public class GameMenuButton extends TextView {
                 0, 0);
         try {
             shadowRadius = a.getFloat(R.styleable.GameMenuButton_glow_strength, DEFAULT_GLOW_RADIUS);
+            shadowRadius = Math.min(shadowRadius, MAX_SHADOW_RADIUS);
             glowColor = ContextCompat.getColor(
                     getContext(),
                     a.getResourceId(

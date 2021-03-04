@@ -11,7 +11,8 @@ import com.stupidfungames.pop.R;
 
 public class GameMenuText extends TextView {
 
-  private static final float DEFAULT_GLOW_RADIUS = 80;
+  private static final float MAX_SHADOW_RADIUS = 24;
+  private static final float DEFAULT_GLOW_RADIUS = MAX_SHADOW_RADIUS;
   private static final int DEFAULT_COLOR = R.color.menu_button_color;
 
   private float shadowRadius;
@@ -55,6 +56,7 @@ public class GameMenuText extends TextView {
     }
     try {
       shadowRadius = a.getFloat(R.styleable.GameMenuButton_glow_strength, DEFAULT_GLOW_RADIUS);
+      shadowRadius = Math.min(shadowRadius, MAX_SHADOW_RADIUS);
       glowColor = ContextCompat.getColor(
           getContext(),
           a.getResourceId(
