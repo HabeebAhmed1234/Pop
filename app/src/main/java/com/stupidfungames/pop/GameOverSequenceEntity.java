@@ -12,6 +12,7 @@ import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
 import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.GameOverExplosionEventPayload;
+import com.stupidfungames.pop.globalpoppedbubbles.GlobalPoppedBubbleManager;
 import com.stupidfungames.pop.hudentities.ScoreHudEntity;
 import com.stupidfungames.pop.physics.util.Vec2Pool;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
@@ -109,6 +110,7 @@ public class GameOverSequenceEntity extends BaseEntity {
         GameOverActivity.newIntent(
             context,
             get(ScoreHudEntity.class).getScore(),
+            GlobalPoppedBubbleManager.getInstance().getGlobalBubblesPoppedCached(),
             get(BubblePopperEntity.class).getBubblesPoppedCount(),
             get(GameSaver.class).fabricateSaveGame()));
     MusicPlayer.get().onLeaveGameActivity();

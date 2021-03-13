@@ -6,12 +6,12 @@
   <string name="app_name" translatable="false">&appname;</string>
 
   <!-- test -->
-  <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
-  <string name="rewarded_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
+  <string name="test_banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+  <string name="test_rewarded_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
 
   <!-- prod -->
-  <string name="test_banner_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/6594335535</string>
-  <string name="test_rewarded_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/4722591875</string>
+  <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/6594335535</string>
+  <string name="rewarded_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/4722591875</string>
 
   <string name="new_game_text">New Game</string>
   <string name="continue_game_text">Continue Game</string>
@@ -77,7 +77,7 @@
   <string name="must_choose_option_to_continue">You must choose one of the options to continue your game.</string>
   <string name="prompt_user_to_continue">You can continue to resume your game!</string>
   <string name="global_bubbles_popped_string">Global bubbles popped:</string>
-  <string name="bubbles_popped_title">Total bubbles popped:</string>
+  <string name="bubbles_popped_title">Global Bubbles popped:</string>
 
   <!-- App info -->
   <string name="app_info_title">About &appname;</string>

@@ -1,6 +1,5 @@
 package com.stupidfungames.pop;
 
-import static com.stupidfungames.pop.analytics.Events.GAME_OVER_BUBBLES_POPPED;
 import static com.stupidfungames.pop.analytics.Events.GAME_OVER_SCORE;
 import static com.stupidfungames.pop.analytics.Events.NEW_GAME_STARTED_GAME_OVER;
 
@@ -29,18 +28,22 @@ import com.stupidfungames.pop.savegame.SaveGameManager;
 public class GameOverActivity extends AppCompatActivity implements ContinueGameBtnViewHostActivity {
 
   public static final String SCORE_EXTRA = "score_extra";
+  public static final String GLOBAL_TOTAL_BUBBLES_EXTRA = "global_total_bubbles";
   public static final String BUBBLES_POPPED = "bubbles_popped";
   public static final String CONTINUE_SAVE_GAME_EXTRA = "continue_save_game";
   private ValueAnimator logoAnimator;
   private GooglePlayServicesAuthManager authManager;
   private ContinueGameBtnView continueGameBtnView;
+  private GameOverBubblesPoppedCounterView gameOverBubblesPoppedCounterView;
   private SaveGameManager saveGameManager;
 
-  public static Intent newIntent(Context context, int score, long bubblesPopped,
+  public static Intent newIntent(Context context, int score, long globalTotalBubbles,
+      long bubblesPopped,
       SaveGame continueGame) {
     Intent intent = new Intent(context, GameOverActivity.class);
     Bundle b = new Bundle();
     b.putInt(GameOverActivity.SCORE_EXTRA, score);
+    b.putLong(GameOverActivity.GLOBAL_TOTAL_BUBBLES_EXTRA, globalTotalBubbles);
     b.putLong(GameOverActivity.BUBBLES_POPPED, bubblesPopped);
     b.putString(CONTINUE_SAVE_GAME_EXTRA, continueGame.toJson());
     intent.putExtras(b);
@@ -59,6 +62,14 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
         (GameMenuButton) findViewById(R.id.continue_game_btn),
         this);
 
+    gameOverBubblesPoppedCounterView = new GameOverBubblesPoppedCounterView(
+        (TextView) findViewById(R.id.global_bubbles_popped),
+        (TextView) findViewById(R.id.incremental_bubbles),
+        (TextView) findViewById(R.id.slash));
+
+    gameOverBubblesPoppedCounterView
+        .startAnimation(getGlobalBubblesPoppedCount(), getIncrementalBubblesPoppedCount());
+
     findViewById(R.id.new_game_btn).setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -67,8 +78,6 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
     });
 
     initScoreText();
-
-    initBubblesPoppedText();
 
     animateGameOver();
 
@@ -85,18 +94,15 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
     Logger.logSelect(this, GAME_OVER_SCORE, score);
   }
 
-  private void initBubblesPoppedText() {
-    long bubblesPopped = getBubblesPoppedCount();
-    ((TextView) findViewById(R.id.bubbles_popped_count))
-        .setText(Long.toString(getBubblesPoppedCount()));
-    Logger.logSelect(this, GAME_OVER_BUBBLES_POPPED, bubblesPopped);
-  }
-
   private int getGameOverScore() {
     return getIntent().getIntExtra(SCORE_EXTRA, 0);
   }
 
-  private long getBubblesPoppedCount() {
+  private long getGlobalBubblesPoppedCount() {
+    return getIntent().getLongExtra(GLOBAL_TOTAL_BUBBLES_EXTRA, 0);
+  }
+
+  private long getIncrementalBubblesPoppedCount() {
     return getIntent().getLongExtra(BUBBLES_POPPED, 0);
   }
 

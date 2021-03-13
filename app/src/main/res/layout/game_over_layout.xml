@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:gravity="center"
-        android:paddingVertical="@dimen/menu_btn_padding_vertical"
+        android:paddingTop="@dimen/menu_btn_padding_vertical"
         android:text="@string/your_score_title"
         android:textAlignment="center"
         android:textSize="@dimen/text_size_large"
@@ -50,34 +50,54 @@
         android:id="@+id/score_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
         android:gravity="center"
-        android:paddingVertical="@dimen/menu_btn_padding_vertical"
         android:textAlignment="center"
         android:textSize="@dimen/text_size_large"
+        android:paddingBottom="@dimen/menu_btn_padding_vertical"
         app:glow_color="@color/green" />
 
       <com.stupidfungames.pop.androidui.GameMenuText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipToPadding="false"
         android:gravity="center"
-        android:paddingVertical="@dimen/menu_btn_padding_vertical"
         android:text="@string/bubbles_popped_title"
         android:textAlignment="center"
         android:textSize="@dimen/text_size_large"
         app:glow_color="@color/menu_button_color" />
 
-      <com.stupidfungames.pop.androidui.GameMenuText
-        android:id="@+id/bubbles_popped_count"
+      <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:gravity="center"
-        android:paddingVertical="@dimen/menu_btn_padding_vertical"
-        android:textAlignment="center"
-        android:textSize="@dimen/text_size_large"
-        app:glow_color="@color/green" />
+        android:paddingBottom="@dimen/menu_btn_padding_vertical"
+        android:orientation="horizontal">
+
+        <com.stupidfungames.pop.androidui.GameMenuText
+          android:id="@+id/global_bubbles_popped"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textAlignment="center"
+          android:textSize="@dimen/text_size_large"
+          app:glow_color="@color/green" />
+
+        <com.stupidfungames.pop.androidui.GameMenuText
+          android:id="@+id/slash"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textAlignment="center"
+          android:text=" / "
+          android:textSize="@dimen/text_size_large"
+          app:glow_color="@color/red" />
+
+        <com.stupidfungames.pop.androidui.GameMenuText
+          android:id="@+id/incremental_bubbles"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textAlignment="center"
+          android:textSize="@dimen/text_size_large"
+          app:glow_color="@color/green" />
+      </LinearLayout>
 
       <include layout="@layout/continue_game_btn" />
 

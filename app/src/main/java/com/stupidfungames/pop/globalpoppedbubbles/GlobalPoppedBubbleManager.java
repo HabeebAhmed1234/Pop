@@ -25,6 +25,8 @@ public class GlobalPoppedBubbleManager {
     return sGlobalPoppedBubbleManager;
   }
 
+  private long globalBubblesPoppedCached = 0;
+
   private GlobalPoppedBubbleManager() {
   }
 
@@ -46,6 +48,10 @@ public class GlobalPoppedBubbleManager {
     }, ContextCompat.getMainExecutor(textView.getContext()));
   }
 
+  public long getGlobalBubblesPoppedCached() {
+    return globalBubblesPoppedCached;
+  }
+
   public ListenableFuture<Long> getTotalNumberOfGlobalBubblesPopped() {
     final SettableFuture<Long> globalBubblesPopped = SettableFuture.create();
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -54,7 +60,8 @@ public class GlobalPoppedBubbleManager {
             new OnSuccessListener<DocumentSnapshot>() {
               @Override
               public void onSuccess(DocumentSnapshot documentSnapshot) {
-                globalBubblesPopped.set((long) documentSnapshot.get("popped_bubbles_count"));
+                globalBubblesPoppedCached = (long) documentSnapshot.get("popped_bubbles_count");
+                globalBubblesPopped.set(globalBubblesPoppedCached);
               }
             })
         .addOnFailureListener(new OnFailureListener() {
@@ -71,5 +78,6 @@ public class GlobalPoppedBubbleManager {
     db.collection("popped_bubbles_count").document("lDaQ4fNcBXRBszPZ2kTX")
         .update("popped_bubbles_count",
             FieldValue.increment(poppedAmount));
+    globalBubblesPoppedCached += poppedAmount;
   }
 }
