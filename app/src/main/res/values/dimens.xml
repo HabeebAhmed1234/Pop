@@ -38,6 +38,7 @@
 
   <dimen name="info_btn_size">30dp</dimen>
   <dimen name="info_btn_margin">16dp</dimen>
+  <dimen name="total_bubbles_popped_margin_bottom">24dp</dimen>
 
   <dimen name="tooltip_image_size">150dp</dimen>
 </resources>

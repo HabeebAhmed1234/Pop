@@ -19,8 +19,8 @@
     android:id="@+id/scroll_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/player_profile_view"
     android:layout_above="@+id/adView"
+    android:layout_below="@+id/player_profile_view"
     android:layout_gravity="center"
     android:background="@android:color/transparent"
     android:isScrollContainer="true">
@@ -33,9 +33,10 @@
       android:gravity="center_horizontal"
       android:orientation="vertical">
 
-      <FrameLayout
+      <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/title_margin_bottom"
         android:background="@android:color/transparent">
 
         <ImageView
@@ -50,11 +51,32 @@
           android:id="@+id/info_btn"
           android:layout_width="@dimen/info_btn_size"
           android:layout_height="@dimen/info_btn_size"
-          android:layout_gravity="right |bottom"
+          android:layout_alignParentRight="true"
+          android:layout_alignParentBottom="true"
           android:layout_marginRight="@dimen/info_btn_margin"
           android:layout_marginBottom="@dimen/info_btn_margin"
           android:src="@drawable/info_icon" />
-      </FrameLayout>
+
+        <com.stupidfungames.pop.androidui.GameMenuText
+          android:id="@+id/global_popped_title"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/logo"
+          android:layout_centerHorizontal="true"
+          android:layout_marginBottom="8dp"
+          android:text="@string/global_bubbles_popped_string"
+          android:textSize="@dimen/text_size_small" />
+
+        <com.stupidfungames.pop.androidui.GameMenuText
+          android:id="@+id/total_bubbles_popped_count"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/global_popped_title"
+          android:layout_centerHorizontal="true"
+          android:layout_marginBottom="@dimen/total_bubbles_popped_margin_bottom"
+          android:textSize="@dimen/text_size_small" />
+
+      </RelativeLayout>
 
       <LinearLayout
         android:layout_width="match_parent"

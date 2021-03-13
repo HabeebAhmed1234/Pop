@@ -6,6 +6,7 @@ import android.content.Context;
 import com.stupidfungames.pop.analytics.Logger;
 import com.stupidfungames.pop.androidui.music.MusicPlayer;
 import com.stupidfungames.pop.binder.BinderEnity;
+import com.stupidfungames.pop.bubblepopper.BubblePopperEntity;
 import com.stupidfungames.pop.difficulty.GameDifficultyEntity;
 import com.stupidfungames.pop.eventbus.EventBus;
 import com.stupidfungames.pop.eventbus.EventPayload;
@@ -104,8 +105,12 @@ public class GameOverSequenceEntity extends BaseEntity {
 
   private void onGameOver() {
     Context context = get(Context.class);
-    context.startActivity(GameOverActivity.newIntent(context, get(ScoreHudEntity.class).getScore(),
-        get(GameSaver.class).fabricateSaveGame()));
+    context.startActivity(
+        GameOverActivity.newIntent(
+            context,
+            get(ScoreHudEntity.class).getScore(),
+            get(BubblePopperEntity.class).getBubblesPoppedCount(),
+            get(GameSaver.class).fabricateSaveGame()));
     MusicPlayer.get().onLeaveGameActivity();
     hostActivity.finish();
 

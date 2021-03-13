@@ -1,5 +1,6 @@
 package com.stupidfungames.pop;
 
+import static com.stupidfungames.pop.analytics.Events.GAME_OVER_BUBBLES_POPPED;
 import static com.stupidfungames.pop.analytics.Events.GAME_OVER_SCORE;
 import static com.stupidfungames.pop.analytics.Events.NEW_GAME_STARTED_GAME_OVER;
 
@@ -28,16 +29,19 @@ import com.stupidfungames.pop.savegame.SaveGameManager;
 public class GameOverActivity extends AppCompatActivity implements ContinueGameBtnViewHostActivity {
 
   public static final String SCORE_EXTRA = "score_extra";
+  public static final String BUBBLES_POPPED = "bubbles_popped";
   public static final String CONTINUE_SAVE_GAME_EXTRA = "continue_save_game";
   private ValueAnimator logoAnimator;
   private GooglePlayServicesAuthManager authManager;
   private ContinueGameBtnView continueGameBtnView;
   private SaveGameManager saveGameManager;
 
-  public static Intent newIntent(Context context, int score, SaveGame continueGame) {
+  public static Intent newIntent(Context context, int score, long bubblesPopped,
+      SaveGame continueGame) {
     Intent intent = new Intent(context, GameOverActivity.class);
     Bundle b = new Bundle();
     b.putInt(GameOverActivity.SCORE_EXTRA, score);
+    b.putLong(GameOverActivity.BUBBLES_POPPED, bubblesPopped);
     b.putString(CONTINUE_SAVE_GAME_EXTRA, continueGame.toJson());
     intent.putExtras(b);
     return intent;
@@ -64,6 +68,8 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
 
     initScoreText();
 
+    initBubblesPoppedText();
+
     animateGameOver();
 
     saveGameManager = new SaveGameManager(this, this);
@@ -79,8 +85,19 @@ public class GameOverActivity extends AppCompatActivity implements ContinueGameB
     Logger.logSelect(this, GAME_OVER_SCORE, score);
   }
 
+  private void initBubblesPoppedText() {
+    long bubblesPopped = getBubblesPoppedCount();
+    ((TextView) findViewById(R.id.bubbles_popped_count))
+        .setText(Long.toString(getBubblesPoppedCount()));
+    Logger.logSelect(this, GAME_OVER_BUBBLES_POPPED, bubblesPopped);
+  }
+
   private int getGameOverScore() {
     return getIntent().getIntExtra(SCORE_EXTRA, 0);
+  }
+
+  private long getBubblesPoppedCount() {
+    return getIntent().getLongExtra(BUBBLES_POPPED, 0);
   }
 
   private void startNewGame() {

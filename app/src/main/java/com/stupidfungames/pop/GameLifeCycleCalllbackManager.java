@@ -38,6 +38,8 @@ public class GameLifeCycleCalllbackManager {
      */
     void onSaveGame(SaveGame saveGame);
 
+    void onPause();
+
     /**
      * Cleanup all resources here
      */
@@ -83,6 +85,13 @@ public class GameLifeCycleCalllbackManager {
     Iterator<BaseEntity> it = new ArrayList(gameEntities).iterator();
     while (it.hasNext()) {
       it.next().onSaveGame(saveGame);
+    }
+  }
+
+  public void onPause() {
+    Iterator<BaseEntity> it = new ArrayList(gameEntities).iterator();
+    while (it.hasNext()) {
+      it.next().onPause();
     }
   }
 

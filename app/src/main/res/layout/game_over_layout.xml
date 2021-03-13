@@ -57,6 +57,28 @@
         android:textSize="@dimen/text_size_large"
         app:glow_color="@color/green" />
 
+      <com.stupidfungames.pop.androidui.GameMenuText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:gravity="center"
+        android:paddingVertical="@dimen/menu_btn_padding_vertical"
+        android:text="@string/bubbles_popped_title"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_large"
+        app:glow_color="@color/menu_button_color" />
+
+      <com.stupidfungames.pop.androidui.GameMenuText
+        android:id="@+id/bubbles_popped_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:paddingVertical="@dimen/menu_btn_padding_vertical"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_large"
+        app:glow_color="@color/green" />
+
       <include layout="@layout/continue_game_btn" />
 
       <com.stupidfungames.pop.androidui.GameMenuButton

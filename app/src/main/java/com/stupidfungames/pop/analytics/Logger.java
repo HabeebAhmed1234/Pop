@@ -30,6 +30,14 @@ public class Logger {
     logSelect(context, event, stringValues);
   }
 
+  public static void logSelect(Context context, String event, Long... values) {
+    String[] stringValues = new String[values.length];
+    for (int i = 0; i < values.length; i++) {
+      stringValues[i] = Long.toString((values[i]));
+    }
+    logSelect(context, event, stringValues);
+  }
+
   public static void logSelect(Context context, String event, String... values) {
     Bundle bundle = new Bundle();
     bundle.putString(FirebaseAnalytics.Param.ITEM_ID, event);

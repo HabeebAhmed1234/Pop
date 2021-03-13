@@ -2,7 +2,6 @@ package com.stupidfungames.pop.bubblepopper;
 
 import static com.stupidfungames.pop.eventbus.GameEvent.BUBBLE_POPPED;
 
-import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameAnimationManager;
 import com.stupidfungames.pop.GameAnimationManager.AnimationListener;
@@ -18,6 +17,7 @@ import com.stupidfungames.pop.eventbus.GameEvent;
 import com.stupidfungames.pop.eventbus.IncrementScoreEventPayload;
 import com.stupidfungames.pop.fixturedefdata.BaseEntityUserData;
 import com.stupidfungames.pop.fixturedefdata.BubbleEntityUserData;
+import com.stupidfungames.pop.globalpoppedbubbles.GlobalPoppedBubbleManager;
 import com.stupidfungames.pop.physics.util.Vec2Pool;
 import com.stupidfungames.pop.pool.BaseSpriteInitializerParams;
 import com.stupidfungames.pop.resources.sounds.GameSoundsManager;
@@ -38,6 +38,8 @@ public class BubblePopperEntity extends BaseEntity {
   public static final int SCORE_INCREMENT_PER_BUBBLE_POP = 1;
   private static final float POPPED_BUBBLES_HORIZONTAL_OFFSET = 0.5f;
 
+  private long bubblesPoppedCount = 0;
+
   public BubblePopperEntity(BinderEnity parent) {
     super(parent);
   }
@@ -48,6 +50,9 @@ public class BubblePopperEntity extends BaseEntity {
     binder.bind(ScoreTickerSpritePool.class, new ScoreTickerSpritePool(this));
   }
 
+  public long getBubblesPoppedCount() {
+    return bubblesPoppedCount;
+  }
 
   public boolean popBubble(Sprite previousBubble) {
     return popBubble(previousBubble, false, true);
@@ -99,6 +104,8 @@ public class BubblePopperEntity extends BaseEntity {
     Vec2Pool.recycle(oldBubbleScenePosition);
     // Remove the popped bubble
     get(BubbleSpritePool.class).recycle(previousBubble);
+
+    bubblesPoppedCount++;
     return true;
   }
 
@@ -160,6 +167,7 @@ public class BubblePopperEntity extends BaseEntity {
   }
 
   private final Random r = new Random();
+
   private Sound getRandomPopSound() {
     int random = r.nextInt(5);
     GameSoundsManager soundsManager = get(GameSoundsManager.class);
@@ -176,5 +184,13 @@ public class BubblePopperEntity extends BaseEntity {
         return soundsManager.getSound(SoundId.POP_5);
     }
     throw new IllegalStateException("No sound for index " + random);
+  }
+
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    GlobalPoppedBubbleManager.getInstance().incrementGlobalPoppedBubbles(bubblesPoppedCount);
+    bubblesPoppedCount = 0;
   }
 }

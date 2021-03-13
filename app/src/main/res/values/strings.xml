@@ -76,6 +76,8 @@
   <string name="continue_game_token_not_aquired">You must acquire a continue game token to continue your game.</string>
   <string name="must_choose_option_to_continue">You must choose one of the options to continue your game.</string>
   <string name="prompt_user_to_continue">You can continue to resume your game!</string>
+  <string name="global_bubbles_popped_string">Global bubbles popped:</string>
+  <string name="bubbles_popped_title">Total bubbles popped:</string>
 
   <!-- App info -->
   <string name="app_info_title">About &appname;</string>

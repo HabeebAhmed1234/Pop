@@ -80,6 +80,10 @@ public abstract class BaseEntity extends BinderEnity implements
   }
 
   @Override
+  public void onPause() {
+  }
+
+  @Override
   public void onDestroy() {
     get(GameLifeCycleCalllbackManager.class).unRegisterGameEntity(this);
     destroyBindings();

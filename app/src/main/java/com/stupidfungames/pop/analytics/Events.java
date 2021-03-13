@@ -49,6 +49,7 @@ public class Events {
   public static final String LOAD_LIST_ERROR = "load_list_error";
 
   public static final String GAME_OVER_SCORE = "game_over_score";
+  public static final String GAME_OVER_BUBBLES_POPPED = "game_over_bubbles_popped";
   public static final String GAME_OVER_PROGRESS = "game_over_progress";
 
   public static final String GAME_STOP_SCORE = "game_stop_score";

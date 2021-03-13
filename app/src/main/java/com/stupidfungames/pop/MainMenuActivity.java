@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.ads.AdRequest;
@@ -24,6 +25,7 @@ import com.stupidfungames.pop.androidui.GameMenuButton;
 import com.stupidfungames.pop.androidui.LoadingSpinner;
 import com.stupidfungames.pop.appreviews.AppReviewUtil;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
+import com.stupidfungames.pop.globalpoppedbubbles.GlobalPoppedBubbleManager;
 import com.stupidfungames.pop.inapppurchase.EquipActivity;
 import com.stupidfungames.pop.inapppurchase.StoreActivity;
 import com.stupidfungames.pop.notifications.UserNudgeNotificationManager;
@@ -103,6 +105,10 @@ public class MainMenuActivity extends AppCompatActivity implements ShareHostActi
     authManager.maybeLoginOnAppStart(this);
 
     ((AdView) findViewById(R.id.adView)).loadAd(((new AdRequest.Builder()).build()));
+
+    GlobalPoppedBubbleManager.getInstance()
+        .populateTotalPoppedBubblesTextView(
+            (TextView) findViewById(R.id.total_bubbles_popped_count));
   }
 
   @Override

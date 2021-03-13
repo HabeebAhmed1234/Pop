@@ -246,8 +246,8 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
   @Override
   public void onPauseGame() {
     super.onPauseGame();
+    gameLifeCycleCalllbackManager.onPause();
     this.disableAccelerationSensor();
-
     // if we are already logged in then just save the game
     if (authManager.isLoggedIn()) {
       saveGameManager.saveGame(this, fabricateSaveGame());
