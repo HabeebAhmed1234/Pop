@@ -20,7 +20,6 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.ads.AdRoomActivity;
-import com.stupidfungames.pop.analytics.Events;
 import com.stupidfungames.pop.analytics.Logger;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 import com.stupidfungames.pop.dialog.GameNeonDialogActivity;
@@ -76,12 +75,12 @@ public class ContinueGameChoiceDialogActivity extends GameNeonDialogActivity imp
           public void onClick(View v) {
             shareGameFb();
           }
-        }), new ButtonModel(R.string.share_the_game_other, new View.OnClickListener() {
+        })/*, new ButtonModel(R.string.share_the_game_other, new View.OnClickListener() {
           @Override
           public void onClick(View v) {
             shareGameOther();
           }
-        }));
+        })*/);
   }
 
   @Override
