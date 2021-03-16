@@ -1,6 +1,7 @@
 package com.stupidfungames.pop.notifications;
 
 import static android.app.AlarmManager.INTERVAL_DAY;
+import static com.stupidfungames.pop.analytics.Events.USER_NUDGE_NOTIF_FAILED;
 import static com.stupidfungames.pop.analytics.Events.USER_NUDGE_NOTIF_SHOWN;
 
 import android.app.AlarmManager;
@@ -11,12 +12,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.text.TextUtils;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import com.stupidfungames.pop.MainMenuActivity;
 import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.analytics.Logger;
+import com.stupidfungames.pop.globalpoppedbubbles.GlobalPoppedBubbleManager;
 import java.util.Random;
 
 /**
@@ -32,6 +36,7 @@ public class UserNudgeNotificationManager extends BroadcastReceiver {
   private static final int STARTING_NOTIFICATION_ID = 1234;
   private static final int NUM_NUDGES = 3;
   private static final long INTERVAL_MILLIS = INTERVAL_DAY;
+  private static final float GLOBAL_BUBBLES_POPPED_NOTIFICATION_PROBABILITY = 0.5f;
 
   public void scheduleNudgeNotifications(Context context) {
     createNotificationChannel(context);
@@ -73,11 +78,20 @@ public class UserNudgeNotificationManager extends BroadcastReceiver {
   }
 
   @Override
-  public void onReceive(Context context, Intent intent) {
+  public void onReceive(final Context context, final Intent intent) {
+    String notificationContent = getRandomNotificationString(context);
+    if (!TextUtils.isEmpty(notificationContent)) {
+      showNotification(context, intent, notificationContent);
+    } else {
+      Logger.logSelect(context, USER_NUDGE_NOTIF_FAILED);
+    }
+  }
+
+  private void showNotification(Context context, Intent intent, String contentString) {
     NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
         .setSmallIcon(getNotificationIcon())
         .setContentTitle(context.getString(R.string.nudge_notification_title))
-        .setContentText(context.getString(getRandomNotificaitonString()))
+        .setContentText(contentString)
         .setContentIntent(getAppLaunchIntent(context))
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         .setAutoCancel(true);
@@ -89,22 +103,43 @@ public class UserNudgeNotificationManager extends BroadcastReceiver {
     Logger.logSelect(context, USER_NUDGE_NOTIF_SHOWN);
   }
 
-  @StringRes
-  private int getRandomNotificaitonString() {
+  private String getRandomNotificationString(final Context context) {
     Random random = new Random();
+    if (random.nextFloat() < GLOBAL_BUBBLES_POPPED_NOTIFICATION_PROBABILITY) {
+      @Nullable String globalPoppedNotif = getGlobalBubblesPoppedNotificationString(context);
+      if (!TextUtils.isEmpty(globalPoppedNotif)) {
+        return globalPoppedNotif;
+      }
+    }
+    return getRandomFallbackNotif(context);
+  }
+
+  private String getRandomFallbackNotif(Context context) {
+    Random random = new Random();
+    @StringRes int stringRes = R.string.nudge_notification_content_1;
     switch (random.nextInt(5)) {
       case 0:
-        return R.string.nudge_notification_content_1;
+        stringRes = R.string.nudge_notification_content_1;
       case 1:
-        return R.string.nudge_notification_content_2;
+        stringRes = R.string.nudge_notification_content_2;
       case 2:
-        return R.string.nudge_notification_content_3;
+        stringRes = R.string.nudge_notification_content_3;
       case 3:
-        return R.string.nudge_notification_content_4;
+        stringRes = R.string.nudge_notification_content_4;
       case 4:
-        return R.string.nudge_notification_content_5;
+        stringRes = R.string.nudge_notification_content_5;
     }
-    return R.string.nudge_notification_content_1;
+    return context.getString(stringRes);
+  }
+
+  private String getGlobalBubblesPoppedNotificationString(final Context context) {
+    long globalPoppedBubbles = GlobalPoppedBubbleManager.getInstance()
+        .getGlobalBubblesPoppedCached(context);
+    if (globalPoppedBubbles >= 0) {
+      return context
+          .getString(R.string.nudge_notification_content_global_bubbles, globalPoppedBubbles);
+    }
+    return null;
   }
 
   private int getNotificationIcon() {

@@ -54,7 +54,8 @@ public class GameOverBubblesPoppedCounterView {
       final long incrementalBubblesPopped) {
     if (globalTotalBubblesPopped <= 0) {
       Futures.addCallback(
-          GlobalPoppedBubbleManager.getInstance().getTotalNumberOfGlobalBubblesPopped(),
+          GlobalPoppedBubbleManager.getInstance()
+              .getTotalNumberOfGlobalBubblesPopped(globalTotalTextView.getContext()),
           new FutureCallback<Long>() {
             @Override
             public void onSuccess(@NullableDecl Long result) {

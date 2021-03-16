@@ -110,7 +110,7 @@ public class GameOverSequenceEntity extends BaseEntity {
         GameOverActivity.newIntent(
             context,
             get(ScoreHudEntity.class).getScore(),
-            GlobalPoppedBubbleManager.getInstance().getGlobalBubblesPoppedCached(),
+            GlobalPoppedBubbleManager.getInstance().getGlobalBubblesPoppedCached(context),
             get(BubblePopperEntity.class).getBubblesPoppedCount(),
             get(GameSaver.class).fabricateSaveGame()));
     MusicPlayer.get().onLeaveGameActivity();

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import androidx.activity.result.ActivityResultCaller;
 import androidx.annotation.StringRes;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.stupidfungames.pop.auth.GooglePlayServicesAuthManager;
 
 public interface HostActivity extends ActivityResultCaller {

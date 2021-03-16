@@ -57,4 +57,5 @@ public class Events {
 
   public static final String USER_NUDGE_NOTIF_SHOWN = "user_nudge_notif_shown";
   public static final String USER_NUDGE_NOTIF_CLICKED = "user_nudge_notif_clicked";
+  public static final String USER_NUDGE_NOTIF_FAILED= "user_nudge_notif_failed";
 }

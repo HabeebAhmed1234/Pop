@@ -2,6 +2,7 @@ package com.stupidfungames.pop.bubblepopper;
 
 import static com.stupidfungames.pop.eventbus.GameEvent.BUBBLE_POPPED;
 
+import android.content.Context;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.GameAnimationManager;
 import com.stupidfungames.pop.GameAnimationManager.AnimationListener;
@@ -190,7 +191,8 @@ public class BubblePopperEntity extends BaseEntity {
   @Override
   public void onPause() {
     super.onPause();
-    GlobalPoppedBubbleManager.getInstance().incrementGlobalPoppedBubbles(bubblesPoppedCount);
+    GlobalPoppedBubbleManager.getInstance()
+        .incrementGlobalPoppedBubbles(get(Context.class), bubblesPoppedCount);
     bubblesPoppedCount = 0;
   }
 }

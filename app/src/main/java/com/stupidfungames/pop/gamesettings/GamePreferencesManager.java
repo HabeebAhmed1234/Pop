@@ -38,6 +38,16 @@ public class GamePreferencesManager {
     notifyChanged(key);
   }
 
+  public static void set(Context context, final String key, final long value) {
+    runMutation(context, new Mutation() {
+      @Override
+      public void mutate(SharedPreferences.Editor editor) {
+        editor.putLong(key, value);
+      }
+    });
+    notifyChanged(key);
+  }
+
   public static void set(Context context, final String key, final String value) {
     runMutation(context, new Mutation() {
       @Override
@@ -85,6 +95,10 @@ public class GamePreferencesManager {
 
   public static int getInt(Context context, final String key) {
     return getSharedPreferences(context).getInt(key, -1);
+  }
+
+  public static long getLong(Context context, final String key) {
+    return getSharedPreferences(context).getLong(key, -1);
   }
 
   private static void runMutation(Context context, Mutation mutation) {

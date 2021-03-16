@@ -40,7 +40,6 @@ public class Logger {
 
   public static void logSelect(Context context, String event, String... values) {
     Bundle bundle = new Bundle();
-    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, event);
     if (values != null) {
       for (int i = 0; i < values.length; i++) {
         if (!TextUtils.isEmpty(values[i])) {
@@ -48,7 +47,6 @@ public class Logger {
         }
       }
     }
-    FirebaseAnalytics.getInstance(context)
-        .logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+    FirebaseAnalytics.getInstance(context).logEvent(event, bundle);
   }
 }
