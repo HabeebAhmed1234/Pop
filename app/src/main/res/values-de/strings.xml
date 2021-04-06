@@ -98,7 +98,7 @@
   <string name="nudge_notification_content_3">Lass Alles Fallen.Es Gibt Blasen, Die Popping Brauchen.</string>
   <string name="nudge_notification_content_4">Komm Mit Mir, Wenn Du Blasen Knallen Willst.</string>
   <string name="nudge_notification_content_5">Wir Sehen, Dass Sie Gerade Jetzt Keine Blasen Blasen.Inakzeptabel.</string>
-  <string name="nudge_notification_content_global_bubbles">Nur% 1 $ D-Blasen Wurden Global Aufgetaucht!Hilf Der Anstrengung!</string>
+  <string name="nudge_notification_content_global_bubbles">Nur %1$d Blasen Wurden Global Aufgetaucht!Hilf Der Anstrengung!</string>
 
   
   <string name="ad_load_error">Es Gab Ein Problem, Um Die Anzeige Zu Laden.Habe Ein Kostenloses Spiel Weiter Token!</string>

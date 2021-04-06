@@ -98,7 +98,7 @@
   <string name="nudge_notification_content_3">Slipp Alt.Det Er Bobler Som Trenger Popping.</string>
   <string name="nudge_notification_content_4">Kom Med Meg Hvis Du Vil Popbobler.</string>
   <string name="nudge_notification_content_5">Vi Ser Deg Ikke Popping Bobler Akkurat Nå.Uakseptabelt.</string>
-  <string name="nudge_notification_content_global_bubbles">Bare% 1 $ D Bubbles Har Blitt Poppet Globalt!Hjelp Innsatsen!</string>
+  <string name="nudge_notification_content_global_bubbles">Bare %1$d Bubbles Har Blitt Poppet Globalt!Hjelp Innsatsen!</string>
 
   
   <string name="ad_load_error">Det Var Et Problem Å Laste Annonsen.Ha Et Gratis Spill Fortsett Token!</string>

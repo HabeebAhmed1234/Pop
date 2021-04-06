@@ -98,8 +98,6 @@
   <string name="nudge_notification_content_3">להפיל הכל.יש בועות כי צריך Popping.</string>
   <string name="nudge_notification_content_4">בוא איתי אם אתה רוצה לפוצץ בועות.</string>
   <string name="nudge_notification_content_5">אנחנו רואים אותך לא Popping בועות עכשיו.לא מקובל.</string>
-  <string name="nudge_notification_content_global_bubbles">רק% 1 $ D בועות כבר Popped גלובלי!לעזור למאמץ!</string>
-
   
   <string name="ad_load_error">היתה בעיה לטעון את המודעה.יש משחק חינם המשך אסימון!</string>
   <string name="ad_reward_message">תודה על צפייה יש משחק המשך אסימון!</string>
@@ -151,6 +149,6 @@
   <string name="multi_touch_icon_tooltip">הקש על בועה כדי לפוצץ את כל הבועות הסמוכות של אותו צבע.</string>
   <string name="touch_pop_tooltip">לגעת בועות כדי לפוצץ אותם לפני שהם מגיעים לתחתית המסך!לגעת מספר בועות באותו צבע כדי להתחיל פס ולהרוויח נקודות יותר!</string>
   <string name="upgrade_tooltip">הקש על בועות אלה כדי לרכוש שדרוג.לאחר מכן תוכל להקיש על כלי מימין לשדרג אותו.</string>
-  <string name="bomb_bubble_tooltip">זוהי בועת פצצה.הקש עליו בזמן שהוא ירוק לפזר אותו.זָהִיר!אם זה \ 'S ספירה לאחור מגיע 0 או שאתה הקש על זה בזמן שהוא אדום זה יהיה להתפוצץ ולסיים את המשחק!</string>
+  <string name="bomb_bubble_tooltip">זוהי בועת פצצה.הקש עליו בזמן שהוא ירוק לפזר אותו.זָהִיר!אם זה \ \'S ספירה לאחור מגיע 0 או שאתה הקש על זה בזמן שהוא אדום זה יהיה להתפוצץ ולסיים את המשחק!</string>
   <string name="negative_score_warning_tooltip">זָהִיר!אם הציון שלך נופל מתחת 0 זה יהיה משחק מעל.</string>
 </resources>

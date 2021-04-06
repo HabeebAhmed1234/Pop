@@ -98,7 +98,7 @@
   <string name="nudge_notification_content_3">Laat Alles Vallen.Er Zijn Bubbels Die Moeten Knallen.</string>
   <string name="nudge_notification_content_4">Kom Met Me Mee Als Je Bubbels Wilt Knallen.</string>
   <string name="nudge_notification_content_5">We Zien Je Nu Niet Knallen.Onaanvaardbaar.</string>
-  <string name="nudge_notification_content_global_bubbles">Slechts% 1 $ D Bubbels Zijn Wereldwijd Geprobeerd!Help De Inspanning!</string>
+  <string name="nudge_notification_content_global_bubbles">Slechts %1$d Bubbels Zijn Wereldwijd Geprobeerd!Help De Inspanning!</string>
 
   
   <string name="ad_load_error">Er Was Een Probleem Met Het Laden Van De Advertentie.Heb Een Gratis Spel Doorgaan Met Token!</string>

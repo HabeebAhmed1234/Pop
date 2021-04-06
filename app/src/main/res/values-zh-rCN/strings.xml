@@ -94,7 +94,7 @@
   <string name="notification_channel_description">弹出通知的频道</string>
   <string name="nudge_notification_title">回到Cyber Pop！</string>
   <string name="nudge_notification_content_1">唤醒武士。我们有泡沫弹出。</string>
-  <string name="nudge_notification_content_2">为什么Aren'Ta你现在弹出气泡？</string>
+  <string name="nudge_notification_content_2">为什么你现在弹出气泡？</string>
   <string name="nudge_notification_content_3">放下一切。有可能弹出的泡沫。</string>
   <string name="nudge_notification_content_4">如果你想弹出气泡，请跟我来。</string>
   <string name="nudge_notification_content_5">我们现在看到你没有弹出气泡。不可接受。</string>

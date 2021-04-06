@@ -71,8 +71,8 @@
   <string name="continue_game_choice_dialog_title">Oyuna Devam Etmek Için Bir Seçenek Seçin.</string>
   <string name="watch_ad_btn">Bir Reklamı Izleyin.</string>
   <string name="buy_game_continue_token">Bir Oyun Satın Alın Joingen [0,99 $]</string>
-  <string name="share_the_game_fb">Pop'U Facebook'A Paylaşın</string>
-  <string name="share_the_game_other">Pop'U Arkadaşlarınızla Paylaşın</string>
+  <string name="share_the_game_fb">Pop\'U Facebook\'A Paylaşın</string>
+  <string name="share_the_game_other">Pop\'U Arkadaşlarınızla Paylaşın</string>
   <string name="continue_game_token_not_aquired">Oyuna Devam Etmek Için Devam Eden Bir Oyun Belirteci Edinmelisiniz.</string>
   <string name="must_choose_option_to_continue">Oyuna Devam Etmek Için Seçeneklerden Birini Seçmelisiniz.</string>
   <string name="prompt_user_to_continue">Oyuna Devam Etmeye Devam Edebilirsin!</string>
@@ -83,7 +83,7 @@
   <string name="app_info_subtitle">Eğlenceli Bir Arcade Tarzı Kabarcık Haşhaş Oyunu Müzik Kredisi: Karl Casey Beyaz Yarasa Ses</string>
 
   
-  <string name="review_app_dialog_title">Şimdiye Kadar Cyberpop'U Sever Misiniz?</string>
+  <string name="review_app_dialog_title">Şimdiye Kadar Cyberpop\'U Sever Misiniz?</string>
   <string name="review_app_btn_text">Evet!Bir Inceleme Bırakmak Istiyorum.</string>
   <string name="send_feedback_btn_text">Hayır. Geri Bildirim Göndermeyi Severim.</string>
   <string name="feedback_title">Geribildirim Yolla.</string>
@@ -92,13 +92,13 @@
   
   <string name="notification_channel_name">Pop Oyun Bildirimleri</string>
   <string name="notification_channel_description">Pop Bildirimleri Için Kanal</string>
-  <string name="nudge_notification_title">Cyberpop'A Geri Dön!</string>
-  <string name="nudge_notification_content_1">Samuray'I Uyandır.Pop'U Kabarcıklarımız Var.</string>
+  <string name="nudge_notification_title">Cyberpop A Geri Dön!</string>
+  <string name="nudge_notification_content_1">Samuray I Uyandır.Pop U Kabarcıklarımız Var.</string>
   <string name="nudge_notification_content_2">Neden Şimdi Kabarcıkları Atıyorsun?</string>
   <string name="nudge_notification_content_3">Herşeyi Bırak.Haşhaş Ihtiyacı Olan Kabarcıklar Var.</string>
   <string name="nudge_notification_content_4">Baloncuklar Yapmak Istiyorsanız Benimle Gel.</string>
   <string name="nudge_notification_content_5">Şu Anda Kabarcıkları Patlatmadığınızı Görüyoruz.Kabul Edilemez.</string>
-  <string name="nudge_notification_content_global_bubbles">Sadece% 1 $ D Kabarcıkları Küresel Olarak Atıldı!Çabaya Yardım Et!</string>
+  <string name="nudge_notification_content_global_bubbles">Sadece %1$d Kabarcıkları Küresel Olarak Atıldı!Çabaya Yardım Et!</string>
 
   
   <string name="ad_load_error">Reklamı Yüklerken Bir Sorun Vardı.Ücretsiz Bir Oyuna Devam Edin!</string>
@@ -129,16 +129,16 @@
   <string name="title_bg_13">Kırmızı Lamba</string>
 
   
-  <string name="description_bg_1">Hong Kong'Da Bir Otobüs Serin Arka Plan</string>
+  <string name="description_bg_1">Hong Kong Da Bir Otobüs Serin Arka Plan</string>
   <string name="description_bg_2">Akihabara, Tokyo Arka Plan</string>
   <string name="description_bg_3">Tokyo Neon Sokaklarının Arka Plan</string>
   <string name="description_bg_4">Victoria Peak Hong Kong Görünümünden Geçmiş</string>
   <string name="description_bg_5">Tokyo Görünümünün Arka Plan</string>
   <string name="description_bg_6">Tokyo Manzarası Görünümünün Arka Plan</string>
-  <string name="description_bg_7">Hong Kong'Da Bir Cam Binanın Arka Plan</string>
+  <string name="description_bg_7">Hong Kong Da Bir Cam Binanın Arka Plan</string>
   <string name="description_bg_8">Bir Degrade Arka Plan Kırmızıdan Siyah</string>
   <string name="description_bg_9">Dumanlı Bir Tapınağın Arka Planı</string>
-  <string name="description_bg_10">Tokyo'Nun Paketlenmiş Sokaklarının Arka Plan</string>
+  <string name="description_bg_10">Tokyo Nun Paketlenmiş Sokaklarının Arka Plan</string>
   <string name="description_bg_11">Hong Kong Canavar Binaların Arka Planı</string>
   <string name="description_bg_12">Tokyo Sisli Manzarası Arka Plan</string>
   <string name="description_bg_13">Büyük Bir Kırmızı Lambanın Arka Planı</string>
@@ -146,11 +146,11 @@
   
   <string name="turret_tooltip">Tarifleri Bu Simgeden Ekrana Sürükleyip Bırakın.Onları Sürüklemek Için Taretlere Uzun Bastırabilirsiniz.</string>
   <string name="ball_and_chain_tooltip">Bir Topuz Almak Için Bu Simgeyi Basılı Tutun.</string>
-  <string name="wall_tooltip">Duvarları Bu Simgeden Ekrana Sürükleyip Bırakın.Onları Sürüklemek Için Duvarlara Uzun Basabilirsiniz.Duvarlarınızı Seviye 2'Ye Yükseltmek Ve Yukarı Kabarcıkları Patlatır!</string>
+  <string name="wall_tooltip">Duvarları Bu Simgeden Ekrana Sürükleyip Bırakın.Onları Sürüklemek Için Duvarlara Uzun Basabilirsiniz.Duvarlarınızı Seviye 2 Ye Yükseltmek Ve Yukarı Kabarcıkları Patlatır!</string>
   <string name="nuke_tooltip">Ekrandaki Tüm Kabarcıkları Dalgalar Halinde Açmak Için Bu Simgeye Dokunun.Dikkatli, Şarj Etmek Uzun Zaman Alıyor.</string>
   <string name="multi_touch_icon_tooltip">Aynı Renkteki Yakındaki Tüm Kabarcıkları Pop Etmek Için Bir Balonuna Dokunun.</string>
   <string name="touch_pop_tooltip">Ekranın Altına Ulaşmadan Önce Onları Patlatmak Için Kabarcıklara Dokunun!Çizgi Başlatmak Ve Daha Fazla Puan Kazanmak Için Aynı Rengin Birden Fazla Kabarcık Dokunun!</string>
   <string name="upgrade_tooltip">Yükseltme Almak Için Bu Baloncuklar Üzerine Dokunun.Daha Sonra Yükseltme Için Sağdaki Bir Araca Dokunabilirsiniz.</string>
-  <string name="bomb_bubble_tooltip">Bu Bir Bomba Balonu.Yaymada Yeşil Ise Üzerine Dokunun.Dikkatli!Geri Sayım 0'A Ulaşırsa Ya Da Kırmızı Ise Üzerine Dokunun, Patlayacak Ve Oyunu Bitirir!</string>
-  <string name="negative_score_warning_tooltip">Dikkatli!Skorunuz 0'In Altına Düşerse Oyun Bitecektir.</string>
+  <string name="bomb_bubble_tooltip">Bu Bir Bomba Balonu.Yaymada Yeşil Ise Üzerine Dokunun.Dikkatli!Geri Sayım 0 A Ulaşırsa Ya Da Kırmızı Ise Üzerine Dokunun, Patlayacak Ve Oyunu Bitirir!</string>
+  <string name="negative_score_warning_tooltip">Dikkatli!Skorunuz 0 In Altına Düşerse Oyun Bitecektir.</string>
 </resources>

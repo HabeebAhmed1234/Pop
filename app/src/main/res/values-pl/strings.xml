@@ -98,7 +98,7 @@
   <string name="nudge_notification_content_3">Rzucić Wszystko.Są Bąbelki, Które Potrzebują Popping.</string>
   <string name="nudge_notification_content_4">Chodź Ze Mną, Jeśli Chcesz Popielić Bańki.</string>
   <string name="nudge_notification_content_5">Widzimy, Że Teraz Nie Pojawiamy Pęcherzyków.Gorszący.</string>
-  <string name="nudge_notification_content_global_bubbles">Tylko% 1 $ D Pęcherzyki Zostały Wyskakujące Na Całym Świecie!Pomóż Wysiłkowi!</string>
+  <string name="nudge_notification_content_global_bubbles">Tylko %1$d Pęcherzyki Zostały Wyskakujące Na Całym Świecie!Pomóż Wysiłkowi!</string>
 
   
   <string name="ad_load_error">Wystąpił Problem Z Ładowaniem Reklamy.Masz Darmową Grę Kontynuuj Token!</string>

@@ -94,11 +94,11 @@
   <string name="notification_channel_description">Saluran Untuk Pemberitahuan Pop</string>
   <string name="nudge_notification_title">Kembali Ke Cyberpop!</string>
   <string name="nudge_notification_content_1">Bangun Samurai.Kami Mempunyai Gelembung Untuk Pop.</string>
-  <string name="nudge_notification_content_2">Mengapa Aren \ 'T Anda Muncul Gelembung Sekarang?.</string>
+  <string name="nudge_notification_content_2">Mengapa Aren T Anda Muncul Gelembung Sekarang?.</string>
   <string name="nudge_notification_content_3">Menjatuhkan Segala-Galanya.Terdapat Gelembung Yang Perlu Muncul.</string>
   <string name="nudge_notification_content_4">Datang Dengan Saya Jika Anda Mahu Melompat Gelembung.</string>
   <string name="nudge_notification_content_5">Kami Melihat Anda Tidak Muncul Semula Gelembung Sekarang.Tidak Dapat Diterima.</string>
-  <string name="nudge_notification_content_global_bubbles">Hanya% 1 $ D Bubbles Telah Muncul Di Seluruh Dunia!Bantu Usaha!</string>
+  <string name="nudge_notification_content_global_bubbles">Hanya %1$d Bubbles Telah Muncul Di Seluruh Dunia!Bantu Usaha!</string>
 
   
   <string name="ad_load_error">Terdapat Masalah Memuatkan Iklan.Mempunyai Permainan Percuma Teruskan Token!</string>

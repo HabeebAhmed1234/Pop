@@ -23,12 +23,12 @@
   <string name="review">Revisione</string>
   <string name="game_share_string_title">Condividi Cyberpop Con</string>
   <string name="game_share_string">Prova A Giocare A Cyberpop - Bubble Popping Game!</string>
-  <string name="continue_game_text_with_ad">Guarda L'Annuncio Per Continuare Il Gioco</string>
+  <string name="continue_game_text_with_ad">Guarda L\'Annuncio Per Continuare Il Gioco</string>
   <string name="continue_game_text_with_token_purchase">Acquista Token Per Continuare Il Gioco</string>
   <string name="load_game_text">Riprendi Il Gioco</string>
   <string name="game_over_text">Gioco Finito</string>
   <string name="options_text">Opzioni</string>
-  <string name="error_checking_continue_token">C'È Stato Un Controllo Degli Errori Se Hai Un Token Continue.Puoi Vedere Un Annuncio Invece.</string>
+  <string name="error_checking_continue_token">C\'È Stato Un Controllo Degli Errori Se Hai Un Token Continue.Puoi Vedere Un Annuncio Invece.</string>
   <string name="store">Negozio</string>
   <string name="quit_text">Smettere</string>
   <string name="your_score_title">Il Tuo Punteggio:</string>
@@ -39,10 +39,10 @@
   <string name="dismiss">Respingere</string>
   <string name="dont_show_again">Non Mostrare Di Nuovo.</string>
   <string name="update_btn_text">Aggiornare</string>
-  <string name="signin_other_error">C'È Stato Un Errore Che Accedesse. Riprova Un'Altra Volta.</string>
+  <string name="signin_other_error">C\'È Stato Un Errore Che Accedesse. Riprova Un\'Altra Volta.</string>
   <string name="signin_canceled">Accedi È Stato Cancellato.</string>
   <string name="sign_out">Disconnessione</string>
-  <string name="no_save_game_available">Non C'È Nessun Gioco Di Salvataggio Disponibile.Inizia Un Nuovo Gioco</string>
+  <string name="no_save_game_available">Non C\'È Nessun Gioco Di Salvataggio Disponibile.Inizia Un Nuovo Gioco</string>
   <string name="save_game_flow_title">Ti Piacerebbe Accedere Per Salvare I Tuoi Progressi?Ciò Sovrascriverà Il Tuo Gioco Attuale Salva!</string>
   <string name="sign_in">Registrati</string>
   <string name="yes">Sì</string>
@@ -65,10 +65,10 @@
   <string name="owned">Di Proprietà</string>
   <string name="equip">Equipaggiamento</string>
   <string name="un_equip">Una Squadra</string>
-  <string name="error_equipping">C'È Stato Un Errore Che Equipaggia Il Tuo Background.Aggiorna La Tua App E Riprova.</string>
+  <string name="error_equipping">C\'È Stato Un Errore Che Equipaggia Il Tuo Background.Aggiorna La Tua App E Riprova.</string>
   <string name="equip_success">Sfondo Attrezzato!</string>
   <string name="un_equip_success">Sfondo Non Equipaggiato!</string>
-  <string name="continue_game_choice_dialog_title">Scegli Un'Opzione Per Continuare Il Tuo Gioco.</string>
+  <string name="continue_game_choice_dialog_title">Scegli Un\'Opzione Per Continuare Il Tuo Gioco.</string>
   <string name="watch_ad_btn">Guarda Un Annuncio.</string>
   <string name="buy_game_continue_token">Acquista Un Gioco Continua Token [$ 0.99]</string>
   <string name="share_the_game_fb">Condividi Pop Su Facebook</string>
@@ -94,16 +94,16 @@
   <string name="notification_channel_description">Canale Per Le Notifiche Pop</string>
   <string name="nudge_notification_title">Torna A Cyberpop!</string>
   <string name="nudge_notification_content_1">Sveglia Samurai.Abbiamo Le Bolle Per Pop.</string>
-  <string name="nudge_notification_content_2">Perché Aren \ 'Ti Stai Schifando Le Bolle In Questo Momento?.</string>
+  <string name="nudge_notification_content_2">Perché Aren \ \'Ti Stai Schifando Le Bolle In Questo Momento?.</string>
   <string name="nudge_notification_content_3">Molla Tutto.Ci Sono Bolle Che Hanno Bisogno Di Schioccare.</string>
   <string name="nudge_notification_content_4">Vieni Con Me Se Vuoi Schioccare Bolle.</string>
-  <string name="nudge_notification_content_5">Ci Vediamo \ 'Non Schioccando Le Bolle In Questo Momento.Inaccettabile.</string>
-  <string name="nudge_notification_content_global_bubbles">Solo% 1 $ D Bobbles Sono Stati Spuntati A Livello Globale!Aiuta Lo Sforzo!</string>
+  <string name="nudge_notification_content_5">Ci Vediamo \ \'Non Schioccando Le Bolle In Questo Momento.Inaccettabile.</string>
+  <string name="nudge_notification_content_global_bubbles">Solo %1$d Bobbles Sono Stati Spuntati A Livello Globale!Aiuta Lo Sforzo!</string>
 
   
-  <string name="ad_load_error">C'È Stato Un Problema Di Caricare L'Annuncio.Avere Un Gioco Gratuito Continua Token!</string>
+  <string name="ad_load_error">C\'È Stato Un Problema Di Caricare L\'Annuncio.Avere Un Gioco Gratuito Continua Token!</string>
   <string name="ad_reward_message">Grazie Per Aver Guardato Un Gioco Continua Token!</string>
-  <string name="ad_reward_failed_message">Devi Finire A Guardare L'Annuncio Per Ottenere Un Gioco Continuare Il Token.</string>
+  <string name="ad_reward_failed_message">Devi Finire A Guardare L\'Annuncio Per Ottenere Un Gioco Continuare Il Token.</string>
 
   
   <string name="title_game_continue_token">Continua Il Token Del Gioco</string>
@@ -141,7 +141,7 @@
   <string name="description_bg_10">Sfondo Delle Strade Imballate Di Tokyo</string>
   <string name="description_bg_11">Sfondo Degli Edifici Dei Mostri Di Hong Kong</string>
   <string name="description_bg_12">Sfondo Dello Skyline Nebbioso Di Tokyo</string>
-  <string name="description_bg_13">Sfondo Di Un'Enorme Lampada Rossa</string>
+  <string name="description_bg_13">Sfondo Di Un\'Enorme Lampada Rossa</string>
 
   
   <string name="turret_tooltip">Trascina E Rilascia Torrette Da Questa Icona Sullo Schermo.Puoi Premere A Lungo Le Torrette Per Trascinarle In Giro.</string>
