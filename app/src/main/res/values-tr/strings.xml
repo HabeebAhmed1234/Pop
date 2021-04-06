@@ -1,0 +1,156 @@
+<resources>
+  <string name="app_id" translatable="false">120569614320</string>
+  <string name="facebook_app_id" translatable="false">430199825050664</string>
+  <string name="app_name" translatable="false">Cyberpop</string>
+
+  
+  <string name="test_banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+  <string name="test_rewarded_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
+
+  
+  <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/6594335535</string>
+  <string name="rewarded_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/4722591875</string>
+
+  
+  <string name="vertical_divider" translatable="false">|</string>
+  <string name="share_facebook" translatable="false">[ f ]</string>
+  <string name="game_share_hashtag" translatable="false">#Cyberpop-StupidFunGames</string>
+  <string name="game_share_link" translatable="false">https://play.google.com/store/apps/details?id=com.stupidfungames.pop</string>
+
+  <string name="new_game_text">Yeni Oyun</string>
+  <string name="continue_game_text">Oyuna Devam Et</string>
+  <string name="share">Paylaş</string>
+  <string name="review">Gözden Geçirmek</string>
+  <string name="game_share_string_title">Cyberpop Ile Paylaşmak</string>
+  <string name="game_share_string">Cyberpop Oynamayı Deneyin - Bubble Popping Oyunu!</string>
+  <string name="continue_game_text_with_ad">Oyuna Devam Etmek Için Reklam Izleyin</string>
+  <string name="continue_game_text_with_token_purchase">Oyuna Devam Etmek Için Belirteç Satın Alın</string>
+  <string name="load_game_text">Oyuna Devam Et</string>
+  <string name="game_over_text">Oyun Bitti</string>
+  <string name="options_text">Seçenekleri</string>
+  <string name="error_checking_continue_token">Devam Eden Bir Belirteçiniz Varsa Bir Hata Kontrolü Yapıldı.Bunun Yerine Bir Reklam Izleyebilirsiniz.</string>
+  <string name="store">Mağaza</string>
+  <string name="quit_text">İstifa Etmek</string>
+  <string name="your_score_title">Puanın:</string>
+  <string name="game_paused_text">Duraksayan</string>
+  <string name="game_update_text">Yüklemeye Çalıştığınız Kaydetme, Oyunun Daha Yeni Bir Sürümüne Kaydedildi.Lütfen Oyununu Güncelle.</string>
+  <string name="resume_btn_text">Devam Et</string>
+  <string name="quit_btn_text">İstifa Etmek</string>
+  <string name="dismiss">Reddet</string>
+  <string name="dont_show_again">Tekrar Gösterme.</string>
+  <string name="update_btn_text">Güncelleme</string>
+  <string name="signin_other_error">Bir Hata Imzaladı. Başka Bir Zaman Tekrar Deneyin.</string>
+  <string name="signin_canceled">Oturum Açıldı Iptal Edildi.</string>
+  <string name="sign_out">Oturumu Kapat</string>
+  <string name="no_save_game_available">Mevcut Kaydetme Oyunu Yok.Yeni Bir Oyun Başlat</string>
+  <string name="save_game_flow_title">İlerlemenizi Kaydetmek Için Oturum Açmak Ister Misiniz?Bunu Yapmak Şu Anki Oyun Kaydınızı Geçersiz Kılar!</string>
+  <string name="sign_in">Oturum Aç</string>
+  <string name="yes">Evet</string>
+  <string name="no">Hayır</string>
+  <string name="no_permanent">Hayır, Bunu Tekrar Gösterme.</string>
+  <string name="ok">Tamam Mı</string>
+  <string name="generic_error">Bir Şeyler Yanlış Gitti. Lütfen Daha Sonra Tekrar Deneyiniz</string>
+  <string name="login_to_save">Oyunu Kaydetmek Için Giriş Yapmalısın</string>
+  <string name="must_be_logged_in">Bu Özelliğe Erişmek Için Giriş Yapmış Olmalısınız.</string>
+  <string name="game_saved">Oyun Kaydedildi.</string>
+  <string name="new_game_confirm_title">Zaten Bir Kaydetme Oyununuz Varsa, Bunun Üzerine Yazacaktır.Devam Etmek Istediğinize Emin Misiniz?</string>
+  <string name="error_fetching_items">Öğeleri Yüklemek Için Giriş Yapmalısınız.</string>
+  <string name="no_items_result">Şu Anda Hiçbir Ürün Yok.</string>
+  <string name="no_purchases_result">Hiçbir Ürün Satın Alınmadı.</string>
+  <string name="purchase_succesful">Satın Aldığınız Başarılı Oldu!</string>
+  <string name="purchase_canceled">Satın Alma Işleminiz Iptal Edildi</string>
+  <string name="store_title">Mağaza</string>
+  <string name="my_items">Benim Eşyalarım</string>
+  <string name="buy">Satın Almak</string>
+  <string name="owned">Ait</string>
+  <string name="equip">Donatmak</string>
+  <string name="un_equip">Bir Takım</string>
+  <string name="error_equipping">Arka Planınızı Donanım Bir Hata Oluştu.Uygulamanızı Güncelleyin Ve Tekrar Deneyin.</string>
+  <string name="equip_success">Arka Plan Donanımlı!</string>
+  <string name="un_equip_success">Arka Plan Un-Donatımı!</string>
+  <string name="continue_game_choice_dialog_title">Oyuna Devam Etmek Için Bir Seçenek Seçin.</string>
+  <string name="watch_ad_btn">Bir Reklamı Izleyin.</string>
+  <string name="buy_game_continue_token">Bir Oyun Satın Alın Joingen [0,99 $]</string>
+  <string name="share_the_game_fb">Pop'U Facebook'A Paylaşın</string>
+  <string name="share_the_game_other">Pop'U Arkadaşlarınızla Paylaşın</string>
+  <string name="continue_game_token_not_aquired">Oyuna Devam Etmek Için Devam Eden Bir Oyun Belirteci Edinmelisiniz.</string>
+  <string name="must_choose_option_to_continue">Oyuna Devam Etmek Için Seçeneklerden Birini Seçmelisiniz.</string>
+  <string name="prompt_user_to_continue">Oyuna Devam Etmeye Devam Edebilirsin!</string>
+  <string name="global_bubbles_popped_string">Küresel Kabarcıklar Patladı:</string>
+
+  
+  <string name="app_info_title">Cyberpop Hakkında</string>
+  <string name="app_info_subtitle">Eğlenceli Bir Arcade Tarzı Kabarcık Haşhaş Oyunu Müzik Kredisi: Karl Casey Beyaz Yarasa Ses</string>
+
+  
+  <string name="review_app_dialog_title">Şimdiye Kadar Cyberpop'U Sever Misiniz?</string>
+  <string name="review_app_btn_text">Evet!Bir Inceleme Bırakmak Istiyorum.</string>
+  <string name="send_feedback_btn_text">Hayır. Geri Bildirim Göndermeyi Severim.</string>
+  <string name="feedback_title">Geribildirim Yolla.</string>
+  <string name="feedback_send_btn">Göndermek</string>
+
+  
+  <string name="notification_channel_name">Pop Oyun Bildirimleri</string>
+  <string name="notification_channel_description">Pop Bildirimleri Için Kanal</string>
+  <string name="nudge_notification_title">Cyberpop'A Geri Dön!</string>
+  <string name="nudge_notification_content_1">Samuray'I Uyandır.Pop'U Kabarcıklarımız Var.</string>
+  <string name="nudge_notification_content_2">Neden Şimdi Kabarcıkları Atıyorsun?</string>
+  <string name="nudge_notification_content_3">Herşeyi Bırak.Haşhaş Ihtiyacı Olan Kabarcıklar Var.</string>
+  <string name="nudge_notification_content_4">Baloncuklar Yapmak Istiyorsanız Benimle Gel.</string>
+  <string name="nudge_notification_content_5">Şu Anda Kabarcıkları Patlatmadığınızı Görüyoruz.Kabul Edilemez.</string>
+  <string name="nudge_notification_content_global_bubbles">Sadece% 1 $ D Kabarcıkları Küresel Olarak Atıldı!Çabaya Yardım Et!</string>
+
+  
+  <string name="ad_load_error">Reklamı Yüklerken Bir Sorun Vardı.Ücretsiz Bir Oyuna Devam Edin!</string>
+  <string name="ad_reward_message">İzlediğiniz Için Teşekkürler Bir Oyun Devam Ettimen!</string>
+  <string name="ad_reward_failed_message">Bir Oyun Devam Etmek Için Reklamı Izlemeyi Bitirmelisiniz.</string>
+
+  
+  <string name="title_game_continue_token">Devam Etme Token</string>
+  <string name="title_no_ads">Ücretsiz Deneyim Ekle</string>
+
+  
+  <string name="description_game_continue_token">Oyununuzdan Sonra Bile Oyuna Devam Etmenizi Sağlar.Bir Kez Kullanılabilir.</string>
+  <string name="description_no_ads">Tüm Reklamları Oyun Deneyiminizden Kaldırır!</string>
+
+  
+  <string name="title_bg_1">Neon Otobüs</string>
+  <string name="title_bg_2">Akihabara</string>
+  <string name="title_bg_3">Tokyo Sokakları</string>
+  <string name="title_bg_4">Victoria Zirve</string>
+  <string name="title_bg_5">Tokyo Gökyüzü</string>
+  <string name="title_bg_6">Tokyo Gökyüzü Işıkları</string>
+  <string name="title_bg_7">Cam Bina</string>
+  <string name="title_bg_8">Gradyan</string>
+  <string name="title_bg_9">Dumanlı Tapınak</string>
+  <string name="title_bg_10">Paketlenmiş Sokaklar</string>
+  <string name="title_bg_11">Canavar Binaları</string>
+  <string name="title_bg_12">Sisli Şehir</string>
+  <string name="title_bg_13">Kırmızı Lamba</string>
+
+  
+  <string name="description_bg_1">Hong Kong'Da Bir Otobüs Serin Arka Plan</string>
+  <string name="description_bg_2">Akihabara, Tokyo Arka Plan</string>
+  <string name="description_bg_3">Tokyo Neon Sokaklarının Arka Plan</string>
+  <string name="description_bg_4">Victoria Peak Hong Kong Görünümünden Geçmiş</string>
+  <string name="description_bg_5">Tokyo Görünümünün Arka Plan</string>
+  <string name="description_bg_6">Tokyo Manzarası Görünümünün Arka Plan</string>
+  <string name="description_bg_7">Hong Kong'Da Bir Cam Binanın Arka Plan</string>
+  <string name="description_bg_8">Bir Degrade Arka Plan Kırmızıdan Siyah</string>
+  <string name="description_bg_9">Dumanlı Bir Tapınağın Arka Planı</string>
+  <string name="description_bg_10">Tokyo'Nun Paketlenmiş Sokaklarının Arka Plan</string>
+  <string name="description_bg_11">Hong Kong Canavar Binaların Arka Planı</string>
+  <string name="description_bg_12">Tokyo Sisli Manzarası Arka Plan</string>
+  <string name="description_bg_13">Büyük Bir Kırmızı Lambanın Arka Planı</string>
+
+  
+  <string name="turret_tooltip">Tarifleri Bu Simgeden Ekrana Sürükleyip Bırakın.Onları Sürüklemek Için Taretlere Uzun Bastırabilirsiniz.</string>
+  <string name="ball_and_chain_tooltip">Bir Topuz Almak Için Bu Simgeyi Basılı Tutun.</string>
+  <string name="wall_tooltip">Duvarları Bu Simgeden Ekrana Sürükleyip Bırakın.Onları Sürüklemek Için Duvarlara Uzun Basabilirsiniz.Duvarlarınızı Seviye 2'Ye Yükseltmek Ve Yukarı Kabarcıkları Patlatır!</string>
+  <string name="nuke_tooltip">Ekrandaki Tüm Kabarcıkları Dalgalar Halinde Açmak Için Bu Simgeye Dokunun.Dikkatli, Şarj Etmek Uzun Zaman Alıyor.</string>
+  <string name="multi_touch_icon_tooltip">Aynı Renkteki Yakındaki Tüm Kabarcıkları Pop Etmek Için Bir Balonuna Dokunun.</string>
+  <string name="touch_pop_tooltip">Ekranın Altına Ulaşmadan Önce Onları Patlatmak Için Kabarcıklara Dokunun!Çizgi Başlatmak Ve Daha Fazla Puan Kazanmak Için Aynı Rengin Birden Fazla Kabarcık Dokunun!</string>
+  <string name="upgrade_tooltip">Yükseltme Almak Için Bu Baloncuklar Üzerine Dokunun.Daha Sonra Yükseltme Için Sağdaki Bir Araca Dokunabilirsiniz.</string>
+  <string name="bomb_bubble_tooltip">Bu Bir Bomba Balonu.Yaymada Yeşil Ise Üzerine Dokunun.Dikkatli!Geri Sayım 0'A Ulaşırsa Ya Da Kırmızı Ise Üzerine Dokunun, Patlayacak Ve Oyunu Bitirir!</string>
+  <string name="negative_score_warning_tooltip">Dikkatli!Skorunuz 0'In Altına Düşerse Oyun Bitecektir.</string>
+</resources>

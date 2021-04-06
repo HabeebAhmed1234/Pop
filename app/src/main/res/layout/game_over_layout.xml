@@ -60,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/bubbles_popped_title"
+        android:text="@string/global_bubbles_popped_string"
         android:textAlignment="center"
         android:textSize="@dimen/text_size_large"
         app:glow_color="@color/menu_button_color" />

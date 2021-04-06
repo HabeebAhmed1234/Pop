@@ -1,0 +1,156 @@
+<resources>
+  <string name="app_id" translatable="false">120569614320</string>
+  <string name="facebook_app_id" translatable="false">430199825050664</string>
+  <string name="app_name" translatable="false">Cyberpop</string>
+
+  
+  <string name="test_banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+  <string name="test_rewarded_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
+
+  
+  <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/6594335535</string>
+  <string name="rewarded_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/4722591875</string>
+
+  
+  <string name="vertical_divider" translatable="false">|</string>
+  <string name="share_facebook" translatable="false">[ f ]</string>
+  <string name="game_share_hashtag" translatable="false">#Cyberpop-StupidFunGames</string>
+  <string name="game_share_link" translatable="false">https://play.google.com/store/apps/details?id=com.stupidfungames.pop</string>
+
+  <string name="new_game_text">新しいゲーム</string>
+  <string name="continue_game_text">ゲームを続ける</string>
+  <string name="share">共有</string>
+  <string name="review">レビュー</string>
+  <string name="game_share_string_title">サイバーポップを共有する</string>
+  <string name="game_share_string">Cyberpop  -  Bubble Popping Gameをプレイしてみてください！</string>
+  <string name="continue_game_text_with_ad">ゲームを続けるように広告を見なさい</string>
+  <string name="continue_game_text_with_token_purchase">ゲームを続けるにはトークンを購入してください</string>
+  <string name="load_game_text">復帰ゲームを再開します</string>
+  <string name="game_over_text">ゲームオーバー</string>
+  <string name="options_text">オプション</string>
+  <string name="error_checking_continue_token">続行トークンがあるかどうかがエラーチェックがありました。代わりに広告を見ることができます。</string>
+  <string name="store">お店</string>
+  <string name="quit_text">終了する</string>
+  <string name="your_score_title">あなたのスコア：</string>
+  <string name="game_paused_text">一時停止しました</string>
+  <string name="game_update_text">ロードしようとしている保存は、新しいバージョンのゲームに保存されました。あなたのゲームを更新してください。</string>
+  <string name="resume_btn_text">履歴書</string>
+  <string name="quit_btn_text">終了する</string>
+  <string name="dismiss">退出させる</string>
+  <string name="dont_show_again">もう一度ショーをしないでください。</string>
+  <string name="update_btn_text">更新</string>
+  <string name="signin_other_error">サインインが発生しました。もう一度もう一度試してください。</string>
+  <string name="signin_canceled">サインインがキャンセルされました。</string>
+  <string name="sign_out">サインアウト</string>
+  <string name="no_save_game_available">利用可能な保存ゲームはありません。新しいゲームを始める</string>
+  <string name="save_game_flow_title">あなたの進歩を節約するためにサインインしますか？あなたの現在のゲーム保存を上書きするようにします！</string>
+  <string name="sign_in">ログイン</string>
+  <string name="yes">はい</string>
+  <string name="no">番号</string>
+  <string name="no_permanent">いいえ、もう一度これを表示しないでください。</string>
+  <string name="ok">Ok</string>
+  <string name="generic_error">何かがうまくいかなかった。後でもう一度やり直してください</string>
+  <string name="login_to_save">あなたはあなたのゲームを保存するためにログインする必要があります</string>
+  <string name="must_be_logged_in">この機能にアクセスするにはログインする必要があります。</string>
+  <string name="game_saved">ゲームが保存されました。</string>
+  <string name="new_game_confirm_title">あなたがすでに保存ゲームを持っているならば、これは上書きされます。続行しますか？</string>
+  <string name="error_fetching_items">アイテムをロードするにはログインする必要があります。</string>
+  <string name="no_items_result">現時点ではアイテムはありません。</string>
+  <string name="no_purchases_result">購入していません。</string>
+  <string name="purchase_succesful">あなたの購入は成功しました！</string>
+  <string name="purchase_canceled">あなたの購入はキャンセルされました</string>
+  <string name="store_title">お店</string>
+  <string name="my_items">私のアイテム</string>
+  <string name="buy">購入</string>
+  <string name="owned">所有する</string>
+  <string name="equip">装備</string>
+  <string name="un_equip">1チーム</string>
+  <string name="error_equipping">あなたの背景を装備したエラーがありました。アプリを更新してもう一度やり直してください。</string>
+  <string name="equip_success">装備された背景！</string>
+  <string name="un_equip_success">身使じゃない！</string>
+  <string name="continue_game_choice_dialog_title">あなたのゲームを続けるオプションを選択してください。</string>
+  <string name="watch_ad_btn">広告を見てください。</string>
+  <string name="buy_game_continue_token">ゲーム続けてトークンを購入する[$ 0.99]</string>
+  <string name="share_the_game_fb">ポップをFacebookに共有します</string>
+  <string name="share_the_game_other">あなたの友人とポップを共有します</string>
+  <string name="continue_game_token_not_aquired">あなたはあなたのゲームを続けるために続行ゲームトークンを獲得する必要があります。</string>
+  <string name="must_choose_option_to_continue">あなたはあなたのゲームを続けるためにオプションの1つを選ばなければなりません。</string>
+  <string name="prompt_user_to_continue">あなたはあなたのゲームを再開し続けることができます！</string>
+  <string name="global_bubbles_popped_string">グローバルな泡がポップされました：</string>
+
+  
+  <string name="app_info_title">サイバーポップについて</string>
+  <string name="app_info_subtitle">楽しいアーケードスタイルのバブルポップゲーム音楽クレジット：ホワイトバットオーディオのカールケーシー</string>
+
+  
+  <string name="review_app_dialog_title">これまでのサイバーポップが好きですか。</string>
+  <string name="review_app_btn_text">はい！私はレビューを残すのが好きです。</string>
+  <string name="send_feedback_btn_text">いいえ。私はフィードバックを送るのが好きです。</string>
+  <string name="feedback_title">フィードバックを送ってください。</string>
+  <string name="feedback_send_btn">送ります</string>
+
+  
+  <string name="notification_channel_name">ポップゲーム通知</string>
+  <string name="notification_channel_description">Pop通知のためのチャネル</string>
+  <string name="nudge_notification_title">サイバーポップに戻ってきて！</string>
+  <string name="nudge_notification_content_1">サムライを目覚めさせる。私たちはポップするのに泡を持っています。</string>
+  <string name="nudge_notification_content_2">なぜあなたは今泡を飛び込むのですか？</string>
+  <string name="nudge_notification_content_3">すべてを落とします。ポップが必要な泡があります。</string>
+  <string name="nudge_notification_content_4">泡をポップしたいのなら私と一緒に来てください。</string>
+  <string name="nudge_notification_content_5">私たちはあなたが今泡を飛び込まないように見えます。受け入れられない。</string>
+  <string name="nudge_notification_content_global_bubbles">唯一の1 $ D泡は世界的に飛び越えました！努力を助けます！</string>
+
+  
+  <string name="ad_load_error">広告のロードに問題がありました。無料ゲームを続けるトークンを続けてください！</string>
+  <string name="ad_reward_message">見守ってくれてありがとうトークンを続けるゲームを持っています！</string>
+  <string name="ad_reward_failed_message">ゲームを継続するトークンを得るために広告を見て終わらなければなりません。</string>
+
+  
+  <string name="title_game_continue_token">ゲームトークンを続ける</string>
+  <string name="title_no_ads">無料の経験を追加してください</string>
+
+  
+  <string name="description_game_continue_token">ゲームを終えてもあなたのゲームを続けることができます。一度使用することができます。</string>
+  <string name="description_no_ads">あなたのゲーム体験からすべての広告を削除します！</string>
+
+  
+  <string name="title_bg_1">ネオンバス</string>
+  <string name="title_bg_2">秋葉原</string>
+  <string name="title_bg_3">東京街</string>
+  <string name="title_bg_4">ビクトリアピーク</string>
+  <string name="title_bg_5">東京スカイ</string>
+  <string name="title_bg_6">東京スカイライト</string>
+  <string name="title_bg_7">ガラスビルチ</string>
+  <string name="title_bg_8">勾配</string>
+  <string name="title_bg_9">スモーキーテンプル</string>
+  <string name="title_bg_10">包装された街</string>
+  <string name="title_bg_11">モンスタービル</string>
+  <string name="title_bg_12">霧の街</string>
+  <string name="title_bg_13">赤いランプ</string>
+
+  
+  <string name="description_bg_1">香港のバスのクールな背景</string>
+  <string name="description_bg_2">東京都秋葉原の背景</string>
+  <string name="description_bg_3">東京のネオン通りの背景</string>
+  <string name="description_bg_4">ビクトリアピーク香港からの眺めの背景</string>
+  <string name="description_bg_5">東京の眺めの背景</string>
+  <string name="description_bg_6">東京スカイラインの眺めの背景</string>
+  <string name="description_bg_7">香港のガラス建物の背景</string>
+  <string name="description_bg_8">赤から黒へのグラデーションの背景</string>
+  <string name="description_bg_9">スモーキーテンプルの背景</string>
+  <string name="description_bg_10">東京の充実した通りの背景</string>
+  <string name="description_bg_11">香港のモンスタービルの背景</string>
+  <string name="description_bg_12">東京の霧のスカイラインの背景</string>
+  <string name="description_bg_13">巨大な赤いランプの背景</string>
+
+  
+  <string name="turret_tooltip">このアイコンからスクリーンに砲塔をドラッグアンドドロップします。あなたは長く砲塔を押してそれらをドラッグすることができます。</string>
+  <string name="ball_and_chain_tooltip">このアイコンを押し続けてメースを取得します。</string>
+  <string name="wall_tooltip">このアイコンから画面に壁をドラッグアンドドロップします。あなたはそれらを周囲にドラッグするために壁を押すことができます。壁をレベル2と上にアップグレードさせると、ポップバブルがあります。</string>
+  <string name="nuke_tooltip">このアイコンをタップして、波の画面上のすべての泡をポップします。注意して、充電に時間がかかります。</string>
+  <string name="multi_touch_icon_tooltip">同じ色の近くの泡をすべてポップするために泡をタップします。</string>
+  <string name="touch_pop_tooltip">画面の底に到達する前に、泡をタッチしてそれらをポップしてください！同じ色の複数の泡をタッチして、ストリークを開始し、より多くのポイントを稼ごう！</string>
+  <string name="upgrade_tooltip">アップグレードを取得するには、これらの泡をタップします。その後、右側のツールをタップしてアップグレードできます。</string>
+  <string name="bomb_bubble_tooltip">これは爆弾の泡です。それを拡散させるには緑色の状態でそれをタップします。注意！それが0のカウントダウンに達するか、それが赤くなっている間にそれをタップするなら、それは爆発してゲームを終了します！</string>
+  <string name="negative_score_warning_tooltip">注意！あなたのスコアが0を下回ると、それはゲームオーバーになります。</string>
+</resources>

@@ -1,0 +1,156 @@
+<resources>
+  <string name="app_id" translatable="false">120569614320</string>
+  <string name="facebook_app_id" translatable="false">430199825050664</string>
+  <string name="app_name" translatable="false">Cyberpop</string>
+
+  
+  <string name="test_banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+  <string name="test_rewarded_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
+
+  
+  <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/6594335535</string>
+  <string name="rewarded_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/4722591875</string>
+
+  
+  <string name="vertical_divider" translatable="false">|</string>
+  <string name="share_facebook" translatable="false">[ f ]</string>
+  <string name="game_share_hashtag" translatable="false">#Cyberpop-StupidFunGames</string>
+  <string name="game_share_link" translatable="false">https://play.google.com/store/apps/details?id=com.stupidfungames.pop</string>
+
+  <string name="new_game_text">नया खेल</string>
+  <string name="continue_game_text">खेल जारी रखें</string>
+  <string name="share">शेयर</string>
+  <string name="review">समीक्षा</string>
+  <string name="game_share_string_title">शेयर साइबरपॉप के साथ</string>
+  <string name="game_share_string">साइबरपॉप खेलने का प्रयास करें - बुलबुला पॉपिंग गेम!</string>
+  <string name="continue_game_text_with_ad">खेल जारी रखने के लिए विज्ञापन देखें</string>
+  <string name="continue_game_text_with_token_purchase">खेल जारी रखने के लिए टोकन खरीदें</string>
+  <string name="load_game_text">खेल फिर से शुरू करें</string>
+  <string name="game_over_text">खेल खत्म</string>
+  <string name="options_text">विकल्प</string>
+  <string name="error_checking_continue_token">यदि आपके पास टोकन जारी है तो एक त्रुटि जांच थी।आप इसके बजाय एक विज्ञापन देख सकते हैं।</string>
+  <string name="store">दुकान</string>
+  <string name="quit_text">छोड़ना</string>
+  <string name="your_score_title">अपने स्कोर:</string>
+  <string name="game_paused_text">रोके गए</string>
+  <string name="game_update_text">आप जो बचत कर रहे हैं वह गेम के एक नए संस्करण पर सहेजा गया था।कृपया अपना गेम अपडेट करें।</string>
+  <string name="resume_btn_text">बायोडाटा</string>
+  <string name="quit_btn_text">छोड़ना</string>
+  <string name="dismiss">खारिज</string>
+  <string name="dont_show_again">फिर से नहीं दिखाओ।</string>
+  <string name="update_btn_text">अपडेट करें</string>
+  <string name="signin_other_error">एक त्रुटि दर्ज की गई थी। एक और समय फिर से कोशिश करें।</string>
+  <string name="signin_canceled">साइन इन रद्द कर दिया गया था।</string>
+  <string name="sign_out">साइन आउट</string>
+  <string name="no_save_game_available">कोई सहेजने वाला गेम उपलब्ध नहीं है।एक नया खेल शुरू करें</string>
+  <string name="save_game_flow_title">क्या आप अपनी प्रगति को बचाने के लिए साइन इन करना चाहेंगे?ऐसा करने से आपके वर्तमान गेम को ओवरराइड किया जाएगा!</string>
+  <string name="sign_in">दाखिल करना</string>
+  <string name="yes">हाँ</string>
+  <string name="no">नहीं न</string>
+  <string name="no_permanent">नहीं, इसे फिर से नहीं दिखाओ।</string>
+  <string name="ok">ठीक आहे</string>
+  <string name="generic_error">कुछ गलत हो गया।बाद में पुन: प्रयास करें</string>
+  <string name="login_to_save">आपको अपना गेम सहेजने के लिए लॉगिन करना होगा</string>
+  <string name="must_be_logged_in">इस सुविधा तक पहुंचने के लिए आपको लॉग इन होना चाहिए।</string>
+  <string name="game_saved">खेल बचाया।</string>
+  <string name="new_game_confirm_title">यदि आपके पास पहले से ही एक सेव गेम है तो यह इसे ओवरराइट करेगा।क्या आप सुनिश्चित रूप से आगे बढ़ना चाहते हैं?</string>
+  <string name="error_fetching_items">आइटम लोड करने के लिए आपको लॉगिन करना होगा।</string>
+  <string name="no_items_result">इस समय कोई आइटम उपलब्ध नहीं है।</string>
+  <string name="no_purchases_result">कोई उत्पाद नहीं खरीदा गया है।</string>
+  <string name="purchase_succesful">आपकी खरीद सफल रही!</string>
+  <string name="purchase_canceled">आपकी खरीद रद्द कर दी गई</string>
+  <string name="store_title">दुकान</string>
+  <string name="my_items">मेरे आइटम</string>
+  <string name="buy">खरीद</string>
+  <string name="owned">स्वामित्व</string>
+  <string name="equip">लैस</string>
+  <string name="un_equip">एक टीम</string>
+  <string name="error_equipping">आपकी पृष्ठभूमि को लैस करने में त्रुटि हुई।अपना ऐप अपडेट करें और पुनः प्रयास करें।</string>
+  <string name="equip_success">पृष्ठभूमि सुसज्जित!</string>
+  <string name="un_equip_success">पृष्ठभूमि संयुक्त राष्ट्र सुसज्जित!</string>
+  <string name="continue_game_choice_dialog_title">अपने खेल को जारी रखने के लिए एक विकल्प चुनें।</string>
+  <string name="watch_ad_btn">एक विज्ञापन देखें।</string>
+  <string name="buy_game_continue_token">एक गेम जारी रखें टोकन [$ 0.9 9]</string>
+  <string name="share_the_game_fb">फेसबुक पर पॉप साझा करें</string>
+  <string name="share_the_game_other">अपने दोस्तों के साथ पॉप साझा करें</string>
+  <string name="continue_game_token_not_aquired">आपको अपने गेम को जारी रखने के लिए एक जारी गेम टोकन प्राप्त करना होगा।</string>
+  <string name="must_choose_option_to_continue">आपको अपने गेम को जारी रखने के लिए विकल्पों में से एक को चुनना होगा।</string>
+  <string name="prompt_user_to_continue">आप अपने खेल को फिर से शुरू करना जारी रख सकते हैं!</string>
+  <string name="global_bubbles_popped_string">वैश्विक बुलबुले Popped:</string>
+
+  
+  <string name="app_info_title">साइबरपॉप के बारे में</string>
+  <string name="app_info_subtitle">एक मजेदार आर्केड शैली बुलबुला पॉपिंग गेम संगीत क्रेडिट: सफेद बल्ले ऑडियो पर कार्ल केसी</string>
+
+  
+  <string name="review_app_dialog_title">क्या आपको साइबरपॉप अब तक पसंद है?</string>
+  <string name="review_app_btn_text">हाँ!मैं एक समीक्षा छोड़ना पसंद करता हूं।</string>
+  <string name="send_feedback_btn_text">नहीं। मैं प्रतिक्रिया भेजना चाहता हूं।</string>
+  <string name="feedback_title">प्रतिक्रिया भेजें।</string>
+  <string name="feedback_send_btn">संदेश</string>
+
+  
+  <string name="notification_channel_name">पॉप खेल अधिसूचनाएं</string>
+  <string name="notification_channel_description">पॉप अधिसूचनाओं के लिए चैनल</string>
+  <string name="nudge_notification_title">साइबरपॉप पर वापस आओ!</string>
+  <string name="nudge_notification_content_1">समुराई को जगाओ।हमारे पास पॉप के लिए बुलबुले हैं।</string>
+  <string name="nudge_notification_content_2">क्यों आप अभी बुलबुले पॉप नहीं कर रहे हैं?</string>
+  <string name="nudge_notification_content_3">सब कुछ छोड़ें।ऐसे बुलबुले होते हैं जिन्हें पॉपिंग की आवश्यकता होती है।</string>
+  <string name="nudge_notification_content_4">यदि आप बुलबुले पॉप करना चाहते हैं तो मेरे साथ आओ।</string>
+  <string name="nudge_notification_content_5">हम देखते हैं कि आप अभी बुलबुले नहीं पॉपिंग नहीं करते हैं।गवारा नहीं।</string>
+  <string name="nudge_notification_content_global_bubbles">केवल% %1$d डी बुलबुले वैश्विक स्तर पर पॉप किए गए हैं!प्रयास में मदद करें!</string>
+
+  
+  <string name="ad_load_error">विज्ञापन लोड करने में एक समस्या थी।एक मुफ्त गेम टोकन जारी रखें!</string>
+  <string name="ad_reward_message">देखने के लिए धन्यवाद एक गेम टोकन जारी रखें!</string>
+  <string name="ad_reward_failed_message">आपको गेम जारी रखने के लिए विज्ञापन देखना समाप्त करना होगा।</string>
+
+  
+  <string name="title_game_continue_token">खेल टोकन जारी रखें</string>
+  <string name="title_no_ads">मुफ्त अनुभव जोड़ें</string>
+
+  
+  <string name="description_game_continue_token">आपको अपने खेल के बाद भी अपने खेल को जारी रखने की अनुमति देता है।एक बार इस्तेमाल किया जा सकता है।</string>
+  <string name="description_no_ads">आपके गेमिंग अनुभव से सभी विज्ञापनों को हटा देता है!</string>
+
+  
+  <string name="title_bg_1">नियॉन बस</string>
+  <string name="title_bg_2">Akihabara</string>
+  <string name="title_bg_3">टोक्यो सड़कों</string>
+  <string name="title_bg_4">विक्टोरिया पीक</string>
+  <string name="title_bg_5">टोक्यो आकाश</string>
+  <string name="title_bg_6">टोक्यो स्काई लाइट्स</string>
+  <string name="title_bg_7">ग्लास बिल्डिंग</string>
+  <string name="title_bg_8">ढाल</string>
+  <string name="title_bg_9">स्मोकी मंदिर</string>
+  <string name="title_bg_10">पैक वाली सड़कों</string>
+  <string name="title_bg_11">राक्षस भवन</string>
+  <string name="title_bg_12">धुंधला शहर</string>
+  <string name="title_bg_13">लाल दीपक</string>
+
+  
+  <string name="description_bg_1">हांगकांग में बस की अच्छी पृष्ठभूमि</string>
+  <string name="description_bg_2">अकिहाबारा, टोक्यो की पृष्ठभूमि</string>
+  <string name="description_bg_3">टोक्यो की नियॉन सड़कों की पृष्ठभूमि</string>
+  <string name="description_bg_4">विक्टोरिया पीक हांगकांग से एक दृश्य की पृष्ठभूमि</string>
+  <string name="description_bg_5">टोक्यो के दृश्य की पृष्ठभूमि</string>
+  <string name="description_bg_6">टोक्यो स्काईलाइन के दृश्य की पृष्ठभूमि</string>
+  <string name="description_bg_7">हांगकांग में एक ग्लास इमारत की पृष्ठभूमि</string>
+  <string name="description_bg_8">लाल से काले रंग की पृष्ठभूमि</string>
+  <string name="description_bg_9">एक स्मोकी मंदिर की पृष्ठभूमि</string>
+  <string name="description_bg_10">टोक्यो की पैक वाली सड़कों की पृष्ठभूमि</string>
+  <string name="description_bg_11">हांगकांग की राक्षस इमारतों की पृष्ठभूमि</string>
+  <string name="description_bg_12">टोक्यो की धुंधली क्षितिज की पृष्ठभूमि</string>
+  <string name="description_bg_13">एक विशाल लाल दीपक की पृष्ठभूमि</string>
+
+  
+  <string name="turret_tooltip">स्क्रीन पर इस आइकन से Turrets खींचें और छोड़ें।आप उन्हें चारों ओर खींचने के लिए Turrets को लंबे समय तक दबा सकते हैं।</string>
+  <string name="ball_and_chain_tooltip">मैस पाने के लिए इस आइकन को दबाकर रखें।</string>
+  <string name="wall_tooltip">स्क्रीन पर इस आइकन से दीवारों को खींचें और छोड़ें।आप उन्हें चारों ओर खींचने के लिए दीवारों को लंबे समय तक दबा सकते हैं।अपनी दीवारों को स्तर 2 और ऊपर तक अपग्रेड करना उन्हें पॉप बुलबुले बना देगा!</string>
+  <string name="nuke_tooltip">लहरों में स्क्रीन पर सभी बुलबुले पॉप करने के लिए इस आइकन को टैप करें।सावधान, रिचार्ज करने में काफी समय लगता है।</string>
+  <string name="multi_touch_icon_tooltip">एक ही रंग के सभी पास के बुलबुले को पॉप करने के लिए एक बुलबुला टैप करें।</string>
+  <string name="touch_pop_tooltip">स्क्रीन के नीचे पहुंचने से पहले उन्हें पॉप करने के लिए बुलबुले को स्पर्श करें!एक लकीर शुरू करने और अधिक अंक अर्जित करने के लिए एक ही रंग के कई बुलबुले स्पर्श करें!</string>
+  <string name="upgrade_tooltip">अपग्रेड प्राप्त करने के लिए इन बुलबुले पर टैप करें।फिर आप इसे अपग्रेड करने के लिए दाईं ओर एक टूल पर टैप कर सकते हैं।</string>
+  <string name="bomb_bubble_tooltip">यह एक बम बुलबुला है।उस पर टैप करें जबकि इसे फैलाने के लिए हरा है।सावधान!यदि यह उलटी गिनती 0 तक पहुंच जाती है या आप उस पर टैप करते हैं, जबकि यह लाल होता है तो यह विस्फोट और खेल को समाप्त कर देगा!</string>
+  <string name="negative_score_warning_tooltip">सावधान!यदि आपका स्कोर 0 से नीचे आता है तो यह खेल खत्म हो जाएगा।</string>
+</resources>

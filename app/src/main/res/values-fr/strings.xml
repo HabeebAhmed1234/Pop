@@ -1,0 +1,156 @@
+<resources>
+  <string name="app_id" translatable="false">120569614320</string>
+  <string name="facebook_app_id" translatable="false">430199825050664</string>
+  <string name="app_name" translatable="false">Cyberpop</string>
+
+  
+  <string name="test_banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+  <string name="test_rewarded_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
+
+  
+  <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/6594335535</string>
+  <string name="rewarded_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/4722591875</string>
+
+  
+  <string name="vertical_divider" translatable="false">|</string>
+  <string name="share_facebook" translatable="false">[ f ]</string>
+  <string name="game_share_hashtag" translatable="false">#Cyberpop-StupidFunGames</string>
+  <string name="game_share_link" translatable="false">https://play.google.com/store/apps/details?id=com.stupidfungames.pop</string>
+
+  <string name="new_game_text">Nouveau Jeu</string>
+  <string name="continue_game_text">Continuer Le Jeu</string>
+  <string name="share">Partager</string>
+  <string name="review">Revoir</string>
+  <string name="game_share_string_title">Partagez Cyberpop Avec</string>
+  <string name="game_share_string">Essayez De Jouer À Cyberpop - Bubble Popping Jeu!</string>
+  <string name="continue_game_text_with_ad">Regarder Une Annonce Pour Continuer Le Jeu</string>
+  <string name="continue_game_text_with_token_purchase">Acheter Jeton Pour Continuer Le Jeu</string>
+  <string name="load_game_text">Reprendre Jeu</string>
+  <string name="game_over_text">Jeu Terminé</string>
+  <string name="options_text">Option</string>
+  <string name="error_checking_continue_token">Il Y Avait Une Erreur D'Erreur Si Vous Avez Un Jeton Continu.Vous Pouvez Regarder Une Annonce À La Place.</string>
+  <string name="store">Magasin</string>
+  <string name="quit_text">Quitter</string>
+  <string name="your_score_title">Ton Score:</string>
+  <string name="game_paused_text">S'Arrêta</string>
+  <string name="game_update_text">L'Enregistrement Que Vous Essayez De Charger A Été Enregistré Sur Une Version Plus Récente Du Jeu.S'Il Vous Plaît Mettre À Jour Votre Jeu.</string>
+  <string name="resume_btn_text">Cv</string>
+  <string name="quit_btn_text">Quitter</string>
+  <string name="dismiss">Rejeter</string>
+  <string name="dont_show_again">Ne Pas Montrer À Nouveau.</string>
+  <string name="update_btn_text">Mettre À Jour</string>
+  <string name="signin_other_error">Il Y Avait Une Erreur De Signalisation. Essayez À Nouveau Une Autre Fois.</string>
+  <string name="signin_canceled">Connexion A Été Annulée.</string>
+  <string name="sign_out">Se Déconnecter</string>
+  <string name="no_save_game_available">Il N'Y A Pas De Jeu De Sauvegarde Disponible.Démarrer Un Nouveau Jeu</string>
+  <string name="save_game_flow_title">Souhaitez-Vous Vous Connecter Pour Économiser Vos Progrès?Cela Remplacera Votre Jeu Actuel Sauvera!</string>
+  <string name="sign_in">S'Identifier</string>
+  <string name="yes">Oui</string>
+  <string name="no">Non</string>
+  <string name="no_permanent">Non, Ne Pas Le Montrer À Nouveau.</string>
+  <string name="ok">D'Accord</string>
+  <string name="generic_error">Quelque Chose S'Est Mal Passé.Veuillez Réessayer Plus Tard</string>
+  <string name="login_to_save">Vous Devez Vous Connecter Pour Enregistrer Votre Jeu</string>
+  <string name="must_be_logged_in">Vous Devez Être Connecté Pour Accéder À Cette Fonctionnalité.</string>
+  <string name="game_saved">Jeu Enregistré.</string>
+  <string name="new_game_confirm_title">Si Vous Avez Déjà Un Jeu De Sauvegarde, Cela Écrasez-Le.Êtes-Vous Sur De Vouloir Continuer?</string>
+  <string name="error_fetching_items">Vous Devez Vous Connecter Pour Charger Les Éléments.</string>
+  <string name="no_items_result">Aucun Article N'Est Disponible Pour Le Moment.</string>
+  <string name="no_purchases_result">Aucun Produit N'A Été Acheté.</string>
+  <string name="purchase_succesful">Votre Achat A Réussi!</string>
+  <string name="purchase_canceled">Votre Achat A Été Annulé</string>
+  <string name="store_title">Magasin</string>
+  <string name="my_items">Mes Articles</string>
+  <string name="buy">Acheter</string>
+  <string name="owned">Appartenant À</string>
+  <string name="equip">Équiper</string>
+  <string name="un_equip">Une Équipe</string>
+  <string name="error_equipping">Une Erreur S'Est Produite Lors De L'Équipement De Votre Arrière-Plan.Mettez À Jour Votre Application Et Réessayez.</string>
+  <string name="equip_success">Arrière-Plan Équipé!</string>
+  <string name="un_equip_success">Contexte Non Équipé!</string>
+  <string name="continue_game_choice_dialog_title">Choisissez Une Option Pour Continuer Votre Jeu.</string>
+  <string name="watch_ad_btn">Regarder Une Annonce.</string>
+  <string name="buy_game_continue_token">Acheter Un Jeu Continuer Token [0,99 $]</string>
+  <string name="share_the_game_fb">Partager Pop Sur Facebook</string>
+  <string name="share_the_game_other">Partagez Pop Avec Vos Amis</string>
+  <string name="continue_game_token_not_aquired">Vous Devez Acquérir Un Jeton De Jeu Continuer Pour Continuer Votre Jeu.</string>
+  <string name="must_choose_option_to_continue">Vous Devez Choisir L'Une Des Options Pour Continuer Votre Jeu.</string>
+  <string name="prompt_user_to_continue">Vous Pouvez Continuer À Reprendre Votre Jeu!</string>
+  <string name="global_bubbles_popped_string">Les Bulles Mondiales Ont Sauté:</string>
+
+  
+  <string name="app_info_title">À Propos De Cyberpop</string>
+  <string name="app_info_subtitle">Une Bulle De Style Arcade Amusante Popping Jeu Crédit Musique: Karl Casey À White Bat Audio Audio</string>
+
+  
+  <string name="review_app_dialog_title">Aimez-Vous Cyberpop Jusqu'À Présent?</string>
+  <string name="review_app_btn_text">Oui!J'Aime Laisser Un Avis.</string>
+  <string name="send_feedback_btn_text">Non, Je Voudrais Envoyer Des Commentaires.</string>
+  <string name="feedback_title">Envoyer Des Commentaires.</string>
+  <string name="feedback_send_btn">Envoyer</string>
+
+  
+  <string name="notification_channel_name">Notifications De Jeu Pop</string>
+  <string name="notification_channel_description">Canal Pour Notifications Pop</string>
+  <string name="nudge_notification_title">Revenez À Cyberpop!</string>
+  <string name="nudge_notification_content_1">Réveillez-Vous Samurai.Nous Avons Des Bulles À Pop.</string>
+  <string name="nudge_notification_content_2">Pourquoi Vous Êtes Sur Le Point De Faire Des Bulles Maintenant?</string>
+  <string name="nudge_notification_content_3">Arrête Tout.Il Y A Des Bulles Qui Ont Besoin De Sauter.</string>
+  <string name="nudge_notification_content_4">Venez Avec Moi Si Vous Voulez Faire Des Bulles.</string>
+  <string name="nudge_notification_content_5">Nous Vous Voyons De Ne Pas Faire De Bulles Sur Le Point.Inacceptable.</string>
+  <string name="nudge_notification_content_global_bubbles">Seuls% 1 $ D Bubbles Ont Été Sautés Globalement!Aidez L'Effort!</string>
+
+  
+  <string name="ad_load_error">Il Y Avait Un Problème De Chargement De L'Annonce.Passez Un Jeu Gratuit Continuer Le Jeton!</string>
+  <string name="ad_reward_message">Merci D'Avoir Regardé Un Jeu Continuez Jeton!</string>
+  <string name="ad_reward_failed_message">Vous Devez Finir De Regarder L'Annonce Pour Obtenir Un Jeu De Jeu. Continuer Le Jeton.</string>
+
+  
+  <string name="title_game_continue_token">Continuer Le Jeton Du Jeu</string>
+  <string name="title_no_ads">Ajouter Une Expérience Gratuite</string>
+
+  
+  <string name="description_game_continue_token">Vous Permet De Continuer Votre Jeu Même Après Sa Partie.Peut Être Utilisé Une Fois.</string>
+  <string name="description_no_ads">Supprime Toutes Les Annonces De Votre Expérience De Jeu!</string>
+
+  
+  <string name="title_bg_1">Bus Néon</string>
+  <string name="title_bg_2">Akihabara</string>
+  <string name="title_bg_3">Rues De Tokyo</string>
+  <string name="title_bg_4">Victoria Peak</string>
+  <string name="title_bg_5">Ciel Tokyo</string>
+  <string name="title_bg_6">Lumières De Tokyo Sky</string>
+  <string name="title_bg_7">Bâtiment En Verre</string>
+  <string name="title_bg_8">Pente</string>
+  <string name="title_bg_9">Temple Fumé</string>
+  <string name="title_bg_10">Rues Emballées</string>
+  <string name="title_bg_11">Bâtiments De Monstre</string>
+  <string name="title_bg_12">Cité Brumeuse</string>
+  <string name="title_bg_13">Lampe Rouge</string>
+
+  
+  <string name="description_bg_1">Fond Cool D'Un Bus À Hong Kong</string>
+  <string name="description_bg_2">Fond D'Akihabara, Tokyo</string>
+  <string name="description_bg_3">Contexte Des Rues Néon De Tokyo</string>
+  <string name="description_bg_4">Fond D'Une Vue De Victoria Peak Hong Kong</string>
+  <string name="description_bg_5">Fond D'Une Vue De Tokyo</string>
+  <string name="description_bg_6">Fond D'Une Vue Sur La Ligne D'Horizon Tokyo</string>
+  <string name="description_bg_7">Contexte D'Un Bâtiment En Verre À Hong Kong</string>
+  <string name="description_bg_8">Fond D'Un Gradient De Rouge Au Noir</string>
+  <string name="description_bg_9">Contexte D'Un Temple Fumé</string>
+  <string name="description_bg_10">Fond Des Rues Emballées De Tokyo</string>
+  <string name="description_bg_11">Fond Des Bâtiments De Monstres De Hong Kong</string>
+  <string name="description_bg_12">Fond De La Ligne D'Horizon Brumeux De Tokyo</string>
+  <string name="description_bg_13">Fond D'Une Énorme Lampe Rouge</string>
+
+  
+  <string name="turret_tooltip">Faites Glisser Et Déposer Des Tourelles De Cette Icône Sur L'Écran.Vous Pouvez Appuyer Sur Les Tourelles Pour Les Traîner.</string>
+  <string name="ball_and_chain_tooltip">Appuyez Sur Cette Icône Et Maintenez Cette Icône Pour Obtenir Une Masse.</string>
+  <string name="wall_tooltip">Faites Glisser Et Déposer Des Murs De Cette Icône Sur L'Écran.Vous Pouvez Appuyer Longtemps Sur Les Murs Pour Les Faire Glisser.Mise À Niveau De Vos Murs Vers Le Niveau 2 Et Le Haut Les Fera Des Bulles Pop!</string>
+  <string name="nuke_tooltip">Appuyez Sur Cette Icône Pour Faire Sauter Toutes Les Bulles À L'Écran Dans Les Vagues.Attention, Il Faut Beaucoup De Temps Pour Recharger.</string>
+  <string name="multi_touch_icon_tooltip">Appuyez Sur Une Bulle Pour Apparaître Toutes Les Bulles À Proximité De La Même Couleur.</string>
+  <string name="touch_pop_tooltip">Touchez Les Bulles Pour Les Apparaître Avant D'Atteindre Le Bas De L'Écran!Touchez Plusieurs Bulles De La Même Couleur Pour Commencer Une Série Et Gagner Plus De Points!</string>
+  <string name="upgrade_tooltip">Appuyez Sur Ces Bulles Pour Acquérir Une Mise À Niveau.Vous Pouvez Ensuite Appuyer Sur Un Outil Sur La Droite Pour La Mise À Niveau.</string>
+  <string name="bomb_bubble_tooltip">Ceci Est Une Bulle De Bombe.Appuyez Dessus Pendant Qu'Il Est Vert Pour La Diffuser.Prudent!Si Le Compte À Rebours Est Atteint 0 Ou Que Vous Appuyez Dessus Pendant Qu'Il Est Rouge, Il Explosera Et Terminera Le Jeu!</string>
+  <string name="negative_score_warning_tooltip">Prudent!Si Votre Score Tombe En Dessous De 0, Ce Sera Le Jeu.</string>
+</resources>

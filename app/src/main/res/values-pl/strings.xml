@@ -1,0 +1,156 @@
+<resources>
+  <string name="app_id" translatable="false">120569614320</string>
+  <string name="facebook_app_id" translatable="false">430199825050664</string>
+  <string name="app_name" translatable="false">Cyberpop</string>
+
+  
+  <string name="test_banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+  <string name="test_rewarded_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
+
+  
+  <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/6594335535</string>
+  <string name="rewarded_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/4722591875</string>
+
+  
+  <string name="vertical_divider" translatable="false">|</string>
+  <string name="share_facebook" translatable="false">[ f ]</string>
+  <string name="game_share_hashtag" translatable="false">#Cyberpop-StupidFunGames</string>
+  <string name="game_share_link" translatable="false">https://play.google.com/store/apps/details?id=com.stupidfungames.pop</string>
+
+  <string name="new_game_text">Nowa Gra</string>
+  <string name="continue_game_text">Kontynuuj Grę</string>
+  <string name="share">Dzielić</string>
+  <string name="review">Przejrzeć</string>
+  <string name="game_share_string_title">Podziel Się Cyberpopem</string>
+  <string name="game_share_string">Spróbuj Grać W Cyberpop - Bubble Aspping Gry!</string>
+  <string name="continue_game_text_with_ad">Oglądaj Reklamę, Aby Kontynuować Grę</string>
+  <string name="continue_game_text_with_token_purchase">Kup Token, Aby Kontynuować Grę</string>
+  <string name="load_game_text">Kontynuuj Grę</string>
+  <string name="game_over_text">Koniec Gry</string>
+  <string name="options_text">Opcje</string>
+  <string name="error_checking_continue_token">Wystąpił Błąd, Jeśli Masz Token Kontynuowany.Zamiast Tego Możesz Oglądać Reklamę.</string>
+  <string name="store">Sklep</string>
+  <string name="quit_text">Porzucić</string>
+  <string name="your_score_title">Twój Wynik:</string>
+  <string name="game_paused_text">Wstrzymany</string>
+  <string name="game_update_text">Zapisywanie, Które Próbujesz Załadować, Został Zapisany Na Nowszej Wersji Gry.Zaktualizuj Swoją Grę.</string>
+  <string name="resume_btn_text">Wznawianie</string>
+  <string name="quit_btn_text">Porzucić</string>
+  <string name="dismiss">Oddalić</string>
+  <string name="dont_show_again">Nie Pokazuj Ponownie.</string>
+  <string name="update_btn_text">Aktualizacja</string>
+  <string name="signin_other_error">Wystąpił Błąd. Spróbuj Ponownie Innego Czasu.</string>
+  <string name="signin_canceled">Zaloguj Się Został Anulowany.</string>
+  <string name="sign_out">Wyloguj Się</string>
+  <string name="no_save_game_available">Nie Ma Dostępnej Gry Zapisu.Rozpocznij Nową Grę</string>
+  <string name="save_game_flow_title">Czy Chcesz Zalogować Się, Aby Zapisać Swoje Postępy?Robisz Więc Aktualną Grę Zapisz!</string>
+  <string name="sign_in">Zaloguj Się</string>
+  <string name="yes">Tak</string>
+  <string name="no">Nie</string>
+  <string name="no_permanent">Nie, Nie Pokazuj Tego Ponownie.</string>
+  <string name="ok">Dobrze</string>
+  <string name="generic_error">Coś Poszło Nie Tak. Spróbuj Ponownie Później</string>
+  <string name="login_to_save">Musisz Się Zalogować, Aby Zapisać Swoją Grę</string>
+  <string name="must_be_logged_in">Musisz Być Zalogowany, Aby Uzyskać Dostęp Do Tej Funkcji.</string>
+  <string name="game_saved">Gra Zapisana.</string>
+  <string name="new_game_confirm_title">Jeśli Masz Już Zapisującą Grę, Nadpisuje To.Na Pewno Chcesz Kontynuować?</string>
+  <string name="error_fetching_items">Musisz Się Zalogować, Aby Załadować Elementy.</string>
+  <string name="no_items_result">W Tej Chwili Nie Są Dostępne Żadne Przedmioty.</string>
+  <string name="no_purchases_result">Nie Kupiono Produktów.</string>
+  <string name="purchase_succesful">Twój Zakup Był Udany!</string>
+  <string name="purchase_canceled">Twój Zakup Został Anulowany</string>
+  <string name="store_title">Sklep</string>
+  <string name="my_items">Moje Rzeczy</string>
+  <string name="buy">Kup</string>
+  <string name="owned">Właścicielem</string>
+  <string name="equip">Wyposażyć</string>
+  <string name="un_equip">Jedna Drużyna</string>
+  <string name="error_equipping">Wystąpił Błąd Wyposażający Swoje Tło.Zaktualizuj Swoją Aplikację I Spróbuj Ponownie.</string>
+  <string name="equip_success">Tło Wyposażone!</string>
+  <string name="un_equip_success">Tło Nieopisane!</string>
+  <string name="continue_game_choice_dialog_title">Wybierz Opcję Kontynuowania Gry.</string>
+  <string name="watch_ad_btn">Obejrzyj Reklamę.</string>
+  <string name="buy_game_continue_token">Kup Grę Kontynuuj Token [0,99 Usd]</string>
+  <string name="share_the_game_fb">Udostępnij Pop Do Facebooka</string>
+  <string name="share_the_game_other">Udostępnij Pop Ze Znajomymi</string>
+  <string name="continue_game_token_not_aquired">Musisz Zdobyć Token Kontynuowany, Aby Kontynuować Grę.</string>
+  <string name="must_choose_option_to_continue">Musisz Wybrać Jedną Z Opcji, Aby Kontynuować Grę.</string>
+  <string name="prompt_user_to_continue">Możesz Kontynuować Wznowienie Gry!</string>
+  <string name="global_bubbles_popped_string">Globalne Bąbelki Pojawiły Się:</string>
+
+  
+  <string name="app_info_title">O Cyberpopie.</string>
+  <string name="app_info_subtitle">Zabawa W Stylu Arcade Bubble Game Music Credit: Karl Casey W Białym Bat Audio</string>
+
+  
+  <string name="review_app_dialog_title">Czy Jak Daleko Lubisz Cyberpop?</string>
+  <string name="review_app_btn_text">Tak!Chciałbym Opuścić Recenzję.</string>
+  <string name="send_feedback_btn_text">Nie. Chciałbym Wysyłać Opinię.</string>
+  <string name="feedback_title">Wyślij Opinię.</string>
+  <string name="feedback_send_btn">Wysłać</string>
+
+  
+  <string name="notification_channel_name">Powiadomienia O Grze Pop</string>
+  <string name="notification_channel_description">Kanał Do Powiadomień Pop</string>
+  <string name="nudge_notification_title">Wróć Do Cyberpop!</string>
+  <string name="nudge_notification_content_1">Obudź Się Samuraj.Mamy Bąbelki Do Pop.</string>
+  <string name="nudge_notification_content_2">Dlaczego Teraz Pojawiają Się Bąbelki?.</string>
+  <string name="nudge_notification_content_3">Rzucić Wszystko.Są Bąbelki, Które Potrzebują Popping.</string>
+  <string name="nudge_notification_content_4">Chodź Ze Mną, Jeśli Chcesz Popielić Bańki.</string>
+  <string name="nudge_notification_content_5">Widzimy, Że Teraz Nie Pojawiamy Pęcherzyków.Gorszący.</string>
+  <string name="nudge_notification_content_global_bubbles">Tylko% 1 $ D Pęcherzyki Zostały Wyskakujące Na Całym Świecie!Pomóż Wysiłkowi!</string>
+
+  
+  <string name="ad_load_error">Wystąpił Problem Z Ładowaniem Reklamy.Masz Darmową Grę Kontynuuj Token!</string>
+  <string name="ad_reward_message">Dzięki Za Oglądanie Gry Kontynuuj Token!</string>
+  <string name="ad_reward_failed_message">Musisz Zakończyć Oglądanie Reklamy, Aby Uzyskać Grę, Kontynuuj Żeton.</string>
+
+  
+  <string name="title_game_continue_token">Kontynuuj Token Gry</string>
+  <string name="title_no_ads">Dodaj Bezpłatne Przeżycia</string>
+
+  
+  <string name="description_game_continue_token">Pozwala Kontynuować Grę Nawet Po Jego Grze.Może Być Używany Raz.</string>
+  <string name="description_no_ads">Usuwa Wszystkie Reklamy Z Doświadczenia Z Grami!</string>
+
+  
+  <string name="title_bg_1">Neon Bus.</string>
+  <string name="title_bg_2">Akihabara.</string>
+  <string name="title_bg_3">Ulice Tokyo.</string>
+  <string name="title_bg_4">Victoria Peak.</string>
+  <string name="title_bg_5">Tokio Niebo</string>
+  <string name="title_bg_6">Tokyo Niebo Światła</string>
+  <string name="title_bg_7">Szklany Budynek</string>
+  <string name="title_bg_8">Gradient</string>
+  <string name="title_bg_9">Dymiąca Świątynia.</string>
+  <string name="title_bg_10">Pakowane Ulice.</string>
+  <string name="title_bg_11">Budynki Monster.</string>
+  <string name="title_bg_12">Mglisty Miasto</string>
+  <string name="title_bg_13">Czerwona Lampa</string>
+
+  
+  <string name="description_bg_1">Fajne Tło Autobusu W Hong Kongu</string>
+  <string name="description_bg_2">Tło Akihabara, Tokio</string>
+  <string name="description_bg_3">Tło Neonowych Ulic Tokio</string>
+  <string name="description_bg_4">Tło Widok Z Victoria Peak Hong Kong</string>
+  <string name="description_bg_5">Tło Widok Na Tokio</string>
+  <string name="description_bg_6">Tło Widok Na Panoramę Tokio</string>
+  <string name="description_bg_7">Tło Szklany Budynek W Hongkongu</string>
+  <string name="description_bg_8">Tło Gradientu Od Czerwonego Do Czerni</string>
+  <string name="description_bg_9">Tło Dymnej Świątyni</string>
+  <string name="description_bg_10">Tło Pakowane Ulice Tokio</string>
+  <string name="description_bg_11">Tło Monster Budynków Hongkongu</string>
+  <string name="description_bg_12">Tło Mglisty Panoramę Tokio</string>
+  <string name="description_bg_13">Tło Ogromnej Czerwonej Lampy</string>
+
+  
+  <string name="turret_tooltip">Przeciągnij I Upuść Wieżyczki Z Tej Ikony Na Ekran.Możesz Długo Nacisnąć Wieżyczki, Aby Przeciągnąć Je.</string>
+  <string name="ball_and_chain_tooltip">Naciśnij I Przytrzymaj Tę Ikonę, Aby Uzyskać Masę.</string>
+  <string name="wall_tooltip">Przeciągnij I Upuść Ściany Z Tej Ikony Na Ekranie.Możesz Długo Nacisnąć Ściany, Aby Je Przeciągnąć.Uaktualnianie Ścian Na Poziomy 2 I Unie Tworzą Im Pęcherzyki!</string>
+  <string name="nuke_tooltip">Dotknij Tej Ikony, Aby Pop Wszystkie Pęcherzyki Na Ekranie W Falach.Naładuj Ostrożnie, Doładowanie Zajmuje Dużo Czasu.</string>
+  <string name="multi_touch_icon_tooltip">Dotknij Bańki, Aby Wyskoczyć Wszystkie Pobliskie Bąbelki Tego Samego Koloru.</string>
+  <string name="touch_pop_tooltip">Dotknij Pęcherzyków, Aby Je Wysłać, Zanim Dotrą Do Dołu Ekranu!Dotknij Wielu Bąbelków Tego Samego Koloru, Aby Rozpocząć Smugę I Zdobyć Więcej Punktów!</string>
+  <string name="upgrade_tooltip">Stuknij Na Te Bąbelki, Aby Zdobyć Aktualizację.Następnie Możesz Stuknąć Na Narzędzie Po Prawej Stronie, Aby Go Uaktualnić.</string>
+  <string name="bomb_bubble_tooltip">To Bomb Bombowy.Dotknij Na Nim, Gdy Jest Zielony, Aby Go Rozpraszać.Ostrożny!Jeśli Odliczanie Sięga 0 Lub Dotknij Go, Gdy Jest Czerwony, Wybuchnie I Zakończy Grę!</string>
+  <string name="negative_score_warning_tooltip">Ostrożny!Jeśli Twój Wynik Spadnie Poniżej 0, Będzie To Gra.</string>
+</resources>

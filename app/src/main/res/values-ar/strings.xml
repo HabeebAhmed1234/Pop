@@ -1,0 +1,154 @@
+<resources>
+  <string name="app_id" translatable="false">120569614320</string>
+  <string name="facebook_app_id" translatable="false">430199825050664</string>
+  <string name="app_name" translatable="false">Cyberpop</string>
+
+  
+  <string name="test_banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+  <string name="test_rewarded_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
+
+  
+  <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/6594335535</string>
+  <string name="rewarded_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/4722591875</string>
+
+  
+  <string name="vertical_divider" translatable="false">|</string>
+  <string name="share_facebook" translatable="false">[ f ]</string>
+  <string name="game_share_hashtag" translatable="false">#Cyberpop-StupidFunGames</string>
+  <string name="game_share_link" translatable="false">https://play.google.com/store/apps/details?id=com.stupidfungames.pop</string>
+
+  <string name="new_game_text">لعبة جديدة</string>
+  <string name="continue_game_text">مواصلة اللعبة</string>
+  <string name="share">يشارك</string>
+  <string name="review">إعادة النظر</string>
+  <string name="game_share_string_title">شارك سايبرباوب مع</string>
+  <string name="game_share_string">حاول لعب Cyberpop - Bubble Bagping Game!</string>
+  <string name="continue_game_text_with_ad">مشاهدة الإعلان لمتابعة اللعبة</string>
+  <string name="continue_game_text_with_token_purchase">شراء الرمز المميز لمواصلة اللعبة</string>
+  <string name="load_game_text">أكمل اللعب</string>
+  <string name="game_over_text">انتهت اللعبة</string>
+  <string name="options_text">خيارات</string>
+  <string name="error_checking_continue_token">كان هناك فحص خطأ إذا كان لديك رمز متابعة.يمكنك مشاهدة إعلان بدلا من ذلك.</string>
+  <string name="store">متجر</string>
+  <string name="quit_text">استقال</string>
+  <string name="your_score_title">درجاتك:</string>
+  <string name="game_paused_text">توقفت</string>
+  <string name="game_update_text">حفظ تحاول التحميل تم حفظها على إصدار أحدث من اللعبة.يرجى تحديث لعبتك.</string>
+  <string name="resume_btn_text">سيرة ذاتية</string>
+  <string name="quit_btn_text">استقال</string>
+  <string name="dismiss">رفض</string>
+  <string name="dont_show_again">لا تظهر مرة أخرى.</string>
+  <string name="update_btn_text">تحديث</string>
+  <string name="signin_other_error">كان هناك خطأ في تسجيل الدخول. حاول مرة أخرى مرة أخرى.</string>
+  <string name="signin_canceled">تم إلغاء تسجيل الدخول.</string>
+  <string name="sign_out">خروج</string>
+  <string name="no_save_game_available">لا توجد لعبة حفظ متاحة.بدء لعبة جديدة</string>
+  <string name="save_game_flow_title">هل ترغب في تسجيل الدخول لحفظ تقدمك؟القيام بذلك سوف تتجاوز لعبتك الحالية الخاصة بك حفظ!</string>
+  <string name="sign_in">تسجيل الدخول</string>
+  <string name="yes">نعم</string>
+  <string name="no">لا</string>
+  <string name="no_permanent">لا، لا تظهر هذا مرة أخرى.</string>
+  <string name="ok">نعم</string>
+  <string name="generic_error">هناك خطأ ما. الرجاء معاودة المحاولة في وقت لاحق</string>
+  <string name="login_to_save">يجب عليك تسجيل الدخول لحفظ اللعبة</string>
+  <string name="must_be_logged_in">يجب عليك تسجيل الدخول للوصول إلى هذه الميزة.</string>
+  <string name="game_saved">اللعبة المحفوظة.</string>
+  <string name="new_game_confirm_title">إذا كان لديك بالفعل لعبة حفظ هذا سيؤدي إلى الكتابة عليه.هل انت متأكد انك تريد المتابعة؟</string>
+  <string name="error_fetching_items">يجب عليك تسجيل الدخول لتحميل العناصر.</string>
+  <string name="no_items_result">لا توجد عناصر متوفرة في هذا الوقت.</string>
+  <string name="no_purchases_result">لم يتم شراء منتجات.</string>
+  <string name="purchase_succesful">كان الشراء الخاص بك ناجحا!</string>
+  <string name="purchase_canceled">تم إلغاء عملية الشراء</string>
+  <string name="store_title">متجر</string>
+  <string name="my_items">أشيائي</string>
+  <string name="buy">يشتري</string>
+  <string name="owned">مملوكة</string>
+  <string name="equip">تجهيز</string>
+  <string name="un_equip">فريق واحد</string>
+  <string name="error_equipping">كان هناك خطأ في تجهيز خلفيتك.تحديث التطبيق الخاص بك وحاول مرة أخرى.</string>
+  <string name="equip_success">خلفية مجهزة!</string>
+  <string name="un_equip_success">الخلفية غير مجهزة!</string>
+  <string name="continue_game_choice_dialog_title">اختر خيارا لمتابعة لعبتك.</string>
+  <string name="watch_ad_btn">مشاهدة م.</string>
+  <string name="buy_game_continue_token">شراء لعبة تواصل رمزية [$ 0.99]</string>
+  <string name="share_the_game_fb">شارك البوب إلى الفيسبوك</string>
+  <string name="share_the_game_other">شارك البوب مع أصدقائك</string>
+  <string name="continue_game_token_not_aquired">يجب عليك الحصول على رمز لعبة متابعة لمواصلة لعبتك.</string>
+  <string name="must_choose_option_to_continue">يجب عليك اختيار أحد الخيارات لمتابعة لعبتك.</string>
+  <string name="prompt_user_to_continue">يمكنك الاستمرار في استئناف لعبتك!</string>
+  <string name="global_bubbles_popped_string">فقاعات عالمية برزت:</string>
+
+  
+  <string name="app_info_title">حول Cyberpop.</string>
+  <string name="app_info_subtitle">متعة أركيد نمط فقاعة ظهرت لعبة موسيقى الائتمان: كارل كيسي في الصوت الأبيض</string>
+
+  
+  <string name="review_app_dialog_title">هل تحب Cyberpop حتى الآن؟</string>
+  <string name="review_app_btn_text">نعم!أنا أحب ترك مراجعة.</string>
+  <string name="send_feedback_btn_text">لا، أنا أحب إرسال ملاحظات.</string>
+  <string name="feedback_title">ارسل رأيك.</string>
+  <string name="feedback_send_btn">إرسال</string>
+
+  
+  <string name="notification_channel_name">إشعارات لعبة البوب</string>
+  <string name="notification_channel_description">قناة لإشعارات البوب</string>
+  <string name="nudge_notification_title">أعود إلى Cyberpop!</string>
+  <string name="nudge_notification_content_1">استيقظ السامرائي.لدينا فقاعات إلى البوب.</string>
+  <string name="nudge_notification_content_2">لماذا Aren \ 'تي تظهر فقاعات الآن؟</string>
+  <string name="nudge_notification_content_3">اوقع كل شئ.هناك فقاعات تحتاج إلى ظهرت.</string>
+  <string name="nudge_notification_content_4">تعال معي إذا كنت ترغب في فتح فقاعات.</string>
+  <string name="nudge_notification_content_5">نراكم لا تظهر فقاعات الآن.غير مقبول.</string>
+  
+  <string name="ad_load_error">كانت هناك مشكلة في تحميل الإعلان.لديك لعبة مجانية تستمر الرمز المميز!</string>
+  <string name="ad_reward_message">شكرا لمشاهدة الحصول على لعبة تواصل رمز!</string>
+  <string name="ad_reward_failed_message">يجب أن تنتهي من مشاهدة الإعلان للحصول على لعبة متابعة الرمز المميز.</string>
+
+  
+  <string name="title_game_continue_token">مواصلة لعبة رمزية</string>
+  <string name="title_no_ads">إضافة تجربة مجانية</string>
+
+  
+  <string name="description_game_continue_token">يتيح لك مواصلة لعبتك حتى بعد انتهائها.يمكن استخدامها مرة واحدة.</string>
+  <string name="description_no_ads">يزيل جميع الإعلانات من تجربة الألعاب الخاصة بك!</string>
+
+  
+  <string name="title_bg_1">حافلة النيون</string>
+  <string name="title_bg_2">Akihabara.</string>
+  <string name="title_bg_3">شوارع طوكيو</string>
+  <string name="title_bg_4">ذروة فيكتوريا</string>
+  <string name="title_bg_5">طوكيو السماء</string>
+  <string name="title_bg_6">أضواء السماء طوكيو</string>
+  <string name="title_bg_7">بناء الزجاج</string>
+  <string name="title_bg_8">الانحدار</string>
+  <string name="title_bg_9">معبد سموكي</string>
+  <string name="title_bg_10">شوارع معبأة</string>
+  <string name="title_bg_11">مباني الوحش</string>
+  <string name="title_bg_12">مدينة ضبابية</string>
+  <string name="title_bg_13">مصباح أحمر</string>
+
+  
+  <string name="description_bg_1">خلفية باردة للحافلة في هونغ كونغ</string>
+  <string name="description_bg_2">Akihabara، طوكيو</string>
+  <string name="description_bg_3">خلفية شوارع نيون طوكيو</string>
+  <string name="description_bg_4">منظر من Victoria Peak Hong Kong</string>
+  <string name="description_bg_5">إطلالة على طوكيو</string>
+  <string name="description_bg_6">منظر من أفق طوكيو</string>
+  <string name="description_bg_7">مبنى زجاجي في هونج كونج</string>
+  <string name="description_bg_8">خلفية متدرجة من الأحمر إلى الأسود</string>
+  <string name="description_bg_9">معبد سموكي</string>
+  <string name="description_bg_10">خلفية شوارع معبأة من طوكيو</string>
+  <string name="description_bg_11">خلفية البنايات الوحش من هونغ كونغ</string>
+  <string name="description_bg_12">خلفية الأفق الضبابي من طوكيو</string>
+  <string name="description_bg_13">خلفية مصباح أحمر ضخم</string>
+
+  
+  <string name="turret_tooltip">اسحب وإسقاط الأبراج من هذا الرمز على الشاشة.يمكنك الضغط لفترة طويلة على الأبراج لسحبها حولها.</string>
+  <string name="ball_and_chain_tooltip">اضغط مع الاستمرار على هذا الرمز للحصول على صولجان.</string>
+  <string name="wall_tooltip">اسحب وجدران إسقاطها من هذا الرمز على الشاشة.يمكنك الضغط لفترة طويلة على الجدران لسحبها حولها.ترقية جدرانك إلى المستوى 2 وما فوق سوف تجعلها فقاعات البوب!</string>
+  <string name="nuke_tooltip">اضغط على هذا الرمز إلى البوب جميع الفقاعات على الشاشة في الأمواج.حذرا، يستغرق إعادة شحن الوقت الطويل.</string>
+  <string name="multi_touch_icon_tooltip">اضغط على فقاعة لبوب فقاعات قريبة من نفس اللون.</string>
+  <string name="touch_pop_tooltip">المس الفقاعات على البوب عليها قبل أن تصل إلى أسفل الشاشة!المس فقاعات متعددة من نفس اللون لبدء سلسلة واكسب المزيد من النقاط!</string>
+  <string name="upgrade_tooltip">انقر فوق هذه الفقاعات للحصول على ترقية.يمكنك بعد ذلك النقر فوق أداة على اليمين لترقيةه.</string>
+  <string name="bomb_bubble_tooltip">هذه فقاعة قنبلة.انقر فوقه في حين أنه أخضر لنشره.حذر!إذا وصل العد التنازلي إلى 0 أو تنقر عليه أثناء حمراء، فسوف ينفجر اللعبة وإنهاءها!</string>
+  <string name="negative_score_warning_tooltip">حذر!إذا كانت درجاتك تقع أقل من 0، فستكون اللعبة قد انتهت.</string>
+</resources>

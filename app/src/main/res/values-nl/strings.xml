@@ -1,0 +1,156 @@
+<resources>
+  <string name="app_id" translatable="false">120569614320</string>
+  <string name="facebook_app_id" translatable="false">430199825050664</string>
+  <string name="app_name" translatable="false">Cyberpop</string>
+
+  
+  <string name="test_banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+  <string name="test_rewarded_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
+
+  
+  <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/6594335535</string>
+  <string name="rewarded_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/4722591875</string>
+
+  
+  <string name="vertical_divider" translatable="false">|</string>
+  <string name="share_facebook" translatable="false">[ f ]</string>
+  <string name="game_share_hashtag" translatable="false">#Cyberpop-StupidFunGames</string>
+  <string name="game_share_link" translatable="false">https://play.google.com/store/apps/details?id=com.stupidfungames.pop</string>
+
+  <string name="new_game_text">Nieuw Spel</string>
+  <string name="continue_game_text">Ga Door</string>
+  <string name="share">Delen</string>
+  <string name="review">Recensie</string>
+  <string name="game_share_string_title">Deel Cyberpop Met</string>
+  <string name="game_share_string">Probeer Cyberpop Te Spelen - Bubble Popping Game!</string>
+  <string name="continue_game_text_with_ad">Bekijk Advertentie Om Het Spel Voort Te Zetten</string>
+  <string name="continue_game_text_with_token_purchase">Koop Token Om Het Spel Voort Te Zetten</string>
+  <string name="load_game_text">Spel Hervatten</string>
+  <string name="game_over_text">Spel Is Over</string>
+  <string name="options_text">Opties</string>
+  <string name="error_checking_continue_token">Er Is Een Fout Opgetreden Als Je Een Blijvend Token Hebt.Je Kunt In Plaats Daarvan Een Advertentie Bekijken.</string>
+  <string name="store">Op Te Slaan</string>
+  <string name="quit_text">Stoppen</string>
+  <string name="your_score_title">Jouw Score:</string>
+  <string name="game_paused_text">Gepauzeerd</string>
+  <string name="game_update_text">De Opslaan Die U Probeert Te Laden, Werd Opgeslagen Op Een Nieuwere Versie Van Het Spel.Werk Uw Spel Bij.</string>
+  <string name="resume_btn_text">Hervat</string>
+  <string name="quit_btn_text">Stoppen</string>
+  <string name="dismiss">Ontslaan</string>
+  <string name="dont_show_again">Weergeven Niet Opnieuw.</string>
+  <string name="update_btn_text">Bijwerken</string>
+  <string name="signin_other_error">Er Is Een Fout Opgetreden. Probeer Het Opnieuw Een Andere Keer.</string>
+  <string name="signin_canceled">Aanmelden Is Geannuleerd.</string>
+  <string name="sign_out">Afmelden</string>
+  <string name="no_save_game_available">Er Is Geen Opslaan-Game Beschikbaar.Start Een Nieuw Spel</string>
+  <string name="save_game_flow_title">Wilt U Inloggen Om Uw Voortgang Te Redden?Als U Dit Doet, Wordt Uw Huidige Game Opgeheven!</string>
+  <string name="sign_in">Log In</string>
+  <string name="yes">Ja</string>
+  <string name="no">Nee</string>
+  <string name="no_permanent">Nee, Laat Dit Niet Opnieuw Zien.</string>
+  <string name="ok">Ok</string>
+  <string name="generic_error">Er Is Iets Fout Gegaan.Probeer Het Later Opnieuw</string>
+  <string name="login_to_save">Je Moet Inloggen Om Je Spel Te Redden</string>
+  <string name="must_be_logged_in">U Moet Ingelogd Zijn Om Toegang Te Krijgen Tot Deze Functie.</string>
+  <string name="game_saved">Spel Opgeslagen.</string>
+  <string name="new_game_confirm_title">Als Je Al Een Opslaggame Hebt, Overschrijft Dit Het.Weet Je Zeker Dat Je Verder Wilt Gaan?</string>
+  <string name="error_fetching_items">U Moet Inloggen Om De Items Te Laden.</string>
+  <string name="no_items_result">Op Dit Moment Zijn Er Geen Items Beschikbaar.</string>
+  <string name="no_purchases_result">Er Zijn Geen Producten Gekocht.</string>
+  <string name="purchase_succesful">Uw Aankoop Was Succesvol!</string>
+  <string name="purchase_canceled">Uw Aankoop Is Geannuleerd</string>
+  <string name="store_title">Op Te Slaan</string>
+  <string name="my_items">Mijn Spullen</string>
+  <string name="buy">Kopen</string>
+  <string name="owned">Eigendom</string>
+  <string name="equip">Uitrusten</string>
+  <string name="un_equip">Een Team</string>
+  <string name="error_equipping">Er Was Een Foutmelding Van Je Achtergrond.Werk Uw App Bij En Probeer Het Opnieuw.</string>
+  <string name="equip_success">Achtergrond Uitgerust!</string>
+  <string name="un_equip_success">Achtergrond Niet Uitgerust!</string>
+  <string name="continue_game_choice_dialog_title">Kies Een Optie Om Door Te Gaan Met Uw Game.</string>
+  <string name="watch_ad_btn">Bekijk Een Advertentie.</string>
+  <string name="buy_game_continue_token">Koop Een Game Doorgaan Met Token [$ 0,99]</string>
+  <string name="share_the_game_fb">Deel Pop Naar Facebook</string>
+  <string name="share_the_game_other">Deel Pop Met Je Vrienden</string>
+  <string name="continue_game_token_not_aquired">Je Moet Een Doorgaande Game-Token Verwerven Om Je Spel Voort Te Zetten.</string>
+  <string name="must_choose_option_to_continue">U Moet Een Van De Opties Kiezen Om Uw Spel Voort Te Zetten.</string>
+  <string name="prompt_user_to_continue">Je Kunt Doorgaan Met Het Hervatten Van Je Spel!</string>
+  <string name="global_bubbles_popped_string">Global Bubbles Pocked:</string>
+
+  
+  <string name="app_info_title">Over Cyberpop</string>
+  <string name="app_info_subtitle">Een Leuke Arcade-Stijl Bubble Popping Game Muziek Credit: Karl Casey At White Bat Audio</string>
+
+  
+  <string name="review_app_dialog_title">Houd Je Tot Nu Toe Cyberpop?</string>
+  <string name="review_app_btn_text">Ja!Ik Hou Ervan Om Een Beoordeling Achter Te Laten.</string>
+  <string name="send_feedback_btn_text">Nee. Ik Wil Graag Feedback Sturen.</string>
+  <string name="feedback_title">Feedback Verzenden.</string>
+  <string name="feedback_send_btn">Sturen</string>
+
+  
+  <string name="notification_channel_name">Pop-Game-Meldingen</string>
+  <string name="notification_channel_description">Kanaal Voor Pop-Meldingen</string>
+  <string name="nudge_notification_title">Kom Terug Naar Cyberpop!</string>
+  <string name="nudge_notification_content_1">Wakker Worden Samurai.We Hebben Bubbels Om Te Popelen.</string>
+  <string name="nudge_notification_content_2">Waarom Knalt U Nu Op Dit Moment?</string>
+  <string name="nudge_notification_content_3">Laat Alles Vallen.Er Zijn Bubbels Die Moeten Knallen.</string>
+  <string name="nudge_notification_content_4">Kom Met Me Mee Als Je Bubbels Wilt Knallen.</string>
+  <string name="nudge_notification_content_5">We Zien Je Nu Niet Knallen.Onaanvaardbaar.</string>
+  <string name="nudge_notification_content_global_bubbles">Slechts% 1 $ D Bubbels Zijn Wereldwijd Geprobeerd!Help De Inspanning!</string>
+
+  
+  <string name="ad_load_error">Er Was Een Probleem Met Het Laden Van De Advertentie.Heb Een Gratis Spel Doorgaan Met Token!</string>
+  <string name="ad_reward_message">Bedankt Voor Het Kijken Naar Een Game Doorgaan Met Token!</string>
+  <string name="ad_reward_failed_message">Je Moet Klaar Met Het Kijken Naar De Advertentie Om Een Game Te Krijgen Doorgaan Met Token.</string>
+
+  
+  <string name="title_game_continue_token">Doorgaan Met Games Token</string>
+  <string name="title_no_ads">Voeg Gratis Ervaring Toe</string>
+
+  
+  <string name="description_game_continue_token">Hiermee Kunt U Uw Game Doorgaan, Zelfs Na Zijn Game.Kan Eenmaal Worden Gebruikt.</string>
+  <string name="description_no_ads">Verwijdert Alle Advertenties Van Uw Gamingervaring!</string>
+
+  
+  <string name="title_bg_1">Neonbus</string>
+  <string name="title_bg_2">Akihabara</string>
+  <string name="title_bg_3">Tokyo Straten</string>
+  <string name="title_bg_4">Victoria Peak</string>
+  <string name="title_bg_5">Tokyo Sky</string>
+  <string name="title_bg_6">Tokyo Sky Lights</string>
+  <string name="title_bg_7">Glazen Gebouw</string>
+  <string name="title_bg_8">Gradiënt</string>
+  <string name="title_bg_9">Rokerige Tempel</string>
+  <string name="title_bg_10">Gepakte Straten</string>
+  <string name="title_bg_11">Monstergebouwen</string>
+  <string name="title_bg_12">Mistige Stad</string>
+  <string name="title_bg_13">Rode Lamp</string>
+
+  
+  <string name="description_bg_1">Koele Achtergrond Van Een Bus In Hong Kong</string>
+  <string name="description_bg_2">Achtergrond Van Akihabara, Tokio</string>
+  <string name="description_bg_3">Achtergrond Van De Neonstraten Van Tokyo</string>
+  <string name="description_bg_4">Achtergrond Van Een Uitzicht Vanuit Victoria Peak Hong Kong</string>
+  <string name="description_bg_5">Achtergrond Van Een Mening Van Tokyo</string>
+  <string name="description_bg_6">Achtergrond Van Een Mening Van De Skyline Van Tokyo</string>
+  <string name="description_bg_7">Achtergrond Van Een Glazen Gebouw In Hong Kong</string>
+  <string name="description_bg_8">Achtergrond Van Een Gradiënt Van Rood Tot Zwart</string>
+  <string name="description_bg_9">Achtergrond Van Een Rokerige Tempel</string>
+  <string name="description_bg_10">Achtergrond Van De Verpakte Straten Van Tokyo</string>
+  <string name="description_bg_11">Achtergrond Van De Monstergebouwen Van Hong Kong</string>
+  <string name="description_bg_12">Achtergrond Van De Mistige Skyline Van Tokyo</string>
+  <string name="description_bg_13">Achtergrond Van Een Enorme Rode Lamp</string>
+
+  
+  <string name="turret_tooltip">Sleep Torentjes Van Dit Pictogram En Neerzetten Op Het Scherm.Je Kunt Lang Op De Torentjes Drukken Om Ze Rond Te Slepen.</string>
+  <string name="ball_and_chain_tooltip">Houd Dit Pictogram Ingedrukt Om Een Foelie Te Krijgen.</string>
+  <string name="wall_tooltip">Sleep Muren Uit Dit Pictogram En Zet En Neer Op Het Scherm.Je Kunt Lang Op De Muren Drukken Om Ze Rond Te Slepen.Het Upgraden Van Je Muren Naar Niveau 2 En Omhoog Zal Ze Poppen Bubbels!</string>
+  <string name="nuke_tooltip">Tik Op Dit Pictogram Om Alle Bubbels Op Het Scherm In Golven Te Poppen.Voorzichtig, Het Duurt Lang Om Op Te Laden.</string>
+  <string name="multi_touch_icon_tooltip">Tik Op Een Bubbel Om Alle Nabijgelegen Bubbels Van Dezelfde Kleur Te Poppen.</string>
+  <string name="touch_pop_tooltip">Raak De Bubbels Aan Om Ze Te Knallen Voordat Ze De Onderkant Van Het Scherm Bereiken!Raak Meerdere Bubbels Van Dezelfde Kleur Aan Om Een Streep Te Starten En Meer Punten Te Verdienen!</string>
+  <string name="upgrade_tooltip">Tik Op Deze Bubbels Om Een Upgrade Te Verwerven.U Kunt Dan Tikken Op Een Gereedschap Aan De Rechterkant Om Het Te Upgraden.</string>
+  <string name="bomb_bubble_tooltip">Dit Is Een Bombubble.Tik Erop Terwijl Het Groen Is Om Het Te Diffunderen.Voorzichtig!Als Het Countdown 0 Is Of U Op Het Tikt Terwijl Het Rood Is, Zal Het Exploderen En Het Spel Beëindigen!</string>
+  <string name="negative_score_warning_tooltip">Voorzichtig!Als Je Score Onder 0 Valt, Zal Het Spel Zijn.</string>
+</resources>

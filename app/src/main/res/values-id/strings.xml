@@ -1,0 +1,156 @@
+<resources>
+  <string name="app_id" translatable="false">120569614320</string>
+  <string name="facebook_app_id" translatable="false">430199825050664</string>
+  <string name="app_name" translatable="false">Cyberpop</string>
+
+  
+  <string name="test_banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+  <string name="test_rewarded_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
+
+  
+  <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/6594335535</string>
+  <string name="rewarded_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/4722591875</string>
+
+  
+  <string name="vertical_divider" translatable="false">|</string>
+  <string name="share_facebook" translatable="false">[ f ]</string>
+  <string name="game_share_hashtag" translatable="false">#Cyberpop-StupidFunGames</string>
+  <string name="game_share_link" translatable="false">https://play.google.com/store/apps/details?id=com.stupidfungames.pop</string>
+
+  <string name="new_game_text">Permainan Baru</string>
+  <string name="continue_game_text">Lanjutkan Game</string>
+  <string name="share">Bagikan</string>
+  <string name="review">Ulasan</string>
+  <string name="game_share_string_title">Bagikan Cyberpop Dengan</string>
+  <string name="game_share_string">Coba Mainkan Cyberpop - Game Popping Bubble!</string>
+  <string name="continue_game_text_with_ad">Tonton Iklan Untuk Melanjutkan Permainan</string>
+  <string name="continue_game_text_with_token_purchase">Beli Token Untuk Melanjutkan Permainan</string>
+  <string name="load_game_text">Melanjutkan Permainan</string>
+  <string name="game_over_text">Tamat</string>
+  <string name="options_text">Pilihan</string>
+  <string name="error_checking_continue_token">Ada Pengecekan Kesalahan Jika Anda Memiliki Token Lanjutkan.Anda Bisa Menonton Iklan Sebagai Gantinya.</string>
+  <string name="store">Toko</string>
+  <string name="quit_text">Berhenti</string>
+  <string name="your_score_title">Nilai Anda:</string>
+  <string name="game_paused_text">Berhenti</string>
+  <string name="game_update_text">Simpan Anda Mencoba Memuat Disimpan Pada Game Versi Yang Lebih Baru.Perbarui Game Anda.</string>
+  <string name="resume_btn_text">Lanjut</string>
+  <string name="quit_btn_text">Berhenti</string>
+  <string name="dismiss">Memberhentikan</string>
+  <string name="dont_show_again">Jangan Tampilkan Lagi.</string>
+  <string name="update_btn_text">Memperbarui</string>
+  <string name="signin_other_error">Ada Kesalahan Masuk. Coba Lagi Lain Kali.</string>
+  <string name="signin_canceled">Masuk Dibatalkan.</string>
+  <string name="sign_out">Keluar</string>
+  <string name="no_save_game_available">Tidak Ada Game Save Yang Tersedia.Mulai Game Baru</string>
+  <string name="save_game_flow_title">Apakah Anda Ingin Masuk Untuk Menyimpan Kemajuan Anda?Melakukan Hal Itu Akan Menimpa Game Anda Saat Ini!</string>
+  <string name="sign_in">Masuk</string>
+  <string name="yes">Iya</string>
+  <string name="no">Tidak</string>
+  <string name="no_permanent">Tidak, Jangan Tunjukkan Ini Lagi.</string>
+  <string name="ok">Baik</string>
+  <string name="generic_error">Ada Yang Salah.Silakan Coba Lagi Nanti</string>
+  <string name="login_to_save">Anda Harus Masuk Untuk Menyimpan Game Anda</string>
+  <string name="must_be_logged_in">Anda Harus Masuk Untuk Mengakses Fitur Ini.</string>
+  <string name="game_saved">Game Disimpan.</string>
+  <string name="new_game_confirm_title">Jika Anda Sudah Memiliki Game Simpan, Ini Akan Menimpanya.Apakah Anda Yakin Ingin Melanjutkan?</string>
+  <string name="error_fetching_items">Anda Harus Masuk Untuk Memuat Item.</string>
+  <string name="no_items_result">Tidak Ada Barang Yang Tersedia Saat Ini.</string>
+  <string name="no_purchases_result">Tidak Ada Produk Yang Telah Dibeli.</string>
+  <string name="purchase_succesful">Pembelian Anda Berhasil!</string>
+  <string name="purchase_canceled">Pembelian Anda Dibatalkan</string>
+  <string name="store_title">Toko</string>
+  <string name="my_items">Barang-Barang Saya</string>
+  <string name="buy">Membeli</string>
+  <string name="owned">Dimiliki</string>
+  <string name="equip">Melengkapi</string>
+  <string name="un_equip">Satu Tim</string>
+  <string name="error_equipping">Ada Kesalahan Yang Melengkapi Latar Belakang Anda.Perbarui Aplikasi Anda Dan Coba Lagi.</string>
+  <string name="equip_success">Latar Belakang Dilengkapi!</string>
+  <string name="un_equip_success">Latar Belakang Tidak Dilengkapi!</string>
+  <string name="continue_game_choice_dialog_title">Pilih Opsi Untuk Melanjutkan Permainan Anda.</string>
+  <string name="watch_ad_btn">Tonton Iklan.</string>
+  <string name="buy_game_continue_token">Beli Permainan Lanjutkan Token [$ 0,99]</string>
+  <string name="share_the_game_fb">Bagikan Pop Ke Facebook</string>
+  <string name="share_the_game_other">Bagikan Pop Dengan Teman-Teman Anda</string>
+  <string name="continue_game_token_not_aquired">Anda Harus Memperoleh Token Game Lanjutkan Untuk Melanjutkan Permainan Anda.</string>
+  <string name="must_choose_option_to_continue">Anda Harus Memilih Salah Satu Opsi Untuk Melanjutkan Permainan Anda.</string>
+  <string name="prompt_user_to_continue">Anda Dapat Terus Melanjutkan Permainan Anda!</string>
+  <string name="global_bubbles_popped_string">Gelembung Global Muncul:</string>
+
+  
+  <string name="app_info_title">Tentang Cyberpop.</string>
+  <string name="app_info_subtitle">Gelembung Gelembung Gelembung Arcade Yang Menyenangkan Kredit Musik: Karl Casey Di White Bat Audio</string>
+
+  
+  <string name="review_app_dialog_title">Apakah Anda Suka Cyberpop Sejauh Ini?</string>
+  <string name="review_app_btn_text">Iya!Saya Ingin Meninggalkan Ulasan.</string>
+  <string name="send_feedback_btn_text">Tidak. Saya Ingin Mengirim Umpan Balik.</string>
+  <string name="feedback_title">Kirim Umpan Balik.</string>
+  <string name="feedback_send_btn">Kirim</string>
+
+  
+  <string name="notification_channel_name">Pemberitahuan Game Pop.</string>
+  <string name="notification_channel_description">Saluran Untuk Pemberitahuan Pop</string>
+  <string name="nudge_notification_title">Kembalilah Ke Cyberpop!</string>
+  <string name="nudge_notification_content_1">Bangun Samurai.Kami Memiliki Gelembung Untuk Pop.</string>
+  <string name="nudge_notification_content_2">Kenapa Kamu Melepaskan Gelembung Sekarang?</string>
+  <string name="nudge_notification_content_3">Menjatuhkan Semuanya.Ada Gelembung Yang Perlu Bermunculan.</string>
+  <string name="nudge_notification_content_4">Ikut Dengan Saya Jika Anda Ingin Pop Gelembung.</string>
+  <string name="nudge_notification_content_5">Kami Melihat Anda Tidak Muncul Gelembung Sekarang.Tidak Dapat Diterima.</string>
+  <string name="nudge_notification_content_global_bubbles">Hanya% 1 $ D Gelembung Telah Muncul Secara Global!Bantu Usaha!</string>
+
+  
+  <string name="ad_load_error">Ada Masalah Memuat Iklan.Memiliki Game Gratis Lanjutkan Token!</string>
+  <string name="ad_reward_message">Terima Kasih Telah Menonton Memiliki Permainan Melanjutkan Token!</string>
+  <string name="ad_reward_failed_message">Anda Harus Selesai Menonton Iklan Untuk Mendapatkan Permainan Melanjutkan Token.</string>
+
+  
+  <string name="title_game_continue_token">Lanjutkan Game Token.</string>
+  <string name="title_no_ads">Tambahkan Pengalaman Gratis.</string>
+
+  
+  <string name="description_game_continue_token">Memungkinkan Anda Melanjutkan Permainan Anda Bahkan Setelah Permainannya Berakhir.Dapat Digunakan Sekali.</string>
+  <string name="description_no_ads">Menghapus Semua Iklan Dari Pengalaman Bermain Game Anda!</string>
+
+  
+  <string name="title_bg_1">Neon Bus.</string>
+  <string name="title_bg_2">Akihabara.</string>
+  <string name="title_bg_3">Jalan Tokyo</string>
+  <string name="title_bg_4">Victoria Peak.</string>
+  <string name="title_bg_5">Tokyo Sky.</string>
+  <string name="title_bg_6">Tokyo Sky Lights.</string>
+  <string name="title_bg_7">Glass Gedung.</string>
+  <string name="title_bg_8">Gradien.</string>
+  <string name="title_bg_9">Kuil Berasap.</string>
+  <string name="title_bg_10">Packed Streets.</string>
+  <string name="title_bg_11">Bangunan Monster</string>
+  <string name="title_bg_12">Foggy City.</string>
+  <string name="title_bg_13">Lampu Merah</string>
+
+  
+  <string name="description_bg_1">Latar Belakang Bus Yang Keren Di Hong Kong</string>
+  <string name="description_bg_2">Latar Belakang Akihabara, Tokyo</string>
+  <string name="description_bg_3">Latar Belakang Jalanan Neon Tokyo</string>
+  <string name="description_bg_4">Latar Belakang Pemandangan Dari Victoria Peak Hong Kong</string>
+  <string name="description_bg_5">Latar Belakang Tampilan Tokyo</string>
+  <string name="description_bg_6">Latar Belakang Pandangan Skyline Tokyo</string>
+  <string name="description_bg_7">Latar Belakang Gedung Kaca Di Hong Kong</string>
+  <string name="description_bg_8">Latar Belakang Gradien Dari Merah Menjadi Hitam</string>
+  <string name="description_bg_9">Latar Belakang Kuil Berasap</string>
+  <string name="description_bg_10">Latar Belakang Jalan-Jalan Yang Dikemas Tokyo</string>
+  <string name="description_bg_11">Latar Belakang Bangunan Monster Hong Kong</string>
+  <string name="description_bg_12">Latar Belakang Skyline Foggy Tokyo</string>
+  <string name="description_bg_13">Latar Belakang Lampu Merah Besar</string>
+
+  
+  <string name="turret_tooltip">Seret Dan Jatuhkan Menara Dari Ikon Ini Ke Layar.Anda Bisa Lama Menekan Menara Untuk Menyeretnya.</string>
+  <string name="ball_and_chain_tooltip">Tekan Dan Tahan Ikon Ini Untuk Mendapatkan Gada.</string>
+  <string name="wall_tooltip">Seret Dan Jatuhkan Dinding Dari Ikon Ini Ke Layar.Anda Bisa Lama Menekan Dinding Untuk Menyeretnya.Upgrade Dinding Anda Ke Level 2 Dan Atas Akan Membuat Mereka Pop Gelembung!</string>
+  <string name="nuke_tooltip">Ketuk Ikon Ini Untuk Memunculkan Semua Gelembung Di Layar Dalam Gelombang.Hati-Hati, Butuh Waktu Lama Untuk Mengisi Ulang.</string>
+  <string name="multi_touch_icon_tooltip">Ketuk Gelembung Untuk Memunculkan Semua Gelembung Terdekat Dengan Warna Yang Sama.</string>
+  <string name="touch_pop_tooltip">Sentuh Gelembung Untuk Memunculkannya Sebelum Mencapai Bagian Bawah Layar!Sentuh Beberapa Gelembung Dengan Warna Yang Sama Untuk Memulai Goresan Dan Dapatkan Lebih Banyak Poin!</string>
+  <string name="upgrade_tooltip">Ketuk Gelembung Ini Untuk Mendapatkan Upgrade.Anda Kemudian Dapat Mengetuk Alat Di Sebelah Kanan Untuk Memutakhirkannya.</string>
+  <string name="bomb_bubble_tooltip">Ini Adalah Gelembung Bom.Ketuk Pada Saat Itu Hijau Untuk Menyebarkannya.Cermat!Jika Hitung Mundur Mencapai 0 Atau Anda Ketuk Padanya Saat Merah Itu Akan Meledak Dan Mengakhiri Permainan!</string>
+  <string name="negative_score_warning_tooltip">Cermat!Jika Skor Anda Jatuh Di Bawah 0 Itu Akan Menjadi Permainan.</string>
+</resources>

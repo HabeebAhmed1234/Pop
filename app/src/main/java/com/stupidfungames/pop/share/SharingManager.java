@@ -77,11 +77,17 @@ public class SharingManager {
     }
   }
 
+  private String getGameShareString() {
+    StringBuilder sb = new StringBuilder(hostActivity.getString(R.string.game_share_string));
+    sb.append("\n");
+    sb.append(hostActivity.getString(R.string.game_share_link));
+    return sb.toString();
+  }
+
   public ListenableFuture<Boolean> shareToAndroid() {
     Intent sharingIntent = new Intent(Intent.ACTION_SEND);
     sharingIntent.setType("text/*");
-    sharingIntent.putExtra(Intent.EXTRA_TEXT,
-        hostActivity.getString(R.string.game_share_string));
+    sharingIntent.putExtra(Intent.EXTRA_TEXT, getGameShareString());
 
     final SettableFuture<Boolean> shareSuccess = SettableFuture.create();
     hostActivity

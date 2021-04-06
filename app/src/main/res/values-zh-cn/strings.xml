@@ -1,0 +1,155 @@
+<resources>
+  <string name="app_id" translatable="false">120569614320</string>
+  <string name="facebook_app_id" translatable="false">430199825050664</string>
+  <string name="app_name" translatable="false">Cyberpop</string>
+
+  
+  <string name="test_banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+  <string name="test_rewarded_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
+
+  
+  <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/6594335535</string>
+  <string name="rewarded_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/4722591875</string>
+
+  
+  <string name="vertical_divider" translatable="false">|</string>
+  <string name="share_facebook" translatable="false">[ f ]</string>
+  <string name="game_share_hashtag" translatable="false">#Cyberpop-StupidFunGames</string>
+  <string name="game_share_link" translatable="false">https://play.google.com/store/apps/details?id=com.stupidfungames.pop</string>
+
+  <string name="new_game_text">新游戏</string>
+  <string name="continue_game_text">继续游戏</string>
+  <string name="share">分享</string>
+  <string name="review">审查</string>
+  <string name="game_share_string_title">分享Cyber Pop.</string>
+  <string name="game_share_string">尝试玩Cyberpop  - 泡沫突然比赛！</string>
+  <string name="continue_game_text_with_ad">观看广告继续游戏</string>
+  <string name="continue_game_text_with_token_purchase">购买令牌继续游戏</string>
+  <string name="load_game_text">游戏继续</string>
+  <string name="game_over_text">游戏结束</string>
+  <string name="options_text">选项</string>
+  <string name="error_checking_continue_token">如果您有继续令牌，则会检查错误。你可以观看广告。</string>
+  <string name="store">店铺</string>
+  <string name="quit_text">辞职</string>
+  <string name="your_score_title">你的分数：</string>
+  <string name="game_paused_text">暂停</string>
+  <string name="game_update_text">您正在尝试加载的保存保存在游戏的较新版本上。请更新您的游戏。</string>
+  <string name="resume_btn_text">恢复</string>
+  <string name="quit_btn_text">辞职</string>
+  <string name="dismiss">解雇</string>
+  <string name="dont_show_again">不要再演出。</string>
+  <string name="update_btn_text">更新</string>
+  <string name="signin_other_error">登录时出错。再试一次。</string>
+  <string name="signin_canceled">登录被取消。</string>
+  <string name="sign_out">登出</string>
+  <string name="no_save_game_available">没有节省游戏。Start</string>
+  <string name="save_game_flow_title">您想登录以节省您的进度吗？这样做会覆盖您当前的游戏保存！</string>
+  <string name="sign_in">登入</string>
+  <string name="yes">是的</string>
+  <string name="no">不</string>
+  <string name="no_permanent">不，不要再次表现出来。</string>
+  <string name="ok">好的</string>
+  <string name="generic_error">出问题了。 请稍后再试</string>
+  <string name="login_to_save">您必须登录以保存您的游戏</string>
+  <string name="must_be_logged_in">您必须登录以访问此功能。</string>
+  <string name="game_saved">节省了游戏。</string>
+  <string name="new_game_confirm_title">如果您已经有保存游戏，则会覆盖它。你确定要继续吗？</string>
+  <string name="error_fetching_items">您必须登录以加载项目。</string>
+  <string name="no_items_result">此时没有任何物品。</string>
+  <string name="no_purchases_result">没有购买产品。</string>
+  <string name="purchase_succesful">您的购买成功了！</string>
+  <string name="purchase_canceled">您的购买被取消了</string>
+  <string name="store_title">店铺</string>
+  <string name="my_items">我的物品</string>
+  <string name="buy">买</string>
+  <string name="owned">拥有</string>
+  <string name="equip">装备</string>
+  <string name="un_equip">一个队</string>
+  <string name="error_equipping">有一个装备背景的错误。更新您的应用并再试一次。</string>
+  <string name="equip_success">装备的背景！</string>
+  <string name="un_equip_success">背景未装备！</string>
+  <string name="continue_game_choice_dialog_title">选择继续使用游戏的选项。</string>
+  <string name="watch_ad_btn">观看广告。</string>
+  <string name="buy_game_continue_token">购买游戏继续令牌[$ 0.99]</string>
+  <string name="share_the_game_fb">分享到Facebook</string>
+  <string name="share_the_game_other">与朋友分享流行音乐</string>
+  <string name="continue_game_token_not_aquired">您必须获取继续游戏令牌继续您的游戏。</string>
+  <string name="must_choose_option_to_continue">您必须选择其中一个选项以继续游戏。</string>
+  <string name="prompt_user_to_continue">您可以继续恢复您的游戏！</string>
+  <string name="global_bubbles_popped_string">全球泡沫突然出现：</string>
+
+  
+  <string name="app_info_title">关于Cyberpop.</string>
+  <string name="app_info_subtitle">一个有趣的街机风格泡沫弹出游戏音乐学分：Karl凯西在白色蝙蝠音频</string>
+
+  
+  <string name="review_app_dialog_title">到目前为止，您喜欢Cyber Pop吗？</string>
+  <string name="review_app_btn_text">是的！我想留下评论。</string>
+  <string name="send_feedback_btn_text">不，我想发送反馈。</string>
+  <string name="feedback_title">发送反馈。</string>
+  <string name="feedback_send_btn">发送</string>
+
+  
+  <string name="notification_channel_name">流行游戏通知</string>
+  <string name="notification_channel_description">弹出通知的频道</string>
+  <string name="nudge_notification_title">回到Cyber Pop！</string>
+  <string name="nudge_notification_content_1">唤醒武士。我们有泡沫弹出。</string>
+  <string name="nudge_notification_content_2">为什么Aren'Ta你现在弹出气泡？</string>
+  <string name="nudge_notification_content_3">放下一切。有可能弹出的泡沫。</string>
+  <string name="nudge_notification_content_4">如果你想弹出气泡，请跟我来。</string>
+  <string name="nudge_notification_content_5">我们现在看到你没有弹出气泡。不可接受。</string>
+
+  
+  <string name="ad_load_error">加载广告时出现问题。有一个免费的游戏继续令牌！</string>
+  <string name="ad_reward_message">谢谢你的观看有一个游戏继续令牌！</string>
+  <string name="ad_reward_failed_message">您必须完成观看广告以获得游戏继续令牌。</string>
+
+  
+  <string name="title_game_continue_token">继续游戏令牌</string>
+  <string name="title_no_ads">添加免费体验</string>
+
+  
+  <string name="description_game_continue_token">即使在比赛之后，允许您继续使用游戏。可以使用一次。</string>
+  <string name="description_no_ads">从您的游戏体验中删除所有广告！</string>
+
+  
+  <string name="title_bg_1">霓虹公共汽车</string>
+  <string name="title_bg_2">Akihabara.</string>
+  <string name="title_bg_3">东京街道</string>
+  <string name="title_bg_4">维多利亚山顶</string>
+  <string name="title_bg_5">东京天空</string>
+  <string name="title_bg_6">东京天空灯</string>
+  <string name="title_bg_7">玻璃建筑</string>
+  <string name="title_bg_8">坡度</string>
+  <string name="title_bg_9">烟熏寺</string>
+  <string name="title_bg_10">包装的街道</string>
+  <string name="title_bg_11">怪物建筑物</string>
+  <string name="title_bg_12">有雾的城市</string>
+  <string name="title_bg_13">红灯</string>
+
+  
+  <string name="description_bg_1">一辆公共汽车的凉快的背景在香港</string>
+  <string name="description_bg_2">Akihabara背景，东京</string>
+  <string name="description_bg_3">东京霓虹街道的背景</string>
+  <string name="description_bg_4">背景从香港维多利亚峰顶的看法</string>
+  <string name="description_bg_5">东京视图的背景</string>
+  <string name="description_bg_6">东京地平线的看法的背景</string>
+  <string name="description_bg_7">一座玻璃大厦的背景在香港</string>
+  <string name="description_bg_8">从红色到黑色的梯度的背景</string>
+  <string name="description_bg_9">一个烟熏寺庙的背景</string>
+  <string name="description_bg_10">东京的被包装的街道的背景</string>
+  <string name="description_bg_11">香港怪物大厦的背景</string>
+  <string name="description_bg_12">东京有雾地平线的背景</string>
+  <string name="description_bg_13">一个巨大的红色灯的背景</string>
+
+  
+  <string name="turret_tooltip">将此图标拖放到屏幕上。你可以长时间按压炮塔拖动它们。</string>
+  <string name="ball_and_chain_tooltip">按住此图标以获取Mace。</string>
+  <string name="wall_tooltip">将墙从此图标拖放到屏幕上。你可以长时间按墙壁拖动它们。将墙壁升级到2级和Up将使它们流行泡沫！</string>
+  <string name="nuke_tooltip">点击此图标以在波浪中屏幕上的所有气泡弹出。小心，充电需要很长时间。</string>
+  <string name="multi_touch_icon_tooltip">点击泡泡以弹出所有附近的相同颜色的气泡。</string>
+  <string name="touch_pop_tooltip">触摸气泡在到达屏幕底部之前弹出它们！触摸多个相同颜色的气泡开始一个条纹并获得更多积分！</string>
+  <string name="upgrade_tooltip">点击这些气泡以获得升级。然后，您可以点击右侧的工具来升级它。</string>
+  <string name="bomb_bubble_tooltip">这是一个炸弹泡沫。在绿色以弥漫它的同时点击它。小心！如果它的倒计时达到0，或者在它是红色的时候拍打它会爆炸并结束游戏！</string>
+  <string name="negative_score_warning_tooltip">小心！如果您的分数低于0，那将是游戏。</string>
+</resources>

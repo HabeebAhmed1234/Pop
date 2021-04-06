@@ -1,0 +1,156 @@
+<resources>
+  <string name="app_id" translatable="false">120569614320</string>
+  <string name="facebook_app_id" translatable="false">430199825050664</string>
+  <string name="app_name" translatable="false">Cyberpop</string>
+
+  
+  <string name="test_banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+  <string name="test_rewarded_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
+
+  
+  <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/6594335535</string>
+  <string name="rewarded_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/4722591875</string>
+
+  
+  <string name="vertical_divider" translatable="false">|</string>
+  <string name="share_facebook" translatable="false">[ f ]</string>
+  <string name="game_share_hashtag" translatable="false">#Cyberpop-StupidFunGames</string>
+  <string name="game_share_link" translatable="false">https://play.google.com/store/apps/details?id=com.stupidfungames.pop</string>
+
+  <string name="new_game_text">Нова Игра</string>
+  <string name="continue_game_text">Наставак Игра</string>
+  <string name="share">Објави</string>
+  <string name="review">Преглед</string>
+  <string name="game_share_string_title">Схаре Циберпоп Са</string>
+  <string name="game_share_string">Покушајте Да Се Играте Циберпоп - Буббле Поппинг Игри!</string>
+  <string name="continue_game_text_with_ad">Погледајте Оглас Да Настави Игру</string>
+  <string name="continue_game_text_with_token_purchase">Купите Токен Да Бисте Наставили Игру</string>
+  <string name="load_game_text">Настави Игра</string>
+  <string name="game_over_text">Крај Игре</string>
+  <string name="options_text">Опције</string>
+  <string name="error_checking_continue_token">Провера Је Грешке Ако Имате Настављајући Токен.Можете Гледати Оглас Уместо Тога.</string>
+  <string name="store">Чувати</string>
+  <string name="quit_text">Одустати</string>
+  <string name="your_score_title">Ваш Резултат:</string>
+  <string name="game_paused_text">Паузиран</string>
+  <string name="game_update_text">Уштедите Да Покушавате Да Учитате Уштедјено Је На Новијој Верзији Игре.Ажурирајте Своју Игру.</string>
+  <string name="resume_btn_text">Резиме</string>
+  <string name="quit_btn_text">Одустати</string>
+  <string name="dismiss">Разрешити</string>
+  <string name="dont_show_again">Не Покажи Поново.</string>
+  <string name="update_btn_text">Ажурирање</string>
+  <string name="signin_other_error">Постојала Је Грешка У Поновном Пријаву. Покушајте Поново Други Пут.</string>
+  <string name="signin_canceled">Пријава Је Отказана.</string>
+  <string name="sign_out">Одјава</string>
+  <string name="no_save_game_available">Не Постоји Сачувана Игара.Започните Нову Игру</string>
+  <string name="save_game_flow_title">Да Ли Желите Да Се Пријавите Да Бисте Сачували Свој Напредак?То Ће То Надјачати Вашу Тренутну Уштеду Игре!</string>
+  <string name="sign_in">Пријавите Се</string>
+  <string name="yes">Да</string>
+  <string name="no">Не</string>
+  <string name="no_permanent">Не, Не Покажи Ово Више.</string>
+  <string name="ok">Ок</string>
+  <string name="generic_error">Нешто Је Кренуло Наопако. Покушајте Поново Касније</string>
+  <string name="login_to_save">Морате Се Пријавити Да Бисте Сачували Своју Игру</string>
+  <string name="must_be_logged_in">Морате Бити Пријављени Да Бисте Приступили Овој Функцији.</string>
+  <string name="game_saved">Игра Је Сачувана.</string>
+  <string name="new_game_confirm_title">Ако Већ Имате Сачувај Игру, То Ће Је Пребрисати.Јесте Ли Сигурни Да Желите Да Наставите?</string>
+  <string name="error_fetching_items">Морате Се Пријавити Да Бисте Учитали Ставке.</string>
+  <string name="no_items_result">Тренутно Нису Доступни Предмети.</string>
+  <string name="no_purchases_result">Није Купљен Ниједан Производ.</string>
+  <string name="purchase_succesful">Ваша Куповина Је Била Успешна!</string>
+  <string name="purchase_canceled">Ваша Куповина Је Отказана</string>
+  <string name="store_title">Чувати</string>
+  <string name="my_items">Моји Предмети</string>
+  <string name="buy">Купити</string>
+  <string name="owned">Власништво</string>
+  <string name="equip">Опремити</string>
+  <string name="un_equip">Један Тим</string>
+  <string name="error_equipping">Дошло Је До Грешке Опремање Ваше Позадине.Ажурирајте Своју Апликацију И Покушајте Поново.</string>
+  <string name="equip_success">Позадина Опремљена!</string>
+  <string name="un_equip_success">Позадина Ун-Опремљена!</string>
+  <string name="continue_game_choice_dialog_title">Изаберите Опцију За Наставак Игре.</string>
+  <string name="watch_ad_btn">Гледајте Оглас.</string>
+  <string name="buy_game_continue_token">Купити Игру Наставља Токен [$ 0,99]</string>
+  <string name="share_the_game_fb">Схаре Поп На Фацебоок</string>
+  <string name="share_the_game_other">Схаре Поп Са Пријатељима</string>
+  <string name="continue_game_token_not_aquired">Морате Набавити Настављајући Токен Игру Да Бисте Наставили Своју Игру.</string>
+  <string name="must_choose_option_to_continue">Морате Да Изаберете Једну Од Опција Да Бисте Наставили Своју Игру.</string>
+  <string name="prompt_user_to_continue">Можете Наставити Да Наставите Са Својом Игром!</string>
+  <string name="global_bubbles_popped_string">Глобални Мехурићи Је Поппед:</string>
+
+  
+  <string name="app_info_title">О Циберпопу</string>
+  <string name="app_info_subtitle">Забавни Аркадни Стил Буббле Поппинг Гаме Мусиц Цредит: Карл Цасеи На Белој Боји Аудио</string>
+
+  
+  <string name="review_app_dialog_title">Да Ли Вам Се До Сада Волите Циберпоп?</string>
+  <string name="review_app_btn_text">Да!Хтео Бих Да Оставим Преглед.</string>
+  <string name="send_feedback_btn_text">Не. Хтео Бих Да Пошаљем Повратне Информације.</string>
+  <string name="feedback_title">Пошаљи Повратне Информације.</string>
+  <string name="feedback_send_btn">Пошаљи</string>
+
+  
+  <string name="notification_channel_name">Обавештења О Поп Игри</string>
+  <string name="notification_channel_description">Канал За Поп Обавештења</string>
+  <string name="nudge_notification_title">Врати Се У Циберпоп!</string>
+  <string name="nudge_notification_content_1">Пробуди Се Самураи.Имамо Мехуриће Да Попнемо.</string>
+  <string name="nudge_notification_content_2">Зашто Се Тренутно Не Појављујеш Мехуриће Тренутно?</string>
+  <string name="nudge_notification_content_3">Испусти Све.Постоје Мехурићи Којима Је Потребно Искочити.</string>
+  <string name="nudge_notification_content_4">Пођите Са Мном Ако Желите Да Попнете Мехуриће.</string>
+  <string name="nudge_notification_content_5">Видимо Да Тренутно Не Искачујете Мехуриће.Неприхватљив.</string>
+  <string name="nudge_notification_content_global_bubbles">Само Је% 1 $ Д Мјехурићима Скочило Глобално!Помозите Напору!</string>
+
+  
+  <string name="ad_load_error">Дошло Је До Проблема У Учитавању Огласа.Имајте Бесплатну Игру Настављајте Токен!</string>
+  <string name="ad_reward_message">Хвала Што Сте Гледали Игру Настављајте Токен!</string>
+  <string name="ad_reward_failed_message">Морате Завршити Гледање Огласа Да Бисте Добили Игру Настављајући Токен.</string>
+
+  
+  <string name="title_game_continue_token">Наставите Токен Игре</string>
+  <string name="title_no_ads">Додајте Бесплатно Искуство</string>
+
+  
+  <string name="description_game_continue_token">Омогућава Вам Да Наставите Своју Игру Чак И Након Њене Игре.Може Се Користити Једном.</string>
+  <string name="description_no_ads">Уклања Све Огласе Из Свог Играчког Искуства!</string>
+
+  
+  <string name="title_bg_1">Неонски Аутобус</string>
+  <string name="title_bg_2">Акихабара</string>
+  <string name="title_bg_3">Токио Улице</string>
+  <string name="title_bg_4">Вицториа Пеак</string>
+  <string name="title_bg_5">Токио Ски</string>
+  <string name="title_bg_6">Токио Ски Светс</string>
+  <string name="title_bg_7">Стаклена Зграда</string>
+  <string name="title_bg_8">Градијент</string>
+  <string name="title_bg_9">Смоки Темпле</string>
+  <string name="title_bg_10">Паковане Улице</string>
+  <string name="title_bg_11">Монстер Зграде</string>
+  <string name="title_bg_12">Магли Цити</string>
+  <string name="title_bg_13">Црвена Лампа</string>
+
+  
+  <string name="description_bg_1">Цоол Позадина Аутобуса У Хонг Конгу</string>
+  <string name="description_bg_2">Позадина Акихабара, Токио</string>
+  <string name="description_bg_3">Позадина Неонских Улица Токија</string>
+  <string name="description_bg_4">Позадина Погледа Са Вицториа Пеак Хонг Конг</string>
+  <string name="description_bg_5">Позадина Погледа На Токио</string>
+  <string name="description_bg_6">Позадина Погледа На Линију Токија</string>
+  <string name="description_bg_7">Позадина Зграде Стаклене Зграде У Хонг Конгу</string>
+  <string name="description_bg_8">Позадина Градијента Из Црвене До Црне</string>
+  <string name="description_bg_9">Позадина Димног Храма</string>
+  <string name="description_bg_10">Позадина Пакованих Улица Токија</string>
+  <string name="description_bg_11">Позадина Зграда Монстер Хонг Конга</string>
+  <string name="description_bg_12">Позадина Магловитог Облога Токија</string>
+  <string name="description_bg_13">Позадина Огромне Црвене Лампе</string>
+
+  
+  <string name="turret_tooltip">Превуците И Спустите Куполе Са Ове Иконе На Екран.Можете Дуго Притиснути Куполе Да Их Превучете.</string>
+  <string name="ball_and_chain_tooltip">Притисните И Држите Ову Икону Да Бисте Добили Мацу.</string>
+  <string name="wall_tooltip">Повуците И Испустите Зидове Са Ове Иконе На Екран.Можете Дуго Притиснути Зидове Да Их Превучете.Надоградња Зидова На Ниво 2 И Уп, Учиниће Их Да Их Поп Балоне!</string>
+  <string name="nuke_tooltip">Додирните Ову Икону Да Бисте Попнели Све Мехуриће На Екрану У Таласима.Пажљиво, Потребно Је Дуго Времена Да Се Напуни.</string>
+  <string name="multi_touch_icon_tooltip">Додирните Балон Да Бисте Попнели Све У Близини Мехурића Исте Боје.</string>
+  <string name="touch_pop_tooltip">Додирните Мехуриће Да Бисте Их Попнели Пре Него Што Стигну До Дна Екрана!Додирните Више Мехурићи Исте Боје Да Бисте Започели Низ И Зарадите Више Бодова!</string>
+  <string name="upgrade_tooltip">Додирните Ове Мехуриће Да Бисте Набавили Надоградњу.Затим Можете Да Додирнете Алатку С Десне Стране Да Бисте Га Надоградили.</string>
+  <string name="bomb_bubble_tooltip">Ово Је Балон Бомбе.Додирните Га Док Је Зелено Да Га Дифузне.Пажљиво!Ако Је Одбројавање Достиже 0 Или Га Додирнете, Док Је Црвено, Експлодираће И Прекинуте Игру!</string>
+  <string name="negative_score_warning_tooltip">Пажљиво!Ако Ваш Резултат Падне Испод 0, То Ће Бити Игра.</string>
+</resources>

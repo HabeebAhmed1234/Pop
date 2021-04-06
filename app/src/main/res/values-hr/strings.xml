@@ -1,0 +1,156 @@
+<resources>
+  <string name="app_id" translatable="false">120569614320</string>
+  <string name="facebook_app_id" translatable="false">430199825050664</string>
+  <string name="app_name" translatable="false">Cyberpop</string>
+
+  
+  <string name="test_banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+  <string name="test_rewarded_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
+
+  
+  <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/6594335535</string>
+  <string name="rewarded_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/4722591875</string>
+
+  
+  <string name="vertical_divider" translatable="false">|</string>
+  <string name="share_facebook" translatable="false">[ f ]</string>
+  <string name="game_share_hashtag" translatable="false">#Cyberpop-StupidFunGames</string>
+  <string name="game_share_link" translatable="false">https://play.google.com/store/apps/details?id=com.stupidfungames.pop</string>
+
+  <string name="new_game_text">Nova Igra</string>
+  <string name="continue_game_text">Nastaviti Igru</string>
+  <string name="share">Udio</string>
+  <string name="review">Pregled</string>
+  <string name="game_share_string_title">Dijelite Cyberpop S</string>
+  <string name="game_share_string">Pokušajte Igrati Cyberpop - Mjehurić Popping Igra!</string>
+  <string name="continue_game_text_with_ad">Gledati Oglas Za Nastavak Igre</string>
+  <string name="continue_game_text_with_token_purchase">Kupiti Token Za Nastavak Igre</string>
+  <string name="load_game_text">Nastavi Igru</string>
+  <string name="game_over_text">Igra Je Gotova</string>
+  <string name="options_text">Opcije</string>
+  <string name="error_checking_continue_token">Postojala Je Provjera Pogrešaka Ako Imate Nastavak Tokena.Umjesto Toga Možete Gledati Oglas.</string>
+  <string name="store">Pohraniti</string>
+  <string name="quit_text">Prestati</string>
+  <string name="your_score_title">Tvoj Rezultat:</string>
+  <string name="game_paused_text">Pauziran</string>
+  <string name="game_update_text">Spremanje Koju Pokušavate Učitati Spremljeno Je Na Novijoj Verziji Igre.Ažurirajte Svoju Igru.</string>
+  <string name="resume_btn_text">Nastaviti</string>
+  <string name="quit_btn_text">Prestati</string>
+  <string name="dismiss">Odbaciti</string>
+  <string name="dont_show_again">Ne Pokažeš Ponovno.</string>
+  <string name="update_btn_text">Ažuriraj</string>
+  <string name="signin_other_error">Postojala Je Pogreška. Pokušajte Ponovno Drugi Put.</string>
+  <string name="signin_canceled">Prijava Je Otkazana.</string>
+  <string name="sign_out">Odjavi Se</string>
+  <string name="no_save_game_available">Nema Dostupne Igre.Započnite Novu Igru</string>
+  <string name="save_game_flow_title">Želite Li Se Prijaviti Da Biste Spremili Svoj Napredak?Na Taj Način Će Nadjačati Svoju Trenutnu Igru!</string>
+  <string name="sign_in">Prijaviti Se</string>
+  <string name="yes">Da</string>
+  <string name="no">Ne</string>
+  <string name="no_permanent">Ne, Ne Pokažeš Ovo Opet.</string>
+  <string name="ok">U Redu</string>
+  <string name="generic_error">Nešto Je Pošlo Po Zlu. Molimo Pokušajte Ponovo Kasnije</string>
+  <string name="login_to_save">Morate Se Prijaviti Da Biste Spremili Igru</string>
+  <string name="must_be_logged_in">Morate Biti Prijavljeni Za Pristup Ovoj Značajki.</string>
+  <string name="game_saved">Spremljena Igra.</string>
+  <string name="new_game_confirm_title">Ako Već Imate Igru Spremanja, To Će Ga Prepisati.Jeste Li Sigurni Da Želite Nastaviti?</string>
+  <string name="error_fetching_items">Morate Se Prijaviti Za Učitavanje Stavki.</string>
+  <string name="no_items_result">U Ovom Trenutku Nisu Dostupne Stavke.</string>
+  <string name="no_purchases_result">Nisu Kupljeni Proizvodi.</string>
+  <string name="purchase_succesful">Vaša Je Kupnja Bila Uspješna!</string>
+  <string name="purchase_canceled">Vaša Kupnja Je Otkazana</string>
+  <string name="store_title">Pohraniti</string>
+  <string name="my_items">Moje Stavke</string>
+  <string name="buy">Kupiti</string>
+  <string name="owned">U Vlasništvu</string>
+  <string name="equip">Opremiti</string>
+  <string name="un_equip">Jedan Tim</string>
+  <string name="error_equipping">Postojala Je Pogreška Opremanje Pozadine.Ažurirajte Svoju Aplikaciju I Pokušajte Ponovno.</string>
+  <string name="equip_success">Pozadina Opremljena!</string>
+  <string name="un_equip_success">Pozadina Un-Opremljena!</string>
+  <string name="continue_game_choice_dialog_title">Odaberite Opciju Za Nastavak Igre.</string>
+  <string name="watch_ad_btn">Pogledajte Oglas.</string>
+  <string name="buy_game_continue_token">Kupite Igru Nastavite Token [$ 0.99]</string>
+  <string name="share_the_game_fb">Share Pop Na Facebook</string>
+  <string name="share_the_game_other">Share Pop S Prijateljima</string>
+  <string name="continue_game_token_not_aquired">Morate Steći Željeni Token Igre Za Nastavak Igre.</string>
+  <string name="must_choose_option_to_continue">Morate Odabrati Jednu Od Opcija Za Nastavak Igre.</string>
+  <string name="prompt_user_to_continue">Možete Nastaviti Nastaviti Igru!</string>
+  <string name="global_bubbles_popped_string">Globalni Mjehurići Popped:</string>
+
+  
+  <string name="app_info_title">O Cyberpopu</string>
+  <string name="app_info_subtitle">Zabavan Arkadni Stil Mjehurić Popping Igru Glazba Kredit: Karl Casey Na Bijelom Šišmiš Audio</string>
+
+  
+  <string name="review_app_dialog_title">Volite Li Cyberpop Do Sada?</string>
+  <string name="review_app_btn_text">Da!Volio Bih Ostaviti Pregled.</string>
+  <string name="send_feedback_btn_text">Ne Želim Poslati Povratne Informacije.</string>
+  <string name="feedback_title">Pošalji Povratne Informacije.</string>
+  <string name="feedback_send_btn">Poslati</string>
+
+  
+  <string name="notification_channel_name">Obavijesti O Pop Igri</string>
+  <string name="notification_channel_description">Kanal Za Pop Obavijesti</string>
+  <string name="nudge_notification_title">Vratite Se Na Cyberpop!</string>
+  <string name="nudge_notification_content_1">Probudite Se Samuraj.Imamo Mjehuriće Za Pop.</string>
+  <string name="nudge_notification_content_2">Zašto Si Sada Iskakanje Mjehurića?.</string>
+  <string name="nudge_notification_content_3">Ostavite Sve.Postoje Mjehurići Koji Trebaju Iskakanje.</string>
+  <string name="nudge_notification_content_4">Dođite Sa Mnom Ako Želite Pop Mjehurići.</string>
+  <string name="nudge_notification_content_5">Vidimo Vas Da Ne Popping Mjehurići Upravo Sada.Neprihvatljivo.</string>
+  <string name="nudge_notification_content_global_bubbles">Samo% 1 $ D Mjehurići Su Popped Globalno!Pomozite Napor!</string>
+
+  
+  <string name="ad_load_error">Postojao Je Problem Učitavanja Oglasa.Imajte Besplatnu Igru Nastavite Token!</string>
+  <string name="ad_reward_message">Hvala Što Ste Gledali Igru Nastaviti Token!</string>
+  <string name="ad_reward_failed_message">Morate Završiti Gledajući Oglas Da Biste Dobili Igru Nastavljaju Token.</string>
+
+  
+  <string name="title_game_continue_token">Nastavite Token Igre</string>
+  <string name="title_no_ads">Dodajte Besplatno Iskustvo</string>
+
+  
+  <string name="description_game_continue_token">Omogućuje Nastavak Igre Čak I Nakon Njegove Igre.Može Se Koristiti Jednom.</string>
+  <string name="description_no_ads">Uklanja Sve Oglase Iz Vašeg Igračkog Iskustva!</string>
+
+  
+  <string name="title_bg_1">Neonski Autobus</string>
+  <string name="title_bg_2">Akihabara</string>
+  <string name="title_bg_3">Tokio Ulica</string>
+  <string name="title_bg_4">Victoria Peak</string>
+  <string name="title_bg_5">Tokyo Nebo</string>
+  <string name="title_bg_6">Tokiju Nebo Svjetla</string>
+  <string name="title_bg_7">Staklena Zgrada</string>
+  <string name="title_bg_8">Gradijent</string>
+  <string name="title_bg_9">Dimni Hram</string>
+  <string name="title_bg_10">Pakirane Ulice</string>
+  <string name="title_bg_11">Čudovište Zgrada</string>
+  <string name="title_bg_12">Maglovit Grad</string>
+  <string name="title_bg_13">Crvena Svjetiljka</string>
+
+  
+  <string name="description_bg_1">Cool Pozadina Autobusa U Hong Kongu</string>
+  <string name="description_bg_2">Pozadina Akihabara, Tokija</string>
+  <string name="description_bg_3">Pozadina Neonskih Ulica Tokija</string>
+  <string name="description_bg_4">Pozadina Gledanja Iz Victoria Peak Hong Kong</string>
+  <string name="description_bg_5">Pozadina Gledanja Tokija</string>
+  <string name="description_bg_6">Pozadina Gledanja Na Tokiju Horizonta</string>
+  <string name="description_bg_7">Pozadina Staklene Zgrade U Hong Kongu</string>
+  <string name="description_bg_8">Pozadina Gradijenta Od Crvenog Do Crnog</string>
+  <string name="description_bg_9">Pozadina Dimnog Hrama</string>
+  <string name="description_bg_10">Pozadina Pakiranih Ulica Tokija</string>
+  <string name="description_bg_11">Pozadina Čudovišta U Hong Kongu</string>
+  <string name="description_bg_12">Pozadina Maglovitog Horizonta Tokija</string>
+  <string name="description_bg_13">Pozadina Ogromne Crvene Svjetiljke</string>
+
+  
+  <string name="turret_tooltip">Povucite I Ispustite Turrets Iz Ove Ikone Na Zaslon.Možete Se Dugo Pritisnuti Turrete Kako Biste Ih Povukli.</string>
+  <string name="ball_and_chain_tooltip">Pritisnite I Držite Ovu Ikonu Da Biste Dobili Mace.</string>
+  <string name="wall_tooltip">Povucite I Ispustite Zidove Iz Ove Ikone Na Zaslon.Možete Dugo Pritisnuti Zidove Kako Biste Ih Povukli.Nadogradnja Zidova Na Razinu 2 I Gore Će Ih Učiniti Pop Mjehurićima!</string>
+  <string name="nuke_tooltip">Dodirnite Ovu Ikonu Da Biste Pop Svi Mjehurići Na Zaslonu U Valovima.Pažljivo, Potrebno Je Dugo Vremena Za Punjenje.</string>
+  <string name="multi_touch_icon_tooltip">Dodirnite Mjehurić Da Pop Sve Obližnje Mjehuriće Iste Boje.</string>
+  <string name="touch_pop_tooltip">Dodirnite Mjehuriće Da Ih Pop Prije Nego Dođu Do Dna Zaslona!Dodirnite Više Mjehurića Iste Boje Za Početak Trake I Zaradite Više Bodova!</string>
+  <string name="upgrade_tooltip">Dodirnite Ovih Mjehurića Kako Biste Stekli Nadogradnju.Zatim Možete Dodirnuti Alat Na Desnoj Strani Da Biste Ga Nadogradili.</string>
+  <string name="bomb_bubble_tooltip">Ovo Je Mjehurić Za Bombe.Dodirnite Ga Dok Je Zelena Da Ga Difuste.Pažljivo!Ako Je Odbrojavanje Doseže 0 Ili Ga Dodirnete Dok Je Crvena, Eksplodirat Će I Završiti Igru!</string>
+  <string name="negative_score_warning_tooltip">Pažljivo!Ako Vaš Rezultat Padne Ispod 0 To Će Biti Igra Gotova.</string>
+</resources>

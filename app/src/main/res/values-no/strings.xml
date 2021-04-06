@@ -1,0 +1,156 @@
+<resources>
+  <string name="app_id" translatable="false">120569614320</string>
+  <string name="facebook_app_id" translatable="false">430199825050664</string>
+  <string name="app_name" translatable="false">Cyberpop</string>
+
+  
+  <string name="test_banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+  <string name="test_rewarded_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
+
+  
+  <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/6594335535</string>
+  <string name="rewarded_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/4722591875</string>
+
+  
+  <string name="vertical_divider" translatable="false">|</string>
+  <string name="share_facebook" translatable="false">[ f ]</string>
+  <string name="game_share_hashtag" translatable="false">#Cyberpop-StupidFunGames</string>
+  <string name="game_share_link" translatable="false">https://play.google.com/store/apps/details?id=com.stupidfungames.pop</string>
+
+  <string name="new_game_text">Nytt Spill</string>
+  <string name="continue_game_text">Fortsett Spill</string>
+  <string name="share">Dele</string>
+  <string name="review">Anmeldelse</string>
+  <string name="game_share_string_title">Del Cyberpop Med</string>
+  <string name="game_share_string">Prøv Å Spille Cyberpop - Bubble Popping Game!</string>
+  <string name="continue_game_text_with_ad">Se På Annonsen For Å Fortsette Spillet</string>
+  <string name="continue_game_text_with_token_purchase">Kjøp Token For Å Fortsette Spillet</string>
+  <string name="load_game_text">Fortsett Spill</string>
+  <string name="game_over_text">Spillet Er Slutt</string>
+  <string name="options_text">Alternativer</string>
+  <string name="error_checking_continue_token">Det Var En Feilkontroll Hvis Du Har En Fortsettt Token.Du Kan Se En Annonse I Stedet.</string>
+  <string name="store">Butikk</string>
+  <string name="quit_text">Slutte</string>
+  <string name="your_score_title">Din Poengsum:</string>
+  <string name="game_paused_text">Pauset</string>
+  <string name="game_update_text">Lagre Du Prøver Å Laste Ble Lagret På En Nyere Versjon Av Spillet.Vennligst Oppdater Spillet Ditt.</string>
+  <string name="resume_btn_text">Gjenoppta</string>
+  <string name="quit_btn_text">Slutte</string>
+  <string name="dismiss">Avskjedige</string>
+  <string name="dont_show_again">Ikke Vis Igjen.</string>
+  <string name="update_btn_text">Oppdater</string>
+  <string name="signin_other_error">Det Var En Feilmelding På. Prøv Igjen En Annen Gang.</string>
+  <string name="signin_canceled">Logg Inn Ble Kansellert.</string>
+  <string name="sign_out">Logg Ut</string>
+  <string name="no_save_game_available">Det Er Ingen Lagre Spill Tilgjengelig.Start Et Nytt Spill</string>
+  <string name="save_game_flow_title">Vil Du Logge På For Å Redde Fremdriften Din?Å Gjøre Det Vil Overstyre Ditt Nåværende Spill!</string>
+  <string name="sign_in">Logg Inn</string>
+  <string name="yes">Ja</string>
+  <string name="no">Nei</string>
+  <string name="no_permanent">Nei, Ikke Vis Dette Igjen.</string>
+  <string name="ok">Ok</string>
+  <string name="generic_error">Noe Gikk Galt. Prøv Igjen Senere</string>
+  <string name="login_to_save">Du Må Logge Inn For Å Lagre Spillet Ditt</string>
+  <string name="must_be_logged_in">Du Må Være Logget Inn For Å Få Tilgang Til Denne Funksjonen.</string>
+  <string name="game_saved">Spillet Lagret.</string>
+  <string name="new_game_confirm_title">Hvis Du Allerede Har Et Lagre Spill, Vil Dette Overskrive Det.Er Du Sikker På At Du Vil Fortsette?</string>
+  <string name="error_fetching_items">Du Må Logge Inn For Å Laste Inn Elementene.</string>
+  <string name="no_items_result">Ingen Elementer Er Tilgjengelige På Dette Tidspunktet.</string>
+  <string name="no_purchases_result">Ingen Produkter Er Kjøpt.</string>
+  <string name="purchase_succesful">Kjøpet Ditt Var Vellykket!</string>
+  <string name="purchase_canceled">Kjøpet Ditt Ble Kansellert</string>
+  <string name="store_title">Butikk</string>
+  <string name="my_items">Mine Elementer</string>
+  <string name="buy">Kjøpe</string>
+  <string name="owned">Eid</string>
+  <string name="equip">Utruste</string>
+  <string name="un_equip">Ett Lag</string>
+  <string name="error_equipping">Det Var En Feil Som Utruster Bakgrunnen Din.Oppdater Appen Din Og Prøv Igjen.</string>
+  <string name="equip_success">Bakgrunn Utstyrt!</string>
+  <string name="un_equip_success">Bakgrunn Un-Utstyrt!</string>
+  <string name="continue_game_choice_dialog_title">Velg Et Alternativ For Å Fortsette Spillet Ditt.</string>
+  <string name="watch_ad_btn">Se På En Annonse.</string>
+  <string name="buy_game_continue_token">Kjøp Et Spill Fortsett Token [$ 0.99]</string>
+  <string name="share_the_game_fb">Del Pop Til Facebook</string>
+  <string name="share_the_game_other">Del Pop Med Vennene Dine</string>
+  <string name="continue_game_token_not_aquired">Du Må Anskaffe Et Fortsett Spilltoken For Å Fortsette Spillet Ditt.</string>
+  <string name="must_choose_option_to_continue">Du Må Velge Ett Av Alternativene For Å Fortsette Spillet Ditt.</string>
+  <string name="prompt_user_to_continue">Du Kan Fortsette Å Gjenoppta Spillet Ditt!</string>
+  <string name="global_bubbles_popped_string">Globale Bobler Dukket Opp:</string>
+
+  
+  <string name="app_info_title">Om Cyberpop</string>
+  <string name="app_info_subtitle">En Morsom Arkadestil Bubble Popping Game Music Credit: Karl Casey På White Bat Audio</string>
+
+  
+  <string name="review_app_dialog_title">Liker Du Cyberpop Så Langt?</string>
+  <string name="review_app_btn_text">Ja!Jeg Vil Gjerne Legge Igjen En Anmeldelse.</string>
+  <string name="send_feedback_btn_text">Nei. Jeg Vil Gjerne Sende Tilbakemelding.</string>
+  <string name="feedback_title">Send Tilbakemelding.</string>
+  <string name="feedback_send_btn">Sende</string>
+
+  
+  <string name="notification_channel_name">Popspillvarsler</string>
+  <string name="notification_channel_description">Kanal For Pop-Varsler</string>
+  <string name="nudge_notification_title">Kom Tilbake Til Cyberpop!</string>
+  <string name="nudge_notification_content_1">Våkn Opp Samurai.Vi Har Bobler Å Pope.</string>
+  <string name="nudge_notification_content_2">Hvorfor Kommer Du Til Å Dukkebobler Akkurat Nå?.</string>
+  <string name="nudge_notification_content_3">Slipp Alt.Det Er Bobler Som Trenger Popping.</string>
+  <string name="nudge_notification_content_4">Kom Med Meg Hvis Du Vil Popbobler.</string>
+  <string name="nudge_notification_content_5">Vi Ser Deg Ikke Popping Bobler Akkurat Nå.Uakseptabelt.</string>
+  <string name="nudge_notification_content_global_bubbles">Bare% 1 $ D Bubbles Har Blitt Poppet Globalt!Hjelp Innsatsen!</string>
+
+  
+  <string name="ad_load_error">Det Var Et Problem Å Laste Annonsen.Ha Et Gratis Spill Fortsett Token!</string>
+  <string name="ad_reward_message">Takk For At Du Ser På, Har Et Spill Fortsett Token!</string>
+  <string name="ad_reward_failed_message">Du Må Avslutte Å Se På Annonsen For Å Få Et Spill Fortsette Token.</string>
+
+  
+  <string name="title_game_continue_token">Fortsett Game Token.</string>
+  <string name="title_no_ads">Legg Til Gratis Opplevelse</string>
+
+  
+  <string name="description_game_continue_token">Lar Deg Fortsette Spillet Selv Etter Sitt Spill Over.Kan Brukes En Gang.</string>
+  <string name="description_no_ads">Fjerner Alle Annonser Fra Spillopplevelsen Din!</string>
+
+  
+  <string name="title_bg_1">Neon Buss</string>
+  <string name="title_bg_2">Akihabara.</string>
+  <string name="title_bg_3">Tokyo Streets</string>
+  <string name="title_bg_4">Victoria Peak.</string>
+  <string name="title_bg_5">Tokyo Sky.</string>
+  <string name="title_bg_6">Tokyo Sky Lights.</string>
+  <string name="title_bg_7">Glassbygning</string>
+  <string name="title_bg_8">Gradient.</string>
+  <string name="title_bg_9">Smoky Temple.</string>
+  <string name="title_bg_10">Pakket Gater</string>
+  <string name="title_bg_11">Monster Bygninger</string>
+  <string name="title_bg_12">Tåkete By</string>
+  <string name="title_bg_13">Rød Lampe</string>
+
+  
+  <string name="description_bg_1">Kule Bakgrunn Av En Buss I Hong Kong</string>
+  <string name="description_bg_2">Bakgrunn Av Akihabara, Tokyo</string>
+  <string name="description_bg_3">Bakgrunn Av Neongatene I Tokyo</string>
+  <string name="description_bg_4">Bakgrunn Av Utsikt Fra Victoria Peak Hong Kong</string>
+  <string name="description_bg_5">Bakgrunn Av Utsikt Over Tokyo</string>
+  <string name="description_bg_6">Bakgrunn Av Utsikt Over Tokyo Skyline</string>
+  <string name="description_bg_7">Bakgrunn Av En Glassbygning I Hong Kong</string>
+  <string name="description_bg_8">Bakgrunn Av En Gradient Fra Rød Til Svart</string>
+  <string name="description_bg_9">Bakgrunn Av Et Røykfylt Tempel</string>
+  <string name="description_bg_10">Bakgrunn Av De Pakket Gatene I Tokyo</string>
+  <string name="description_bg_11">Bakgrunn Av Monsterbygningene I Hong Kong</string>
+  <string name="description_bg_12">Bakgrunn Av Den Tåke Skylinen Av Tokyo</string>
+  <string name="description_bg_13">Bakgrunn Av En Stor Rød Lampe</string>
+
+  
+  <string name="turret_tooltip">Dra Og Slipp Tårn Fra Dette Ikonet På Skjermen.Du Kan Lenge Trykke På Tårnene For Å Dra Dem Rundt.</string>
+  <string name="ball_and_chain_tooltip">Trykk Og Hold Dette Ikonet For Å Få En Mace.</string>
+  <string name="wall_tooltip">Dra Og Slipp Vegger Fra Dette Ikonet På Skjermen.Du Kan Lenge Trykke På Veggene For Å Dra Dem Rundt.Oppgradering Av Veggene Dine Til Nivå 2 Og Opp Vil Gjøre Dem Popbobler!</string>
+  <string name="nuke_tooltip">Trykk På Dette Ikonet For Å Pope Alle Bobler På Skjermen I Bølger.Forsiktig, Det Tar Lang Tid Å Lade Opp.</string>
+  <string name="multi_touch_icon_tooltip">Trykk På En Boble For Å Pope Alle Nærliggende Bobler I Samme Farge.</string>
+  <string name="touch_pop_tooltip">Trykk På Boblene For Å Pope Dem Før De Når Bunnen Av Skjermen!Trykk På Flere Bobler Av Samme Farge For Å Starte En Strek Og Tjene Flere Poeng!</string>
+  <string name="upgrade_tooltip">Trykk På Disse Boblene For Å Skaffe Seg En Oppgradering.Du Kan Deretter Trykke På Et Verktøy Til Høyre For Å Oppgradere Den.</string>
+  <string name="bomb_bubble_tooltip">Dette Er En Bombeboble.Trykk På Det Mens Det Er Grønt For Å Diffundere Det.Forsiktig!Hvis Det Er Nedtelling Når 0 Eller Du Klikker På Det Mens Det Er Rødt, Vil Det Eksplodere Og Avslutte Spillet!</string>
+  <string name="negative_score_warning_tooltip">Forsiktig!Hvis Poengsummen Din Faller Under 0, Blir Det Spillet Over.</string>
+</resources>
