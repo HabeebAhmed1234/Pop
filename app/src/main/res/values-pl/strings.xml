@@ -153,5 +153,5 @@
   <string name="upgrade_tooltip">Stuknij Na Te Bąbelki, Aby Zdobyć Aktualizację.Następnie Możesz Stuknąć Na Narzędzie Po Prawej Stronie, Aby Go Uaktualnić.</string>
   <string name="bomb_bubble_tooltip">To Bomb Bombowy.Dotknij Na Nim, Gdy Jest Zielony, Aby Go Rozpraszać.Ostrożny!Jeśli Odliczanie Sięga 0 Lub Dotknij Go, Gdy Jest Czerwony, Wybuchnie I Zakończy Grę!</string>
   <string name="negative_score_warning_tooltip">Ostrożny!Jeśli Twój Wynik Spadnie Poniżej 0, Będzie To Gra.</string>
-  <string name="score">Wynik:</string>
+  <string name="score">"Wynik: "</string>
 </resources>

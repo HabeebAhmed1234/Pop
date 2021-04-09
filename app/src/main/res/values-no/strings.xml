@@ -153,5 +153,5 @@
   <string name="upgrade_tooltip">Trykk På Disse Boblene For Å Skaffe Seg En Oppgradering.Du Kan Deretter Trykke På Et Verktøy Til Høyre For Å Oppgradere Den.</string>
   <string name="bomb_bubble_tooltip">Dette Er En Bombeboble.Trykk På Det Mens Det Er Grønt For Å Diffundere Det.Forsiktig!Hvis Det Er Nedtelling Når 0 Eller Du Klikker På Det Mens Det Er Rødt, Vil Det Eksplodere Og Avslutte Spillet!</string>
   <string name="negative_score_warning_tooltip">Forsiktig!Hvis Poengsummen Din Faller Under 0, Blir Det Spillet Over.</string>
-  <string name="score">Resultat:</string>
+  <string name="score">"Resultat: "</string>
 </resources>

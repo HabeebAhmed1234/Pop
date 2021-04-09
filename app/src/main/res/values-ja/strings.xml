@@ -153,5 +153,5 @@
   <string name="upgrade_tooltip">アップグレードを取得するには、これらの泡をタップします。その後、右側のツールをタップしてアップグレードできます。</string>
   <string name="bomb_bubble_tooltip">これは爆弾の泡です。それを拡散させるには緑色の状態でそれをタップします。注意！それが0のカウントダウンに達するか、それが赤くなっている間にそれをタップするなら、それは爆発してゲームを終了します！</string>
   <string name="negative_score_warning_tooltip">注意！あなたのスコアが0を下回ると、それはゲームオーバーになります。</string>
-  <string name="score">スコア:</string>
+  <string name="score">"スコア: "</string>
 </resources>

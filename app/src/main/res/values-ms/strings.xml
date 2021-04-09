@@ -153,5 +153,5 @@
   <string name="upgrade_tooltip">Ketik Pada Gelembung Ini Untuk Memperoleh Peningkatan.Anda Kemudian Boleh Mengetuk Pada Alat Di Sebelah Kanan Untuk Menaik Tarafnya.</string>
   <string name="bomb_bubble_tooltip">Ini Adalah Gelembung Bom.Ketik Padanya Semasa Ia Hijau Untuk Meresapnya.Berhati-Hati!Sekiranya Undur Itu Mencapai 0 Atau Anda Mengetuknya Semasa Ia Merah, Ia Akan Meletup Dan Menamatkan Permainan!</string>
   <string name="negative_score_warning_tooltip">Berhati-Hati!Jika Skor Anda Jatuh Di Bawah 0 Ia Akan Menjadi Permainan.</string>
-  <string name="score">Markah:</string>
+  <string name="score">"Markah: "</string>
 </resources>
