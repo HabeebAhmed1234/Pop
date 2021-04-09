@@ -159,7 +159,7 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
   }
 
   private String getScoreText() {
-    return getScorePrefix() + scoreValue;
+    return getScorePrefix() + " " + scoreValue;
   }
 
   private void updateScoreText() {
