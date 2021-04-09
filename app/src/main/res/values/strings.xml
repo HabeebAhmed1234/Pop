@@ -6,12 +6,12 @@
   <string name="app_name" translatable="false">Cyberpop</string>
 
   <!-- test -->
-  <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
-  <string name="rewarded_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
+  <string name="test_banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+  <string name="test_rewarded_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
 
   <!-- prod -->
-  <string name="test_banner_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/6594335535</string>
-  <string name="test_rewarded_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/4722591875</string>
+  <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/6594335535</string>
+  <string name="rewarded_ad_unit_id" translatable="false">ca-app-pub-9591979033613743/4722591875</string>
 
   <!-- non translatable -->
   <string name="vertical_divider" translatable="false">|</string>
@@ -155,5 +155,5 @@
   <string name="upgrade_tooltip">Tap on these bubbles to acquire an upgrade. You can then tap on a tool on the right to upgrade it.</string>
   <string name="bomb_bubble_tooltip">This is a bomb bubble. Tap on it while it is green to diffuse it. Careful! If it\'s countdown reaches 0 or you tap on it while it is red it will explode and end the game!</string>
   <string name="negative_score_warning_tooltip">Careful! If your score falls below 0 it will be game over.</string>
-  <string name="score">Score:</string>
+  <string name="score">Score: </string>
 </resources>
