@@ -3,7 +3,9 @@ package com.stupidfungames.pop.hudentities;
 import static com.stupidfungames.pop.BubbleLossDetectorEntity.SCORE_DECREMENT_AMOUNT;
 import static com.stupidfungames.pop.GameConstants.STREAK_EXPIRE_THRESHOLD_SECONDS;
 
+import android.content.Context;
 import android.text.TextUtils;
+import com.stupidfungames.pop.R;
 import com.stupidfungames.pop.binder.BinderEnity;
 import com.stupidfungames.pop.eventbus.DecrementScoreEventPayload;
 import com.stupidfungames.pop.eventbus.EventBus;
@@ -24,7 +26,6 @@ import org.andengine.util.color.AndengineColor;
  */
 public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscriber {
 
-  private static final String SCORE_TEXT_PREFIX = "Score: ";
   private static final int STARTING_SCORE = 60;
   private static final int WARNING_COLOR_SCORE_THRESHOLD = SCORE_DECREMENT_AMOUNT * 3;
   private static final AndengineColor WARNING_SCORE_COLOR = AndengineColor.RED;
@@ -40,6 +41,7 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
           updateScoreText();
         }
       });
+  private String scorePrefix;
 
   public ScoreHudEntity(BinderEnity parent) {
     super(parent);
@@ -146,8 +148,18 @@ public class ScoreHudEntity extends HudTextBaseEntity implements EventBus.Subscr
     }
   }
 
+  private String getScorePrefix() {
+    if (TextUtils.isEmpty(scorePrefix)) {
+      Context context = get(Context.class);
+      if (context != null) {
+        scorePrefix = get(Context.class).getString(R.string.score);
+      }
+    }
+    return scorePrefix;
+  }
+
   private String getScoreText() {
-    return SCORE_TEXT_PREFIX + scoreValue;
+    return getScorePrefix() + scoreValue;
   }
 
   private void updateScoreText() {

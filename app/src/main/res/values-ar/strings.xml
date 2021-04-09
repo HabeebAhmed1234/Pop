@@ -151,4 +151,5 @@
   <string name="upgrade_tooltip">انقر فوق هذه الفقاعات للحصول على ترقية.يمكنك بعد ذلك النقر فوق أداة على اليمين لترقيةه.</string>
   <string name="bomb_bubble_tooltip">هذه فقاعة قنبلة.انقر فوقه في حين أنه أخضر لنشره.حذر!إذا وصل العد التنازلي إلى 0 أو تنقر عليه أثناء حمراء، فسوف ينفجر اللعبة وإنهاءها!</string>
   <string name="negative_score_warning_tooltip">حذر!إذا كانت درجاتك تقع أقل من 0، فستكون اللعبة قد انتهت.</string>
+  <string name="score">نتيجة:</string>
 </resources>

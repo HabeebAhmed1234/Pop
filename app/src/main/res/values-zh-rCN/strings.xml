@@ -152,4 +152,5 @@
   <string name="upgrade_tooltip">点击这些气泡以获得升级。然后，您可以点击右侧的工具来升级它。</string>
   <string name="bomb_bubble_tooltip">这是一个炸弹泡沫。在绿色以弥漫它的同时点击它。小心！如果它的倒计时达到0，或者在它是红色的时候拍打它会爆炸并结束游戏！</string>
   <string name="negative_score_warning_tooltip">小心！如果您的分数低于0，那将是游戏。</string>
+  <string name="score">分数:</string>
 </resources>

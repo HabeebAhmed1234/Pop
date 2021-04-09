@@ -153,4 +153,5 @@
   <string name="upgrade_tooltip">Ketuk Gelembung Ini Untuk Mendapatkan Upgrade.Anda Kemudian Dapat Mengetuk Alat Di Sebelah Kanan Untuk Memutakhirkannya.</string>
   <string name="bomb_bubble_tooltip">Ini Adalah Gelembung Bom.Ketuk Pada Saat Itu Hijau Untuk Menyebarkannya.Cermat!Jika Hitung Mundur Mencapai 0 Atau Anda Ketuk Padanya Saat Merah Itu Akan Meledak Dan Mengakhiri Permainan!</string>
   <string name="negative_score_warning_tooltip">Cermat!Jika Skor Anda Jatuh Di Bawah 0 Itu Akan Menjadi Permainan.</string>
+  <string name="score">Skor:</string>
 </resources>

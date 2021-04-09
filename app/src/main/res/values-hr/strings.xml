@@ -153,4 +153,5 @@
   <string name="upgrade_tooltip">Dodirnite Ovih Mjehurića Kako Biste Stekli Nadogradnju.Zatim Možete Dodirnuti Alat Na Desnoj Strani Da Biste Ga Nadogradili.</string>
   <string name="bomb_bubble_tooltip">Ovo Je Mjehurić Za Bombe.Dodirnite Ga Dok Je Zelena Da Ga Difuste.Pažljivo!Ako Je Odbrojavanje Doseže 0 Ili Ga Dodirnete Dok Je Crvena, Eksplodirat Će I Završiti Igru!</string>
   <string name="negative_score_warning_tooltip">Pažljivo!Ako Vaš Rezultat Padne Ispod 0 To Će Biti Igra Gotova.</string>
+  <string name="score">Postići:</string>
 </resources>

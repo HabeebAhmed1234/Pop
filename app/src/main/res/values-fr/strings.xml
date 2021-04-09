@@ -153,4 +153,5 @@
   <string name="upgrade_tooltip">Appuyez Sur Ces Bulles Pour Acquérir Une Mise À Niveau.Vous Pouvez Ensuite Appuyer Sur Un Outil Sur La Droite Pour La Mise À Niveau.</string>
   <string name="bomb_bubble_tooltip">Ceci Est Une Bulle De Bombe.Appuyez Dessus Pendant Qu\'Il Est Vert Pour La Diffuser.Prudent!Si Le Compte À Rebours Est Atteint 0 Ou Que Vous Appuyez Dessus Pendant Qu\'Il Est Rouge, Il Explosera Et Terminera Le Jeu!</string>
   <string name="negative_score_warning_tooltip">Prudent!Si Votre Score Tombe En Dessous De 0, Ce Sera Le Jeu.</string>
+  <string name="score">"Points: "</string>
 </resources>

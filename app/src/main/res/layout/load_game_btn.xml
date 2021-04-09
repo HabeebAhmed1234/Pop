@@ -4,9 +4,7 @@
     android:orientation="horizontal"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/between_btn_padding"
-    android:clipToPadding="false"
-    android:clipChildren="false" >
+    android:layout_marginBottom="@dimen/between_btn_padding" >
 
   <com.stupidfungames.pop.androidui.LoadingSpinner
       android:id="@+id/loading_spinner"

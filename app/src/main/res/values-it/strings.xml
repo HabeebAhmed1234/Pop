@@ -153,4 +153,5 @@
   <string name="upgrade_tooltip">Tocca Queste Bolle Per Acquisire Un Aggiornamento.È Quindi Possibile Toccare Uno Strumento A Destra Per Aggiornarlo.</string>
   <string name="bomb_bubble_tooltip">Questa È Una Bolla Di Bomba.Tocca Su Di Esso Mentre È Verde A Diffonderlo.Attento!Se Il Conto Alla Rovescia Raggiunge 0 O Tocchi Su Di Esso Mentre È Rosso, Esploderà E Terminerà Il Gioco!</string>
   <string name="negative_score_warning_tooltip">Attento!Se Il Tuo Punteggio Cade Sotto 0 Sarà Il Gioco Sopra.</string>
+  <string name="score">Punto:</string>
 </resources>

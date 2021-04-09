@@ -151,4 +151,5 @@
   <string name="upgrade_tooltip">הקש על בועות אלה כדי לרכוש שדרוג.לאחר מכן תוכל להקיש על כלי מימין לשדרג אותו.</string>
   <string name="bomb_bubble_tooltip">זוהי בועת פצצה.הקש עליו בזמן שהוא ירוק לפזר אותו.זָהִיר!אם זה \ \'S ספירה לאחור מגיע 0 או שאתה הקש על זה בזמן שהוא אדום זה יהיה להתפוצץ ולסיים את המשחק!</string>
   <string name="negative_score_warning_tooltip">זָהִיר!אם הציון שלך נופל מתחת 0 זה יהיה משחק מעל.</string>
+  <string name="score">ציון</string>
 </resources>

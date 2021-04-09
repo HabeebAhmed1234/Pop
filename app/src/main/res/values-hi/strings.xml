@@ -105,7 +105,6 @@
   <string name="ad_reward_message">देखने के लिए धन्यवाद एक गेम टोकन जारी रखें!</string>
   <string name="ad_reward_failed_message">आपको गेम जारी रखने के लिए विज्ञापन देखना समाप्त करना होगा।</string>
 
-  
   <string name="title_game_continue_token">खेल टोकन जारी रखें</string>
   <string name="title_no_ads">मुफ्त अनुभव जोड़ें</string>
 
@@ -153,4 +152,5 @@
   <string name="upgrade_tooltip">अपग्रेड प्राप्त करने के लिए इन बुलबुले पर टैप करें।फिर आप इसे अपग्रेड करने के लिए दाईं ओर एक टूल पर टैप कर सकते हैं।</string>
   <string name="bomb_bubble_tooltip">यह एक बम बुलबुला है।उस पर टैप करें जबकि इसे फैलाने के लिए हरा है।सावधान!यदि यह उलटी गिनती 0 तक पहुंच जाती है या आप उस पर टैप करते हैं, जबकि यह लाल होता है तो यह विस्फोट और खेल को समाप्त कर देगा!</string>
   <string name="negative_score_warning_tooltip">सावधान!यदि आपका स्कोर 0 से नीचे आता है तो यह खेल खत्म हो जाएगा।</string>
+  <string name="score">स्कोर:</string>
 </resources>
