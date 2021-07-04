@@ -1,9 +1,11 @@
 package org.andengine.entity.scene.menu.item.decorator;
 
 import org.andengine.entity.OnDetachedListener;
+import org.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.andengine.entity.scene.IOnAreaTouchListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.util.color.AndengineColor;
+import org.andengine.util.modifier.IModifier;
 
 /**
  * (c) 2010 Nicolas Gramlich
@@ -92,6 +94,11 @@ public class ColorMenuItemDecorator extends BaseMenuItemDecorator {
 	@Override
 	public void clearOnDetachedListeners() {
 
+	}
+
+	@Override
+	public IModifier getEntityModifier(IEntityModifierMatcher pEntityModifierMatcher) {
+		return null;
 	}
 
 	@Override

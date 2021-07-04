@@ -44,8 +44,10 @@ public class SwordChargeManager extends BaseEntity {
   @Override
   public void onDestroy() {
     super.onDestroy();
-    rechargerHandler.reset();
-    rechargerHandler.pause();
+    if (rechargerHandler != null) {
+      rechargerHandler.reset();
+      rechargerHandler.pause();
+    }
   }
 
   private void setCharge(int newCharge) {

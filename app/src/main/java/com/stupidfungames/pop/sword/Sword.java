@@ -23,6 +23,8 @@ public class Sword extends BaseEntity implements SceneTouchListener, Listener<St
   private float prevX = -1;
   private float prevY = -1;
 
+  private SwordAnimationManager swordAnimationManager;
+
   public Sword(BinderEnity parent) {
     super(parent);
   }
@@ -30,6 +32,7 @@ public class Sword extends BaseEntity implements SceneTouchListener, Listener<St
   @Override
   public void onCreateScene() {
     super.onCreateScene();
+    this.swordAnimationManager = get(SwordAnimationManager.class);
     get(SwordStateMachine.class).addAllStateTransitionListener(this);
   }
 
@@ -53,24 +56,32 @@ public class Sword extends BaseEntity implements SceneTouchListener, Listener<St
     if (get(SwordStateMachine.class).getCurrentState() == State.CHARGED
         //&& !get(Mutex.class).isLocked()
         && (action == ACTION_DOWN || action == ACTION_MOVE)) {
+      if (prevX == -1) {
+        prevX = touchEvent.getX();
+      }
+      if (prevY == -1) {
+        prevY = touchEvent.getY();
+      }
       // If the sword is charged and we aren't already dragging something then we can use the sword.
-      for (IEntity bubbleToPop : scene.query(getBublesOnPointEntityMatcher(touchEvent.getX(), touchEvent.getY()))) {
+      for (IEntity bubbleToPop : scene.query(
+          getBublesOnLineEntityMatcher(prevX, prevY, touchEvent.getX(), touchEvent.getY()))) {
         if (get(SwordStateMachine.class).getCurrentState() == State.CHARGED) {
           get(BubblePopperEntity.class).popBubble((Sprite) bubbleToPop);
           get(SwordChargeManager.class).decrementCharge();
         }
       }
+      swordAnimationManager.onTouchEvent(touchEvent);
     }
     prevX = touchEvent.getX();
-    prevY = touchEvent.getX();
+    prevY = touchEvent.getY();
     return false;
   }
 
-  private IEntityMatcher getBublesOnPointEntityMatcher(float pX, float pY) {
+  private IEntityMatcher getBublesOnLineEntityMatcher(float x1, float y1, float x2, float y2) {
     if (bubblesOnLineEntityMatcher == null) {
-      bubblesOnLineEntityMatcher = new BubblesOnLineEntityMatcher(pX, pY);
+      bubblesOnLineEntityMatcher = new BubblesOnLineEntityMatcher(x1, y1, x2, y2);
     } else {
-      bubblesOnLineEntityMatcher.setPoint(pX, pY);
+      bubblesOnLineEntityMatcher.setLine(x1, y1, x2, y2);
     }
     return bubblesOnLineEntityMatcher;
   }

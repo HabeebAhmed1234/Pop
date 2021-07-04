@@ -1,38 +1,43 @@
 package com.stupidfungames.pop.entitymatchers;
 
 import static com.stupidfungames.pop.bubblespawn.BubbleSpawnerEntity.BUBBLE_BODY_SCALE_FACTOR;
+import static com.stupidfungames.pop.utils.GeometryUtils.isCircleLineIntersecting;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.sprite.Sprite;
 
 public class BubblesOnLineEntityMatcher extends BubblesEntityMatcher {
 
-  private float pX;
-  private float pY;
+  private float x1;
+  private float y1;
+  private float x2;
+  private float y2;
 
-  public BubblesOnLineEntityMatcher(float pX, float pY, float p2X, float p2Y) {
+  public BubblesOnLineEntityMatcher(float x1, float y1, float x2, float y2) {
     super(false, true);
-    this.pX = pX;
-    this.pY = pY;
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
   }
 
   @Override
   public boolean matches(IEntity pEntity) {
-    return super.matches(pEntity) && isInPoint(pEntity);
+    return super.matches(pEntity) && isIntersectingWithLine(pEntity);
   }
 
-  public void setPoint(float pX, float pY) {
-    this.pX = pX;
-    this.pY = pY;
+  public void setLine(float x1, float y1, float x2, float y2) {
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
   }
 
-  private boolean isInPoint(IEntity pEntity) {
+  private boolean isIntersectingWithLine(IEntity pEntity) {
     if (pEntity instanceof Sprite) {
       Sprite sprite = (Sprite) pEntity;
-      float bubbleRadius = sprite.getWidth() * BUBBLE_BODY_SCALE_FACTOR / 2;
-      float centerX = sprite.getCenterX();
-      float centerY = sprite.getCenterY();
-      return Math.pow(pX - centerX, 2) + Math.pow(pY - centerY, 2) < Math.pow(bubbleRadius, 2);
+      return isCircleLineIntersecting(
+          x1, y1, x2, y2, sprite.getScaleCenterX(), sprite.getScaleCenterY(), sprite.getWidthScaled() * BUBBLE_BODY_SCALE_FACTOR / 2);
     }
     return false;
   }

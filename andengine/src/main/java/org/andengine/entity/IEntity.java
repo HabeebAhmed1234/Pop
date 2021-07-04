@@ -3,7 +3,6 @@ package org.andengine.entity;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IDrawHandler;
@@ -15,6 +14,7 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.util.IDisposable;
 import org.andengine.util.adt.transformation.Transformation;
 import org.andengine.util.color.AndengineColor;
+import org.andengine.util.modifier.IModifier;
 
 
 /**
@@ -311,6 +311,7 @@ public interface IEntity extends IDrawHandler, IUpdateHandler, IDisposable {
 	public boolean unregisterEntityModifier(final IEntityModifier pEntityModifier);
 	public boolean unregisterEntityModifiers(final IEntityModifierMatcher pEntityModifierMatcher);
 	public int getEntityModifierCount();
+	public IModifier getEntityModifier(final IEntityModifierMatcher pEntityModifierMatcher);
 	public void clearEntityModifiers();
 
 	public boolean isCullingEnabled();

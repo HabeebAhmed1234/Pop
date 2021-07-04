@@ -183,4 +183,41 @@ public class GeometryUtils {
     }
     return 0;
   }
+
+  public static boolean isPointInCircle(float x, float y, float cx, float cy, float r) {
+    return (x - cx) * (x - cx) + (y - cy) * (y - cy) < (r * r);
+  }
+
+  public static boolean isCircleLineIntersecting(
+      float x1,
+      float y1,
+      float x2,
+      float y2,
+      float cx,
+      float cy,
+      float r) {
+    if (isPointInCircle(x1, y1, cx, cy, r) || isPointInCircle(x2, y2, cx, cy, r)) {
+      return true;
+    }
+    if (x1 == x2 && y1 == y2) {
+      return false;
+    }
+    double baX = x2 - x1;
+    double baY = y2 - y1;
+    double caX = cx - x1;
+    double caY = cy - y1;
+
+    double a = baX * baX + baY * baY;
+    double bBy2 = baX * caX + baY * caY;
+    double c = caX * caX + caY * caY - r * r;
+
+    double pBy2 = bBy2 / a;
+    double q = c / a;
+
+    double disc = pBy2 * pBy2 - q;
+    if (disc < 0) {
+      return false;
+    }
+    return true;
+  }
 }

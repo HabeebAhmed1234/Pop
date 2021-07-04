@@ -17,6 +17,7 @@ import org.andengine.util.adt.list.SmartList;
 import org.andengine.util.adt.transformation.Transformation;
 import org.andengine.util.call.ParameterCallable;
 import org.andengine.util.color.AndengineColor;
+import org.andengine.util.modifier.IModifier;
 
 
 /**
@@ -915,6 +916,14 @@ public class Entity implements IEntity {
       return 0;
     }
     return this.mEntityModifiers.size();
+  }
+
+  @Override
+  public IModifier getEntityModifier(final IEntityModifierMatcher pEntityModifierMatcher) {
+    if (this.mEntityModifiers == null) {
+      return null;
+    }
+    return this.mEntityModifiers.get(pEntityModifierMatcher);
   }
 
   @Override

@@ -14,6 +14,7 @@ public class SwordManagerEntity extends BaseEntity {
   protected void createBindings(Binder binder) {
     binder.bind(SwordStateMachine.class, new SwordStateMachine());
     binder.bind(SwordChargeManager.class, new SwordChargeManager(this));
+    binder.bind(SwordAnimationManager.class, new SwordAnimationManager(this));
     binder.bind(Sword.class, new Sword(this));
     binder.bind(SwordIcon.class, new SwordIcon(this));
   }
