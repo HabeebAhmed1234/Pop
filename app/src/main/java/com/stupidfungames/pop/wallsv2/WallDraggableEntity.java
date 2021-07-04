@@ -71,7 +71,7 @@ public class WallDraggableEntity extends BaseDraggableEntity implements Subscrib
   }
 
   @Override
-  protected float getDragginScaleMultiplier() {
+  protected float getDraggingScaleMultiplier() {
     return WALL_DRAGGING_SCALE_MULTIPLIER;
   }
 

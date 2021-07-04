@@ -17,6 +17,7 @@ public class GameIconsHostTrayEntity extends HostTrayBaseEntity<GameIconsHostTra
 
   public enum IconId {
     BALL_AND_CHAIN_ICON,
+    SWORD_ICON,
     TURRETS_ICON,
     WALLS_ICON,
     WALLS_V2_ICON,

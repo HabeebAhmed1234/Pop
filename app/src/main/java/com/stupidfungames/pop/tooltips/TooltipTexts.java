@@ -11,6 +11,7 @@ class TooltipTexts {
 
   {
     texts.put(TooltipId.TURRET_ICON_TOOLTIP, R.string.turret_tooltip);
+    texts.put(TooltipId.SWORD_ICON_TOOLTIP, R.string.sword_tooltip);
     texts.put(TooltipId.BALL_AND_CHAIN_ICON_TOOLTIP, R.string.ball_and_chain_tooltip);
     texts.put(TooltipId.WALLS_ICON_TOOLTIP, R.string.wall_tooltip);
     texts.put(TooltipId.NUKE_ICON_TOOLTIP, R.string.nuke_tooltip);

@@ -51,6 +51,7 @@ import com.stupidfungames.pop.settingstray.MusicQuickSettingIconEntity;
 import com.stupidfungames.pop.settingstray.NextSongQuickSettingsIconEntity;
 import com.stupidfungames.pop.settingstray.SaveGameQuickSettingsIconEntity;
 import com.stupidfungames.pop.settingstray.SaveGameQuickSettingsIconEntity.SaveGameButtonCallback;
+import com.stupidfungames.pop.sword.SwordManagerEntity;
 import com.stupidfungames.pop.tooltips.GameTooltipsEntity;
 import com.stupidfungames.pop.turrets.TurretsDraggableManagerEntity;
 import com.stupidfungames.pop.upgrades.UpgradeManager;
@@ -159,6 +160,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(BubblePopperEntity.class, new BubblePopperEntity(this))
 
             .bind(GameIconsHostTrayEntity.class, new GameIconsHostTrayEntity(this))
+            .bind(SwordManagerEntity.class, new SwordManagerEntity(this))
             .bind(BallAndChainManagerEntity.class, new BallAndChainManagerEntity(this))
             .bind(TurretsDraggableManagerEntity.class, new TurretsDraggableManagerEntity(this))
             .bind(WallsV2Manager.class, new WallsV2Manager(this))

@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 public class GameConstants {
 
+  public static final float SWORD_DIFFICULTY_UNLOCK_THRESHOLD = 0.01f;
   public static final float TURRETS_DIFFICULTY_UNLOCK_THRESHOLD = 0.16f;
   public static final float BALL_AND_CHAIN_DIFFICULTY_UNLOCK_THRESHOLD = 0.32f;
   public static final float WALLS_DIFFICULTY_UNLOCK_THRESHOLD = 0.43f;

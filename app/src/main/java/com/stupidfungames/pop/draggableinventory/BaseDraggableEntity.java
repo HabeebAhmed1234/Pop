@@ -18,7 +18,7 @@ public abstract class BaseDraggableEntity extends BaseEntity implements Draggabl
         this,
         draggableSprite,
         getDraggingOffsetPx(),
-        getDragginScaleMultiplier(),
+        getDraggingScaleMultiplier(),
         getHomeIconId(),
         this);
   }
@@ -34,7 +34,7 @@ public abstract class BaseDraggableEntity extends BaseEntity implements Draggabl
 
   protected abstract float getDraggingOffsetPx();
 
-  protected abstract float getDragginScaleMultiplier();
+  protected abstract float getDraggingScaleMultiplier();
 
   protected abstract IconId getHomeIconId();
 }

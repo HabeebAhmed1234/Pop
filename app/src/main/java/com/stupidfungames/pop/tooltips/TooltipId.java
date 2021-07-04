@@ -6,6 +6,7 @@ package com.stupidfungames.pop.tooltips;
  */
 public enum TooltipId {
     TURRET_ICON_TOOLTIP,
+    SWORD_ICON_TOOLTIP,
     BALL_AND_CHAIN_ICON_TOOLTIP,
     WALLS_ICON_TOOLTIP,
     NUKE_ICON_TOOLTIP,

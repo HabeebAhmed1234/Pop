@@ -52,7 +52,7 @@ public class TurretDraggableEntity extends BaseDraggableEntity implements HostTu
   }
 
   @Override
-  protected float getDragginScaleMultiplier() {
+  protected float getDraggingScaleMultiplier() {
     return TURRET_DRAGGING_SCALE_MULTIPLIER;
   }
 
