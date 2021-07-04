@@ -3,6 +3,7 @@ package com.stupidfungames.pop.sword;
 import static com.stupidfungames.pop.sword.SwordStateMachine.State.CHARGED;
 import static com.stupidfungames.pop.sword.SwordStateMachine.State.UNCHARGED;
 
+import android.util.Log;
 import com.stupidfungames.pop.BaseEntity;
 import com.stupidfungames.pop.binder.BinderEnity;
 import org.andengine.engine.handler.timer.ITimerCallback;
@@ -13,18 +14,18 @@ import org.andengine.engine.handler.timer.TimerHandler;
  */
 public class SwordChargeManager extends BaseEntity {
 
-  private static final int BASE_SWORD_COOLDOWN_SECONDS = 15;
+  private static final int BASE_SWORD_COOLDOWN_SECONDS = 10;
   private static final int SWORD_COOLDOWN_SECONDS_DECREASE_PER_LEVEL = 3;
 
-  private static final int BASE_SWORD_CHARGE = 5;
-  private static final int SWORD_ADDITIONAL_CHARGE_PER_LEVEL = 5;
+  private static final int BASE_SWORD_CHARGE = 14;
+  private static final int SWORD_ADDITIONAL_CHARGE_PER_LEVEL = 14;
 
   private TimerHandler rechargerHandler = null;
 
   private int swordCooldownSeconds = BASE_SWORD_COOLDOWN_SECONDS;
   private int currentMaxCharge = BASE_SWORD_CHARGE;
 
-  private int currentSwordCharge = 0;
+  private int currentSwordCharge = BASE_SWORD_CHARGE;
 
   public SwordChargeManager(BinderEnity parent) {
     super(parent);
@@ -52,12 +53,13 @@ public class SwordChargeManager extends BaseEntity {
 
   private void setCharge(int newCharge) {
     currentSwordCharge = newCharge;
-    if (currentSwordCharge == 0) {
+    if (currentSwordCharge <= 0) {
       get(SwordStateMachine.class).transitionState(UNCHARGED);
       scheduleRecharge();
     } else if (currentSwordCharge == currentMaxCharge) {
       get(SwordStateMachine.class).transitionState(CHARGED);
     }
+    Log.d("asdasd", "currentSwordCharge = " + currentSwordCharge);
   }
 
   private void scheduleRecharge() {

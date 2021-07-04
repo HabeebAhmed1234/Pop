@@ -202,22 +202,32 @@ public class GeometryUtils {
     if (x1 == x2 && y1 == y2) {
       return false;
     }
-    double baX = x2 - x1;
-    double baY = y2 - y1;
-    double caX = cx - x1;
-    double caY = cy - y1;
 
-    double a = baX * baX + baY * baY;
-    double bBy2 = baX * caX + baY * caY;
-    double c = caX * caX + caY * caY - r * r;
+    //Calculate change in x and y for the segment
+    double deltax = x2 - x1;
+    double deltay = y2 - y1;
 
-    double pBy2 = bBy2 / a;
-    double q = c / a;
+    //Set up our quadratic formula
+    double a = deltax * deltax + deltay * deltay;
+    double b = 2 * (deltax * (x1 - cx) + deltay * (y1 - cy));
+    double c = (x1 - cx) * (x1 - cx) + (y1 - cy) * (y1 - cy) - r * r;
 
-    double disc = pBy2 * pBy2 - q;
-    if (disc < 0) {
+    //Check if there is a negative in the discriminant
+    double discriminant = b * b - 4 * a * c;
+    if (discriminant < 0) {
       return false;
     }
-    return true;
+
+    //Try both +- in the quadratic formula
+    double quad1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+    double quad2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+
+    //If the result is between 0 and 1, there is an intersection
+    if (quad1 >= 0 && quad1 <= 1) {
+      return true;
+    } else if (quad2 >= 0 && quad2 <= 1) {
+      return true;
+    }
+    return false;
   }
 }

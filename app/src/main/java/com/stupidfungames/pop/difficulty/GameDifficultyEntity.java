@@ -89,6 +89,5 @@ public class GameDifficultyEntity extends BaseEntity {
     float gameDifficulty = GameDifficultyFunction.getDifficultyFromSetPoints(currentGameProgress);
     EventBus.get().sendEvent(GameEvent.GAME_DIFFICULTY_CHANGED,
         new GameDifficultyEventPayload(gameDifficulty));
-    Log.d("asdasd", "game difficulty = " + gameDifficulty);
   }
 }

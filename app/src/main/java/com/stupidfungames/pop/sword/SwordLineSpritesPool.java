@@ -7,6 +7,7 @@ import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.AlphaModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
 import org.andengine.entity.primitive.Line;
+import org.andengine.util.color.AndengineColor;
 import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.IModifier.IModifierListener;
 
@@ -27,12 +28,14 @@ public class SwordLineSpritesPool extends ItemPool<Line, LineSpriteInitializerPa
     public final float y1;
     public final float x2;
     public final float y2;
+    public final AndengineColor color;
 
-    public LineSpriteInitializerParams(float x1, float y1, float x2, float y2) {
+    public LineSpriteInitializerParams(float x1, float y1, float x2, float y2, AndengineColor color) {
       this.x1 = x1;
       this.y1 = y1;
       this.x2 = x2;
       this.y2 = y2;
+      this.color = color;
     }
   }
 
@@ -60,6 +63,7 @@ public class SwordLineSpritesPool extends ItemPool<Line, LineSpriteInitializerPa
           Line line = new Line(params.x1, params.y1, params.x2, params.y2,
               vertexBufferObjectManager);
           line.registerEntityModifier(getAlphaMod(line));
+          line.setColor(params.color);
           line.setLineWidth(LINE_THICKNESS_PX);
           return line;
         }
@@ -75,6 +79,7 @@ public class SwordLineSpritesPool extends ItemPool<Line, LineSpriteInitializerPa
               return;
             }
           }
+          line.setColor(params.color);
           line.registerEntityModifier(getAlphaMod(line));
         }
 

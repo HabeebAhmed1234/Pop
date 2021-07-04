@@ -37,7 +37,8 @@ public class BubblesOnLineEntityMatcher extends BubblesEntityMatcher {
     if (pEntity instanceof Sprite) {
       Sprite sprite = (Sprite) pEntity;
       return isCircleLineIntersecting(
-          x1, y1, x2, y2, sprite.getScaleCenterX(), sprite.getScaleCenterY(), sprite.getWidthScaled() * BUBBLE_BODY_SCALE_FACTOR / 2);
+          x1, y1, x2, y2, sprite.getCenterX(), sprite.getCenterY(),
+          sprite.getWidthScaled() * BUBBLE_BODY_SCALE_FACTOR / 2);
     }
     return false;
   }
