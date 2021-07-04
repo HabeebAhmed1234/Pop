@@ -160,8 +160,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
             .bind(BubblePopperEntity.class, new BubblePopperEntity(this))
 
             .bind(GameIconsHostTrayEntity.class, new GameIconsHostTrayEntity(this))
-            .bind(SwordManagerEntity.class, new SwordManagerEntity(this))
-            .bind(BallAndChainManagerEntity.class, new BallAndChainManagerEntity(this))
+            //.bind(BallAndChainManagerEntity.class, new BallAndChainManagerEntity(this))
             .bind(TurretsDraggableManagerEntity.class, new TurretsDraggableManagerEntity(this))
             .bind(WallsV2Manager.class, new WallsV2Manager(this))
             //.bind(WallsManagerEntity.class, new WallsManagerEntity(this))
@@ -169,6 +168,7 @@ public class GameActivity extends SimpleBaseGameActivity implements HostActivity
 
             .bind(MultiTouchPopperIcon.class, new MultiTouchPopperIcon(this))
             .bind(TouchBubblePopper.class, new TouchBubblePopper(this))
+            .bind(SwordManagerEntity.class, new SwordManagerEntity(this))
 
             .bind(UpgradeManager.class, new UpgradeManager(this));
       }

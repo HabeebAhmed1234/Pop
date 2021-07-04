@@ -4,8 +4,8 @@ import java.util.concurrent.TimeUnit;
 
 public class GameConstants {
 
-  public static final float TURRETS_DIFFICULTY_UNLOCK_THRESHOLD = 0.16f;
-  public static final float SWORD_DIFFICULTY_UNLOCK_THRESHOLD = 0.32f;
+  public static final float SWORD_DIFFICULTY_UNLOCK_THRESHOLD = 0.16f;
+  public static final float TURRETS_DIFFICULTY_UNLOCK_THRESHOLD = 0.32f;
   public static final float BALL_AND_CHAIN_DIFFICULTY_UNLOCK_THRESHOLD = 0.32f;
   public static final float WALLS_DIFFICULTY_UNLOCK_THRESHOLD = 0.43f;
   public static final float NUKE_UNLOCK_THRESHOLD = 0.6f;
@@ -17,7 +17,7 @@ public class GameConstants {
   public static final float MIN_UPGRADE_SPAWN_START_THRESHOLD_DIFFICULTY = WALLS_DIFFICULTY_UNLOCK_THRESHOLD;
 
   // Difficulty
-  public static final float TIME_TO_MAX_DIFFICULTY_SECONDS = TimeUnit.MINUTES.toSeconds(6);
+  public static final float TIME_TO_MAX_DIFFICULTY_SECONDS = TimeUnit.MINUTES.toSeconds(5);
 
   public static final int MAX_BUBBLES_PER_SPAWN_AT_MAX_DIFFICULTY = 4;
   public static final int MAX_BUBBLES_PER_SPAWN_AT_MIN_DIFFICULTY = 1;
