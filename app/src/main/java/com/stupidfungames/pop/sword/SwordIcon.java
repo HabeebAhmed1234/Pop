@@ -64,7 +64,7 @@ public class SwordIcon extends BaseUpgradeableIconEntity implements Listener<Sta
 
   @Override
   protected TextureId getIconTextureId() {
-    return TextureId.BALL_AND_CHAIN_ICON;
+    return TextureId.SWORD_ICON;
   }
 
   @Override
