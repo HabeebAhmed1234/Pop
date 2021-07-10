@@ -45,7 +45,7 @@ public class GameOverSequenceEntity extends BaseEntity {
   private EventBus.Subscriber gameOverExplosionSubscriber = new EventBus.Subscriber() {
     @Override
     public void onEvent(GameEvent event, EventPayload payload) {
-      // runGameOverSequenceWithExplosion((GameOverExplosionEventPayload) payload);
+      runGameOverSequenceWithExplosion((GameOverExplosionEventPayload) payload);
     }
   };
 
